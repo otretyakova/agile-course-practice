@@ -38,9 +38,10 @@ public final class Formatter {
         buffer.append(z.getReal() < 0 ? "-" : "");
         String re = formatPositiveDouble(Math.abs(z.getReal()));
         String im = formatPositiveDouble(Math.abs(z.getImaginary()));
-        buffer.append(re);
-        buffer.append(z.getImaginary() < 0 ? " - " : " + ");
-        buffer.append(im + "i");
+        buffer.append(re)
+            .append(z.getImaginary() < 0 ? " - " : " + ")
+            .append(im)
+            .append("i");
         return buffer.toString();
     }
 

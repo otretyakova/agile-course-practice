@@ -9,6 +9,13 @@
   </description>
 
   <rule ref="rulesets/internal/all-java.xml">
+    <!-- Remove everything before the blank line -->
+    <exclude name="PackageCase"/>
+    <exclude name="NonStaticInitializer"/>
+    <exclude name="SystemPrintln"/>
+    <exclude name="AvoidPrintStackTrace"/>
+    <exclude name="StringInstantiation"/>
+
     <exclude name="AbstractNaming"/>
     <exclude name="AccessorMethodGeneration"/>
     <exclude name="AddEmptyString"/>

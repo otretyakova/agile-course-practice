@@ -100,7 +100,7 @@ public class ViewModel {
     public BooleanProperty calculationDisabledProperty() {
         return calculationDisabled;
     }
-    public final boolean getCalculationDisabled() {
+    public final boolean isCalculationDisabled() {
         return calculationDisabled.get();
     }
 
