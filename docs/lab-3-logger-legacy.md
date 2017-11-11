@@ -38,7 +38,7 @@
 
 Первым делом нужно обновить состояние репозитория, а также ознакомиться с
 проектом-примером, который в этот раз находится в директории
-`kirill-kornyakov-lab3-legacy`.
+`kirill-korniakov-lab3-legacy`.
 
    1. Если проект открыт у вас в IDEA, нужно его закрыть: _File > Close Project_.
    1. После этого предлагается удалить все сгенерированные файлы, в том числе
@@ -66,10 +66,10 @@ $ gradle check
       же шаги, что были описаны в прошлой лабораторной: генерация проекта при
       помощи команды `gradle idea`, затем открытие его в IDEA командой
       _File > Open..._. Должно появиться полное дерево проектов, и среди них
-      `kirill-kornyakov-lab3-legacy` с новой сборкой `Infrastructure`.
+      `kirill-korniakov-lab3-legacy` с новой сборкой `Infrastructure`.
    1. Далее стоит запустить все тесты из проекта
-      `kirill-kornyakov-Infrastructure-lab3-legacy`, после чего можно запустить
-      графическое приложение (проект `kirill-kornyakov-View`) и ознакомиться с
+      `kirill-korniakov-Infrastructure-lab3-legacy`, после чего можно запустить
+      графическое приложение (проект `kirill-korniakov-View`) и ознакомиться с
       логикой логирования.
 
 На этом подготовительная работа заканчивается. Если на каком-то этапе возникли
@@ -121,8 +121,8 @@ $ gradle check
      `gradle idea` для генерации проекта. Ниже пример файла `build.gradle`:
 ```
 dependencies {
-    compile project(':kirill-kornyakov-ViewModel')
-    testCompile project(':kirill-kornyakov-ViewModel').sourceSets.test.output
+    compile project(':kirill-korniakov-ViewModel')
+    testCompile project(':kirill-korniakov-ViewModel').sourceSets.test.output
 }
 ```
   1. Когда окружение готово, можно приступать к реализации класса-логгера.
@@ -158,7 +158,7 @@ public class ViewModelWithTxtLoggerTests extends ViewModelTests {
      Для этого в `build.gradle` файл `View` вписываем следующую стоку в секцию
      зависимостей:
 ```
-    compile project(':kirill-kornyakov-Infrastructure')
+    compile project(':kirill-korniakov-Infrastructure')
 ```
   1. Далее нужно добавить графические компоненты, которые будут отображать
      содержимое лога. В проекте-примере был добавлен компонент типа

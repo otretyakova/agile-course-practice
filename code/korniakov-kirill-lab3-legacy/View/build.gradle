@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':korniakov-kirill-lab3-ViewModel-legacy')
+    compile project(':korniakov-kirill-lab3-Infrastructure-legacy')
+}

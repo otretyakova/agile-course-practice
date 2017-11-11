@@ -66,7 +66,7 @@ TBD
 
 
   1. Все личные проекты должны собраться и запуститься тесты. Стоит обратить
-     внимание на папку с примером `kirill-kornyakov-lab2`, в которой находится
+     внимание на папку с примером `kirill-korniakov-lab2`, в которой находится
      требуемая структура проекта, в том числе модуль `ViewModel` и тесты на
      него.
   1. Затем стоит сгенерировать проект для IDEA, и открыть его. Внимание: этот
@@ -83,7 +83,7 @@ TBD
      Gradle-скрипты, но почему-то у нее это получается не до конца.
   1. Все что осталось — это убедиться, что из IDEA вы можете запускать тесты и
      GUI-приложение. Для этого в браузере проекта (левая часть окна IDEA)
-     найдите папку `kirill-kornyakov-lab2` и раскройте ее. Там будет 3
+     найдите папку `kirill-korniakov-lab2` и раскройте ее. Там будет 3
      подпроекта.
      - На проектах `Model` и `ViewModel` можно нажать правую кнопку мыши и
        выбрать команду `Run 'All Tests'`. В обоих случаях все тесты должны
@@ -127,8 +127,8 @@ MVVM.
   1. Создать набор вложенных директорий для исходников, подобно тому, как это
      сделано в вашей `Model` и проекте-примере:
 
-        code/kornyakov-kirill-lab2/View/src/main/java/ru/unn/agile/ComplexNumber/view/
-        code/kornyakov-kirill-lab2/View/src/test/java/ru/unn/agile/ComplexNumber/view/
+        code/korniakov-kirill-lab2/View/src/main/java/ru/unn/agile/ComplexNumber/view/
+        code/korniakov-kirill-lab2/View/src/test/java/ru/unn/agile/ComplexNumber/view/
 
   1. Затем необходимо добавить эту директорию в общий проект. Снова идем в
      глобальный `settings.gradle` и добавляем две строки в вашей
@@ -137,7 +137,7 @@ MVVM.
      приступить к проектированию формы. Выполняем следующую команду в консоли:
 
         $ cd agile-course-practice
-        $ gradle kirill-kornyakov-View:idea # change the project name to yours
+        $ gradle kirill-korniakov-View:idea # change the project name to yours
 
   1. Сгенерированный проект можно снова открыть в IDEA. Либо, если IDEA
      оставалась открытой, среда сама заметит изменения в файлах проекта и
@@ -200,7 +200,7 @@ MVVM.
      проекта `Model`. Вот примерный вид `build.gradle` файла:
 
         dependencies {
-            compile project(':kornyakov-kirill-lab2-Model')
+            compile project(':korniakov-kirill-lab2-Model')
         }
 
   1. Следующим шагом следует добавить созданный подпроект в систему сборки. Для
@@ -208,7 +208,7 @@ MVVM.
      в вашей секции. Как результат, вы теперь можете сгенерировать проект IDEA:
 
         $ cd agile-course-practice
-        $ gradle kirill-kornyakov-ViewModel:idea
+        $ gradle kirill-korniakov-ViewModel:idea
 
   1. Теперь можно открыть проект в IDEA и начать разработку согласно TDD
      практике. Стоит завести во `ViewModel` строковые поля, соответствующие
@@ -226,7 +226,7 @@ MVVM.
      активации/деактивации контролов в зависимости от того, является ли
      корректным ввод. За инструкциями следует обратиться к проекту-примеру.
   1. Когда разработка `ViewModel` будет закончена, стоит убедиться, что все
-     созданные тесты успешно проходят (`gradle kirill-kornyakov-ViewModel:check`).
+     созданные тесты успешно проходят (`gradle kirill-korniakov-ViewModel:check`).
      Как обычно, рекомендуется сделать коммит и послать коды на тестирование Travis.
 
 ##### View
@@ -239,10 +239,10 @@ MVVM.
      про зависимость:
 
         dependencies {
-            compile project(':kirill-kornyakov-ViewModel')
+            compile project(':kirill-korniakov-ViewModel')
         }
 
-  1. Затем перегенерируем IDEA проект (`gradle kirill-kornyakov-View:idea`) и
+  1. Затем перегенерируем IDEA проект (`gradle kirill-korniakov-View:idea`) и
      снова открываем его в IDE.
   1. Далее следует завести поле типа `ViewModel` в вашем классе формы.
   1. Последнее что осталось сделать - это осуществить привязку полей реальной

@@ -1,0 +1,3 @@
+dependencies {
+    compile project(':korniakov-kirill-lab2-Model-legacy')
+}

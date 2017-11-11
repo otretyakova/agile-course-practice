@@ -49,7 +49,7 @@ tasks.cpdCheck {
         def root = allprojects.toArray()[0]
         def fileTree = fileTree(root.getProjectDir())
         fileTree.include "**/*.java"
-        source = fileTree.filter{ !it.path.contains('kornyakov-kirill') }
+        source = fileTree.filter{ !it.path.contains('korniakov-kirill') }
         //println "source: " + source.getFiles()
     }
 

@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':korniakov-kirill-lab3-ViewModel')
+    testCompile project(':korniakov-kirill-lab3-ViewModel').sourceSets.test.output
+}
