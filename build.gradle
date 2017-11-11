@@ -27,7 +27,7 @@ dependencies {
 
 cpd {
     language = 'java'
-    toolVersion = '5.3.0'
+    toolVersion = '5.8.1'
     encoding = 'UTF-8'
 }
 
