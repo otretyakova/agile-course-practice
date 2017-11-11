@@ -3,7 +3,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'de.aaschmid.gradle.plugins:gradle-cpd-plugin:0.5'
+        // classpath 'de.aaschmid.gradle.plugins:gradle-cpd-plugin:1.0'
+        classpath 'de.aaschmid:gradle-cpd-plugin:1.0'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.7.1'
     }
 }
