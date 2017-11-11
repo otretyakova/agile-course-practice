@@ -17,7 +17,7 @@
     <exclude name="StringInstantiation"/>
 
     <exclude name="AbstractNaming"/>
-    <!-- <exclude name="AccessorMethodGeneration"/> -->
+    <exclude name="AccessorMethodGeneration"/>
     <exclude name="AddEmptyString"/>
     <exclude name="AppendCharacterWithChar"/>
     <exclude name="ArrayIsStoredDirectly"/>
