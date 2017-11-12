@@ -14,8 +14,8 @@
   1. Создайте свой форк [центрального репозитория][central-repo] и клонируйте
      его к себе на машину.
   1. В отдельной ветке Git выполните задание лабораторной работы:
-    - В папке `code` заведите свою личную подпапку (с именем вида
-      `korniakov-kirill`), поместите туда `README.md` файл с кратким описанием
+    - В папке `code` заведите свою личную подпапку (с именем, соответствующим
+      теме лабораторной), поместите туда `README.md` файл с кратким описанием
       темы лабораторной работы.
     - Файл должен быть написан в корректном синтаксисе Markdown, кодировке UTF-8
       и содержать максимально полную постановку задачи.
@@ -36,7 +36,7 @@
 
 ### Первичная настройка
 
-  1. Вступите в группу [agile-development-course][group], которую мы будем
+  1. Вступите в чат [agile-development-course][chat], который мы будем
      использовать для общения. Со всеми вопросами необходимо обращаться туда.
   1. Выберите себе свободную тему из [списка][topics], вписав свое имя и группу.
   1. Зарегистрируйтесь на GitHub. Предпочтительно использование аккаунта, из
@@ -55,17 +55,17 @@
   ```bash
         $ git clone https://github.com/YOUR_GITHUB_NAME/agile-course-practice
         $ cd agile-course-practice
-        $ git checkout -b surname-name-lab1
+        $ git checkout -b surname-name-lab0
   ```
 
-  1. В подпапке `code` заведите папку со своим именем (вида `surname-name`), и
-     поместите туда файл `README.md`. Это будет ваша wiki-страничка в формате
-     Markdown со всеми деталями о вашем проекте.
+  1. В подпапке `code` заведите папку с именем темы лабораторной (вида
+     `Polinomial`), и поместите туда файл `README.md`. Это будет ваша
+     wiki-страничка в формате Markdown со всеми деталями о вашем проекте.
 
   ```bash
         $ cd code
-        $ mkdir surname-name
-        $ cd surname-name
+        $ mkdir PROJECT-NAME
+        $ cd PROJECT-NAME
         $ touch README.md
   ```
 
@@ -128,7 +128,7 @@
 
 <!-- LINKS -->
 
-[group]:        https://groups.google.com/forum/?hl=ru#!forum/agile-development-course
+[chat]:         https://gitter.im/agile-course-practice-2017/Lobby
 [topics]:       https://docs.google.com/spreadsheets/d/1JXyJBOlLZ8yvMGVVAJ6U3uiH10mMzcm-6n77SWg3p9Q/edit#gid=8
 [central-repo]: https://github.com/UNN-VMK-Software/agile-course-practice
 [help-git]:     https://help.github.com/articles/set-up-git

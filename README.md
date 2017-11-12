@@ -5,13 +5,14 @@
 [![Coverage Status](https://coveralls.io/repos/github/UNN-VMK-Software/agile-course-practice/badge.svg?branch=master)](https://coveralls.io/github/UNN-VMK-Software/agile-course-practice?branch=master)
 
   - Нижегородский государственный университет имени Н.И. Лобачевского (ННГУ)
-  - Институт ИТММ, кафедра МОСТ
+    - Институт ИТММ, кафедра МОСТ
   - __License__: Creative Commons Attribution-Share Alike 3.0 ([CC BY-SA 3.0][cc3])
 
 ## Ресурсы
 
   - [Таблица успеваемости][hall-of-fame]
   - Учебные материалы
+    - [Темы лабораторных работ][lab-topics]
     - [Описания лабораторных работ][labs]
     - [Контрольные вопросы][control-questions], [колхозная шпаргалка][cheatsheet] к ним
     - [Экзаменационные вопросы][exam-questions]
@@ -27,6 +28,7 @@
 [travis-badge]:     https://travis-ci.org/UNN-VMK-Software/agile-course-practice.svg
 [cc3]:              http://creativecommons.org/licenses/by-sa/3.0/
 [hall-of-fame]:     https://docs.google.com/spreadsheets/d/1JXyJBOlLZ8yvMGVVAJ6U3uiH10mMzcm-6n77SWg3p9Q/edit#gid=25205687
+[lab-topics]:       https://docs.google.com/spreadsheets/d/1JXyJBOlLZ8yvMGVVAJ6U3uiH10mMzcm-6n77SWg3p9Q/edit#gid=8
 [labs]:             https://github.com/UNN-VMK-Software/agile-course-practice/tree/master/docs
 [control-questions]: https://github.com/UNN-VMK-Software/agile-course-theory/blob/master/slides/control-questions.md
 [cheatsheet]:       https://docs.google.com/document/d/1QhdJOnSw-Gn_-WM9RWLzmxZMrWTB4EbyTkaNBWMGA3Y/edit
