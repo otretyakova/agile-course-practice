@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/agile-course-practice-2017/Lobby](https://badges.gitter.im/agile-course-practice-2017/Lobby.svg)](https://gitter.im/agile-course-practice-2017/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status][travis-badge]][travis]
-[![Coverage Status][coveralls-badge]][coveralls]
+[![Coverage Status](https://coveralls.io/repos/github/UNN-VMK-Software/agile-course-practice/badge.svg?branch=master)](https://coveralls.io/github/UNN-VMK-Software/agile-course-practice?branch=master)
 
   - Нижегородский Государственный Университет им. Н.И. Лобачевского
   - Институт ИТММ (ранее ф-т ВМК), каф. МОСТ
@@ -25,8 +25,6 @@
 
 [travis]:           https://travis-ci.org/UNN-VMK-Software/agile-course-practice
 [travis-badge]:     https://travis-ci.org/UNN-VMK-Software/agile-course-practice.svg
-[coveralls]:        https://coveralls.io/r/UNN-VMK-Software/agile-course-practice
-[coveralls-badge]:  https://img.shields.io/coveralls/UNN-VMK-Software/agile-course-practice.svg
 [cc3]:              http://creativecommons.org/licenses/by-sa/3.0/
 [hall-of-fame]:     https://docs.google.com/spreadsheets/d/1JXyJBOlLZ8yvMGVVAJ6U3uiH10mMzcm-6n77SWg3p9Q/edit?authkey=CNXx0YMC&authkey=CNXx0YMC#gid=1667214991
 [labs]:             https://github.com/UNN-VMK-Software/agile-course-practice/tree/master/docs
