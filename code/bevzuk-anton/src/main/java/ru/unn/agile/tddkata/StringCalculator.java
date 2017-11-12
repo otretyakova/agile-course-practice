@@ -2,7 +2,7 @@ package ru.unn.agile.tddkata;
 
 public class StringCalculator {
     public int add(final String input) {
-        if (input == "") {
+        if ("".equals(input)) {
             return 0;
         }
         String delimiter = extractDelimiter(input);
@@ -19,7 +19,7 @@ public class StringCalculator {
     }
 
     private String[] split(final String input, final String delimiter) {
-        String s = new String(input);
+        String s = input;
 
         if (s.startsWith("//")) {
             final int position = 4;

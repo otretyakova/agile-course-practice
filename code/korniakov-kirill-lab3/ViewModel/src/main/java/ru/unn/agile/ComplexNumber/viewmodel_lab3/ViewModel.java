@@ -94,8 +94,7 @@ public class ViewModel {
         status.set(Status.SUCCESS.toString());
 
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
-        message.append("Arguments")
-                .append(": Re1 = ").append(re1.get())
+        message.append("Arguments: Re1 = ").append(re1.get())
                 .append("; Im1 = ").append(im1.get())
                 .append("; Re2 = ").append(re2.get())
                 .append("; Im2 = ").append(im2.get())
@@ -164,7 +163,7 @@ public class ViewModel {
     public BooleanProperty calculationDisabledProperty() {
         return calculationDisabled;
     }
-    public final boolean getCalculationDisabled() {
+    public final boolean isCalculationDisabled() {
         return calculationDisabled.get();
     }
     public StringProperty logsProperty() {
@@ -214,7 +213,7 @@ public class ViewModel {
 
     private void updateLogs() {
         List<String> fullLog = logger.getLog();
-        String record = new String();
+        String record = new String("");
         for (String log : fullLog) {
             record += log + "\n";
         }
@@ -222,8 +221,8 @@ public class ViewModel {
     }
 
     private class ValueCachingChangeListener implements ChangeListener<String> {
-        private String prevValue = new String();
-        private String curValue = new String();
+        private String prevValue = new String("");
+        private String curValue = new String("");
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
