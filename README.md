@@ -1,6 +1,6 @@
 # Спецкурс "Agile Development"
 
-[![Join the chat at https://gitter.im/agile-course-practice/Lobby](https://badges.gitter.im/agile-course-practice/Lobby.svg)](https://gitter.im/agile-course-practice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/agile-course-practice-2017/Lobby](https://badges.gitter.im/agile-course-practice-2017/Lobby.svg)](https://gitter.im/agile-course-practice-2017/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status][travis-badge]][travis]
 [![Coverage Status][coveralls-badge]][coveralls]
 
