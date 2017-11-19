@@ -43,8 +43,8 @@
 
 
 // Levin Vadim
-
-
+include "code/statistical-values"
+project(":code/statistical-values").name = "statistical-values"
 
 // Morozova Julia
 
