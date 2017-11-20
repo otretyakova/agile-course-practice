@@ -18,10 +18,6 @@
 Все необходимые математические сведения можно найти в статье
 ["Многочлен"][polynomial] на сайте Wikipedia.
 
-## Документация разработчика
-
-TBD
-
 <!-- LINKS -->
 
 [polynomial]: https://en.wikipedia.org/wiki/Polynomial
