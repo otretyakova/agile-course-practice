@@ -60,4 +60,23 @@ public class DescriptiveStatisticsTests {
 
         DescriptiveStatistics.variance(emptyArray);
     }
+
+    @Test
+    public void unbiasedVarianceIsCalculatedCorrectly() {
+        final double[] inputSample = {0.0, 1.0, 2.0, 3.0, 4.0};
+
+        final double unbiasedVariance = DescriptiveStatistics.variance(inputSample, false);
+
+        assertEquals(2.5, unbiasedVariance);
+    }
+
+    @Test
+    public void unbiasedVarianceForArrayWithSingleElementIsZero() {
+        final double[] sampleWithOneElement = {2.0};
+
+        final double unbiasedVariance = DescriptiveStatistics.variance(sampleWithOneElement, false);
+
+        assertEquals(0.0, unbiasedVariance);
+    }
+
 }
