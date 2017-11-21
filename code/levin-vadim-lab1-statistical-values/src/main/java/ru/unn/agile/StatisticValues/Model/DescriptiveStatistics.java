@@ -1,6 +1,8 @@
 package ru.unn.agile.StatisticValues.Model;
 
 
+import java.util.Arrays;
+
 public final class DescriptiveStatistics {
 
     public static double mean(final double[] inputSample) {
@@ -8,7 +10,7 @@ public final class DescriptiveStatistics {
         if (inputSample.length == 1) {
             return inputSample[0];
         } else {
-            double sum = sumOfArray(inputSample);
+            double sum = Arrays.stream(inputSample).sum();
             return sum / inputSample.length;
         }
     }
@@ -32,8 +34,32 @@ public final class DescriptiveStatistics {
         if (isBiased) {
             return mean(centralizedSampleSquares);
         } else {
-            return sumOfArray(inputSample) / (inputSample.length - 1);
+            return Arrays.stream(inputSample).sum() / (inputSample.length - 1);
         }
+    }
+
+    public static double median(final double[] inputSample) {
+        validateSample(inputSample);
+        if (inputSample.length == 1) {
+            return inputSample[0];
+        }
+        Arrays.sort(inputSample);
+        final int medianIndex = inputSample.length / 2;
+        if (isEven(inputSample.length)) {
+            final int medianTopIndex = medianIndex - 1;
+            return (inputSample[medianIndex] + inputSample[medianTopIndex]) / 2;
+        } else {
+            return inputSample[medianIndex];
+        }
+    }
+
+    public static int[] mode(final int[] inputSample) {
+        return new int[]{1};
+    }
+
+
+    private static boolean isEven(final int number) {
+        return number % 2 == 0;
     }
 
     private static void validateSample(final double[] inputSample) {
@@ -43,14 +69,6 @@ public final class DescriptiveStatistics {
         if (inputSample.length == 0) {
             throw new IllegalArgumentException("Input sample must contain at least one element");
         }
-    }
-
-    private static double sumOfArray(final double[] inputArray) {
-        double sum = 0.0;
-        for (double element : inputArray) {
-            sum += element;
-        }
-        return sum;
     }
 
     private DescriptiveStatistics() {

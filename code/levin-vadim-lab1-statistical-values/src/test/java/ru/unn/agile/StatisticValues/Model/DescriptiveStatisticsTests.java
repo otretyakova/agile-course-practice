@@ -4,10 +4,11 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 public class DescriptiveStatisticsTests {
     @Test
-    public void meanForArrayIsCalculatedCorrectly() {
+    public void meanIsCalculatedCorrectly() {
         final double[] inputSample = {1.0, 2.0, 3.0};
 
         final double mean = DescriptiveStatistics.mean(inputSample);
@@ -17,16 +18,16 @@ public class DescriptiveStatisticsTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void meanForNullThrowsIllegalArgumentException() {
-        final double[] nullArray = null;
+        final double[] nullSample = null;
 
-        DescriptiveStatistics.mean(nullArray);
+        DescriptiveStatistics.mean(nullSample);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void meanForEmptyArrayThrowsIllegalArgumentException() {
-        final double[] emptyArray = {};
+    public void meanForEmptySampleThrowsIllegalArgumentException() {
+        final double[] emptySample = {};
 
-        DescriptiveStatistics.mean(emptyArray);
+        DescriptiveStatistics.mean(emptySample);
     }
 
     @Test
@@ -39,7 +40,7 @@ public class DescriptiveStatisticsTests {
     }
 
     @Test
-    public void varianceForArrayIsCalculatedCorrectly() {
+    public void varianceIsCalculatedCorrectly() {
         final double[] inputSample = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
 
         final double variance = DescriptiveStatistics.variance(inputSample);
@@ -49,16 +50,16 @@ public class DescriptiveStatisticsTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void varianceForNullThrowsIllegalArgumentException() {
-        final double[] nullArray = null;
+        final double[] nullSample = null;
 
-        DescriptiveStatistics.variance(nullArray);
+        DescriptiveStatistics.variance(nullSample);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void varianceForEmptyArrayThrowsIllegalArgumentException() {
-        final double[] emptyArray = {};
+    public void varianceForEmptySampleThrowsIllegalArgumentException() {
+        final double[] emptySample = {};
 
-        DescriptiveStatistics.variance(emptyArray);
+        DescriptiveStatistics.variance(emptySample);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class DescriptiveStatisticsTests {
     }
 
     @Test
-    public void unbiasedVarianceForArrayWithSingleElementIsZero() {
+    public void unbiasedVarianceForSampleWithSingleElementIsZero() {
         final double[] sampleWithOneElement = {2.0};
 
         final double unbiasedVariance = DescriptiveStatistics.variance(sampleWithOneElement, false);
@@ -79,4 +80,53 @@ public class DescriptiveStatisticsTests {
         assertEquals(0.0, unbiasedVariance);
     }
 
+    @Test
+    public void medianIsCalculatedCorrectlyForSampleWithOddLength() {
+        final double[] inputSample = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
+
+        final double median = DescriptiveStatistics.median(inputSample);
+
+        assertEquals(5.0, median);
+    }
+
+    @Test
+    public void medianIsCalculatedCorrectlyForSampleWithEvenLength() {
+        final double[] inputSample = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+
+        final double median = DescriptiveStatistics.median(inputSample);
+
+        assertEquals(4.5, median);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void medianForEmptySampleThrowsIllegalArgumentException() {
+        final double[] emptySample = {};
+
+        DescriptiveStatistics.median(emptySample);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void medianForNullThrowsIllegalArgumentException() {
+        final double[] nullSample = null;
+
+        DescriptiveStatistics.median(nullSample);
+    }
+
+    @Test
+    public void medianForSampleWithSingleElementIsCalculatedCorrectly() {
+        final double[] sampleWithOneElement = {3.5};
+
+        final double median = DescriptiveStatistics.median(sampleWithOneElement);
+
+        assertEquals(3.5, median);
+    }
+
+    @Test
+    public void modeForIntegerSampleIsCalculatedCorrect() {
+        final int[] inputSample = {4, 5, 3, 2, 1, 1};
+
+        final int[] modes = DescriptiveStatistics.mode(inputSample);
+
+        assertArrayEquals(new int[]{1}, modes);
+    }
 }
