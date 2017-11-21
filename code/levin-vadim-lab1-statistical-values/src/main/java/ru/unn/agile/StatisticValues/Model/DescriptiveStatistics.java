@@ -43,13 +43,14 @@ public final class DescriptiveStatistics {
         if (inputSample.length == 1) {
             return inputSample[0];
         }
-        Arrays.sort(inputSample);
-        final int medianIndex = inputSample.length / 2;
-        if (isEven(inputSample.length)) {
+        double[] workingSample = inputSample.clone();
+        Arrays.sort(workingSample);
+        final int medianIndex = workingSample.length / 2;
+        if (isEven(workingSample.length)) {
             final int medianTopIndex = medianIndex - 1;
-            return (inputSample[medianIndex] + inputSample[medianTopIndex]) / 2;
+            return (workingSample[medianIndex] + workingSample[medianTopIndex]) / 2;
         } else {
-            return inputSample[medianIndex];
+            return workingSample[medianIndex];
         }
     }
 

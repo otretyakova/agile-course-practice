@@ -82,7 +82,7 @@ public class DescriptiveStatisticsTests {
 
     @Test
     public void medianIsCalculatedCorrectlyForSampleWithOddLength() {
-        final double[] inputSample = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
+        final double[] inputSample = {10.0, 5.0, 6.0, 7.0, 3.0, 1.0, 2.0, 4.0, 8.0, 9.0, 0.0};
 
         final double median = DescriptiveStatistics.median(inputSample);
 
@@ -91,7 +91,7 @@ public class DescriptiveStatisticsTests {
 
     @Test
     public void medianIsCalculatedCorrectlyForSampleWithEvenLength() {
-        final double[] inputSample = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+        final double[] inputSample = {1.0, 3.0, 0.0, 2.0, 4.0, 9.0, 7.0, 8.0, 6.0, 5.0};
 
         final double median = DescriptiveStatistics.median(inputSample);
 
