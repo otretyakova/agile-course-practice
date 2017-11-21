@@ -122,11 +122,43 @@ public class DescriptiveStatisticsTests {
     }
 
     @Test
-    public void modeForIntegerSampleIsCalculatedCorrect() {
-        final int[] inputSample = {4, 5, 3, 2, 1, 1};
+    public void modeForIntegerUnimodalSampleIsCalculatedCorrect() {
+        final int[] unimodalSample = {4, 5, 3, 2, 1, 1};
+
+        final int[] modes = DescriptiveStatistics.mode(unimodalSample);
+
+        assertArrayEquals(new int[]{1}, modes);
+    }
+
+    @Test
+    public void modeForIntegerBimodalSampleIsCalculatedCorrect() {
+        final int[] bimodalSample = {3, 2, 2, 1, 4, 5, 4, 10};
+
+        final int[] modes = DescriptiveStatistics.mode(bimodalSample);
+
+        assertArrayEquals(new int[]{2, 4}, modes);
+    }
+
+    @Test
+    public void modeForIntegerGeneralSampleIsCalculatedCorrect() {
+        final int[] inputSample = {3, 4, 3, 1, 2, 1, 2, 8, 6, 8, 4};
 
         final int[] modes = DescriptiveStatistics.mode(inputSample);
 
-        assertArrayEquals(new int[]{1}, modes);
+        assertArrayEquals(new int[]{1, 2, 3, 4, 8}, modes);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void modeForEmptySampleThrowsIllegalArgumentException() {
+        final int[] emptySample = {};
+
+        DescriptiveStatistics.mode(emptySample);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void modeForNullThrowsIllegalArgumentException() {
+        final int[] nullSample = null;
+
+        DescriptiveStatistics.mode(nullSample);
     }
 }

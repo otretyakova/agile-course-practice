@@ -2,6 +2,11 @@ package ru.unn.agile.StatisticValues.Model;
 
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.LinkedList;
 
 public final class DescriptiveStatistics {
 
@@ -55,12 +60,37 @@ public final class DescriptiveStatistics {
     }
 
     public static int[] mode(final int[] inputSample) {
-        return new int[]{1};
+        validateSample(inputSample);
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int element : inputSample) {
+            if (frequencyMap.containsKey(element)) {
+                frequencyMap.put(element, frequencyMap.get(element) + 1);
+            } else {
+                frequencyMap.put(element, 1);
+            }
+        }
+        int highestFrequency = Collections.max(frequencyMap.values());
+        List<Integer> modes = new LinkedList<>();
+        for (int element : frequencyMap.keySet()) {
+            if (frequencyMap.get(element) == highestFrequency) {
+                modes.add(element);
+            }
+        }
+        return modes.stream().mapToInt(i -> i).toArray();
     }
 
 
     private static boolean isEven(final int number) {
         return number % 2 == 0;
+    }
+
+    private static void validateSample(final int[] inputSample) {
+        if (inputSample == null) {
+            throw new IllegalArgumentException("Input sample can't be null");
+        }
+        if (inputSample.length == 0) {
+            throw new IllegalArgumentException("Input sample must contain at least one element");
+        }
     }
 
     private static void validateSample(final double[] inputSample) {
