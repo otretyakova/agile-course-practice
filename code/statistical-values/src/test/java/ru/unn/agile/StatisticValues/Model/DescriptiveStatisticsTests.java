@@ -198,12 +198,12 @@ public class DescriptiveStatisticsTests {
 
     @Test
     public void centralMomentForPositiveOrderIsCalculatedCorrect() {
-        final double[] inputSample = {2.0, 1.0, 3.0, 4.0, 2.5};
+        final double[] inputSample = {2.0, 1.0, 3.0, 4.0, 4.0};
         final int momentOrder = 5;
 
         final double moment = DescriptiveStatistics.centralMoment(inputSample, momentOrder);
 
-        assertEquals(0.0, moment, 10e-5);
+        assertEquals(-3.5616, moment, 10e-5);
     }
 
     @Test(expected = IllegalArgumentException.class)

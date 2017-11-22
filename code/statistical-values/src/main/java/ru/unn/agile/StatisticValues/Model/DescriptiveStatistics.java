@@ -16,8 +16,7 @@ public final class DescriptiveStatistics {
         if (inputSample.length == 1) {
             return inputSample[0];
         } else {
-            double sum = Arrays.stream(inputSample).sum();
-            return sum / inputSample.length;
+            return moment(inputSample, 1);
         }
     }
 
@@ -28,20 +27,14 @@ public final class DescriptiveStatistics {
     public static double variance(final double[] inputSample,
                                   final boolean isBiased) throws IllegalArgumentException {
         validateSample(inputSample);
-        if (inputSample.length == 1) {
+        int sampleLength = inputSample.length;
+        if (sampleLength == 1) {
             return 0.0;
         }
-        final double sampleMean = mean(inputSample);
-        double[] centralizedSampleSquares = new double[inputSample.length];
-        double centralizedSampleElement;
-        for (int i = 0; i < inputSample.length; i++) {
-            centralizedSampleElement = inputSample[i] - sampleMean;
-            centralizedSampleSquares[i] = centralizedSampleElement * centralizedSampleElement;
-        }
         if (isBiased) {
-            return mean(centralizedSampleSquares);
+            return centralMoment(inputSample, 2) * (sampleLength - 1) / sampleLength;
         } else {
-            return Arrays.stream(inputSample).sum() / (inputSample.length - 1);
+            return centralMoment(inputSample, 2);
         }
     }
 
@@ -98,7 +91,7 @@ public final class DescriptiveStatistics {
             throw new IllegalArgumentException("Moment order should be over zero");
         }
         final double[] centralizedSample = centralizeSample(inputSample);
-        return moment(centralizedSample, order);
+        return moment(centralizedSample, order) * inputSample.length / (inputSample.length - 1);
     }
 
     private static double[] centralizeSample(final double[] inputSample) {
