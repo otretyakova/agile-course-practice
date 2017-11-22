@@ -13,7 +13,7 @@ public class DescriptiveStatisticsTests {
 
         final double mean = DescriptiveStatistics.mean(inputSample);
 
-        assertEquals(2.0, mean);
+        assertEquals(2.0, mean, 10e-5);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -45,7 +45,7 @@ public class DescriptiveStatisticsTests {
 
         final double variance = DescriptiveStatistics.variance(inputSample);
 
-        assertEquals(8.25, variance);
+        assertEquals(8.25, variance, 10e-5);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -68,7 +68,7 @@ public class DescriptiveStatisticsTests {
 
         final double unbiasedVariance = DescriptiveStatistics.variance(inputSample, false);
 
-        assertEquals(2.5, unbiasedVariance);
+        assertEquals(2.5, unbiasedVariance, 10e-5);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class DescriptiveStatisticsTests {
 
         final double unbiasedVariance = DescriptiveStatistics.variance(sampleWithOneElement, false);
 
-        assertEquals(0.0, unbiasedVariance);
+        assertEquals(0.0, unbiasedVariance, 10e-5);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class DescriptiveStatisticsTests {
 
         final double median = DescriptiveStatistics.median(inputSample);
 
-        assertEquals(5.0, median);
+        assertEquals(5.0, median, 10e-5);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class DescriptiveStatisticsTests {
 
         final double median = DescriptiveStatistics.median(inputSample);
 
-        assertEquals(4.5, median);
+        assertEquals(4.5, median, 10e-5);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -118,7 +118,7 @@ public class DescriptiveStatisticsTests {
 
         final double median = DescriptiveStatistics.median(sampleWithOneElement);
 
-        assertEquals(3.5, median);
+        assertEquals(3.5, median, 10e-5);
     }
 
     @Test
@@ -160,5 +160,73 @@ public class DescriptiveStatisticsTests {
         final int[] nullSample = null;
 
         DescriptiveStatistics.mode(nullSample);
+    }
+
+    @Test
+    public void momentForPositiveOrderIsCalculatedCorrect() {
+        final double[] inputSample = {2.0, 1.0, 3.0, 4.0, 2.5};
+        final int momentOrder = 5;
+
+        final double moment = DescriptiveStatistics.moment(inputSample, momentOrder);
+
+        assertEquals(279.53125, moment, 10e-5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void momentForNegativeOrderThrowsIllegalArgumentException() {
+        final double[] inputSample = {2.0, 1.0};
+        final int negativeMomentOrder = -4;
+
+        DescriptiveStatistics.moment(inputSample, negativeMomentOrder);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void momentForNullThrowsIllegalArgumentException() {
+        final double[] nullSample = null;
+        final int order = 4;
+
+        DescriptiveStatistics.moment(nullSample, order);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void momentForEmptySampleThrowsIllegalArgumentException() {
+        final double[] emptySample = {};
+        final int order = 4;
+
+        DescriptiveStatistics.moment(emptySample, order);
+    }
+
+    @Test
+    public void centralMomentForPositiveOrderIsCalculatedCorrect() {
+        final double[] inputSample = {2.0, 1.0, 3.0, 4.0, 2.5};
+        final int momentOrder = 5;
+
+        final double moment = DescriptiveStatistics.centralMoment(inputSample, momentOrder);
+
+        assertEquals(0.0, moment, 10e-5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void centralMomentForNegativeOrderThrowsIllegalArgumentException() {
+        final double[] inputSample = {2.0, 1.0};
+        final int negativeMomentOrder = -4;
+
+        DescriptiveStatistics.centralMoment(inputSample, negativeMomentOrder);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void centralMomentForNullThrowsIllegalArgumentException() {
+        final double[] nullSample = null;
+        final int order = 4;
+
+        DescriptiveStatistics.moment(nullSample, order);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void centralMomentForEmptySampleThrowsIllegalArgumentException() {
+        final double[] emptySample = {};
+        final int order = 4;
+
+        DescriptiveStatistics.centralMoment(emptySample, order);
     }
 }

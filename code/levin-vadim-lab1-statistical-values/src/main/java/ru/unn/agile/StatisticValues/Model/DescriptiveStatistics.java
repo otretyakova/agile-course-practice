@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.stream.DoubleStream;
 
 public final class DescriptiveStatistics {
 
-    public static double mean(final double[] inputSample) {
+    public static double mean(final double[] inputSample) throws IllegalArgumentException {
         validateSample(inputSample);
         if (inputSample.length == 1) {
             return inputSample[0];
@@ -20,11 +21,12 @@ public final class DescriptiveStatistics {
         }
     }
 
-    public static double variance(final double[] inputSample) {
+    public static double variance(final double[] inputSample) throws IllegalArgumentException {
         return variance(inputSample, true);
     }
 
-    public static double variance(final double[] inputSample, final boolean isBiased) {
+    public static double variance(final double[] inputSample,
+                                  final boolean isBiased) throws IllegalArgumentException {
         validateSample(inputSample);
         if (inputSample.length == 1) {
             return 0.0;
@@ -43,7 +45,7 @@ public final class DescriptiveStatistics {
         }
     }
 
-    public static double median(final double[] inputSample) {
+    public static double median(final double[] inputSample) throws IllegalArgumentException {
         validateSample(inputSample);
         if (inputSample.length == 1) {
             return inputSample[0];
@@ -59,7 +61,7 @@ public final class DescriptiveStatistics {
         }
     }
 
-    public static int[] mode(final int[] inputSample) {
+    public static int[] mode(final int[] inputSample) throws IllegalArgumentException {
         validateSample(inputSample);
         Map<Integer, Integer> frequencyMap = new HashMap<>();
         for (int element : inputSample) {
@@ -79,6 +81,31 @@ public final class DescriptiveStatistics {
         return modes.stream().mapToInt(i -> i).toArray();
     }
 
+    public static double moment(final double[] inputSample,
+                                final int order) throws IllegalArgumentException {
+        validateSample(inputSample);
+        if (order < 0) {
+            throw new IllegalArgumentException("Moment order should be over zero");
+        }
+        final DoubleStream sampleStream = Arrays.stream(inputSample);
+        return sampleStream.map(element -> Math.pow(element, order)).average().getAsDouble();
+    }
+
+    public static double centralMoment(final double[] inputSample,
+                                       final int order) throws IllegalArgumentException {
+        validateSample(inputSample);
+        if (order < 0) {
+            throw new IllegalArgumentException("Moment order should be over zero");
+        }
+        final double[] centralizedSample = centralizeSample(inputSample);
+        return moment(centralizedSample, order);
+    }
+
+    private static double[] centralizeSample(final double[] inputSample) {
+        final double sampleMean = mean(inputSample);
+        final DoubleStream sampleStream = Arrays.stream(inputSample);
+        return sampleStream.map(element -> element - sampleMean).toArray();
+    }
 
     private static boolean isEven(final int number) {
         return number % 2 == 0;
