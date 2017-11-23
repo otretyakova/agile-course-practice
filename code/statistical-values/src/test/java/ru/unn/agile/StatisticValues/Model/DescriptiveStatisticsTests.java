@@ -229,4 +229,42 @@ public class DescriptiveStatisticsTests {
 
         DescriptiveStatistics.centralMoment(emptySample, order);
     }
+
+    @Test
+    public void biasedStandardDeviationIsCalculatedCorrectly() {
+        final double[] inputSample = {2.0, 4.0, 4.0, 5.0, 4.0, 5.0, 7.0, 9.0};
+        final boolean isBiased = true;
+
+        final double standardDeviation = DescriptiveStatistics.standardDeviation(inputSample,
+                isBiased);
+
+        assertEquals(2.0, standardDeviation, 10e-5);
+    }
+
+    @Test
+    public void unBiasedStandardDeviationIsCalculatedCorrectly() {
+        final double[] inputSample = {2.0, 4.0, 4.0, 5.0, 4.0, 5.0, 7.0, 9.0};
+        final boolean isBiased = false;
+
+        final double standardDeviation = DescriptiveStatistics.standardDeviation(inputSample,
+                isBiased);
+
+        assertEquals(2.1380899, standardDeviation, 10e-5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void standardDeviationForNullThrowsIllegalArgumentException() {
+        final double[] nullSample = null;
+        final boolean isBiased = false;
+
+        DescriptiveStatistics.standardDeviation(nullSample, isBiased);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void standardDeviationForEmptySampleThrowsIllegalArgumentException() {
+        final double[] emptySample = {};
+        final boolean isBiased = true;
+
+        DescriptiveStatistics.standardDeviation(emptySample, isBiased);
+    }
 }

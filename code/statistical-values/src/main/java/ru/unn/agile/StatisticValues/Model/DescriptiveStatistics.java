@@ -38,6 +38,11 @@ public final class DescriptiveStatistics {
         }
     }
 
+    public static double standardDeviation(final double[] inputSample,
+                                           final boolean isBiased) throws IllegalArgumentException {
+        return Math.sqrt(variance(inputSample, isBiased));
+    }
+
     public static double median(final double[] inputSample) throws IllegalArgumentException {
         validateSample(inputSample);
         if (inputSample.length == 1) {
