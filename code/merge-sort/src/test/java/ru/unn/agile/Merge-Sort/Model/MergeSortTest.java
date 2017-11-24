@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 import java.util.Arrays;
 
@@ -196,9 +195,9 @@ public class MergeSortTest {
 
     @Test
     public void CustomTypeTwoValuesDecending(){
-        Car[] values = new Car[]{ new Car(400), new Car(30)};
+        Car[] values = new Car[]{ new Car(404), new Car(56)};
         ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
-        Car[] valuesExpected = new Car[]{new Car(400),new Car(30)};
+        Car[] valuesExpected = new Car[]{new Car(404),new Car(56)};
         ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
         ArrayList<Car> sortValues = MergeSort.DescendingSort(input);
         assertEquals(expected,sortValues);
@@ -206,67 +205,23 @@ public class MergeSortTest {
 
     @Test
     public void CustomTypeMultipleValuesDecending(){
-        Car[] values = new Car[]{new Car(30),
-        new Car(50), new Car(1), new Car(13),
-        new Car(777)};
+        Car[] values = new Car[]{new Car(55),
+        new Car(50), new Car(0), new Car(18),
+        new Car(1024)};
 
         ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
 
-        Car[] valuesExpected = new Car[]{new Car(777),new Car(50),
-                               new Car(30),new Car(13),new Car(1)};
+        Car[] valuesExpected = new Car[]{new Car(1024),new Car(55),
+                               new Car(50),new Car(18),new Car(0)};
         ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
 
         ArrayList<Car> sortValues = MergeSort.DescendingSort(input);
         assertEquals(expected,sortValues);
     }
 
-    class Book implements Comparable<Book> {
-        private int numPages;
-        private int coast;
-        public int GetNumPages(){
-            return numPages;
-        }
-        public int GetCoast(){
-            return coast;
-        }
-        public Book( int theNumPages, int theCoast ){
-            numPages = theNumPages;
-            coast = theCoast;
-        }
-        public int compareTo(Book first) {
-            if (first.numPages == numPages)
-                return 0;
-            if (first.numPages < numPages)
-                return 1;
-            else
-                return -1;
-        }
-        @Override
-        public boolean equals(Object obj) {
-            if (obj==this) return true;
-            if (obj==null || obj.getClass()!=this.getClass())
-                return false;
-            return (this.numPages==((Book) obj).numPages && this.coast==((Book) obj).coast );
-        }
-    }
-    
+
     @Test
     public void StableSortDecending(){
 
-        Book[] values = new Book[]{new Book(300000,1),
-                new Book(300000,2),
-                new Book(50,3),
-                new Book(100,4),
-                new Book(13,5) ,new Book(777,6) };
-        ArrayList<Book> input = new ArrayList<Book>(Arrays.asList(values));
-        Book[] valuesExpected = new Book[]{new Book(300000,1),
-                new Book(300000,2),
-                new Book(777,6),
-                new Book(100,4),
-                new Book(50,3) ,new Book(13,5) };
-
-        ArrayList<Book> sortValues = MergeSort.DescendingSort(input);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(valuesExpected));
-        assertEquals(expected,sortValues);
     }
 }
