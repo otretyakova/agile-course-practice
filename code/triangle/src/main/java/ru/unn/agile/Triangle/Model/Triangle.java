@@ -1,30 +1,19 @@
 package ru.unn.agile.Triangle.Model;
 
-import java.util.Arrays;
+import java.awt.geom.Point2D;
 
 public class Triangle {
-    private double[] a;
-    private double[] b;
-    private double[] c;
+    private Point2D a;
+    private Point2D b;
+    private Point2D c;
 
-    public Triangle(final double[] a, final double[] b, final double[] c) {
-        if (a.length != 2 || b.length != 2 || c.length != 2) {
-            throw new Error();
-        }
-
+    public Triangle(final Point2D a, final Point2D b, final Point2D c) {
         if (isDegenerated(a, b, c)) {
             throw new Error();
         }
-
-        this.a = new double[2];
-        this.b = new double[2];
-        this.c = new double[2];
-
-        for (int i = 0; i < a.length; ++i) {
-            this.a[i] = a[i];
-            this.b[i] = b[i];
-            this.c[i] = c[i];
-        }
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
     public double getPerimeter() {
@@ -76,23 +65,24 @@ public class Triangle {
     private double getSemiperimeter() {
         return getPerimeter() / 2;
     }
-    private boolean isOnOneLine(final double[] a, final double[] b, final double[] c) {
-        double lineCoeffK = (b[1] - a[1]) / (b[0] - a[0]);
-        double lineCoeffB = a[1] - lineCoeffK * a[0];
+    private boolean isOnOneLine(final Point2D a, final Point2D b, final Point2D c) {
+        double lineCoeffK = (b.getY() - a.getY()) / (b.getX() - a.getX());
+        double lineCoeffB = a.getY() - lineCoeffK * a.getX();
 
-        return c[1] == lineCoeffK * c[0] + lineCoeffB;
+        return c.getY() == lineCoeffK * c.getX() + lineCoeffB;
     }
 
-    private boolean isDegenerated(final double[] a, final double[] b, final double[] c) {
-        if (Arrays.equals(a, b) || Arrays.equals(b, c) || Arrays.equals(c, a)) {
+    private boolean isDegenerated(final Point2D a, final Point2D b, final Point2D c) {
+
+        if (a.equals(b) || b.equals(c) || c.equals(a)) {
             return true;
         }
 
         return isOnOneLine(a, b, c);
     }
 
-    private double getLength(final double[] point1, final double[] point2) {
-        return Math.sqrt(Math.pow((point1[0] - point2[0]), 2)
-                + Math.pow((point1[1] - point2[1]), 2));
+    private double getLength(final Point2D point1, final Point2D point2) {
+        return Math.sqrt(Math.pow((point1.getX() - point2.getX()), 2)
+                + Math.pow((point1.getY() - point2.getY()), 2));
     }
 }

@@ -1,14 +1,15 @@
 package ru.unn.agile.Triangle.Model;
 
 import org.junit.Test;
+import java.awt.geom.Point2D;
 import static org.junit.Assert.*;
 
 public class TriangleTest {
     @Test
     public void canCreateTriangle2D() {
-        double[] a = {0, 0};
-        double[] b = {1, 0};
-        double[] c = {0, 1};
+        Point2D a  = new Point2D.Double(0, 0);
+        Point2D b  = new Point2D.Double(1, 0);
+        Point2D c  = new Point2D.Double(0, 1);
 
         Triangle triangle = new Triangle(a, b, c);
 
@@ -16,25 +17,10 @@ public class TriangleTest {
     }
 
     @Test
-    public void canNotCreateTriangle3D() {
-        double[] a = {0, 0, 0};
-        double[] b = {1, 0, 0};
-        double[] c = {0, 1, 0};
-
-        try {
-            Triangle triangle = new Triangle(a, b, c);
-        } catch (Error e) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue(false);
-    }
-
-    @Test
     public void canNotCreateDegeneratedTriangle() {
-        double[] a = {0, 0};
-        double[] b = {0, 0};
-        double[] c = {0, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(0, 0);
+        Point2D c = new Point2D.Double(0, 1);
 
         try {
             Triangle triangle = new Triangle(a, b, c);
@@ -47,9 +33,9 @@ public class TriangleTest {
 
     @Test
     public void canNotCreateDegeneratedTriangleWithCoordinatesOnOneLine() {
-        double[] a = {0, 0};
-        double[] b = {-1, -1};
-        double[] c = {1, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(-1, -1);
+        Point2D c = new Point2D.Double(1, 1);
 
         try {
             Triangle triangle = new Triangle(a, b, c);
@@ -62,9 +48,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthAB() {
-        double[] a = {0, 0};
-        double[] b = {1, 0};
-        double[] c = {0, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(0, 1);
 
         double targetLength = 1;
 
@@ -76,9 +62,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthABWithNegatedCoordinates() {
-        double[] a = {0, 0};
-        double[] b = {-1, 0};
-        double[] c = {0, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D c = new Point2D.Double(0, 1);
+        Point2D b = new Point2D.Double(-1, 0);
 
         double targetLength = 1;
 
@@ -90,9 +76,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthABWithDifferentCoordinates() {
-        double[] a = {1, 1};
-        double[] b = {-1, 1};
-        double[] c = {0, 0};
+        Point2D a = new Point2D.Double(1, 1);
+        Point2D b = new Point2D.Double(-1, 1);
+        Point2D c = new Point2D.Double(0, 0);
 
         double targetLength = 2;
 
@@ -104,9 +90,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthBC() {
-        double[] a = {0, 0};
-        double[] b = {1, 0};
-        double[] c = {1, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(1, 1);
 
         double targetLength = 1;
 
@@ -118,9 +104,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthBCWithNegatedCoordinates() {
-        double[] a = {0, 1};
-        double[] b = {-1, 0};
-        double[] c = {1, 0};
+        Point2D a = new Point2D.Double(0, 1);
+        Point2D b = new Point2D.Double(-1, 0);
+        Point2D c = new Point2D.Double(1, 0);
 
         double targetLength = 2;
 
@@ -132,9 +118,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthBCWithDifferentCoordinates() {
-        double[] a = {0, 0};
-        double[] b = {-1, 1};
-        double[] c = {1, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(-1, 1);
+        Point2D c = new Point2D.Double(1, 1);
 
         double targetLength = 2;
 
@@ -146,9 +132,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthAC() {
-        double[] a = {0, 1};
-        double[] b = {1, 0};
-        double[] c = {0, 0};
+        Point2D a = new Point2D.Double(0, 1);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(0, 0);
 
         double targetLength = 1;
 
@@ -160,9 +146,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthACWithNegatedCoordinates() {
-        double[] a = {0, 0};
-        double[] b = {0, 1};
-        double[] c = {-1, 0};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(0, 1);
+        Point2D c = new Point2D.Double(-1, 0);
 
         double targetLength = 1;
 
@@ -174,9 +160,9 @@ public class TriangleTest {
 
     @Test
     public void canGetLengthACWithDifferentCoordinates() {
-        double[] a = {1, 1};
-        double[] b = {0, 0};
-        double[] c = {-1, 1};
+        Point2D a = new Point2D.Double(1, 1);
+        Point2D b = new Point2D.Double(0, 0);
+        Point2D c = new Point2D.Double(-1, 1);
 
         double targetLength = 2;
 
@@ -188,9 +174,9 @@ public class TriangleTest {
 
     @Test
     public void canGetPerimeter() {
-        double[] a = {0, 0};
-        double[] b = {1, 0};
-        double[] c = {0, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(0, 1);
 
         double targetPerimeter = 2 + Math.sqrt(2);
 
@@ -202,9 +188,9 @@ public class TriangleTest {
 
     @Test
     public void canGetPerimeterWithNegativeCoordinates() {
-        double[] a = {0, 0};
-        double[] b = {-1, -1};
-        double[] c = {0, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(-1, -1);
+        Point2D c = new Point2D.Double(0, 1);
 
         double targetPerimeter = 1 + Math.sqrt(2) + Math.sqrt(5);
 
@@ -216,9 +202,9 @@ public class TriangleTest {
 
     @Test
     public void canGetPerimeterWithDifferentCoordinates() {
-        double[] a = {1, 1};
-        double[] b = {-1, -1};
-        double[] c = {0, -2};
+        Point2D a = new Point2D.Double(1, 1);
+        Point2D b = new Point2D.Double(-1, -1);
+        Point2D c = new Point2D.Double(0, -2);
 
         double targetPerimeter = Math.sqrt(8) + Math.sqrt(2) + Math.sqrt(10);
 
@@ -230,9 +216,9 @@ public class TriangleTest {
 
     @Test
     public void canGetSurfaceArea() {
-        double[] a = {0, 0};
-        double[] b = {1, 0};
-        double[] c = {0, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(0, 1);
 
         double targetSurfaceArea = 0.5;
 
@@ -246,9 +232,9 @@ public class TriangleTest {
 
     @Test
     public void canGetSurfaceAreaOfIsoscelesTriangle() {
-        double[] a = {0, 0};
-        double[] b = {2, 0};
-        double[] c = {1, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(2, 0);
+        Point2D c = new Point2D.Double(1, 1);
 
         double targetSurfaceArea = 1;
 
@@ -262,9 +248,9 @@ public class TriangleTest {
 
     @Test
     public void canGetSurfaceAreaOfVersatileTriangle() {
-        double[] a = {0, 0};
-        double[] b = {2, 0};
-        double[] c = {0.5, 1};
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(2, 0);
+        Point2D c = new Point2D.Double(0.5, 1);
 
         double targetSurfaceArea = 1;
 
@@ -278,9 +264,9 @@ public class TriangleTest {
 
     @Test
     public void canGetABCAngleOfRectangularTriangle() {
-        double[] a = {0, 1};
-        double[] b = {0, 0};
-        double[] c = {1, 0};
+        Point2D a = new Point2D.Double(0, 1);
+        Point2D b = new Point2D.Double(0, 0);
+        Point2D c = new Point2D.Double(1, 0);
 
         double targetABCAngle = 90 * Math.PI / 180;
 
@@ -294,9 +280,9 @@ public class TriangleTest {
 
     @Test
     public void canGetABCAsObtuseAngle() {
-        double[] a = {1, 0};
-        double[] b = {0, 0};
-        double[] c = {-1, 1};
+        Point2D a = new Point2D.Double(1, 0);
+        Point2D b = new Point2D.Double(0, 0);
+        Point2D c = new Point2D.Double(-1, 1);
 
         double targetABCAngle = 135 * Math.PI / 180;
 
@@ -310,9 +296,9 @@ public class TriangleTest {
 
     @Test
     public void canGetABCAsAcuteAngle() {
-        double[] a = {1, 0};
-        double[] b = {0, 0};
-        double[] c = {1, 1};
+        Point2D a = new Point2D.Double(1, 0);
+        Point2D b = new Point2D.Double(0, 0);
+        Point2D c = new Point2D.Double(1, 1);
 
         double targetABCAngle = 45 * Math.PI / 180;
 
@@ -326,9 +312,9 @@ public class TriangleTest {
 
     @Test
     public void canGetBCAAngleOfRectangularTriangle() {
-        double[] b = {0, 1};
-        double[] c = {0, 0};
-        double[] a = {1, 0};
+        Point2D b = new Point2D.Double(0, 1);
+        Point2D c = new Point2D.Double(0, 0);
+        Point2D a = new Point2D.Double(1, 0);
 
         double targetBCAAngle = 90 * Math.PI / 180;
 
@@ -342,9 +328,9 @@ public class TriangleTest {
 
     @Test
     public void canGetBCAAsObtuseAngle() {
-        double[] b = {-1, 1};
-        double[] c = {0, 0};
-        double[] a = {1, 0};
+        Point2D b = new Point2D.Double(-1, 1);
+        Point2D c = new Point2D.Double(0, 0);
+        Point2D a = new Point2D.Double(1, 0);
 
         double targetBCAAngle = 135 * Math.PI / 180;
 
@@ -358,9 +344,9 @@ public class TriangleTest {
 
     @Test
     public void canGetBCAAsAcuteAngle() {
-        double[] b = {1, 1};
-        double[] c = {0, 0};
-        double[] a = {1, 0};
+        Point2D b = new Point2D.Double(1, 1);
+        Point2D c = new Point2D.Double(0, 0);
+        Point2D a = new Point2D.Double(1, 0);
 
         double targetBCAAngle = 45 * Math.PI / 180;
 
@@ -374,9 +360,9 @@ public class TriangleTest {
 
     @Test
     public void canGetCABAngleOfRectangularTriangle() {
-        double[] c = {0, 1};
-        double[] a = {0, 0};
-        double[] b = {1, 0};
+        Point2D c = new Point2D.Double(0, 1);
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
 
         double targetCABAngle = 90 * Math.PI / 180;
 
@@ -390,9 +376,9 @@ public class TriangleTest {
 
     @Test
     public void canGetCABAsObtuseAngle() {
-        double[] c = {-1, 1};
-        double[] a = {0, 0};
-        double[] b = {1, 0};
+        Point2D c = new Point2D.Double(-1, 1);
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
 
         double targetCABAngle = 135 * Math.PI / 180;
 
@@ -406,9 +392,9 @@ public class TriangleTest {
 
     @Test
     public void canGetCABAsAcuteAngle() {
-        double[] c = {1, 1};
-        double[] a = {0, 0};
-        double[] b = {1, 0};
+        Point2D c = new Point2D.Double(1, 1);
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
 
         double targetCABAngle = 45 * Math.PI / 180;
 
