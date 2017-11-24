@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class MergeSort {
 
-    private interface IPreceed<T> {
+    private interface IPreceed<T extends Comparable<T>> {
         // Return if a preceeds b according to the order being used
         public boolean Preceeds(T a, T b);
     }
@@ -24,7 +24,7 @@ public class MergeSort {
         return mergeSort(values, new PreceedDescending());
     }
 
-    private static <T> ArrayList<T> mergeSort(ArrayList<T> input, IPreceed compareFunc) {
+    private static <T extends Comparable<T>> ArrayList<T> mergeSort(ArrayList<T> input, IPreceed<T> compareFunc) {
         if (input.size() < 2)
             return input;
         int middleIndex = input.size() / 2;
@@ -35,8 +35,8 @@ public class MergeSort {
         return merge(sortedFirstHalf, sortedSecondHalf, compareFunc);
     }
 
-    private static <T> ArrayList<T> merge(ArrayList<T> first, ArrayList<T> second,
-                                                        IPreceed compareFunc) {
+    private static <T extends Comparable<T>> ArrayList<T> merge(ArrayList<T> first, ArrayList<T> second,
+                                                                IPreceed<T> compareFunc) {
         int firstIndex = 0;
         int secondIndex = 0;
         ArrayList<T> result = new ArrayList<T>();
