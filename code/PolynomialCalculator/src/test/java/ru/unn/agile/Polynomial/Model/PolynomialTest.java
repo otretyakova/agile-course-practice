@@ -52,10 +52,10 @@ public class PolynomialTest {
     @Test
     public void areDifferentPolynomialsWithZeroAndNonZeroCoefficientsNotEqual() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(10, 0.0); put(13, 1.0);
+            put(9, 0.0); put(12, 1.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 0.0); put(13, 1.0); put(1, 1.0);
+            put(0, 0.0); put(12, 1.0); put(1, 1.0);
         }});
         assertFalse(poly1.equals(poly2));
     }
@@ -138,14 +138,14 @@ public class PolynomialTest {
     @Test
     public void canAddPolynomials() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, -1.2); put(1, 3.0);
+            put(3, -1.2); put(1, 3.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 2.0); put(13, 4.0);
+            put(3, 2.0); put(13, 4.0);
         }});
         Polynomial sum = poly1.add(poly2);
         assertTrue(sum.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 0.8); put(1, 3.0); put(13, 4.0);
+            put(3, 0.8); put(1, 3.0); put(13, 4.0);
         }})));
     }
 
@@ -184,37 +184,37 @@ public class PolynomialTest {
     public void canSubZeroAndNonZeroPolynomials() {
         Polynomial poly1 = new Polynomial();
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 2.0); put(13, 4.0);
+            put(1, 2.0); put(13, 4.0);
         }});
         Polynomial diff = poly1.sub(poly2);
         assertTrue(diff.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, -2.0); put(13, -4.0);
+            put(1, -2.0); put(13, -4.0);
         }})));
     }
 
     @Test
     public void canSubNonZeroAndZeroPolynomials() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 2.0); put(13, 4.0);
+            put(3, 2.0); put(13, 4.0);
         }});
         Polynomial poly2 = new Polynomial();
         Polynomial diff = poly1.sub(poly2);
         assertTrue(diff.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 2.0); put(13, 4.0);
+            put(3, 2.0); put(13, 4.0);
         }})));
     }
 
     @Test
     public void canSubPolynomials() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, -1.2); put(1, 3.0);
+            put(7, -1.2); put(1, 3.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 2.0); put(13, 4.0);
+            put(7, 2.0); put(13, 4.0);
         }});
         Polynomial diff = poly1.sub(poly2);
         assertTrue(diff.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, -3.2); put(1, 3.0); put(13, -4.0);
+            put(7, -3.2); put(1, 3.0); put(13, -4.0);
         }})));
     }
 
@@ -306,7 +306,7 @@ public class PolynomialTest {
     public void canMultiplyZeroPolynomialByNonZeroPolynomial() {
         Polynomial poly1 = new Polynomial();
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, -1.2); put(1, 3.0);
+            put(4, -1.2); put(1, 3.0);
         }});
         Polynomial mult = poly1.multiply(poly2);
         assertTrue(mult.equals(new Polynomial()));
@@ -315,7 +315,7 @@ public class PolynomialTest {
     @Test
     public void canMultiplyNonZeroPolynomialByZeroPolynomial() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, -1.2); put(1, 3.0);
+            put(3, -1.2); put(1, 3.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{ put(10, 0.0); }});
         Polynomial mult = poly1.multiply(poly2);
