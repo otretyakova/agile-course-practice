@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class MergeSort {
+final public class MergeSort {
 
     private interface IPreced<T extends Comparable<T>> {
         // Return if a preceds b according to the order being used
@@ -15,7 +15,8 @@ public class MergeSort {
         return mergeSort(values, new PrecedAscending());
     }
 
-    public static <T extends Comparable<T>> ArrayList<T> descendingSort(ArrayList<T> values) {
+    public static <T extends Comparable<T>> ArrayList<T> descendingSort(
+            final ArrayList<T> values) {
         class PrecedDescending implements IPreced<T> {
             public boolean preceeds(final T a, final T b) {
                 return a.compareTo(b) > 0;
@@ -61,5 +62,7 @@ public class MergeSort {
         return result;
     }
 
-    private MergeSort(){};
+    private MergeSort() {
+
+    };
 }
