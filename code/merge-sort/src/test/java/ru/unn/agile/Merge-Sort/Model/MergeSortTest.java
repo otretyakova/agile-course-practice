@@ -24,6 +24,7 @@ public class MergeSortTest {
         ArrayList<Integer> actual = MergeSort.AscendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void TwoIntAscending(){
         Integer[] values = {2, 1};
@@ -43,6 +44,7 @@ public class MergeSortTest {
         ArrayList<Integer> actual = MergeSort.AscendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void MultipleValuesTwoDegreeSizeIntAscending(){
         Integer[] values = {1 , 11, 56, 999, -2, 18, -1999, 3, 4, 15, 24, 87, 13, 44, 77, 100};
@@ -52,6 +54,7 @@ public class MergeSortTest {
         ArrayList<Integer> actual = MergeSort.AscendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void MultipleValuesDoubleAscending(){
         Double[] values = {1. , 10., 4.5, 54.01, 9., 0., 2., 3.9, 4.8};
@@ -73,7 +76,6 @@ public class MergeSortTest {
         assertEquals(expected, actual);
     }
 
-
     class Car implements Comparable<Car> {
         private int maxSpeed;
         public int GetMaxSpeed(){
@@ -90,30 +92,40 @@ public class MergeSortTest {
             else
                 return -1;
         }
+        @Override
+        public boolean equals(Object obj) {
+            if (obj==this) return true;
+            if (obj==null || obj.getClass()!=this.getClass())
+                return false;
+            return (this.maxSpeed==((Car) obj).maxSpeed);
+        }
     }
+
     @Test
     public void CustomTypeTwoValuesComparatorAscending(){
-        ArrayList<Car> input = new ArrayList<Car>() {{
-            add(new Car(400)); add(new Car(30)); }};
-
-        Car expectedFirstCar = new Car(30);
-        Car expectedSecondCar = new Car(400);
+        Car[] values = new Car[]{ new Car(400), new Car(30)};
+        ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
+        Car[] valuesExpected = new Car[]{new Car(30),new Car(400)};
+        ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
         ArrayList<Car> sortValues = MergeSort.AscendingSort(input);
-        assertEquals( sortValues.get(0).GetMaxSpeed() ,expectedFirstCar.GetMaxSpeed() );
-        assertEquals( sortValues.get(1).GetMaxSpeed() ,expectedSecondCar.GetMaxSpeed() );
+        assertEquals(expected,sortValues);
     }
+
     @Test
     public void CustomTypeMultipleValuesAscending(){
-        Car firstCar = new Car(1);
-        Car lastCar = new Car(777);
-        ArrayList<Car> values = new ArrayList<Car>() {{
-           add( new Car(30)); add (new Car(400));
-                    add(new Car(50)); add(new Car(1)); add(new Car(13));
-                    add(new Car(777)); }};
-        ArrayList<Car> sortValues = MergeSort.AscendingSort(values);
-        assertEquals( sortValues.get(0).GetMaxSpeed() ,firstCar.GetMaxSpeed() );
-        assertEquals( sortValues.get(5).GetMaxSpeed() ,lastCar.GetMaxSpeed() );
+        Car[] values = new Car[]{ new Car(30), new Car(400),
+                       new Car(50), new Car(1), new Car(13),
+                       new Car(777)};
+        ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
+
+        Car[] valuesExpected = new Car[]{ new Car(1), new Car(13),
+                               new Car(30), new Car(50), new Car(400),
+                               new Car(777)};
+        ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
+        ArrayList<Car> sortValues = MergeSort.AscendingSort(input);
+        assertEquals(expected,sortValues);
     }
+
     @Test
     public void EmptyArrayDescending(){
         ArrayList<Integer> input = new ArrayList<Integer>();
@@ -130,6 +142,7 @@ public class MergeSortTest {
         ArrayList<Integer> actual = MergeSort.DescendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void TwoIntDescending(){
         Integer[] values = {77, 88};
@@ -149,6 +162,7 @@ public class MergeSortTest {
         ArrayList<Integer> actual = MergeSort.DescendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void MultipleValuesTwoDegreeSizeIntDescending(){
         Integer[] values = {1 , 44, 56, 999, -2, 110, 20, 3, 4, 8, 24, 87, 13, -400, 77, 1200};
@@ -158,6 +172,7 @@ public class MergeSortTest {
         ArrayList<Integer> actual = MergeSort.DescendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void MultipleValuesDoubleDescending(){
         Double[] values = {5.1 , 12.3, 88.2, 54.01, 9., -8.99, 2., 3.9, 4.8};
@@ -178,28 +193,31 @@ public class MergeSortTest {
         ArrayList<String> actual = MergeSort.DescendingSort(input);
         assertEquals(expected, actual);
     }
+
     @Test
     public void CustomTypeTwoValuesDecending(){
-        ArrayList<Car> values = new ArrayList<Car>() {{
-            add (new Car(400)); add(new Car(30)); }};
-
-        Car firstCar = new Car(400);
-        Car secondCar = new Car(30);
-        ArrayList<Car> sortValues = MergeSort.DescendingSort(values);
-        assertEquals( sortValues.get(0).GetMaxSpeed() ,firstCar.GetMaxSpeed() );
-        assertEquals( sortValues.get(1).GetMaxSpeed() ,secondCar.GetMaxSpeed() );
+        Car[] values = new Car[]{ new Car(400), new Car(30)};
+        ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
+        Car[] valuesExpected = new Car[]{new Car(400),new Car(30)};
+        ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
+        ArrayList<Car> sortValues = MergeSort.DescendingSort(input);
+        assertEquals(expected,sortValues);
     }
+
     @Test
     public void CustomTypeMultipleValuesDecending(){
-        Car firstCar = new Car(1);
-        Car lastCar = new Car(777);
-        ArrayList<Car> values = new ArrayList<Car>() {{
-            add( new Car(30)); add (new Car(400));
-            add(new Car(50)); add(new Car(1)); add(new Car(13));
-            add(new Car(777)); }};
-        ArrayList<Car> sortValues = MergeSort.DescendingSort(values);
-        assertEquals( sortValues.get(5).GetMaxSpeed() ,firstCar.GetMaxSpeed() );
-        assertEquals( sortValues.get(0).GetMaxSpeed() ,lastCar.GetMaxSpeed() );
+        Car[] values = new Car[]{new Car(30),
+        new Car(50), new Car(1), new Car(13),
+        new Car(777)};
+
+        ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
+
+        Car[] valuesExpected = new Car[]{new Car(777),new Car(50),
+                               new Car(30),new Car(13),new Car(1)};
+        ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
+
+        ArrayList<Car> sortValues = MergeSort.DescendingSort(input);
+        assertEquals(expected,sortValues);
     }
 
     class Book implements Comparable<Book> {
@@ -223,18 +241,32 @@ public class MergeSortTest {
             else
                 return -1;
         }
+        @Override
+        public boolean equals(Object obj) {
+            if (obj==this) return true;
+            if (obj==null || obj.getClass()!=this.getClass())
+                return false;
+            return (this.numPages==((Book) obj).numPages && this.coast==((Book) obj).coast );
+        }
     }
+    
     @Test
     public void StableSortDecending(){
 
-        ArrayList<Book> values = new ArrayList<Book>() {{
-            add( new Book(300000,1)); add (new Book(300000,2));
-            add(new Book(50,3)); add(new Book(100,4));
-            add(new Book(13,5)); add(new Book(777,6)); }};
-        ArrayList<Book> sortValues = MergeSort.DescendingSort(values);
+        Book[] values = new Book[]{new Book(300000,1),
+                new Book(300000,2),
+                new Book(50,3),
+                new Book(100,4),
+                new Book(13,5) ,new Book(777,6) };
+        ArrayList<Book> input = new ArrayList<Book>(Arrays.asList(values));
+        Book[] valuesExpected = new Book[]{new Book(300000,1),
+                new Book(300000,2),
+                new Book(777,6),
+                new Book(100,4),
+                new Book(50,3) ,new Book(13,5) };
 
-        assertEquals( sortValues.get(0).GetCoast() ,1 );
-        assertEquals( sortValues.get(1).GetCoast() ,2 );
-
+        ArrayList<Book> sortValues = MergeSort.DescendingSort(input);
+        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(valuesExpected));
+        assertEquals(expected,sortValues);
     }
 }
