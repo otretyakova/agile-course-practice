@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-final public class MergeSort {
+public final class MergeSort {
 
     private interface IPreced<T extends Comparable<T>> {
         // Return if a preceds b according to the order being used
@@ -48,8 +48,7 @@ final public class MergeSort {
         while (firstIndex < first.size() && secondIndex < second.size()) {
             if (compareFunc.preceeds(second.get((secondIndex)), first.get(firstIndex))) {
                 result.add(second.get(secondIndex++));
-            }
-            else {
+            } else {
                 result.add(first.get(firstIndex++));
             }
         }
