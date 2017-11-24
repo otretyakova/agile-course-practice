@@ -138,14 +138,14 @@ public class PolynomialTest {
     @Test
     public void canAddPolynomials() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(3, -1.2); put(1, 3.0);
+            put(3, -1.2); put(2, 3.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
             put(3, 2.2); put(13, 4.0);
         }});
         Polynomial sum = poly1.add(poly2);
         assertTrue(sum.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(3, 1.0); put(1, 3.0); put(13, 4.0);
+            put(3, 1.0); put(2, 3.0); put(13, 4.0);
         }})));
     }
 
