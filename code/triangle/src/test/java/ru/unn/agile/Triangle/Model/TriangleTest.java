@@ -21,14 +21,9 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(0, 1);
-
         try {
-            Triangle triangle = new Triangle(a, b, c);
-        } catch (Error e) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue(false);
+            new Triangle(a, b, c); fail("Object can't be created");
+        } catch (Error error) { }
     }
 
     @Test
@@ -36,14 +31,9 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(1, 1);
-
         try {
-            Triangle triangle = new Triangle(a, b, c);
-        } catch (Error e) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue(false);
+            new Triangle(a, b, c); fail("Object can't be created");
+        } catch (Error error) { }
     }
 
     @Test
