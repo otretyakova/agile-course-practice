@@ -1,4 +1,6 @@
+package ru.unn.agile.mergesort.Model;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class MergeSort {
 
@@ -6,7 +8,7 @@ public final class MergeSort {
         // Return if a preceds b according to the order being used
         boolean preceeds(T a, T b);
     }
-    public static <T extends Comparable<T>> ArrayList<T> ascendingSort(final ArrayList<T> values) {
+    public static <T extends Comparable<T>> List<T> ascendingSort(final List<T> values) {
         class PrecedAscending implements IPreced<T> {
             public boolean preceeds(final T a, final T b) {
                 return a.compareTo(b) < 0;
@@ -15,8 +17,8 @@ public final class MergeSort {
         return mergeSort(values, new PrecedAscending());
     }
 
-    public static <T extends Comparable<T>> ArrayList<T> descendingSort(
-            final ArrayList<T> values) {
+    public static <T extends Comparable<T>> List<T> descendingSort(
+            final List<T> values) {
         class PrecedDescending implements IPreced<T> {
             public boolean preceeds(final T a, final T b) {
                 return a.compareTo(b) > 0;
@@ -25,23 +27,22 @@ public final class MergeSort {
         return mergeSort(values, new PrecedDescending());
     }
 
-    private static <T extends Comparable<T>> ArrayList<T> mergeSort(final ArrayList<T> input,
-                                                                    final IPreced<T> compareFunc) {
+    private static <T extends Comparable<T>> List<T> mergeSort(final List<T> input,
+                                                               final IPreced<T> compareFunc) {
         if (input.size() < 2) {
             return input;
         }
         int middleIndex = input.size() / 2;
-        ArrayList<T> firstHalf = new ArrayList<T>(input.subList(0, middleIndex));
-        ArrayList<T> secondHalf = new ArrayList<T>(input.subList(middleIndex, input.size()));
-        ArrayList<T> sortedFirstHalf = mergeSort(firstHalf, compareFunc);
-        ArrayList<T> sortedSecondHalf = mergeSort(secondHalf, compareFunc);
+        List<T> firstHalf = new ArrayList<T>(input.subList(0, middleIndex));
+        List<T> secondHalf = new ArrayList<T>(input.subList(middleIndex, input.size()));
+        List<T> sortedFirstHalf = mergeSort(firstHalf, compareFunc);
+        List<T> sortedSecondHalf = mergeSort(secondHalf, compareFunc);
         return merge(sortedFirstHalf, sortedSecondHalf, compareFunc);
     }
 
-    private static <T extends Comparable<T>> ArrayList<T>
-            merge(final ArrayList<T> first,
-                  final ArrayList<T> second,
-                  final IPreced<T> compareFunc) {
+    private static <T extends Comparable<T>> List<T> merge(final List<T> first,
+                                                                final List<T> second,
+                                                                final IPreced<T> compareFunc) {
         int firstIndex = 0;
         int secondIndex = 0;
         ArrayList<T> result = new ArrayList<T>();
