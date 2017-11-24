@@ -2,31 +2,33 @@ import java.util.ArrayList;
 
 public class MergeSort {
 
-    private interface IPreceed<T extends Comparable<T>> {
-        // Return if a preceeds b according to the order being used
-        public boolean Preceeds(T a, T b);
+    private interface IPreced<T extends Comparable<T>> {
+        // Return if a preceds b according to the order being used
+        boolean preceeds(T a, T b);
     }
-    public static <T extends Comparable<T>> ArrayList<T> AscendingSort(ArrayList<T> values){
-        class PreceedAscending implements IPreceed<T> {
-            public boolean Preceeds(T a, T b) {
+    public static <T extends Comparable<T>> ArrayList<T> ascendingSort(final ArrayList<T> values) {
+        class PrecedAscending implements IPreced<T> {
+            public boolean preceeds(final T a, final T b) {
                 return a.compareTo(b) < 0;
             }
         }
-        return mergeSort(values, new PreceedAscending());
+        return mergeSort(values, new PrecedAscending());
     }
 
-    public static <T extends Comparable<T>> ArrayList<T> DescendingSort(ArrayList<T> values){
-        class PreceedDescending implements IPreceed<T> {
-            public boolean Preceeds(T a, T b) {
+    public static <T extends Comparable<T>> ArrayList<T> descendingSort(ArrayList<T> values) {
+        class PrecedDescending implements IPreced<T> {
+            public boolean preceeds(final T a, final T b) {
                 return a.compareTo(b) > 0;
             }
         }
-        return mergeSort(values, new PreceedDescending());
+        return mergeSort(values, new PrecedDescending());
     }
 
-    private static <T extends Comparable<T>> ArrayList<T> mergeSort(ArrayList<T> input, IPreceed<T> compareFunc) {
-        if (input.size() < 2)
+    private static <T extends Comparable<T>> ArrayList<T> mergeSort(final ArrayList<T> input,
+                                                                    final IPreced<T> compareFunc) {
+        if (input.size() < 2) {
             return input;
+        }
         int middleIndex = input.size() / 2;
         ArrayList<T> firstHalf = new ArrayList<T>(input.subList(0, middleIndex));
         ArrayList<T> secondHalf = new ArrayList<T>(input.subList(middleIndex, input.size()));
@@ -35,20 +37,29 @@ public class MergeSort {
         return merge(sortedFirstHalf, sortedSecondHalf, compareFunc);
     }
 
-    private static <T extends Comparable<T>> ArrayList<T> merge(ArrayList<T> first, ArrayList<T> second,
-                                                                IPreceed<T> compareFunc) {
+    private static <T extends Comparable<T>> ArrayList<T>
+            merge(final ArrayList<T> first,
+                  final ArrayList<T> second,
+                  final IPreced<T> compareFunc) {
         int firstIndex = 0;
         int secondIndex = 0;
         ArrayList<T> result = new ArrayList<T>();
-        while (firstIndex < first.size() && secondIndex < second.size())
-            if (compareFunc.Preceeds(second.get((secondIndex)), first.get(firstIndex)))
+        while (firstIndex < first.size() && secondIndex < second.size()) {
+            if (compareFunc.preceeds(second.get((secondIndex)), first.get(firstIndex))) {
                 result.add(second.get(secondIndex++));
-            else
+            }
+            else {
                 result.add(first.get(firstIndex++));
-        while (firstIndex < first.size())
+            }
+        }
+        while (firstIndex < first.size()) {
             result.add(first.get(firstIndex++));
-        while (secondIndex < second.size())
+        }
+        while (secondIndex < second.size()) {
             result.add(second.get(secondIndex++));
+        }
         return result;
     }
+
+    private MergeSort(){};
 }

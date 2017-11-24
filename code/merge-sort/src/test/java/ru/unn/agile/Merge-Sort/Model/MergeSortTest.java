@@ -11,7 +11,7 @@ public class MergeSortTest {
     public void EmptyArrayAscending(){
         ArrayList<Integer> input = new ArrayList<Integer>();
         ArrayList<Integer> expected = new ArrayList<Integer>();
-        ArrayList<Integer> actual = MergeSort.AscendingSort(input);
+        ArrayList<Integer> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -20,7 +20,7 @@ public class MergeSortTest {
         Integer[] values = {1};
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         ArrayList<Integer> expected = input;
-        ArrayList<Integer> actual = MergeSort.AscendingSort(input);
+        ArrayList<Integer> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -30,7 +30,7 @@ public class MergeSortTest {
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         Integer[] expectedValues = {1,2};
         ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(expectedValues));
-        ArrayList<Integer> actual = MergeSort.AscendingSort(input);
+        ArrayList<Integer> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -40,7 +40,7 @@ public class MergeSortTest {
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         Integer[] expectedValues = {-1999, -2, 1, 3, 4, 11, 18, 56, 999};
         ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(expectedValues));
-        ArrayList<Integer> actual = MergeSort.AscendingSort(input);
+        ArrayList<Integer> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -50,7 +50,7 @@ public class MergeSortTest {
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         Integer[] expectedValues = {-1999, -2, 1, 3, 4, 11, 13, 15, 18, 24, 44, 56, 77, 87,  100, 999};
         ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(expectedValues));
-        ArrayList<Integer> actual = MergeSort.AscendingSort(input);
+        ArrayList<Integer> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -60,7 +60,7 @@ public class MergeSortTest {
         ArrayList<Double> input = new ArrayList<Double>(Arrays.asList(values));
         Double[] expectedValues = {0., 1. ,2., 3.9, 4.5, 4.8, 9., 10., 54.01,};
         ArrayList<Double> expected = new ArrayList<Double>(Arrays.asList(expectedValues));
-        ArrayList<Double> actual = MergeSort.AscendingSort(input);
+        ArrayList<Double> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -71,7 +71,7 @@ public class MergeSortTest {
         List<String> expectedValues = Arrays.asList("coffee", "juice", "vodka", "wine");
         ArrayList<String> expected  = new ArrayList<String>(expectedValues);
 
-        ArrayList<String> actual = MergeSort.AscendingSort(input);
+        ArrayList<String> actual = MergeSort.ascendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -106,7 +106,7 @@ public class MergeSortTest {
         ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
         Car[] valuesExpected = new Car[]{new Car(30),new Car(400)};
         ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
-        ArrayList<Car> sortValues = MergeSort.AscendingSort(input);
+        ArrayList<Car> sortValues = MergeSort.ascendingSort(input);
         assertEquals(expected,sortValues);
     }
 
@@ -121,7 +121,7 @@ public class MergeSortTest {
                                new Car(30), new Car(50), new Car(400),
                                new Car(777)};
         ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
-        ArrayList<Car> sortValues = MergeSort.AscendingSort(input);
+        ArrayList<Car> sortValues = MergeSort.ascendingSort(input);
         assertEquals(expected,sortValues);
     }
 
@@ -129,7 +129,7 @@ public class MergeSortTest {
     public void EmptyArrayDescending(){
         ArrayList<Integer> input = new ArrayList<Integer>();
         ArrayList<Integer> expected = new ArrayList<Integer>();
-        ArrayList<Integer> actual = MergeSort.DescendingSort(input);
+        ArrayList<Integer> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -138,7 +138,7 @@ public class MergeSortTest {
         Integer[] values = {7};
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         ArrayList<Integer> expected = input;
-        ArrayList<Integer> actual = MergeSort.DescendingSort(input);
+        ArrayList<Integer> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -148,7 +148,7 @@ public class MergeSortTest {
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         Integer[] expectedValues = {88, 77};
         ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(expectedValues));
-        ArrayList<Integer> actual = MergeSort.DescendingSort(input);
+        ArrayList<Integer> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -158,7 +158,7 @@ public class MergeSortTest {
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         Integer[] expectedValues = {1999, 18, 11, 6, 4, 3, 1, -2, -7};
         ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(expectedValues));
-        ArrayList<Integer> actual = MergeSort.DescendingSort(input);
+        ArrayList<Integer> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -168,7 +168,7 @@ public class MergeSortTest {
         ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(values));
         Integer[] expectedValues = {1200, 999, 110, 87, 77, 56, 44, 24, 20, 13, 8, 4, 3, 1, -2, -400};
         ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(expectedValues));
-        ArrayList<Integer> actual = MergeSort.DescendingSort(input);
+        ArrayList<Integer> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -178,7 +178,7 @@ public class MergeSortTest {
         ArrayList<Double> input = new ArrayList<Double>(Arrays.asList(values));
         Double[] expectedValues = {88.2, 54.01, 12.3, 9.0, 5.1, 4.8, 3.9, 2.0, -8.99};
         ArrayList<Double> expected = new ArrayList<Double>(Arrays.asList(expectedValues));
-        ArrayList<Double> actual = MergeSort.DescendingSort(input);
+        ArrayList<Double> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -189,7 +189,7 @@ public class MergeSortTest {
         List<String> expectedValues = Arrays.asList("red", "Crystal", "Apricot", "Alabaster");
         ArrayList<String> expected  = new ArrayList<String>(expectedValues);
 
-        ArrayList<String> actual = MergeSort.DescendingSort(input);
+        ArrayList<String> actual = MergeSort.descendingSort(input);
         assertEquals(expected, actual);
     }
 
@@ -199,7 +199,7 @@ public class MergeSortTest {
         ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
         Car[] valuesExpected = new Car[]{new Car(404),new Car(56)};
         ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
-        ArrayList<Car> sortValues = MergeSort.DescendingSort(input);
+        ArrayList<Car> sortValues = MergeSort.descendingSort(input);
         assertEquals(expected,sortValues);
     }
 
@@ -215,7 +215,7 @@ public class MergeSortTest {
                                new Car(50),new Car(18),new Car(0)};
         ArrayList<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
 
-        ArrayList<Car> sortValues = MergeSort.DescendingSort(input);
+        ArrayList<Car> sortValues = MergeSort.descendingSort(input);
         assertEquals(expected,sortValues);
     }
 
