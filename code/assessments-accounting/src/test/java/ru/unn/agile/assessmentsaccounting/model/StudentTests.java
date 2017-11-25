@@ -61,27 +61,7 @@ public class StudentTests {
         String newName = "Some useless subject";
         student.renameSubject(subject, newName);
         assertNotNull(student.getAssessments(newName));
-    }
-
-    @Test
-    public void canRemoveRenamedSubject() {
-        Student student = new Student("Max Bespalov");
-        String subject = "High maths";
-        student.addSubject(subject);
-        String newName = "Some subject that was very important";
-        student.renameSubject(subject, newName);
-        student.removeSubject(newName);
-        assertNull(student.getAssessments(newName));
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void canNotRemoveSubjectByTheOldName() {
-        Student student = new Student("Max Bespalov");
-        String oldName = "Some meaningless abbreviature";
-        student.addSubject(oldName);
-        String newName = "Some meaningful abbreviature that was described by teacher";
-        student.renameSubject(oldName, newName);
-        student.removeSubject(oldName);
+        assertNull(student.getAssessments(subject));
     }
 
     @Test

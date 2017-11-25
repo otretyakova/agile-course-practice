@@ -83,6 +83,14 @@ public class AssessmentsTable {
         student.addAssessment(assessment, subject);
     }
 
+    public void addAssessment(final Assessment assessment,
+                              final List<String> students,
+                              final String subject) {
+        for (String name : students) {
+            addAssessment(assessment, name, subject);
+        }
+    }
+
     public void removeAssessment(final int assessmentIndex,
                                  final String studentName,
                                  final String subject) {
@@ -102,14 +110,6 @@ public class AssessmentsTable {
         }
         Student student = findStudent(studentName);
         student.changeAssessmentAt(asessmentIndex, value, subject);
-    }
-
-    public void addAssessment(final Assessment assessment,
-                              final List<String> students,
-                              final String subject) {
-        for (String name : students) {
-            addAssessment(assessment, name, subject);
-        }
     }
 
     public List<Assessment> getAssessments(final String subject) {
