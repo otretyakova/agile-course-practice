@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import java.util.TreeMap;
 
 public class PolynomialTest {
+    private final double eps = 1e-9;
+
     @Test
     public void canCreateEmptyPolynomial() {
         Polynomial poly = new Polynomial();
@@ -15,6 +17,14 @@ public class PolynomialTest {
     @Test
     public void canCreatePolynomialWithEmptyCoefficients() {
         Polynomial poly = new Polynomial(new TreeMap<Integer, Double>());
+        assertNotNull(poly);
+    }
+
+    @Test
+    public void canCreatePolynomialWithNonEmptyCoefficients() {
+        Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{
+            put(-2, -1.1);  put(0, -1.1); put(3, -1.1);
+        }});
         assertNotNull(poly);
     }
 
@@ -52,7 +62,7 @@ public class PolynomialTest {
     @Test
     public void areDifferentPolynomialsWithZeroAndNonZeroCoefficientsNotEqual() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(9, 0.0); put(12, 1.0);
+            put(-9, 0.0); put(12, 1.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
             put(0, 0.0); put(12, 1.0); put(1, 1.0);
@@ -63,13 +73,13 @@ public class PolynomialTest {
     @Test
     public void canGetExistentPolynomialCoefficient() {
         Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{ put(0, -1.1); }});
-        assertTrue(poly.getCoefficient(0) == -1.1);
+        assertEquals(poly.getCoefficient(0), -1.1, eps);
     }
 
     @Test
     public void canGetNonExistentPolynomialCoefficient() {
         Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{ put(0, -1.1); }});
-        assertTrue(poly.getCoefficient(1) == 0.0);
+        assertEquals(poly.getCoefficient(1), 0.0, eps);
     }
 
     @Test
@@ -104,14 +114,22 @@ public class PolynomialTest {
     }
 
     @Test
+    public void canAddExistentMonomialWithNegativeExponentToPolynomial() {
+        Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{ put(-3, 3.0); }});
+        poly.addMonomial(-3, 1.0);
+        assertTrue(poly.equals(new Polynomial(new TreeMap<Integer, Double>() {{ put(-3, 4.0); }})));
+    }
+
+    @Test
     public void canAddMonomialsToPolynomial() {
         Polynomial poly = new Polynomial();
         poly.addMonomial(1, 3.0);
         poly.addMonomial(2, 17.33);
         poly.addMonomial(0, 3.0);
         poly.addMonomial(1, -3.5);
+        poly.addMonomial(-1, 15.0);
         assertTrue(poly.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(0, 3.0); put(1, -0.5); put(2, 17.33);
+            put(-1, 15.0); put(0, 3.0); put(1, -0.5); put(2, 17.33);
         }})));
     }
 
@@ -138,14 +156,14 @@ public class PolynomialTest {
     @Test
     public void canAddPolynomials() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(3, -1.0); put(2, 3.0);
+            put(-2, 2.0); put(3, -1.0); put(2, 3.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(3, 2.0); put(13, 4.0);
+            put(-2, -3.0); put(3, 2.0); put(13, 4.0);
         }});
         Polynomial sum = poly1.add(poly2);
         assertTrue(sum.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(3, 1.0); put(2, 3.0); put(13, 4.0);
+            put(-2, -1.0); put(3, 1.0); put(2, 3.0); put(13, 4.0);
         }})));
     }
 
@@ -173,6 +191,13 @@ public class PolynomialTest {
     }
 
     @Test
+    public void canSubExistentMonomialWithNegativeExponentFromPolynomial() {
+        Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{ put(-3, 3.0); }});
+        poly.subMonomial(-3, 1.1);
+        assertTrue(poly.equals(new Polynomial(new TreeMap<Integer, Double>() {{ put(-3, 1.9); }})));
+    }
+
+    @Test
     public void canSubZeroAndZeroPolynomials() {
         Polynomial poly1 = new Polynomial();
         Polynomial poly2 = new Polynomial();
@@ -184,11 +209,11 @@ public class PolynomialTest {
     public void canSubZeroAndNonZeroPolynomials() {
         Polynomial poly1 = new Polynomial();
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(1, 2.0); put(13, 4.0);
+            put(-1, 2.0); put(13, 4.0);
         }});
         Polynomial diff = poly1.sub(poly2);
         assertTrue(diff.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(1, -2.0); put(13, -4.0);
+            put(-1, -2.0); put(13, -4.0);
         }})));
     }
 
@@ -207,14 +232,14 @@ public class PolynomialTest {
     @Test
     public void canSubPolynomials() {
         Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(7, -1.2); put(1, 3.0);
+            put(-7, 1.0); put(7, -1.2); put(1, 3.0);
         }});
         Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
-            put(7, 2.0); put(13, 4.0);
+            put(-7, 7.0); put(7, 2.0); put(13, 4.0);
         }});
         Polynomial diff = poly1.sub(poly2);
         assertTrue(diff.equals(new Polynomial(new TreeMap<Integer, Double>() {{
-            put(7, -3.2); put(1, 3.0); put(13, -4.0);
+            put(-7, -6.0); put(7, -3.2); put(1, 3.0); put(13, -4.0);
         }})));
     }
 
@@ -295,6 +320,17 @@ public class PolynomialTest {
     }
 
     @Test
+    public void canMultiplyPolynomialByMonomialWithNegativeExponent() {
+        Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{
+            put(24, 0.0); put(2, 13.0); put(-2, -2.0);
+        }});
+        Polynomial mult = poly.multiply(-3, 2.0);
+        assertTrue(mult.equals(new Polynomial(new TreeMap<Integer, Double>() {{
+            put(-1, 26.0); put(21, 0.0); put(-5, -4.0);
+        }})));
+    }
+
+    @Test
     public void canMultiplyZeroPolynomialByZeroPolynomial() {
         Polynomial poly1 = new Polynomial();
         Polynomial poly2 = new Polynomial();
@@ -333,6 +369,20 @@ public class PolynomialTest {
         Polynomial mult = poly1.multiply(poly2);
         assertTrue(mult.equals(new Polynomial(new TreeMap<Integer, Double>() {{
             put(0, -2.4); put(1, 6.0); put(2, 4.8); put(3, -12.0);
+        }})));
+    }
+
+    @Test
+    public void canMultiplyPolynomialByPolynomialWithNegativeExponents() {
+        Polynomial poly1 = new Polynomial(new TreeMap<Integer, Double>() {{
+            put(-2, 4.0); put(1, 3.0);
+        }});
+        Polynomial poly2 = new Polynomial(new TreeMap<Integer, Double>() {{
+            put(-3, 2.0); put(4, -4.0);
+        }});
+        Polynomial mult = poly1.multiply(poly2);
+        assertTrue(mult.equals(new Polynomial(new TreeMap<Integer, Double>() {{
+            put(-2, 6.0); put(2, -16.0); put(-5, 8.0); put(5, -12.0);
         }})));
     }
 }
