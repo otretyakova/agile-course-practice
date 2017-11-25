@@ -81,6 +81,23 @@ public class AssessmentTableTests {
     }
 
     @Test
+    public void afterRenamingSubjectStudentSubjectsGetRenamed() {
+        AssessmentsTable table = new AssessmentsTable();
+        String student = "Max Bespalov";
+        String subject = "Agile course";
+        Assessment assessment = Assessment.VeryBad;
+
+        table.addSubject(subject);
+        table.addStudent(student);
+        table.addAssessment(assessment, student, subject);
+
+        String newName = "Very important subject";
+        table.renameSubject(subject, newName);
+
+        assertEquals(table.getAssessmentsForStudent(newName, student).get(0), assessment);
+    }
+
+    @Test
     public void canAddStudent() {
         AssessmentsTable table = new AssessmentsTable();
         String name = "Max Bespalov";

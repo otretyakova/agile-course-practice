@@ -43,6 +43,9 @@ public class AssessmentsTable {
             throw new InvalidParameterException();
         }
         subjects.set(subjects.indexOf(oldName), newName);
+        for (Student student : students) {
+            student.renameSubject(oldName, newName);
+        }
     }
 
     public void addStudent(final String name) {
