@@ -66,7 +66,7 @@ public class StringCalculatorTest {
     public void stringWithNegativeNumbers() {
         try {
             assertAddReturns(6, "-1,2,3");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             assertEquals("Negatives -1 not allowed", e.getMessage());
         }
     }
@@ -75,7 +75,7 @@ public class StringCalculatorTest {
     public void stringWithTwoNegativeNumbers() {
         try {
             assertAddReturns(6, "-1,2,-3");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             assertEquals("Negatives -1 -3 not allowed", e.getMessage());
         }
     }
@@ -84,7 +84,7 @@ public class StringCalculatorTest {
     public void stringWithAllNegativeNumbers() {
         try {
             assertAddReturns(6, "-1,-2,-3");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             assertEquals("Negatives -1 -2 -3 not allowed", e.getMessage());
         }
     }
@@ -93,7 +93,7 @@ public class StringCalculatorTest {
     public void stringWithIncorrectData() {
         try {
             assertAddReturns(6, "sadfasdf");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             assertEquals("Incorrect data", e.getMessage());
         }
     }
@@ -102,7 +102,7 @@ public class StringCalculatorTest {
     public void stringWithMistake() {
         try {
             assertAddReturns(6, "1,2,3s");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             assertEquals("Incorrect data", e.getMessage());
         }
     }

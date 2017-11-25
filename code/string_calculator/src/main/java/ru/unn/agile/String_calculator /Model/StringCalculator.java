@@ -1,7 +1,7 @@
 package ru.unn.agile.string_calculator.model;
 
 public class StringCalculator {
-    public int add(final String input) {
+    public int add(final String input) throws IllegalArgumentException {
         if ("".equals(input)) {
             return 0;
         }
@@ -34,14 +34,14 @@ public class StringCalculator {
         }
         if (!"Negatives ".equals(error)) {
             error += "not allowed";
-            throw new RuntimeException(error);
+            throw new IllegalArgumentException(error);
         }
     }
 
     private void checkIncorrectData(final String[] numbers) {
         for (String number: numbers) {
             if ("".equals(number) || !isNumeric(number)) {
-                throw new RuntimeException("Incorrect data");
+                throw new IllegalArgumentException("Incorrect data");
             }
         }
     }
