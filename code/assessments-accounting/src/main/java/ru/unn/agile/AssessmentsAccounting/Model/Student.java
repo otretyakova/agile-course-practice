@@ -3,17 +3,19 @@ package ru.unn.agile.assessmentsaccounting.model;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Student {
     private String name;
-    private HashMap<String, ArrayList<Assessment>> assessments;
+    private Map<String, List<Assessment>> assessments;
 
     public Student(final String name) {
         if (name.isEmpty()) {
             throw new InvalidParameterException();
         }
         this.name = name;
-        this.assessments = new HashMap<String, ArrayList<Assessment>>();
+        this.assessments = new HashMap<String, List<Assessment>>();
     }
 
     public String getName() {
@@ -50,7 +52,7 @@ public class Student {
     }
 
     public void addAssessment(final Assessment assessment, final String subject) {
-        ArrayList<Assessment> subjectAssessments =
+        List<Assessment> subjectAssessments =
                 assessments.getOrDefault(subject, new ArrayList<Assessment>());
         subjectAssessments.add(assessment);
         assessments.put(subject, subjectAssessments);
@@ -58,7 +60,7 @@ public class Student {
 
     public void removeAssessmentAt(final int index, final String subject) {
         checkAssessmentsIndex(index, subject);
-        ArrayList<Assessment> subjectAssessments = assessments.get(subject);
+        List<Assessment> subjectAssessments = assessments.get(subject);
         subjectAssessments.remove(index);
         assessments.put(subject, subjectAssessments);
     }
@@ -67,20 +69,20 @@ public class Student {
                                    final Assessment assessment,
                                    final String subject) {
         checkAssessmentsIndex(index, subject);
-        ArrayList<Assessment> subjectAssessments = assessments.get(subject);
+        List<Assessment> subjectAssessments = assessments.get(subject);
         subjectAssessments.set(index, assessment);
         assessments.put(subject, subjectAssessments);
     }
 
-    public ArrayList<Assessment> getAssessments() {
-        ArrayList<Assessment> allAssessments = new ArrayList<Assessment>();
-        for (HashMap.Entry<String, ArrayList<Assessment>> entry : assessments.entrySet()) {
+    public List<Assessment> getAssessments() {
+        List<Assessment> allAssessments = new ArrayList<Assessment>();
+        for (Map.Entry<String, List<Assessment>> entry : assessments.entrySet()) {
             allAssessments.addAll(entry.getValue());
         }
         return allAssessments;
     }
 
-    public ArrayList<Assessment> getAssessments(final String subject) {
+    public List<Assessment> getAssessments(final String subject) {
         return assessments.getOrDefault(subject, null);
     }
 

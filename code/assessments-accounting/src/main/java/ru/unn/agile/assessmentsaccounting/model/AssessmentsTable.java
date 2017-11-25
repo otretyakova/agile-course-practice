@@ -2,21 +2,22 @@ package ru.unn.agile.assessmentsaccounting.model;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AssessmentsTable {
-    private  ArrayList<String> subjects;
-    private ArrayList<Student> students;
+    private List<String> subjects;
+    private List<Student> students;
 
     public AssessmentsTable() {
         this.subjects = new ArrayList<String>();
         this.students = new ArrayList<Student>();
     }
 
-    public ArrayList<String> getSubjects() {
+    public List<String> getSubjects() {
         return subjects;
     }
 
-    public ArrayList<Student> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
@@ -101,25 +102,25 @@ public class AssessmentsTable {
     }
 
     public void addAssessment(final Assessment assessment,
-                              final ArrayList<String> students,
+                              final List<String> students,
                               final String subject) {
         for (String name : students) {
             addAssessment(assessment, name, subject);
         }
     }
 
-    public ArrayList<Assessment> getAssessments(final String subject) {
+    public List<Assessment> getAssessments(final String subject) {
         if (!subjects.contains(subject)) {
             throw new InvalidParameterException();
         }
-        ArrayList<Assessment> assessments = new ArrayList<Assessment>();
+        List<Assessment> assessments = new ArrayList<Assessment>();
         for (Student student : students) {
             assessments.addAll(student.getAssessments(subject));
         }
         return assessments;
     }
 
-    public ArrayList<Assessment> getAssessmentsForStudent(final String subject,
+    public List<Assessment> getAssessmentsForStudent(final String subject,
                                                           final String studentName) {
         if (!subjects.contains(subject)) {
             throw new InvalidParameterException();
@@ -132,7 +133,7 @@ public class AssessmentsTable {
         int summOfAssessments = 0;
         int assessmentsCount = 0;
         for (Student student : students) {
-            ArrayList<Assessment> assessments = student.getAssessments(subject);
+            List<Assessment> assessments = student.getAssessments(subject);
             if (assessments != null) {
                 for (Assessment assessment : assessments) {
                     summOfAssessments += assessment.getMark();
@@ -167,7 +168,7 @@ public class AssessmentsTable {
         }
         throw new InvalidParameterException();
     }
-    private double getAverage(final ArrayList<Assessment> assessments) {
+    private double getAverage(final List<Assessment> assessments) {
         if (assessments == null || assessments.isEmpty()) {
             throw new InvalidParameterException();
         }

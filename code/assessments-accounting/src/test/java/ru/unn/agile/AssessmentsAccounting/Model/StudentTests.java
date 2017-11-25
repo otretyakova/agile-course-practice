@@ -2,7 +2,7 @@ package ru.unn.agile.assessmentsaccounting.model;
 
 import org.junit.Test;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.util.List;
 import static org.junit.Assert.*;
 
 public class StudentTests {
@@ -176,7 +176,7 @@ public class StudentTests {
         student.addAssessment(Assessment.Great,
                       "Delivering lab works in the last day before deadline");
 
-        ArrayList<Assessment> allAssessments = student.getAssessments();
+        List<Assessment> allAssessments = student.getAssessments();
         assertEquals(allAssessments.size(), 3);
         assertTrue(allAssessments.contains(Assessment.Good));
         assertTrue(allAssessments.contains(Assessment.Bad));

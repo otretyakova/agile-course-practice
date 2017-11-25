@@ -3,6 +3,8 @@ package ru.unn.agile.assessmentsaccounting.model;
 import org.junit.Test;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AssessmentTableTests {
@@ -84,7 +86,7 @@ public class AssessmentTableTests {
         String name = "Max Bespalov";
         table.addStudent(name);
 
-        ArrayList<Student> students = table.getStudents();
+        List<Student> students = table.getStudents();
         assertEquals(students.size(), 1);
         assertTrue(students.get(0).getName().equals(name));
     }
@@ -317,7 +319,7 @@ public class AssessmentTableTests {
         String subject = "Agile course";
         String firstStudentName = "Max Bespalov";
         String secondStudentName = "Never seen student";
-        ArrayList<String> students = new ArrayList<String>();
+        List<String> students = new ArrayList<String>();
         students.add(firstStudentName);
         students.add(secondStudentName);
         Assessment assessment = Assessment.VeryBad;
@@ -360,7 +362,7 @@ public class AssessmentTableTests {
         table.addAssessment(firstAssessment, firstStudentName, subject);
         table.addAssessment(secondAssessment, secondStudentName, subject);
 
-        ArrayList<Assessment> assessments = table.getAssessments(subject);
+        List<Assessment> assessments = table.getAssessments(subject);
         assertEquals(assessments.size(), 2);
         assertTrue(assessments.contains(firstAssessment));
         assertTrue(assessments.contains(secondAssessment));
@@ -405,7 +407,7 @@ public class AssessmentTableTests {
         table.addAssessment(firstAssessment, student, subject);
         table.addAssessment(secondAssessment, student, subject);
 
-        ArrayList<Assessment> assessments = table.getAssessmentsForStudent(subject, student);
+        List<Assessment> assessments = table.getAssessmentsForStudent(subject, student);
         assertEquals(assessments.size(), 2);
         assertTrue(assessments.contains(firstAssessment));
         assertTrue(assessments.contains(secondAssessment));
