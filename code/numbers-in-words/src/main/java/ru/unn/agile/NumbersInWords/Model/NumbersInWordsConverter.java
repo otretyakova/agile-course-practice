@@ -56,7 +56,7 @@ public class NumbersInWordsConverter {
     }
 
     public String convert(final String number) throws IllegalArgumentException {
-        String realConvertedNumber = "", decimalConvertedNumber = "";
+        String integerConvertedNumber = "", decimalConvertedNumber = "";
         String positiveNumber = "";
 
         if (number == null) {
@@ -66,7 +66,7 @@ public class NumbersInWordsConverter {
         }
 
         if (number.charAt(0) == '-') {
-            realConvertedNumber += "negative ";
+            integerConvertedNumber += "negative ";
             positiveNumber = number.substring(1);
         } else {
             positiveNumber = number;
@@ -74,18 +74,18 @@ public class NumbersInWordsConverter {
 
         String[] numberParts = positiveNumber.split("\\.");
         if (numberParts.length == 1) {
-            realConvertedNumber += convertRealPart(numberParts[0]);
+            integerConvertedNumber += convertIntegerPart(numberParts[0]);
         } else if (numberParts.length == 2) {
-            realConvertedNumber += convertRealPart(numberParts[0]);
+            integerConvertedNumber += convertIntegerPart(numberParts[0]);
             decimalConvertedNumber += convertDecimalPart(numberParts[1]);
         } else {
             throw new IllegalArgumentException("Input number must have no more than one point");
         }
 
-        return realConvertedNumber + decimalConvertedNumber;
+        return integerConvertedNumber + decimalConvertedNumber;
     }
 
-    private String convertRealPart(final String number) throws IllegalArgumentException {
+    private String convertIntegerPart(final String number) throws IllegalArgumentException {
         String convertedNumber = "";
         final int subNumberLength = 3;
 
