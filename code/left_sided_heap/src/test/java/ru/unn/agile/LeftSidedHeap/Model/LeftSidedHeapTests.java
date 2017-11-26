@@ -1,15 +1,15 @@
-package ru.unn.agile.LTree.Model;
+package ru.unn.agile.LeftSidedHeap.Model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.unn.agile.LTree.Model.LeftSidedHeap.KeyValuePair;
+import ru.unn.agile.LeftSidedHeap.Model.LeftSidedHeap.KeyValuePair;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static ru.unn.agile.LTree.Model.LeftSidedHeap.*;
+import static ru.unn.agile.LeftSidedHeap.Model.LeftSidedHeap.*;
 
 public class LeftSidedHeapTests {
 

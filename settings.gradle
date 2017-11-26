@@ -7,8 +7,8 @@ include "code/korniakov-kirill-lab1"
 project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model"
 
 // Gerasimov Dmitry, lab1
-include "code/ltree"
-project(":code/ltree").name = "ltree-Model"
+include "code/left_sided_heap"
+project(":code/left_sided_heap").name = "lheap-Model"
 
 // Korniakov Kirill, lab2-legacy
 include "code/korniakov-kirill-lab2-legacy/Model"

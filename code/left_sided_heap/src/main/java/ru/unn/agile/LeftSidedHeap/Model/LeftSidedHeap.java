@@ -1,4 +1,4 @@
-package ru.unn.agile.LTree.Model;
+package ru.unn.agile.LeftSidedHeap.Model;
 
 import java.util.Collection;
 
