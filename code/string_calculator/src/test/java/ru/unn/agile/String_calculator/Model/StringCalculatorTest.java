@@ -133,5 +133,4 @@ public class StringCalculatorTest {
             assertEquals("Incorrect data", e.getMessage());
         }
     }
-    
 }
