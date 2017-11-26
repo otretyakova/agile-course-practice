@@ -189,7 +189,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void customTypeTwoValuesDecending() {
+    public void customTypeTwoValuesDescending() {
         Car[] values = new Car[]{new Car(404), new Car(56)};
         List<Car> input = new ArrayList<Car>(Arrays.asList(values));
         Car[] valuesExpected = new Car[]{new Car(404), new Car(56)};
@@ -199,7 +199,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void customTypeMultipleValuesDecending() {
+    public void customTypeMultipleValuesDescending() {
         Car[] values = new Car[]{new Car(55),
         new Car(50), new Car(0), new Car(18),
         new Car(1024)};
@@ -215,7 +215,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void stableCustomTypeDecending() {
+    public void stableCustomTypeDescending() {
         Car[] values = new Car[]{new Car(8840, 1111),
                 new Car(11, 2), new Car(15, 3),
                 new Car(15, 4), new Car(13, 800),
@@ -230,7 +230,7 @@ public class MergeSortTest {
         assertEquals(expected, sortValues);
     }
 
-    // Tests for Car class.
+    // Tests for Car class
     @Test
     public void carCompareToEqualCars() {
         Car value1 = new Car(1, 1);
