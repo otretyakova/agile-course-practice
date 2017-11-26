@@ -2,6 +2,9 @@ package ru.unn.agile.string_calculator.model;
 
 public class StringCalculator {
     public int add(final String input) throws IllegalArgumentException {
+        if (input == null) {
+            throw new IllegalArgumentException("Incorrect data");
+        }
         if ("".equals(input)) {
             return 0;
         }
