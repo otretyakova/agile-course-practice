@@ -1,6 +1,5 @@
-import ru.unn.agile.mergesort.Model.MergeSort;
+package ru.unn.agile.mergesort.Model;
 import org.junit.Test;
-//import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class MergeSortTest {
-
     @Test
     public void emptyArrayAscending() {
         List<Integer> input = new ArrayList<Integer>();
@@ -78,37 +76,6 @@ public class MergeSortTest {
         assertEquals(expected, actual);
     }
 
-    class Car implements Comparable<Car> {
-        private int maxSpeed;
-        Car(final int theMaxSpeed) {
-            maxSpeed = theMaxSpeed;
-        }
-        public int compareTo(final Car first) {
-            if (first.maxSpeed == maxSpeed) {
-                return 0;
-            }
-            if (first.maxSpeed < maxSpeed) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-        @Override
-            public int hashCode() {
-                return maxSpeed;
-            }
-        @Override
-        public boolean equals(final Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            if (obj == null || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            return (this.maxSpeed == ((Car) obj).maxSpeed);
-        }
-    }
-
     @Test
     public void customTypeTwoValuesComparatorAscending() {
         Car[] values = new Car[]{new Car(400), new Car(30)};
@@ -129,6 +96,24 @@ public class MergeSortTest {
         Car[] valuesExpected = new Car[]{new Car(1), new Car(13),
                                new Car(30), new Car(50), new Car(400),
                                new Car(777) };
+        List<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
+        List<Car> sortValues = MergeSort.ascendingSort(input);
+        assertEquals(expected, sortValues);
+    }
+
+    @Test
+    public void stableCustomTypeAscending() {
+        Car[] values = new Car[]{new Car(3440, 1),
+                       new Car(40, 2), new Car(40, 3),
+                       new Car(1, 1), new Car(13, 8),
+                       new Car(777, 7), new Car(40, 4),
+                       new Car(40, 5)};
+        ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
+        Car[] valuesExpected = new Car[]{new Car(1, 1),
+                               new Car(13, 8),
+                               new Car(40, 2), new Car(40, 3),
+                               new Car(40, 4), new Car(40, 5),
+                               new Car(777, 7), new Car(3440, 1) };
         List<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
         List<Car> sortValues = MergeSort.ascendingSort(input);
         assertEquals(expected, sortValues);
@@ -227,5 +212,62 @@ public class MergeSortTest {
 
         List<Car> sortValues = MergeSort.descendingSort(input);
         assertEquals(expected, sortValues);
+    }
+
+    @Test
+    public void stableCustomTypeDecending() {
+        Car[] values = new Car[]{new Car(8840, 1111),
+                new Car(11, 2), new Car(15, 3),
+                new Car(15, 4), new Car(13, 800),
+                new Car(619, 777), new Car(15, 5)};
+        ArrayList<Car> input = new ArrayList<Car>(Arrays.asList(values));
+        Car[] valuesExpected = new Car[]{new Car(8840, 1111),
+                new Car(619, 777), new Car(15, 3),
+                new Car(15, 4), new Car(15, 5), new Car(13, 800),
+                new Car(11, 2)};
+        List<Car> expected = new ArrayList<Car>(Arrays.asList(valuesExpected));
+        List<Car> sortValues = MergeSort.descendingSort(input);
+        assertEquals(expected, sortValues);
+    }
+
+    // Tests for Car class.
+    @Test
+    public void carCompareToEqualCars() {
+        Car value1 = new Car(1, 1);
+        Car value2 = new Car(1, 2);
+        int expected = 0;
+        assertEquals(expected, value1.compareTo(value2));
+    }
+
+    @Test
+    public void carCompareToLessCars() {
+        Car value1 = new Car(2, 3);
+        Car value2 = new Car(22, 4);
+        int expected = -1;
+        assertEquals(expected, value1.compareTo(value2));
+    }
+
+    @Test
+    public void carCompareToUpCars() {
+        Car value1 = new Car(100000, 5);
+        Car value2 = new Car(22, 6);
+        int expected = 1;
+        assertEquals(expected, value1.compareTo(value2));
+    }
+
+    @Test
+    public void carEquals() {
+        Car equalValue1 = new Car(555);
+        Car equalValue2 = new Car(555);
+        boolean expected = true;
+        assertEquals(expected, equalValue1.equals(equalValue2));
+    }
+
+    @Test
+    public void carNotEquals() {
+        Car value1 = new Car(777);
+        Car value2 = new Car(888);
+        boolean expected = false;
+        assertEquals(expected, value1.equals(value2));
     }
 }
