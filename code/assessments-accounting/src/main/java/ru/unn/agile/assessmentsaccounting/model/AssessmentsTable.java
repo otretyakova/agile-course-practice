@@ -34,13 +34,18 @@ public class AssessmentsTable {
         }
         subjects.remove(subject);
         for (Student student : students) {
-            student.removeSubject(subject);
+            if (student.hasSubject(subject)) {
+                student.removeSubject(subject);
+            }
         }
     }
 
     public void renameSubject(final String oldName, final String newName) {
         if (!subjects.contains(oldName) || newName.isEmpty()) {
             throw new InvalidParameterException();
+        }
+        if (newName.equals(oldName)) {
+            return;
         }
         subjects.set(subjects.indexOf(oldName), newName);
         for (Student student : students) {
@@ -64,7 +69,12 @@ public class AssessmentsTable {
         if (newName.isEmpty()) {
             throw new InvalidParameterException();
         }
+
         Student student = findStudent(oldName);
+
+        if (newName.equals(oldName)) {
+            return;
+        }
         students.get(students.indexOf(student)).setName(newName);
     }
 
@@ -80,6 +90,9 @@ public class AssessmentsTable {
             throw new InvalidParameterException();
         }
         Student student = findStudent(studentName);
+        if (!student.hasSubject(subject)) {
+            student.addSubject(subject);
+        }
         student.addAssessment(assessment, subject);
     }
 

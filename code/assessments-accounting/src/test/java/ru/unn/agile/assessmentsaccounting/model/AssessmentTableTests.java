@@ -66,6 +66,21 @@ public class AssessmentTableTests {
         assertTrue(table.getSubjects().get(0).equals(newName));
     }
 
+    @Test
+    public void canRenameSubjectIntoSameName() {
+        AssessmentsTable table = new AssessmentsTable();
+        String subject = "Making bugs";
+        String student = "Max Bespalov";
+        Assessment assessment = Assessment.Perfect;
+
+        table.addStudent(student);
+        table.addSubject(subject);
+        table.addAssessment(assessment, student, subject);
+        table.renameSubject(subject, subject);
+
+        assertEquals(table.getAssessmentsForStudent(subject, student).get(0), assessment);
+    }
+
     @Test(expected = InvalidParameterException.class)
     public void canNotRenameNotExistingSubject() {
         AssessmentsTable table = new AssessmentsTable();
@@ -385,14 +400,14 @@ public class AssessmentTableTests {
         assertTrue(assessments.contains(secondAssessment));
     }
 
-    @Test
-    public void canGetEmptyAssessmentsOfTheStudent() {
+    @Test(expected = InvalidParameterException.class)
+    public void canNotGetAssessmentsForStudentThatDoesNotHaveAnyForThisSubject() {
         AssessmentsTable table = new AssessmentsTable();
         String subject = "Agile course";
         String student = "Max Bespalov";
         table.addSubject(subject);
         table.addStudent(student);
-        assertNull(table.getAssessmentsForStudent(subject, student));
+        table.getAssessmentsForStudent(subject, student);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -554,5 +569,24 @@ public class AssessmentTableTests {
 
         table.addSubject(subject);
         table.getAverageAssessmentForSubject(subject);
+    }
+
+    @Test
+    public void canRemoveSubjectAfterAddingNewStudent() {
+        AssessmentsTable table = new AssessmentsTable();
+        String student = "Max Bespalov";
+        String subject = "Some new exciting subject";
+
+        table.addStudent(student);
+        table.addSubject(subject);
+        table.addAssessment(Assessment.Good, student, subject);
+
+        String newStudent = "Excited student";
+        table.addStudent(newStudent);
+
+        table.removeSubject(subject);
+
+        assertFalse(table.getStudents().get(0).hasSubject(subject));
+        assertFalse(table.getStudents().get(1).hasSubject(subject));
     }
 }

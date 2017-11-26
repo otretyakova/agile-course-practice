@@ -10,7 +10,7 @@ public class Student {
     private String name;
     private Map<String, List<Assessment>> assessments;
 
-    public Student(final String name) {
+    protected Student(final String name) {
         if (name.isEmpty()) {
             throw new InvalidParameterException();
         }
@@ -26,34 +26,46 @@ public class Student {
         if (name.isEmpty()) {
             throw new InvalidParameterException();
         }
+        if (name == this.name) {
+            return;
+        }
         this.name = name;
     }
 
     public void addSubject(final String subject) {
-        if (subject.isEmpty()) {
+        if (hasSubject(subject) || subject.isEmpty()) {
             throw new InvalidParameterException();
         }
         assessments.put(subject, new ArrayList<Assessment>());
     }
 
     public void renameSubject(final String oldName, final String newName) {
-        if (!assessments.containsKey(oldName) || newName.isEmpty()) {
+        if (!hasSubject(oldName) || newName.isEmpty()) {
             throw new InvalidParameterException();
+        }
+        if (newName.equals(oldName)) {
+            return;
         }
         assessments.put(newName, assessments.get(oldName));
         assessments.remove(oldName);
     }
 
     public void removeSubject(final String subject) {
-        if (!assessments.containsKey(subject)) {
+        if (!hasSubject(subject)) {
             throw new InvalidParameterException();
         }
         assessments.remove(subject);
     }
 
+    public boolean hasSubject(final String subject) {
+        return assessments.containsKey(subject);
+    }
+
     public void addAssessment(final Assessment assessment, final String subject) {
-        List<Assessment> subjectAssessments =
-                assessments.getOrDefault(subject, new ArrayList<Assessment>());
+        if (!hasSubject(subject)) {
+            throw new InvalidParameterException();
+        }
+        List<Assessment> subjectAssessments = assessments.get(subject);
         subjectAssessments.add(assessment);
         assessments.put(subject, subjectAssessments);
     }
@@ -83,7 +95,10 @@ public class Student {
     }
 
     public List<Assessment> getAssessments(final String subject) {
-        return assessments.getOrDefault(subject, null);
+        if (!hasSubject(subject)) {
+            throw new InvalidParameterException();
+        }
+        return assessments.get(subject);
     }
 
     private void checkAssessmentsIndex(final int index, final String subject) {
