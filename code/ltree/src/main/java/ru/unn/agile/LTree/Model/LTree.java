@@ -2,12 +2,12 @@ package ru.unn.agile.LTree.Model;
 
 import java.util.Collection;
 
-public class LTree<T> {
+public class LeftSidedHeap<T> {
+
+    public static class EmptyHeapException extends Exception {
+    }
 
     public static class KeyValuePair<T> {
-        private final int key;
-        private final T value;
-
         public KeyValuePair(final int key, final T value) {
             this.key = key;
             this.value = value;
@@ -20,34 +20,18 @@ public class LTree<T> {
         public int getKey() {
             return key;
         }
+
+        private final int key;
+        private final T value;
     }
 
-    private static class Node<T> {
-        private final KeyValuePair<T> kvp;
-        private int rank;
-        private Node<T> left;
-        private Node<T> right;
-        private Node<T> parent;
-
-        Node(final KeyValuePair<T> kvp, final int rank,
-             final Node<T> left, final Node<T> right, final Node<T> parent) {
-            this.kvp = kvp;
-            this.rank = rank;
-            this.left = left;
-            this.right = right;
-            this.parent = parent;
-        }
-    }
-
-    public LTree() {
+    public LeftSidedHeap() {
+        size = 0;
         root = null;
     }
 
-    private LTree(final KeyValuePair<T> kvp) {
-        add(kvp);
-    }
-
-    public LTree(final Collection<KeyValuePair<T>> array) {
+    public LeftSidedHeap(final Collection<KeyValuePair<T>> array) {
+        size = 0;
         root = null;
         if (array != null) {
             for (KeyValuePair<T> kvp : array) {
@@ -59,61 +43,96 @@ public class LTree<T> {
     public final void add(final KeyValuePair<T> kvp) {
         if (size() == 0) {
             root = new Node<T>(kvp, 1, null, null, null);
+            size++;
         } else {
-            merge(new LTree<T>(kvp));
+            merge(new LeftSidedHeap<T>(kvp));
         }
     }
 
-    private Node<T> search(final Node<T> head, final int key) {
-        Node<T> tmp = null;
-        if (head != null) {
-            if (head.kvp.key == key) {
-                tmp = head;
-            } else if (key >= head.kvp.key) {
-                tmp = search(head.left, key);
-                if (tmp == null) {
-                    tmp = search(head.right, key);
-                }
-            }
+    public KeyValuePair<T> getMin() throws EmptyHeapException {
+        if (size() == 0) {
+            throw new EmptyHeapException();
         }
-        return tmp;
+        return new KeyValuePair<T>(root.kvp.key, root.kvp.value);
     }
 
-    public KeyValuePair<T> remove(final int key) {
-        KeyValuePair<T> retKvp = null;
-        if (size() != 0) {
-            Node<T> rem = search(root, key);
+    public KeyValuePair<T> remove(final int key) throws EmptyHeapException {
+        KeyValuePair<T> retVal = null;
+        if (size() == 0) {
+            throw new EmptyHeapException();
+        } else {
+            Node<T> nodeToRemove = search(root, key);
 
-            if (rem == null) {
-                retKvp = null;
-            } else if (rem == root) {
-                retKvp = root.kvp;
-
+            if (nodeToRemove == null) {
+                retVal = null;
+            } else if (nodeToRemove == root) {
+                retVal = root.kvp;
                 root = merge(root.left, root.right);
+                size--;
             } else {
-                retKvp = rem.kvp;
+                retVal = nodeToRemove.kvp;
 
-                Node<T> parentRem = rem.parent;
-                Node<T> newTree = merge(rem.left, rem.right);
-                if (parentRem.left == rem) {
-                    parentRem.left = newTree;
+                Node<T> parentRemovingNode = nodeToRemove.parent;
+                Node<T> newHeap = merge(nodeToRemove.left, nodeToRemove.right);
+                if (parentRemovingNode.left == nodeToRemove) {
+                    parentRemovingNode.left = newHeap;
                 } else {
-                    parentRem.right = newTree;
+                    parentRemovingNode.right = newHeap;
                 }
-                Node<T> tmp = parentRem;
+                Node<T> tmp = parentRemovingNode;
                 while (tmp != root && dist(tmp.left) < dist(tmp.right)) {
-                    Node<T> swap = tmp.left;
-                    tmp.left = tmp.right;
-                    tmp.right = swap;
-                    tmp = tmp.parent;
+                    tmp.swapChildren();
                 }
+                size--;
             }
         }
-        return retKvp;
+        return retVal;
     }
 
-    public KeyValuePair<T> getMin() {
-        return (size() == 0) ? null : new KeyValuePair<T>(root.kvp.key, root.kvp.value);
+    public boolean merge(final LeftSidedHeap<T> heap) {
+        boolean bResult = true;
+        if (heap == null) {
+            bResult = false;
+        } else if (size() == 0) {
+            root = heap.root;
+            size = heap.size;
+        } else if (heap.root != null) {
+            root = merge(root, heap.root);
+            size += heap.size;
+        }
+        return bResult;
+    }
+
+    public final int size() {
+        return size;
+    }
+
+    private static final class Node<T> {
+        Node(final KeyValuePair<T> kvp, final int rank,
+                     final Node<T> left, final Node<T> right, final Node<T> parent) {
+            this.kvp = kvp;
+            this.rank = rank;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
+        }
+
+        private void swapChildren() {
+            Node<T> tmp = left;
+            left = right;
+            right = tmp;
+        }
+
+        private final KeyValuePair<T> kvp;
+        private int rank;
+        private Node<T> left;
+        private Node<T> right;
+        private Node<T> parent;
+    }
+
+    private LeftSidedHeap(final KeyValuePair<T> kvp) {
+        size = 0;
+        add(kvp);
     }
 
     private int dist(final Node<T> x) {
@@ -126,9 +145,24 @@ public class LTree<T> {
         return ret;
     }
 
-    private Node<T> merge(final Node<T> fx, final Node<T> fy) {
-        Node<T> x = fx;
-        Node<T> y = fy;
+    private Node<T> search(final Node<T> head, final int key) {
+        Node<T> currentNode = null;
+        if (head != null) {
+            if (head.kvp.key == key) {
+                currentNode = head;
+            } else if (key >= head.kvp.key) {
+                currentNode = search(head.left, key);
+                if (currentNode == null) {
+                    currentNode = search(head.right, key);
+                }
+            }
+        }
+        return currentNode;
+    }
+
+    private Node<T> merge(final Node<T> heap1, final Node<T> heap2) {
+        Node<T> x = heap1;
+        Node<T> y = heap2;
         if (x == null) {
             return y;
         }
@@ -142,9 +176,7 @@ public class LTree<T> {
         }
         x.right = merge(x.right, y);
         if (dist(x.right) > dist(x.left)) {
-            Node<T> tmp = x.left;
-            x.left = x.right;
-            x.right = tmp;
+            x.swapChildren();
         }
 
         if (x.left != null) {
@@ -157,32 +189,6 @@ public class LTree<T> {
         return x;
     }
 
-    public boolean merge(final LTree<T> tree) {
-        boolean wasMerged = true;
-        if (tree == null) {
-            wasMerged = false;
-        } else if (size() == 0) {
-            root = tree.root;
-        } else if (tree.root != null) {
-            root = merge(root, tree.root);
-        }
-        return wasMerged;
-    }
-
-    private int size(final Node root) {
-        int tmp = 1;
-        if (root.left != null) {
-            tmp += size(root.left);
-        }
-        if (root.right != null) {
-            tmp += size(root.right);
-        }
-        return tmp;
-    }
-
-    public final int size() {
-        return (root == null) ? 0 : size(root);
-    }
-
+    private int size;
     private Node<T> root;
 }
