@@ -65,7 +65,7 @@ public class StringCalculatorTest {
     @Test
     public void canAddStringWithNegativeNumbers() {
         try {
-            assertEquals(6, calc.add("-1,2,3"));
+            calc.add("-1,2,3");
         } catch (IllegalArgumentException e) {
             assertEquals("Negatives -1 not allowed", e.getMessage());
         }
@@ -74,7 +74,7 @@ public class StringCalculatorTest {
     @Test
     public void canAddStringWithTwoNegativeNumbers() {
         try {
-            assertEquals(6, calc.add("-1,2,-3"));
+            calc.add("-1,2,-3");
         } catch (IllegalArgumentException e) {
             assertEquals("Negatives -1 -3 not allowed", e.getMessage());
         }
@@ -83,72 +83,44 @@ public class StringCalculatorTest {
     @Test
     public void canAddStringWithAllNegativeNumbers() {
         try {
-            assertEquals(6, calc.add("-1,-2,-3"));
+            calc.add("-1,-2,-3");
         } catch (IllegalArgumentException e) {
             assertEquals("Negatives -1 -2 -3 not allowed", e.getMessage());
         }
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithIncorrectData() {
-        try {
-            assertEquals(6, calc.add("sadfasdf"));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add("sadfasdf");
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithMistake() {
-        try {
-            assertEquals(6, calc.add("1,2,3s"));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add("1,2,3s");
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithNull() {
-        try {
-            assertEquals(6, calc.add(null));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add(null);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithDifferentDelimiters() {
-        try {
-            assertEquals(15, calc.add("1,2;3.4:5"));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add("1,2;3.4:5");
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithoutDelimiterAtBeginning() {
-        try {
-            assertEquals(15, calc.add("1.2.3.4.5"));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add("1.2.3.4.5");
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithBigNumbers() {
-        try {
-            assertEquals(15, calc.add("1e+40,1e+40"));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add("2147483647, 2147483647");
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithOneBigNumber() {
-        try {
-            assertEquals(15, calc.add("1e+80,1"));
-        } catch (IllegalArgumentException e) {
-            assertEquals("Incorrect data", e.getMessage());
-        }
+        calc.add("2147483648, 1");
     }
 }
