@@ -133,4 +133,22 @@ public class StringCalculatorTest {
             assertEquals("Incorrect data", e.getMessage());
         }
     }
+
+    @Test
+    public void canAddStringWithBigNumbers() {
+        try {
+            assertEquals(15, calc.add("1e+40,1e+40"));
+        } catch (IllegalArgumentException e) {
+            assertEquals("Incorrect data", e.getMessage());
+        }
+    }
+
+    @Test
+    public void canAddStringWithOneBigNumber() {
+        try {
+            assertEquals(15, calc.add("1e+80,1"));
+        } catch (IllegalArgumentException e) {
+            assertEquals("Incorrect data", e.getMessage());
+        }
+    }
 }
