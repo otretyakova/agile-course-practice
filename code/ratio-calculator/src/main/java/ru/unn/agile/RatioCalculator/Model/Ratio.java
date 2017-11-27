@@ -98,6 +98,10 @@ public class Ratio {
         int gcdValue = gcd(numerator, denominator);
         numerator = numerator / gcdValue;
         denominator = denominator / gcdValue;
+        if (denominator < 0) {
+            numerator *= -1;
+            denominator *= -1;
+        }
     }
 
     private static int gcd(final int first, final int second) {

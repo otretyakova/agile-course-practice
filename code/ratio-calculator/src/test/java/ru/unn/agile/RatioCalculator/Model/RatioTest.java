@@ -95,11 +95,33 @@ public class RatioTest {
     }
 
     @Test
-    public void negativeRatioMustHaveNegativeNumeratorNotDenominator() {
+    public void negativeRatiosHaveOneRepresentation() {
         Ratio ratio1 = new Ratio(-1, 2);
         Ratio ratio2 = new Ratio(1, -2);
 
         assertTrue(ratio1.isEqual(ratio2));
+    }
+
+    @Test
+    public void negativeRatioMustHaveNegativeNumeratorNotDenominator() {
+        Ratio ratio = new Ratio(1, -2);
+
+        assertTrue((ratio.getDenominator() > 0) && (ratio.getNumerator() < 0));
+    }
+
+    @Test
+    public void ratioWithNegativeNumeratorAndDenominatorIsPositive() {
+        Ratio ratio1 = new Ratio(-1, -2);
+        Ratio ratio2 = new Ratio(1, 2);
+
+        assertTrue(ratio1.isEqual(ratio2));
+    }
+
+    @Test
+    public void ratioWithZeroNumeratorMustEqualsOne() {
+        Ratio ratio = new Ratio(0, 2);
+
+        assertEquals(ratio.getDenominator(), 1);
     }
 
     @Test
