@@ -60,17 +60,11 @@ public class Ratio {
         return 0;
     }
 
-    public boolean isLess(final Ratio other) {
-        return (long) (numerator) * other.denominator < (long) (denominator) * other.numerator;
-    }
-
     public Ratio add(final Ratio other) {
         int commonDenominator = lcm(denominator, other.denominator);
         long newNumerator = (long) (numerator) * (commonDenominator / denominator)
                 + (long) (other.numerator) * (commonDenominator / other.denominator);
-        if (newNumerator > Integer.MAX_VALUE) {
-            throw new IntegerOverflowException("The result numerator is too big");
-        }
+        intOverflowCheck(newNumerator, "The result numerator is too big");
         return new Ratio((int) newNumerator, commonDenominator);
     }
 
@@ -92,13 +86,9 @@ public class Ratio {
 
     public Ratio mult(final Ratio other) {
         long newNumerator = (long) (numerator) * other.numerator;
-        if (newNumerator > Integer.MAX_VALUE) {
-            throw new IntegerOverflowException("The result numerator is too big");
-        }
+        intOverflowCheck(newNumerator, "The result numerator is too big");
         long newDenominator = (long) (denominator) * other.denominator;
-        if (newDenominator > Integer.MAX_VALUE) {
-            throw new IntegerOverflowException("The result denominator is too big");
-        }
+        intOverflowCheck(newDenominator, "The result denominator is too big");
         return new Ratio((int) newNumerator, (int) newDenominator);
     }
 
@@ -143,6 +133,12 @@ public class Ratio {
         }
     }
 
+    private void intOverflowCheck(final long number, final String errorMsg) {
+        if ((number < Integer.MIN_VALUE) || (number > Integer.MAX_VALUE)) {
+            throw new IntegerOverflowException(errorMsg);
+        }
+    }
+
     private int gcd(final int first, final int second) {
         int u = first;
         int v = second;
@@ -156,9 +152,7 @@ public class Ratio {
 
     private int lcm(final int first, final int second) {
         long lcmValue = (long) (first) / gcd(first, second) * second;
-        if (lcmValue > Integer.MAX_VALUE) {
-            throw new IntegerOverflowException("The common denominator is too big");
-        }
+        intOverflowCheck(lcmValue, "The common denominator is too big");
         return (int) lcmValue;
     }
 

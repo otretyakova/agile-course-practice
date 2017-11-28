@@ -485,6 +485,14 @@ public class RatioTest {
         assertTrue(ratio1.compareTo(ratio2) < 0);
     }
 
+    @Test
+    public void ratiosWithBigNegativeDenominatorsAndNumeratorsComparesCorrectly() {
+        Ratio ratio1 = new Ratio(Integer.MIN_VALUE, 2);
+        Ratio ratio2 = new Ratio(Integer.MIN_VALUE, 1);
+
+        assertTrue(ratio1.compareTo(ratio2) > 0);
+    }
+
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenSumOfRatiosHasTooBigNumeratorExceptionThrows() {
         Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
@@ -494,8 +502,24 @@ public class RatioTest {
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
+    public void whenSumOfRatiosHasTooBigNegativeNumeratorExceptionThrows() {
+        Ratio ratio1 = new Ratio(Integer.MIN_VALUE, 2);
+        Ratio ratio2 = new Ratio(Integer.MIN_VALUE / 2 - 1, 1);
+
+        Ratio got = ratio1.add(ratio2);
+    }
+
+    @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenMultOfRatiosHasTooBigNumeratorExceptionThrows() {
         Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio ratio2 = new Ratio(2, 5);
+
+        Ratio got = ratio1.mult(ratio2);
+    }
+
+    @Test(expected = Ratio.IntegerOverflowException.class)
+    public void whenMultOfRatiosHasTooBigNegativeNumeratorExceptionThrows() {
+        Ratio ratio1 = new Ratio(Integer.MIN_VALUE, 3);
         Ratio ratio2 = new Ratio(2, 5);
 
         Ratio got = ratio1.mult(ratio2);
