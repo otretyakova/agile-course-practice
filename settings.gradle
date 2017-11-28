@@ -135,6 +135,10 @@ project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
 include "code/korniakov-kirill-lab1"
 project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model"
 
+// Averin Andrey, lab1
+include "code/MatrixClass"
+project(":code/MatrixClass").name = "ClassMatrix"
+
 // Korniakov Kirill, lab2-legacy
 include "code/korniakov-kirill-lab2-legacy/Model"
 project(":code/korniakov-kirill-lab2-legacy/Model").name = "korniakov-kirill-lab2-Model-legacy"
