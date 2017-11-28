@@ -1,0 +1,7 @@
+// Bevzuk Anton
+include "code/bevzuk-anton"
+project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
+
+// Averin Andrey, lab1
+include "code/MatrixClass"
+project(":code/MatrixClass").name = "korniakov-kirill-lab1-Model"
