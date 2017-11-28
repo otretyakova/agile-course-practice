@@ -25,27 +25,53 @@ public class Ratio {
         return numerator / denominator;
     }
 
-    public boolean isEqual(final Ratio other) {
-        return (numerator == other.numerator)
-                && (denominator == other.denominator);
+    @Override
+    public int hashCode() {
+        final int shift = 32;
+
+        long temp = Double.doubleToLongBits(numerator);
+        int result = (int) (temp ^ (temp >>> shift));
+        temp = Double.doubleToLongBits(denominator);
+        result = (shift - 1) * result + (int) (temp ^ (temp >>> shift));
+        return result;
     }
 
-    public boolean isEqual(final int wholeNumber) {
-        Ratio otherRatio = new Ratio(wholeNumber);
-        return isEqual(otherRatio);
+    @Override
+    public boolean equals(final Object otherRatio) {
+        if (otherRatio.getClass() == Ratio.class) {
+            Ratio other = (Ratio) otherRatio;
+            return (numerator == other.numerator)
+                    && (denominator == other.denominator);
+        }
+        if (otherRatio.getClass() == Integer.class) {
+            return (numerator == (int) (otherRatio))
+                    && (denominator == 1);
+        }
+        return false;
+    }
+
+    public int compareTo(final Ratio other) {
+        if ((long) (numerator) * other.denominator < (long) (denominator) * other.numerator) {
+            return -1;
+        }
+        if ((long) (numerator) * other.denominator > (long) (denominator) * other.numerator) {
+            return 1;
+        }
+        return 0;
     }
 
     public boolean isLess(final Ratio other) {
-        int commonDenominator = lcm(denominator, other.denominator);
-        return numerator * (commonDenominator / denominator)
-                < other.numerator * (commonDenominator / other.denominator);
+        return (long) (numerator) * other.denominator < (long) (denominator) * other.numerator;
     }
 
     public Ratio add(final Ratio other) {
         int commonDenominator = lcm(denominator, other.denominator);
-        int newNumerator1 = numerator * (commonDenominator / denominator);
-        int newNumerator2 = other.numerator * (commonDenominator / other.denominator);
-        return new Ratio(newNumerator1 + newNumerator2, commonDenominator);
+        long newNumerator = (long) (numerator) * (commonDenominator / denominator)
+                + (long) (other.numerator) * (commonDenominator / other.denominator);
+        if (newNumerator > Integer.MAX_VALUE) {
+            throw new IntegerOverflowException("The result numerator is too big");
+        }
+        return new Ratio((int) newNumerator, commonDenominator);
     }
 
     public Ratio add(final int number) {
@@ -65,8 +91,15 @@ public class Ratio {
     }
 
     public Ratio mult(final Ratio other) {
-        return new Ratio(numerator * other.numerator,
-                denominator * other.denominator);
+        long newNumerator = (long) (numerator) * other.numerator;
+        if (newNumerator > Integer.MAX_VALUE) {
+            throw new IntegerOverflowException("The result numerator is too big");
+        }
+        long newDenominator = (long) (denominator) * other.denominator;
+        if (newDenominator > Integer.MAX_VALUE) {
+            throw new IntegerOverflowException("The result denominator is too big");
+        }
+        return new Ratio((int) newNumerator, (int) newDenominator);
     }
 
     public Ratio mult(final int number) {
@@ -83,6 +116,12 @@ public class Ratio {
 
     public Ratio div(final int number) {
         return div(new Ratio(number));
+    }
+
+    public class IntegerOverflowException extends RuntimeException {
+        IntegerOverflowException(final String msg) {
+            super(msg);
+        }
     }
 
     private void init(final int numerator, final int denominator) {
@@ -104,7 +143,7 @@ public class Ratio {
         }
     }
 
-    private static int gcd(final int first, final int second) {
+    private int gcd(final int first, final int second) {
         int u = first;
         int v = second;
         while (v != 0) {
@@ -115,8 +154,12 @@ public class Ratio {
         return u;
     }
 
-    private static int lcm(final int first, final int second) {
-        return first / gcd(first, second) * second;
+    private int lcm(final int first, final int second) {
+        long lcmValue = (long) (first) / gcd(first, second) * second;
+        if (lcmValue > Integer.MAX_VALUE) {
+            throw new IntegerOverflowException("The common denominator is too big");
+        }
+        return (int) lcmValue;
     }
 
     private int numerator;

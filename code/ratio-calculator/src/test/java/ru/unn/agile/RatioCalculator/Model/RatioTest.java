@@ -18,25 +18,17 @@ public class RatioTest {
         assertEquals(ratio.getDenominator(), 2);
     }
 
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void cantCreateRatioWithZeroDenominator() {
-        boolean divisionByZeroCatched = false;
-        try {
-            Ratio ratio = new Ratio(1, 0);
-        } catch (ArithmeticException e) {
-            divisionByZeroCatched = true;
-        }
-
-        assertTrue(divisionByZeroCatched);
+        Ratio ratio = new Ratio(1, 0);
     }
-
 
     @Test
     public void equalRatiosAreEqual() {
         Ratio ratio1 = new Ratio(1, 2);
         Ratio ratio2 = new Ratio(2, 4);
 
-        assertTrue(ratio1.isEqual(ratio2));
+        assertEquals(ratio1, ratio2);
     }
 
     @Test
@@ -44,7 +36,38 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(1, 2);
         Ratio ratio2 = new Ratio(2, 5);
 
-        assertFalse(ratio1.isEqual(ratio2));
+        assertNotEquals(ratio1, ratio2);
+    }
+
+    @Test
+    public void ratiosWithDefferentSignsAreNotEqual() {
+        Ratio ratio1 = new Ratio(1, 2);
+        Ratio ratio2 = new Ratio(-1, 2);
+
+        assertNotEquals(ratio1, ratio2);
+    }
+
+    @Test
+    public void equalNegativeRatiosAreEqual() {
+        Ratio ratio1 = new Ratio(1, -2);
+        Ratio ratio2 = new Ratio(-1, 2);
+
+        assertEquals(ratio1, ratio2);
+    }
+
+    @Test
+    public void whenZeroRatiosAreCreatedInDifferentWaysTheyAreStillEqual() {
+        Ratio ratio1 = new Ratio(0, -2);
+        Ratio ratio2 = new Ratio(0);
+
+        assertEquals(ratio1, ratio2);
+    }
+
+    @Test
+    public void zeroRatioEqualsZeroNumber() {
+        Ratio ratio = new Ratio(0);
+
+        assertEquals(ratio, 0);
     }
 
     @Test
@@ -52,14 +75,14 @@ public class RatioTest {
         Ratio ratio = new Ratio(5);
         Ratio expected = new Ratio(5, 1);
 
-        assertTrue(ratio.isEqual(expected));
+        assertEquals(ratio, expected);
     }
 
     @Test
     public void ratioWhichPresentsWholeNumberEqualsToThisNumber() {
         Ratio ratio = new Ratio(5);
 
-        assertTrue(ratio.isEqual(5));
+        assertEquals(ratio, 5);
     }
 
     @Test
@@ -67,7 +90,7 @@ public class RatioTest {
         Ratio ratio = new Ratio(2, 4);
         Ratio expected = new Ratio(1, 2);
 
-        assertTrue(ratio.isEqual(expected));
+        assertEquals(ratio, expected);
     }
 
     @Test
@@ -75,7 +98,7 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(2, 5);
         Ratio ratio2 = new Ratio(3, 5);
 
-        assertTrue(ratio1.isLess(ratio2));
+        assertTrue(ratio1.compareTo(ratio2) < 0);
     }
 
     @Test
@@ -83,7 +106,7 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(1, 2);
         Ratio ratio2 = new Ratio(1, 3);
 
-        assertTrue(ratio2.isLess(ratio1));
+        assertTrue(ratio1.compareTo(ratio2) > 0);
     }
 
     @Test
@@ -91,7 +114,23 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(1, 6);
         Ratio ratio2 = new Ratio(3, 8);
 
-        assertTrue(ratio1.isLess(ratio2));
+        assertTrue(ratio1.compareTo(ratio2) < 0);
+    }
+
+    @Test
+    public void positiveRatioIsBiggerThenNegative() {
+        Ratio ratio1 = new Ratio(1, 6);
+        Ratio ratio2 = new Ratio(-5, 8);
+
+        assertTrue(ratio1.compareTo(ratio2) > 0);
+    }
+
+    @Test
+    public void canCompareNegativeRatios() {
+        Ratio ratio1 = new Ratio(-1, -6);
+        Ratio ratio2 = new Ratio(-5, 8);
+
+        assertTrue(ratio1.compareTo(ratio2) > 0);
     }
 
     @Test
@@ -99,7 +138,7 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(-1, 2);
         Ratio ratio2 = new Ratio(1, -2);
 
-        assertTrue(ratio1.isEqual(ratio2));
+        assertEquals(ratio1, ratio2);
     }
 
     @Test
@@ -114,7 +153,7 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(-1, -2);
         Ratio ratio2 = new Ratio(1, 2);
 
-        assertTrue(ratio1.isEqual(ratio2));
+        assertEquals(ratio1, ratio2);
     }
 
     @Test
@@ -129,7 +168,7 @@ public class RatioTest {
         Ratio ratio1 = new Ratio(6, -9);
         Ratio ratio2 = new Ratio(-2, 3);
 
-        assertTrue(ratio1.isEqual(ratio2));
+        assertEquals(ratio1, ratio2);
     }
 
     @Test
@@ -154,6 +193,20 @@ public class RatioTest {
     }
 
     @Test
+    public void whenDenominatorDividesNumeratorResultOfDivisionIsTheWholePartOfRatio() {
+        Ratio ratio = new Ratio(36, 6);
+
+        assertEquals(ratio.getWholePart(), 6);
+    }
+
+    @Test
+    public void theWholePartOfZeroIsZero() {
+        Ratio ratio = new Ratio(0);
+
+        assertEquals(ratio.getWholePart(), 0);
+    }
+
+    @Test
     public void canCalcWholePartOfNegativeRatio() {
         Ratio ratio = new Ratio(-37, 6);
 
@@ -167,7 +220,7 @@ public class RatioTest {
 
         Ratio got = ratio1.add(ratio2);
 
-        assertTrue(got.isEqual(ratio1));
+        assertEquals(got, ratio1);
     }
 
     @Test
@@ -178,7 +231,7 @@ public class RatioTest {
 
         Ratio got = ratio1.add(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -189,7 +242,29 @@ public class RatioTest {
 
         Ratio got = ratio1.add(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void canCalcSumOfPositiveAndNegativeRatio() {
+        Ratio ratio1 = new Ratio(1, 8);
+        Ratio ratio2 = new Ratio(-1, 4);
+        Ratio expected = new Ratio(-1, 8);
+
+        Ratio got = ratio1.add(ratio2);
+
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void canCalcSumOfNegativesRatios() {
+        Ratio ratio1 = new Ratio(-1, 8);
+        Ratio ratio2 = new Ratio(-1, 4);
+        Ratio expected = new Ratio(-3, 8);
+
+        Ratio got = ratio1.add(ratio2);
+
+        assertEquals(got, expected);
     }
 
     @Test
@@ -199,7 +274,7 @@ public class RatioTest {
 
         Ratio got = ratio.negate();
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -209,7 +284,7 @@ public class RatioTest {
 
         Ratio got = ratio1.sub(ratio2);
 
-        assertTrue(got.isEqual(ratio1));
+        assertEquals(got, ratio1);
     }
 
     @Test
@@ -220,7 +295,7 @@ public class RatioTest {
 
         Ratio got = ratio1.sub(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -231,7 +306,7 @@ public class RatioTest {
 
         Ratio got = ratio1.sub(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
    @Test
@@ -242,7 +317,7 @@ public class RatioTest {
 
        Ratio got = ratio1.mult(ratio2);
 
-       assertTrue(got.isEqual(expected));
+       assertEquals(got, expected);
    }
 
     @Test
@@ -253,7 +328,7 @@ public class RatioTest {
 
         Ratio got = ratio1.mult(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -264,7 +339,29 @@ public class RatioTest {
 
         Ratio got = ratio1.mult(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void canCalcMultOfPositiveAndNegativeRatio() {
+        Ratio ratio1 = new Ratio(1, 8);
+        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio expected = new Ratio(-5, 32);
+
+        Ratio got = ratio1.mult(ratio2);
+
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void canCalcMultOfNegativesRatios() {
+        Ratio ratio1 = new Ratio(-1, 8);
+        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio expected = new Ratio(5, 32);
+
+        Ratio got = ratio1.mult(ratio2);
+
+        assertEquals(got, expected);
     }
 
     @Test
@@ -274,36 +371,22 @@ public class RatioTest {
 
         Ratio got = ratio.reverse();
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void cantReverseZeroRatio() {
         Ratio ratio = new Ratio(0);
 
-        boolean divisionByZeroCatched = false;
-        try {
-            Ratio got = ratio.reverse();
-        } catch (ArithmeticException e) {
-            divisionByZeroCatched = true;
-        }
-
-        assertTrue(divisionByZeroCatched);
+        Ratio got = ratio.reverse();
     }
 
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void cantCalcDivisionOfRatioAndZeroRatio() {
         Ratio ratio1 = new Ratio(5, 6);
         Ratio ratio2 = new Ratio(0);
 
-        boolean divisionByZeroCatched = false;
-        try {
-            Ratio got = ratio1.div(ratio2);
-        } catch (ArithmeticException e) {
-            divisionByZeroCatched = true;
-        }
-
-        assertTrue(divisionByZeroCatched);
+        Ratio got = ratio1.div(ratio2);
     }
 
     @Test
@@ -314,7 +397,7 @@ public class RatioTest {
 
         Ratio got = ratio1.div(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -325,7 +408,29 @@ public class RatioTest {
 
         Ratio got = ratio1.div(ratio2);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void canCalcDivisionOfPositiveAndNegativeRatio() {
+        Ratio ratio1 = new Ratio(1, 8);
+        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio expected = new Ratio(-1, 10);
+
+        Ratio got = ratio1.div(ratio2);
+
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void canCalcDivisionOfNegativesRatios() {
+        Ratio ratio1 = new Ratio(-1, 8);
+        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio expected = new Ratio(1, 10);
+
+        Ratio got = ratio1.div(ratio2);
+
+        assertEquals(got, expected);
     }
 
     @Test
@@ -336,7 +441,7 @@ public class RatioTest {
 
         Ratio got = ratio.add(number);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -347,7 +452,7 @@ public class RatioTest {
 
         Ratio got = ratio.sub(number);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -358,7 +463,7 @@ public class RatioTest {
 
         Ratio got = ratio.mult(number);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
     }
 
     @Test
@@ -369,7 +474,47 @@ public class RatioTest {
 
         Ratio got = ratio.div(number);
 
-        assertTrue(got.isEqual(expected));
+        assertEquals(got, expected);
+    }
+
+    @Test
+    public void ratiosWithBigDenominatorsAndNumeratorsComparesCorrectly() {
+        Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio ratio2 = new Ratio(Integer.MAX_VALUE, 1);
+
+        assertTrue(ratio1.compareTo(ratio2) < 0);
+    }
+
+    @Test(expected = Ratio.IntegerOverflowException.class)
+    public void whenSumOfRatiosHasTooBigNumeratorExceptionThrows() {
+        Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio ratio2 = new Ratio(Integer.MAX_VALUE / 2 + 1, 1);
+
+        Ratio got = ratio1.add(ratio2);
+    }
+
+    @Test(expected = Ratio.IntegerOverflowException.class)
+    public void whenMultOfRatiosHasTooBigNumeratorExceptionThrows() {
+        Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio ratio2 = new Ratio(2, 5);
+
+        Ratio got = ratio1.mult(ratio2);
+    }
+
+    @Test(expected = Ratio.IntegerOverflowException.class)
+    public void whenMultOfRatiosHasTooBigDenominatorExceptionThrows() {
+        Ratio ratio1 = new Ratio(1, Integer.MAX_VALUE);
+        Ratio ratio2 = new Ratio(2, 5);
+
+        Ratio got = ratio1.mult(ratio2);
+    }
+
+    @Test(expected = Ratio.IntegerOverflowException.class)
+    public void cantFindSumOfRatiosWithTooBigCommonDenominator() {
+        Ratio ratio1 = new Ratio(1, Integer.MAX_VALUE);
+        Ratio ratio2 = new Ratio(2, 3);
+
+        Ratio got = ratio1.add(ratio2);
     }
 
 }
