@@ -37,7 +37,7 @@ public class MapTest {
         boolean result = true;
         try {
             for (int i = 0; i < firstGrid.length; i++) {
-                for (int j = 0; i < firstGrid[1].length; i++) {
+                for (int j = 0; i < firstGrid[0].length; i++) {
                     result = result && (firstGrid[i][j] == secondGrid[i][j]);
                 }
             }
