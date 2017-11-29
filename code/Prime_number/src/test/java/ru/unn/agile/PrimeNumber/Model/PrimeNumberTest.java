@@ -27,7 +27,6 @@ public class PrimeNumberTest {
         Integer right = 2;
         PrimeNumber limitTest = new PrimeNumber(left, right);
 
-
         left = 3;
         right = 5;
         limitTest.setLim(left, right);
@@ -44,7 +43,6 @@ public class PrimeNumberTest {
         Integer right = 12;
         PrimeNumber limitTest = new PrimeNumber(left, right);
 
-
         left = 5;
         right = 3;
         limitTest.setLim(left, right);
@@ -55,14 +53,13 @@ public class PrimeNumberTest {
         assertEquals(left, rightOut);
     }
 
-
     @Test
     public void canFindSimpleOnePrimeSimpleSearch() {
         Integer left = 1;
-        Integer right = 1;
+        Integer right = 2;
         PrimeNumber searchOne = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
-        prime.add(1);
+        prime.add(2);
 
         searchOne.findPrimeNumberFromRangeSimpleSearch();
         List<Integer> resPrime = searchOne.getPrimeList();
@@ -73,11 +70,11 @@ public class PrimeNumberTest {
     @Test
     public void canFindSimpleTwoPrimeSimpleSearch() {
         Integer left = 1;
-        Integer right = 2;
+        Integer right = 3;
         PrimeNumber searchTwo = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
-        prime.add(1);
         prime.add(2);
+        prime.add(3);
 
         searchTwo.findPrimeNumberFromRangeSimpleSearch();
         List<Integer> resPrime = searchTwo.getPrimeList();
@@ -121,7 +118,6 @@ public class PrimeNumberTest {
         Integer right = 4;
         PrimeNumber search = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
-        prime.add(1);
         prime.add(2);
         prime.add(3);
 
@@ -145,12 +141,27 @@ public class PrimeNumberTest {
     }
 
     @Test
+    public void canFindBigNumberSimpleSearch() {
+        Integer left = 1000000000;
+        Integer right = 1000000020;
+        PrimeNumber search = new PrimeNumber(left, right);
+        List<Integer> prime = new ArrayList<Integer>();
+        prime.add(1000000007);
+        prime.add(1000000009);
+
+        search.findPrimeNumberFromRangeSimpleSearch();
+        List<Integer> resPrime = search.getPrimeList();
+
+        assertEquals(prime, resPrime);
+    }
+
+    @Test
     public void canFindSimpleOnePrimeEratosthenes() {
-        Integer left = 1;
-        Integer right = 1;
+        Integer left = 8;
+        Integer right = 11;
         PrimeNumber searchOne = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
-        prime.add(1);
+        prime.add(11);
 
         searchOne.findPrimeNumberFromRangeEratosthenes();
         List<Integer> resPrime = searchOne.getPrimeList();
@@ -160,12 +171,12 @@ public class PrimeNumberTest {
 
     @Test
     public void canFindSimpleTwoPrimeEratosthenes() {
-        Integer left = 1;
-        Integer right = 2;
+        Integer left = 13;
+        Integer right = 17;
         PrimeNumber searchTwo = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
-        prime.add(1);
-        prime.add(2);
+        prime.add(13);
+        prime.add(17);
 
         searchTwo.findPrimeNumberFromRangeEratosthenes();
         List<Integer> resPrime = searchTwo.getPrimeList();
@@ -209,7 +220,6 @@ public class PrimeNumberTest {
         Integer right = 2;
         PrimeNumber search = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
-        prime.add(1);
         prime.add(2);
 
         search.findPrimeNumberFromRangeEratosthenes();
@@ -224,6 +234,22 @@ public class PrimeNumberTest {
         Integer right = -8;
         PrimeNumber search = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
+
+        search.findPrimeNumberFromRangeEratosthenes();
+        List<Integer> resPrime = search.getPrimeList();
+
+        assertEquals(prime, resPrime);
+    }
+
+    @Test
+    public void canFindBigNumberEratosthenes() {
+        Integer left = 1000;
+        Integer right = 1020;
+        PrimeNumber search = new PrimeNumber(left, right);
+        List<Integer> prime = new ArrayList<Integer>();
+        prime.add(1009);
+        prime.add(1013);
+        prime.add(1019);
 
         search.findPrimeNumberFromRangeEratosthenes();
         List<Integer> resPrime = search.getPrimeList();

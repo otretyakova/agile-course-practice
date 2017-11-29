@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Math.sqrt;
+
 public class PrimeNumber {
 
     private Integer leftLim;
     private Integer rightLim;
 
     private List<Integer> primeNum;
-    private PrimeNumber() {
-        this.primeNum = new ArrayList<Integer>();
-    }
 
     public void setLim(final Integer left, final Integer right) {
-
         if (left < right) {
             this.leftLim = left;
             this.rightLim = right;
@@ -30,7 +28,6 @@ public class PrimeNumber {
     }
 
     public PrimeNumber(final Integer left, final Integer right) {
-
         if (left > right) {
             this.leftLim = right;
             this.rightLim = left;
@@ -47,39 +44,48 @@ public class PrimeNumber {
     }
 
     private boolean isPrime(final Integer num) {
+        if(num < 2) {
+            return false;
+        }
 
-        for (Integer divider = 2; divider < num; divider++) {
-            Integer wholePart = (num / divider) * divider;
-            if (wholePart == num) {
+        for (Integer divider = 2; divider <= sqrt(num); divider++) {
+            if (num%divider == 0) {
                 return false;
             }
         }
+
         return true;
     }
 
     public void findPrimeNumberFromRangeSimpleSearch() {
-
         this.primeNum.clear();
 
         for (Integer testNum = this.leftLim; testNum <= this.rightLim; testNum++) {
             if (isPrime(testNum)) {
                 this.primeNum.add(testNum);
             }
-        }
+
+            if(testNum == Integer.MAX_VALUE) {
+                break;
+            }
+       }
     }
 
     private boolean[] eratosthenes(final Integer num) {
-
         boolean[] isPrime = new boolean[num + 1];
 
         Arrays.fill(isPrime, true);
         isPrime[0] = false;
-        isPrime[1] = true;
+        isPrime[1] = false;
 
-        for (Integer divider = 2; divider <= num; divider++) {
+        for (Integer divider = 2; divider <= sqrt(num); divider++) {
             if (isPrime[divider]) {
                 for (Integer dividend = 2 * divider; dividend <= num; dividend += divider) {
                     isPrime[dividend] = false;
+
+                    if(dividend == Integer.MAX_VALUE) {
+                        break;
+                    }
                 }
             }
         }
@@ -98,6 +104,10 @@ public class PrimeNumber {
             for (Integer testNum = this.leftLim; testNum <= this.rightLim; testNum++) {
                 if (isPrime[testNum]) {
                     this.primeNum.add(testNum);
+                }
+
+                if(testNum == Integer.MAX_VALUE) {
+                    break;
                 }
             }
         }
