@@ -44,12 +44,12 @@ public class PrimeNumber {
     }
 
     private boolean isPrime(final Integer num) {
-        if(num < 2) {
+        if (num < 2) {
             return false;
         }
 
         for (Integer divider = 2; divider <= sqrt(num); divider++) {
-            if (num%divider == 0) {
+            if (num % divider == 0) {
                 return false;
             }
         }
@@ -65,7 +65,7 @@ public class PrimeNumber {
                 this.primeNum.add(testNum);
             }
 
-            if(testNum == Integer.MAX_VALUE) {
+            if (testNum == Integer.MAX_VALUE) {
                 break;
             }
        }
@@ -83,7 +83,7 @@ public class PrimeNumber {
                 for (Integer dividend = 2 * divider; dividend <= num; dividend += divider) {
                     isPrime[dividend] = false;
 
-                    if(dividend == Integer.MAX_VALUE) {
+                    if (dividend == Integer.MAX_VALUE) {
                         break;
                     }
                 }
@@ -106,7 +106,7 @@ public class PrimeNumber {
                     this.primeNum.add(testNum);
                 }
 
-                if(testNum == Integer.MAX_VALUE) {
+                if (testNum == Integer.MAX_VALUE) {
                     break;
                 }
             }
