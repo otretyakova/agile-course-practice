@@ -22,6 +22,41 @@ public class PrimeNumberTest {
     }
 
     @Test
+    public void canCreateClassWithRangeAndResetRange() {
+        Integer left = 1;
+        Integer right = 2;
+        PrimeNumber limitTest = new PrimeNumber(left, right);
+
+
+        left = 3;
+        right = 5;
+        limitTest.setLim(left, right);
+        Integer leftOut = limitTest.getLeftLim();
+        Integer rightOut = limitTest.getRightLim();
+
+        assertEquals(left, leftOut);
+        assertEquals(right, rightOut);
+    }
+
+    @Test
+    public void canCreateClassWithRangeAndResetReverseRange() {
+        Integer left = 10;
+        Integer right = 12;
+        PrimeNumber limitTest = new PrimeNumber(left, right);
+
+
+        left = 5;
+        right = 3;
+        limitTest.setLim(left, right);
+        Integer leftOut = limitTest.getLeftLim();
+        Integer rightOut = limitTest.getRightLim();
+
+        assertEquals(right, leftOut);
+        assertEquals(left, rightOut);
+    }
+
+
+    @Test
     public void canFindSimpleOnePrimeSimpleSearch() {
         Integer left = 1;
         Integer right = 1;
