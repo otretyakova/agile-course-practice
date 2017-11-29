@@ -2,22 +2,15 @@ package ru.unn.agile.PrimeNumber.Model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class PrimeNumber {
 
     private Integer leftLim;
     private Integer rightLim;
 
-    private ArrayList<Integer> primeNum;
+    private List<Integer> primeNum;
     private PrimeNumber() {
-        this.primeNum = new ArrayList<Integer>();
-    }
-
-
-    public PrimeNumber(final Integer left, final Integer right) {
-
-        setLim(left, right);
-
         this.primeNum = new ArrayList<Integer>();
     }
 
@@ -30,11 +23,28 @@ public class PrimeNumber {
             this.leftLim = right;
             this.rightLim = left;
         }
+
         if (this.leftLim < 1) {
             this.leftLim = 1;
         }
     }
 
+    public PrimeNumber(final Integer left, final Integer right) {
+
+        if (left > right) {
+            this.leftLim = right;
+            this.rightLim = left;
+        } else {
+            this.leftLim = left;
+            this.rightLim = right;
+        }
+
+        if (this.leftLim < 1) {
+            this.leftLim = 1;
+        }
+
+        this.primeNum = new ArrayList<Integer>();
+    }
 
     private boolean isPrime(final Integer num) {
 
@@ -101,7 +111,7 @@ public class PrimeNumber {
         return this.rightLim;
     }
 
-    public ArrayList<Integer> getPrimeList() {
+    public List<Integer> getPrimeList() {
         return this.primeNum;
     }
 
