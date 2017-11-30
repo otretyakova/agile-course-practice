@@ -91,38 +91,6 @@ public class MortgageCalculator {
         return pay;
     }
 
-    public void setAmount(final int amount) {
-        this.amount = amount;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setPeriod(final int period) {
-        this.period = period;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriodType(final String periodType) {
-        this.periodType = periodType;
-    }
-
-    public String getPeriodType() {
-        return periodType;
-    }
-
-    public void setRate(final float rate) {
-        this.rate = rate;
-    }
-
-    public float getRate() {
-        return rate;
-    }
-
     public String getError() {
         return error;
     }
