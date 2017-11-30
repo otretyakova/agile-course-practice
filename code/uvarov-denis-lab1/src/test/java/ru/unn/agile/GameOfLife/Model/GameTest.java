@@ -9,58 +9,56 @@ public class GameTest {
     public void couldNotWorkWithIncorrectInput() {
         String[] inputArray = {"", ""};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
+        testGame.readCurrentGeneration(inputArray);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void couldNotWorkWithIncorrectMapSizeByYValue() {
         String[] inputArray = {"1 4", ".", "."};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
+        testGame.readCurrentGeneration(inputArray);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void couldNotWorkWithIncorrectMapSizeByXValue() {
         String[] inputArray = {"2 3", ".", ".", "."};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
+        testGame.readCurrentGeneration(inputArray);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void couldNotWorkWithIncorrectStringLength() {
         String[] inputArray = {"2 3", "..", "...", ".."};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
+        testGame.readCurrentGeneration(inputArray);
     }
 
     @Test
     public void shouldShouldParseCorrectInput() {
         String[] inputArray = {"2 3", "..", "..", ".."};
-        int[][] correctGrid = {{0, 0}, {0, 0}, {0, 0}};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
-        assertEquals(testGame.GetCurrentGeneration().GetGrid()[1], 2);
-        assertEquals(testGame.GetCurrentGeneration().GetGrid()[2], 3);
-        assertTrue(MapTest.IsEqualsGrids(testGame.GetCurrentGeneration().GetGrid(), correctGrid));
+        testGame.readCurrentGeneration(inputArray);
+        assertEquals(testGame.getCurrentGeneration().getSizeX(), 2);
+        assertEquals(testGame.getCurrentGeneration().getSizeY(), 3);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void couldNotReturnNotCreatedNextGeneration() {
         GameOfLife testGame = new GameOfLife();
-        testGame.GetNextGeneration();
+        testGame.getNextGeneration();
     }
 
     @Test
     public void shouldCreateCorrectNextGenerarionGrid() {
         String[] inputArray = {"2 3", "..", "*.", ".."};
-        int[][] correctGrid = {{0, 0}, {0, 0}, {0, 0}};
+        int[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
-        testGame.BuildNextGeneration();
+        testGame.readCurrentGeneration(inputArray);
+        testGame.buildNextGeneration();
 
-        assertEquals(testGame.GetCurrentGeneration().GetGrid()[1], 2);
-        assertEquals(testGame.GetCurrentGeneration().GetGrid()[2], 3);
-        assertTrue(MapTest.IsEqualsGrids(testGame.GetNextGeneration().GetGrid(), correctGrid));
+        assertEquals(testGame.getCurrentGeneration().getSizeX(), 2);
+        assertEquals(testGame.getCurrentGeneration().getSizeY(), 3);
+        assertTrue(MapTest.isEqualsGrids(testGame.getNextGeneration().getGrid(), correctGrid));
     }
 
     @Test
@@ -68,13 +66,13 @@ public class GameTest {
         String[] inputArray = {"2 3", "..", "*.", ".."};
         String[] correctOutputArray = {"2 3", "..", "..", ".."};
         GameOfLife testGame = new GameOfLife();
-        testGame.ReadCurrentGeneration(inputArray);
-        testGame.BuildNextGeneration();
-        String[] outputArray = testGame.WriteNextGeneration();
-        assertTrue(IsEqualsStrings(correctOutputArray, outputArray));
+        testGame.readCurrentGeneration(inputArray);
+        testGame.buildNextGeneration();
+        String[] outputArray = testGame.writeNextGeneration();
+        assertTrue(isEqualsStrings(correctOutputArray, outputArray));
     }
 
-    public static boolean IsEqualsStrings(String[] firstArray, String[] secondArray) {
+    private static boolean isEqualsStrings(final String[] firstArray, final String[] secondArray) {
         boolean result = true;
         try {
             for (int i = 0; i < firstArray.length; i++) {

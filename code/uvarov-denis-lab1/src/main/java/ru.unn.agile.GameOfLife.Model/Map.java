@@ -9,69 +9,86 @@ public class Map {
         if (grid.length < 1) {
             throw new IllegalArgumentException();
         }
-        this.sizeY = grid.length;
+        this.sizeX = grid.length;
 
         boolean isValidLength = true;
-        for (int i = 1; i < sizeY; i++) {
+
+        for (int i = 1; i < sizeX; i++) {
             isValidLength = isValidLength && (grid[0].length == grid[i].length);
         }
-        if (!isValidLength || grid[0].length < 0) {
+        if (!isValidLength || grid[0].length < 1) {
             throw new IllegalArgumentException();
         }
-        this.sizeX = grid[0].length;
-
-        this.grid = grid;
+        this.sizeY = grid[0].length;
+        boolean isValidValues = true;
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                isValidValues = isValidValues && grid[i][j] >= 0 && grid[i][j] <= 1;
+            }
+        }
+        if (isValidValues) {
+            this.grid = grid;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public int CountAliveNeighbors(int coordX, int coordY) {
-        int result = 0;
-        
-        int minX = 0;
-        int minY = 0;
-        int maxX = sizeX - 1;
-        int maxY = sizeY - 1;
-
-        if (coordX != minX) { // Middle Left
-            result += grid[coordY][coordX - 1];
-        }
-        if (coordX != maxX) { // Middle Right
-            result += grid[coordY][coordX + 1];
-        }
-        if (coordY != minY) { // Upper Middle
-            result += grid[coordY - 1][coordX];
-        }
-        if (coordY != maxY) { // Lower Middle
-            result += grid[coordY + 1][coordX];
-        }
-
-        if (coordX != minX && coordY != minY) { // Left Upper corner
-            result += grid[coordY - 1][coordX - 1];
-        }
-        if (coordX != maxX && coordY != minY) { // Right Upper corner
-            result += grid[coordY - 1][coordX + 1];
-        }
-        if (coordX != minX && coordY != maxY) { // Left Lower corner
-            result += grid[coordY + 1][coordX + 1];
-        }
-        if (coordX != maxX && coordY != maxY) { // Right Lower corner
-            result += grid[coordY + 1][coordX + 1];
-        }
-
-        return result;
+    public int getSizeX() {
+        return sizeX;
     }
 
-    public int[] GetSize() {
-        int[] retValue = {sizeX, sizeY};
-        return retValue;
+    public int getSizeY() {
+        return sizeY;
     }
 
-    public int[][] GetGrid() {
+    public int[] getSize() {
+        return new int[]{getSizeX(), getSizeY()};
+    }
+
+    public int[][] getGrid() {
         return grid;
     }
 
-    @Override
-    public boolean equals(final Object object) {
-        //Verify that all fields equals
-        return false;
+    public int countAliveNeighbors(final int coordX, final int coordY) {
+        return leftNeighbor(coordX, coordY) + rightNeighbor(coordX, coordY)
+                + upperNeighbor(coordX, coordY) + lowerNeighbor(coordX, coordY)
+                + leftUpperNeighbor(coordX, coordY) + rightUpperNeighbor(coordX, coordY)
+                + leftLowerNeighbor(coordX, coordY) + rightLowerNeighbor(coordX, coordY);
+    }
+
+    private int leftNeighbor(final int coordX, final int coordY) {
+        return (coordX != 0) ? grid[coordX - 1][coordY] : 0;
+    }
+
+    private int rightNeighbor(final int coordX, final int coordY) {
+        return (coordX != sizeX - 1) ? grid[coordX + 1][coordY] : 0;
+    }
+
+    private int upperNeighbor(final int coordX, final int coordY) {
+        return (coordX != 0) ? grid[coordX - 1][coordY] : 0;
+    }
+
+    private int lowerNeighbor(final int coordX, final int coordY) {
+        return (coordY != sizeY - 1) ? grid[coordX][coordY + 1] : 0;
+    }
+
+    private int leftUpperNeighbor(final int coordX, final int coordY) {
+        return (coordX != 0 && coordY != 0)
+                ? grid[coordX - 1][coordY - 1] : 0;
+    }
+
+    private int rightUpperNeighbor(final int coordX, final int coordY) {
+        return (coordX != sizeX - 1 && coordY != 0)
+                ? grid[coordX + 1][coordY - 1] : 0;
+    }
+
+    private int leftLowerNeighbor(final int coordX, final int coordY) {
+        return (coordX != 0 && coordY != sizeY - 1)
+                ? grid[coordX - 1][coordY + 1] : 0;
+    }
+
+    private int rightLowerNeighbor(final int coordX, final int coordY) {
+        return (coordX != sizeX - 1 && coordY != sizeY - 1)
+                ? grid[coordX + 1][coordY + 1] : 0;
     }
 }

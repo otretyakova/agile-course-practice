@@ -26,20 +26,32 @@ public class MapTest {
 
     @Test
     public void shouldCreateMapWithInputParameters() {
-        int[][] grid = {{1, 0}, {0, 0}, {0, 1}};
+        int[][] grid = {{1, 0, 0}, {0, 1, 0}};
+        int[] gridSize = {2, 3};
         Map testMap = new Map(grid);
-        assertEquals(testMap.GetSize()[1], 2);
-        assertEquals(testMap.GetSize()[2], 3);
-        assertTrue(IsEqualsGrids(grid, testMap.GetGrid()));
+        assertTrue(isEqualsIntArrays(testMap.getSize(), gridSize));
+        assertEquals(testMap.getSizeX(), 2);
+        assertEquals(testMap.getSizeY(), 3);
+        assertTrue(isEqualsGrids(grid, testMap.getGrid()));
     }
 
-    public static boolean IsEqualsGrids(int[][] firstGrid, int[][] secondGrid) {
+    public static boolean isEqualsIntArrays(final int[] firstArray, final int[] secondArray) {
+        boolean result = true;
+        try {
+            for (int i = 0; i < firstArray.length; i++) {
+                result = result && (firstArray[i] == secondArray[i]);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return result;
+    }
+
+    public static boolean isEqualsGrids(final int[][] firstGrid, final int[][] secondGrid) {
         boolean result = true;
         try {
             for (int i = 0; i < firstGrid.length; i++) {
-                for (int j = 0; i < firstGrid[0].length; i++) {
-                    result = result && (firstGrid[i][j] == secondGrid[i][j]);
-                }
+                result = result && isEqualsIntArrays(firstGrid[i], secondGrid[i]);
             }
         } catch (Exception e) {
             return false;
@@ -51,13 +63,13 @@ public class MapTest {
     public void shouldReturnZeroForDeadGrid() {
         int[][] grid = {{0}};
         Map testMap = new Map(grid);
-        assertEquals(testMap.CountAliveNeighbors(0, 0), 0);
+        assertEquals(testMap.countAliveNeighbors(0, 0), 0);
     }
 
     @Test
     public void shouldReturnCorrectValueForAliveNeighbors() {
         int[][] grid = {{0, 1}, {1, 1}};
         Map testMap = new Map(grid);
-        assertEquals(testMap.CountAliveNeighbors(0, 0), 3);
+        assertEquals(testMap.countAliveNeighbors(0, 0), 3);
     }
 }
