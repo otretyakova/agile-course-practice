@@ -20,6 +20,19 @@ public class MortgageCalculatorTest {
     }
 
     @Test
+    public void canCalculateDifferentiatedMortgageWithYearPeriodType() {
+        MortgageCalculator calc = new MortgageCalculator(100000, 1, "year", (float) 0.05);
+        assertEquals(Arrays.asList(8750, 8715, 8680, 8646, 8611, 8576, 8541, 8507,
+                8473, 8438, 8404, 8372), calc.differentiatedPayment());
+    }
+
+    @Test
+    public void canCalculateAnnuityMortgageWithYearPeriodType() {
+        MortgageCalculator calc = new MortgageCalculator(100000, 1, "year", (float) 0.05);
+        assertEquals(8560, calc.annuityPayment());
+    }
+
+    @Test
     public void canPrintPaymentForDifferentiatedMortgage() {
         MortgageCalculator calc = new MortgageCalculator(1000, 3, "month", (float) 0.05);
         assertEquals(336, calc.printPayments("differentiated", 1));
