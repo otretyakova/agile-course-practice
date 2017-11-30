@@ -2,6 +2,10 @@
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
 
+// Gorbunova Natalya
+include "code/mortgage-calculator"
+project(":code/mortgage-calculator").name = "mortgage-calculator-Model"
+
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
 project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model"
