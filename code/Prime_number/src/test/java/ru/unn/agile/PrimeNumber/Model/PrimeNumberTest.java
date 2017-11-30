@@ -156,6 +156,20 @@ public class PrimeNumberTest {
     }
 
     @Test
+    public void canFindMaxIntSimpleSearch() {
+        Integer left = Integer.MAX_VALUE - 1;
+        Integer right = Integer.MAX_VALUE;
+        PrimeNumber search = new PrimeNumber(left, right);
+        List<Integer> prime = new ArrayList<Integer>();
+        prime.add(Integer.MAX_VALUE);
+
+        search.findPrimeNumberFromRangeSimpleSearch();
+        List<Integer> resPrime = search.getPrimeList();
+
+        assertEquals(prime, resPrime);
+    }
+
+    @Test
     public void canFindSimpleOnePrimeEratosthenes() {
         Integer left = 8;
         Integer right = 11;

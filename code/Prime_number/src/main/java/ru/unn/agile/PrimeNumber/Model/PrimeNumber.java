@@ -48,7 +48,7 @@ public class PrimeNumber {
             return false;
         }
 
-        for (Integer divider = 2; divider <= sqrt(num); divider++) {
+        for (Integer divider = 2; divider <= (int)(sqrt(num) + 0.5); divider++) {
             if (num % divider == 0) {
                 return false;
             }
@@ -78,12 +78,12 @@ public class PrimeNumber {
         isPrime[0] = false;
         isPrime[1] = false;
 
-        for (Integer divider = 2; divider <= sqrt(num); divider++) {
+        for (Integer divider = 2; divider <= (int)(sqrt(num) + 0.5); divider++) {
             if (isPrime[divider]) {
                 for (Integer dividend = 2 * divider; dividend <= num; dividend += divider) {
                     isPrime[dividend] = false;
 
-                    if (dividend == Integer.MAX_VALUE) {
+                    if ((Integer.MAX_VALUE - dividend) < divider) {
                         break;
                     }
                 }
