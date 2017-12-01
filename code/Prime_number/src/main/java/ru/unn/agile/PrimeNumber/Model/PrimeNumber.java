@@ -27,52 +27,6 @@ public class PrimeNumber {
         }
     }
 
-    public PrimeNumber(final Integer left, final Integer right) {
-        if (left > right) {
-            this.leftLim = right;
-            this.rightLim = left;
-        } else {
-            this.leftLim = left;
-            this.rightLim = right;
-        }
-
-        if (this.leftLim < 1) {
-            this.leftLim = 1;
-        }
-
-        this.primeNum = new ArrayList<Integer>();
-    }
-
-    private boolean isPrime(final Integer num) {
-        if (num < 2) {
-            return false;
-        }
-
-        Integer limitNum = (int) (sqrt(num + 1));
-
-        for (Integer divider = 2; divider <= limitNum; divider++) {
-            if (num % divider == 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public void findPrimeNumberFromRangeSimpleSearch() {
-        this.primeNum.clear();
-
-        for (Integer testNum = this.leftLim; testNum <= this.rightLim; testNum++) {
-            if (isPrime(testNum)) {
-                this.primeNum.add(testNum);
-            }
-
-            if (testNum == Integer.MAX_VALUE) {
-                break;
-            }
-       }
-    }
-
     private boolean[] eratosthenes(final Integer num) {
         boolean[] isPrime = new boolean[num + 1];
 
@@ -97,13 +51,58 @@ public class PrimeNumber {
         return isPrime;
     }
 
+    private boolean isPrime(final Integer num) {
+        if (num < 2) {
+            return false;
+        }
+
+        Integer limitNum = (int) (sqrt(num + 1));
+
+        for (Integer divider = 2; divider <= limitNum; divider++) {
+            if (num % divider == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public PrimeNumber(final Integer left, final Integer right) {
+        if (left > right) {
+            this.leftLim = right;
+            this.rightLim = left;
+        } else {
+            this.leftLim = left;
+            this.rightLim = right;
+        }
+
+        if (this.leftLim < 1) {
+            this.leftLim = 1;
+        }
+
+        this.primeNum = new ArrayList<Integer>();
+    }
+
+    public void findPrimeNumberFromRangeSimpleSearch() {
+        this.primeNum.clear();
+
+        for (Integer testNum = this.leftLim; testNum <= this.rightLim; testNum++) {
+            if (isPrime(testNum)) {
+                this.primeNum.add(testNum);
+            }
+
+            if (testNum == Integer.MAX_VALUE) {
+                break;
+            }
+       }
+    }
+
     public void findPrimeNumberFromRangeEratosthenes() {
 
         if (rightLim > 0) {
 
             this.primeNum.clear();
             boolean[] isPrime = eratosthenes(this.rightLim);
-
 
             for (Integer testNum = this.leftLim; testNum <= this.rightLim; testNum++) {
                 if (isPrime[testNum]) {
