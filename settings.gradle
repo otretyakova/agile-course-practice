@@ -51,8 +51,8 @@
 
 
 // Novak Alexander
-
-
+include "code/number-system-converter"
+project(":code/number-system-converter").name = "number-system-converter"
 
 // Ovsuhno Anton
 
