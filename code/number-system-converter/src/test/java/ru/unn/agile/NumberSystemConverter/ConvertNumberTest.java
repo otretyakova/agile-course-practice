@@ -208,35 +208,35 @@ public class ConvertNumberTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertBIN2DECwhenInputIncorrect() {
+    public void convertionBIN2DECThrowsIllegalArgumentExceptionWhenInWrongCalculationSystem() {
         String input = "AB8";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.BIN,
                 NumberSystemBase.DEC);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertOCT2DECwhenInputIncorrect() {
+    public void convertionOCT2DECThrowsIllegalArgumentExceptionWhenInWrongCalculationSystem() {
         String input = "192";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.OCT,
                 NumberSystemBase.DEC);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertHEXDECwhenInputIncorrect() {
+    public void convertionHEX2DECThrowsIllegalArgumentExceptionWhenInWrongCalculationSystem() {
         String input = "H5UAL";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.HEX,
                 NumberSystemBase.DEC);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertDEC2BINwhenInputIncorrect() {
+    public void convertionDEC2BINThrowsIllegalArgumentExceptionWhenInWrongCalculationSystem() {
         String input = "AB8";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.DEC,
                 NumberSystemBase.BIN);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertDEC2HEXwhenInputIncorrect() {
+    public void convertionDEC2HEXThrowsIllegalArgumentExceptionWhenInWrongCalculationSystem() {
         String input = "AB8";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.DEC,
                 NumberSystemBase.HEX);
@@ -283,28 +283,28 @@ public class ConvertNumberTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertOCT2HEXwhenInputIsNull() {
+    public void convertionOCT2HEXThrowsIllegalArgumentExceptionWhenInputIsNull() {
         String input = null;
         String output = NumberSystemConverter.convert(input, NumberSystemBase.OCT,
                 NumberSystemBase.HEX);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertBIN2HEXwhenInputIsNull() {
+    public void convertionBIN2HEXThrowsIllegalArgumentExceptionWhenInputIsNull() {
         String input = null;
         String output = NumberSystemConverter.convert(input, NumberSystemBase.BIN,
                 NumberSystemBase.HEX);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertBIN2HEXwhenInputIsTrash() {
+    public void convertionBIN2HEXThrowsIllegalArgumentExceptionWhenInputIsTrash() {
         String input = "$@&-*€£";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.BIN,
                 NumberSystemBase.HEX);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canConvertDEC2HEXwhenInputIsTrash() {
+    public void convertionDEC2HEXThrowsIllegalArgumentExceptionWhenInputIsTrash() {
         String input = "$@&-*€£";
         String output = NumberSystemConverter.convert(input, NumberSystemBase.DEC,
                 NumberSystemBase.HEX);
