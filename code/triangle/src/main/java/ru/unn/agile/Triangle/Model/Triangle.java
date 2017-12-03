@@ -3,36 +3,44 @@ package ru.unn.agile.Triangle.Model;
 import java.awt.geom.Point2D;
 
 public class Triangle {
-    private Point2D a;
-    private Point2D b;
-    private Point2D c;
-
     public Triangle(final Point2D a, final Point2D b, final Point2D c) {
         if (isDegenerated(a, b, c)) {
-            throw new Error();
+            throw new IllegalArgumentException("Triangle is degenerated.");
         }
         this.a = a;
         this.b = b;
         this.c = c;
     }
 
-    public double getPerimeter() {
+    public final Point2D getPointA() {
+        return a;
+    }
+
+    public final Point2D getPointB() {
+        return b;
+    }
+
+    public final Point2D getPointC() {
+        return c;
+    }
+
+    public final double getPerimeter() {
         return getLengthAB() + getLengthBC() + getLengthAC();
     }
 
-    public double getLengthAB() {
+    public final double getLengthAB() {
         return getLength(a, b);
     }
 
-    public double getLengthBC() {
+    public final double getLengthBC() {
         return getLength(b, c);
     }
 
-    public double getLengthAC() {
+    public final double getLengthAC() {
         return getLength(a, c);
     }
 
-    public double getSurfaceArea() {
+    public final double getSurfaceArea() {
         double p = getSemiperimeter();
 
         double ab = getLengthAB();
@@ -42,7 +50,7 @@ public class Triangle {
         return Math.sqrt(p * (p - ab) * (p - bc) * (p - ac));
     }
 
-    public double getABCAngle() {
+    public final double getABCAngle() {
         double ab = getLengthAB();
         double bc = getLengthBC();
         double ac = getLengthAC();
@@ -50,11 +58,11 @@ public class Triangle {
         return Math.acos((bc * bc + ab * ab - ac * ac) / (2 * bc * ab));
     }
 
-    public double getBCAAngle() {
+    public final double getBCAAngle() {
         return Math.PI - (getABCAngle() + getCABAngle());
     }
 
-    public double getCABAngle() {
+    public final double getCABAngle() {
         double ab = getLengthAB();
         double bc = getLengthBC();
         double ac = getLengthAC();
@@ -65,6 +73,7 @@ public class Triangle {
     private double getSemiperimeter() {
         return getPerimeter() / 2;
     }
+
     private boolean isOnOneLine(final Point2D a, final Point2D b, final Point2D c) {
         double lineCoeffK = (b.getY() - a.getY()) / (b.getX() - a.getX());
         double lineCoeffB = a.getY() - lineCoeffK * a.getX();
@@ -85,4 +94,8 @@ public class Triangle {
         return Math.sqrt(Math.pow((point1.getX() - point2.getX()), 2)
                 + Math.pow((point1.getY() - point2.getY()), 2));
     }
+
+    private final Point2D a;
+    private final Point2D b;
+    private final Point2D c;
 }

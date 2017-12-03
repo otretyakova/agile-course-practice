@@ -1,15 +1,59 @@
 package ru.unn.agile.Triangle.Model;
 
 import org.junit.Test;
+
 import java.awt.geom.Point2D;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TriangleTest {
     @Test
+    public void canGetPointA() {
+        Point2D a = new Point2D.Double(5, 4);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(1, 1);
+
+        Triangle triangle = new Triangle(a, b, c);
+
+        Point2D pointA = new Point2D.Double(5, 4);
+
+        assertEquals(pointA, triangle.getPointA());
+    }
+
+    @Test
+    public void canGetPointB() {
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, -1);
+        Point2D c = new Point2D.Double(0, 1);
+
+        Triangle triangle = new Triangle(a, b, c);
+
+        Point2D pointB = new Point2D.Double(1, -1);
+
+        assertEquals(pointB, triangle.getPointB());
+    }
+
+    @Test
+    public void canGetPointC() {
+        Point2D a = new Point2D.Double(0, 0);
+        Point2D b = new Point2D.Double(1, 0);
+        Point2D c = new Point2D.Double(3, 1);
+
+        Triangle triangle = new Triangle(a, b, c);
+
+        Point2D pointC = new Point2D.Double(3, 1);
+
+        assertEquals(pointC, triangle.getPointC());
+    }
+
+
+    @Test
     public void canCreateTriangle2D() {
-        Point2D a  = new Point2D.Double(0, 0);
-        Point2D b  = new Point2D.Double(1, 0);
-        Point2D c  = new Point2D.Double(0, 1);
+        Point2D a = new Point2D.Double(5, 4);
+        Point2D b = new Point2D.Double(1, 3);
+        Point2D c = new Point2D.Double(0, 1);
 
         Triangle triangle = new Triangle(a, b, c);
 
@@ -17,23 +61,27 @@ public class TriangleTest {
     }
 
     @Test
-    public void canNotCreateDegeneratedTriangle() {
+    public void throwingExceptionAfterCreatingDegeneratedTriangle() {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(0, 1);
         try {
-            new Triangle(a, b, c); fail("Object can't be created");
-        } catch (Error error) { }
+            new Triangle(a, b, c);
+            fail("Object can't be created");
+        } catch (IllegalArgumentException error) {
+        }
     }
 
     @Test
-    public void canNotCreateDegeneratedTriangleWithCoordinatesOnOneLine() {
+    public void throwingExceptionAfterCreatingTriangleWithPointsOnOneLine() {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(1, 1);
         try {
-            new Triangle(a, b, c); fail("Object can't be created");
-        } catch (Error error) { }
+            new Triangle(a, b, c);
+            fail("Object can't be created");
+        } catch (IllegalArgumentException error) {
+        }
     }
 
     @Test
@@ -47,21 +95,19 @@ public class TriangleTest {
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAB = triangle.getLengthAB();
-        assertTrue(lengthAB == targetLength);
+        assertEquals(lengthAB, targetLength, 1e-15);
     }
 
     @Test
-    public void canGetLengthABWithNegatedCoordinates() {
+    public void canGetLengthABWithNegtiveCoordinates() {
         Point2D a = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(0, 1);
         Point2D b = new Point2D.Double(-1, 0);
 
-        double targetLength = 1;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAB = triangle.getLengthAB();
-        assertTrue(lengthAB == targetLength);
+        assertEquals(lengthAB, 1, 1e-15);
     }
 
     @Test
@@ -70,12 +116,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(-1, 1);
         Point2D c = new Point2D.Double(0, 0);
 
-        double targetLength = 2;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAB = triangle.getLengthAB();
-        assertTrue(lengthAB == targetLength);
+        assertEquals(lengthAB, 2, 1e-15);
     }
 
     @Test
@@ -84,26 +128,22 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(1, 1);
 
-        double targetLength = 1;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthBC = triangle.getLengthBC();
-        assertTrue(lengthBC == targetLength);
+        assertEquals(lengthBC, 1, 1e-15);
     }
 
     @Test
-    public void canGetLengthBCWithNegatedCoordinates() {
+    public void canGetLengthBCWithNegativeCoordinates() {
         Point2D a = new Point2D.Double(0, 1);
         Point2D b = new Point2D.Double(-1, 0);
         Point2D c = new Point2D.Double(1, 0);
 
-        double targetLength = 2;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthBC = triangle.getLengthBC();
-        assertTrue(lengthBC == targetLength);
+        assertEquals(lengthBC, 2, 1e-15);
     }
 
     @Test
@@ -112,12 +152,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(-1, 1);
         Point2D c = new Point2D.Double(1, 1);
 
-        double targetLength = 2;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthBC = triangle.getLengthBC();
-        assertTrue(lengthBC == targetLength);
+        assertEquals(lengthBC, 2, 1e-15);
     }
 
     @Test
@@ -126,12 +164,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(0, 0);
 
-        double targetLength = 1;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAC = triangle.getLengthAC();
-        assertTrue(lengthAC == targetLength);
+        assertEquals(lengthAC, 1, 1e-15);
     }
 
     @Test
@@ -140,12 +176,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(0, 1);
         Point2D c = new Point2D.Double(-1, 0);
 
-        double targetLength = 1;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAC = triangle.getLengthAC();
-        assertTrue(lengthAC == targetLength);
+        assertEquals(lengthAC, 1, 1e-15);
     }
 
     @Test
@@ -154,26 +188,22 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(-1, 1);
 
-        double targetLength = 2;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAC = triangle.getLengthAC();
-        assertTrue(lengthAC == targetLength);
+        assertEquals(lengthAC, 2, 1e-15);
     }
 
     @Test
     public void canGetPerimeter() {
-        Point2D a = new Point2D.Double(0, 0);
-        Point2D b = new Point2D.Double(1, 0);
-        Point2D c = new Point2D.Double(0, 1);
-
-        double targetPerimeter = 2 + Math.sqrt(2);
+        Point2D a = new Point2D.Double(1, 0);
+        Point2D b = new Point2D.Double(0, 1);
+        Point2D c = new Point2D.Double(0, 0);
 
         Triangle triangle = new Triangle(a, b, c);
 
-        double permieter = triangle.getPerimeter();
-        assertTrue(permieter == targetPerimeter);
+        double perimeter = triangle.getPerimeter();
+        assertEquals(perimeter, 2 + Math.sqrt(2), 1e-15);
     }
 
     @Test
@@ -182,12 +212,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(0, 1);
 
-        double targetPerimeter = 1 + Math.sqrt(2) + Math.sqrt(5);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double perimeter = triangle.getPerimeter();
-        assertTrue(perimeter == targetPerimeter);
+        assertEquals(perimeter, 1 + Math.sqrt(2) + Math.sqrt(5), 1e-15);
     }
 
     @Test
@@ -196,12 +224,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(0, -2);
 
-        double targetPerimeter = Math.sqrt(8) + Math.sqrt(2) + Math.sqrt(10);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double perimeter = triangle.getPerimeter();
-        assertTrue(perimeter == targetPerimeter);
+        assertEquals(perimeter, Math.sqrt(8) + Math.sqrt(2) + Math.sqrt(10), 1e-15);
     }
 
     @Test
@@ -210,14 +236,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(0, 1);
 
-        double targetSurfaceArea = 0.5;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double surfaceArea = triangle.getSurfaceArea();
-        assertTrue(Math.abs(surfaceArea - targetSurfaceArea) < precision);
+        assertEquals(surfaceArea, 0.5, 1e-15);
     }
 
     @Test
@@ -226,14 +248,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(2, 0);
         Point2D c = new Point2D.Double(1, 1);
 
-        double targetSurfaceArea = 1;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double surfaceArea = triangle.getSurfaceArea();
-        assertTrue(Math.abs(surfaceArea - targetSurfaceArea) < precision);
+        assertEquals(surfaceArea, 1, 1e-15);
     }
 
     @Test
@@ -242,14 +260,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(2, 0);
         Point2D c = new Point2D.Double(0.5, 1);
 
-        double targetSurfaceArea = 1;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double surfaceArea = triangle.getSurfaceArea();
-        assertTrue(Math.abs(surfaceArea - targetSurfaceArea) < precision);
+        assertEquals(surfaceArea, 1, 1e-15);
     }
 
     @Test
@@ -258,14 +272,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(1, 0);
 
-        double targetABCAngle = 90 * Math.PI / 180;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getABCAngle();
-        assertTrue(Math.abs(angle - targetABCAngle) < precision);
+        assertEquals(angle, 90 * Math.PI / 180, 1e-15);
     }
 
     @Test
@@ -274,14 +284,10 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(-1, 1);
 
-        double targetABCAngle = 135 * Math.PI / 180;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getABCAngle();
-        assertTrue(Math.abs(angle - targetABCAngle) < precision);
+        assertEquals(angle, 135 * Math.PI / 180, 1e-15);
     }
 
     @Test
@@ -290,46 +296,34 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(1, 1);
 
-        double targetABCAngle = 45 * Math.PI / 180;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getABCAngle();
-        assertTrue(Math.abs(angle - targetABCAngle) < precision);
+        assertEquals(angle, 45 * Math.PI / 180, 1e-15);
     }
 
     @Test
     public void canGetBCAAngleOfRectangularTriangle() {
-        Point2D b = new Point2D.Double(0, 1);
-        Point2D c = new Point2D.Double(0, 0);
-        Point2D a = new Point2D.Double(1, 0);
-
-        double targetBCAAngle = 90 * Math.PI / 180;
-
-        double precision = 1e-15;
+        Point2D a = new Point2D.Double(2, 0);
+        Point2D b = new Point2D.Double(1, 1);
+        Point2D c = new Point2D.Double(1, 0);
 
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getBCAAngle();
-        assertTrue(Math.abs(angle - targetBCAAngle) < precision);
+        assertEquals(angle, 90 * Math.PI / 180, 1e-15);
     }
 
     @Test
     public void canGetBCAAsObtuseAngle() {
         Point2D b = new Point2D.Double(-1, 1);
-        Point2D c = new Point2D.Double(0, 0);
         Point2D a = new Point2D.Double(1, 0);
-
-        double targetBCAAngle = 135 * Math.PI / 180;
-
-        double precision = 1e-15;
+        Point2D c = new Point2D.Double(0, 0);
 
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getBCAAngle();
-        assertTrue(Math.abs(angle - targetBCAAngle) < precision);
+        assertEquals(angle, 135 * Math.PI / 180, 1e-15);
     }
 
     @Test
@@ -338,30 +332,22 @@ public class TriangleTest {
         Point2D c = new Point2D.Double(0, 0);
         Point2D a = new Point2D.Double(1, 0);
 
-        double targetBCAAngle = 45 * Math.PI / 180;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getBCAAngle();
-        assertTrue(Math.abs(angle - targetBCAAngle) < precision);
+        assertEquals(angle, 45 * Math.PI / 180, 1e-15);
     }
 
     @Test
     public void canGetCABAngleOfRectangularTriangle() {
-        Point2D c = new Point2D.Double(0, 1);
-        Point2D a = new Point2D.Double(0, 0);
-        Point2D b = new Point2D.Double(1, 0);
-
-        double targetCABAngle = 90 * Math.PI / 180;
-
-        double precision = 1e-15;
+        Point2D c = new Point2D.Double(1, 1);
+        Point2D a = new Point2D.Double(1, 0);
+        Point2D b = new Point2D.Double(2, 0);
 
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getCABAngle();
-        assertTrue(Math.abs(angle - targetCABAngle) < precision);
+        assertEquals(angle, 90 * Math.PI / 180, 1e-15);
     }
 
     @Test
@@ -370,29 +356,21 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(1, 0);
 
-        double targetCABAngle = 135 * Math.PI / 180;
-
-        double precision = 1e-15;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getCABAngle();
-        assertTrue(Math.abs(angle - targetCABAngle) < precision);
+        assertEquals(angle, 135 * Math.PI / 180, 1e-15);
     }
 
     @Test
     public void canGetCABAsAcuteAngle() {
         Point2D c = new Point2D.Double(1, 1);
-        Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(1, 0);
-
-        double targetCABAngle = 45 * Math.PI / 180;
-
-        double precision = 1e-15;
+        Point2D a = new Point2D.Double(0, 0);
 
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getCABAngle();
-        assertTrue(Math.abs(angle - targetCABAngle) < precision);
+        assertEquals(angle, 45 * Math.PI / 180, 1e-15);
     }
 }
