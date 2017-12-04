@@ -111,12 +111,12 @@ include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
 
 // Sadova Daria
-include "code/sadova-daria-lab1"
-project(":code/sadova-daria-lab1").name = "sadova-daria-lab1-Model"
+include "code/sadova-daria"
+project(":code/sadova-daria").name = "sadova-daria-Model"
 
 // Korniakov Kirill, lab1
-include "code/korniakov-kirill-lab1" 
-project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model" 
+include "code/korniakov-kirill-lab1"
+project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model"
 
 // Korniakov Kirill, lab2-legacy
 include "code/korniakov-kirill-lab2-legacy/Model"
