@@ -31,9 +31,9 @@ public class BookSetTest {
     @Test
     public void canCombineBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 1));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
         BookSet bookSet = new BookSet(bookList);
 
         bookSet.combineEqualBooks();
@@ -45,8 +45,8 @@ public class BookSetTest {
     public void isCombineBookSetEqualBookSetWithoutEqualBooks() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 2));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
 
         BookSet bookSet = new BookSet(bookList);
 
@@ -56,9 +56,9 @@ public class BookSetTest {
     @Test
     public void isSizeOfCombineBookSetCorrect() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 2));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
         BookSet bookSet = new BookSet(bookList);
 
         bookSet.combineEqualBooks();
@@ -70,8 +70,8 @@ public class BookSetTest {
     public void canGetSetOfNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 3));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
         BookSet bookSet = new BookSet(bookList);
 
         assertEquals(bookList, bookSet.set());
@@ -94,12 +94,12 @@ public class BookSetTest {
     @Test
     public void canCalculateCountOfNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 3));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 3));
         BookSet bookSet = new BookSet(bookList);
 
-        assertEquals(6, bookSet.count());
+        assertEquals(7, bookSet.count());
     }
 
     @Test
@@ -112,12 +112,12 @@ public class BookSetTest {
     @Test
     public void canCalculateCountDifferentOfNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
         bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 3));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
         BookSet bookSet = new BookSet(bookList);
 
         assertEquals(4, bookSet.countDifferent());
@@ -126,10 +126,10 @@ public class BookSetTest {
     @Test
     public void canSearchBookInNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 1));
         bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 3));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         BookSet bookSet = new BookSet(bookList);
@@ -179,7 +179,7 @@ public class BookSetTest {
     @Test
     public void isBookSetCorrectAfterAddBookToEmptyBookSet() {
         BookSet bookSet = new BookSet();
-        Book book = new Book(HarryPotterBooks.gobletOfFire, 2);
+        Book book = new Book(HarryPotterBooks.prisonerOfAzkaban, 2);
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(book);
 
@@ -191,7 +191,7 @@ public class BookSetTest {
     @Test
     public void isBookSetCountCorrectAfterAddBookToEmptyBookSet() {
         BookSet bookSet = new BookSet();
-        Book book = new Book(HarryPotterBooks.gobletOfFire, 2);
+        Book book = new Book(HarryPotterBooks.orderOfThePhoenix, 2);
 
         bookSet.addBook(book);
 
@@ -201,7 +201,7 @@ public class BookSetTest {
     @Test
     public void isBookSetCountDifferentCorrectAfterAddBookToEmptyBookSet() {
         BookSet bookSet = new BookSet();
-        Book book = new Book(HarryPotterBooks.gobletOfFire, 2);
+        Book book = new Book(HarryPotterBooks.gobletOfFire, 3);
 
         bookSet.addBook(book);
 
@@ -212,7 +212,7 @@ public class BookSetTest {
     public void canAddBookToNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 1));
         BookSet bookSet = new BookSet(bookList);
 
         bookSet.addBook(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
@@ -223,7 +223,7 @@ public class BookSetTest {
     @Test
     public void isBookSetCorrectAfterAddBookToNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 2));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         BookSet bookSet = new BookSet(bookList);
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
@@ -236,11 +236,11 @@ public class BookSetTest {
     @Test
     public void isBookSetCountCorrectAfterAddBookToNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         BookSet bookSet = new BookSet(bookList);
 
-        bookSet.addBook(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
+        bookSet.addBook(new Book(HarryPotterBooks.philosophersStone, 2));
 
         assertEquals(5, bookSet.count());
     }
@@ -249,7 +249,7 @@ public class BookSetTest {
     public void isBookSetCountDifferentCorrectAfterAddBookToNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
         BookSet bookSet = new BookSet(bookList);
 
         bookSet.addBook(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
@@ -260,8 +260,8 @@ public class BookSetTest {
     @Test
     public void canDeleteBookFromNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
         BookSet bookSet = new BookSet(bookList);
 
@@ -272,7 +272,7 @@ public class BookSetTest {
     public void canNotDeleteBookFromNotEmptyBookSet() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 3));
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
         BookSet bookSet = new BookSet(bookList);
 
@@ -299,8 +299,8 @@ public class BookSetTest {
     @Test
     public void canGetMaxDiscountOfBookSetWithTwoDifferentBooks() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 2));
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 3));
         BookSet bookSet = new BookSet(bookList);
 
@@ -311,7 +311,7 @@ public class BookSetTest {
     public void canGetMaxDiscountOfBookSetWithThreeDifferentBooks() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 2));
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
         BookSet bookSet = new BookSet(bookList);
 
@@ -321,12 +321,12 @@ public class BookSetTest {
     @Test
     public void canGetMaxDiscountOfBookSetWithFourDifferentBooks() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 2));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 4));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 3));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
         BookSet bookSet = new BookSet(bookList);
 
         assertEquals(0.2, bookSet.getMaxDiscount(), delta);
@@ -337,9 +337,9 @@ public class BookSetTest {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 3));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 1));
         bookList.add(new Book(HarryPotterBooks.gobletOfFire, 1));
-        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 3));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
         BookSet bookSet = new BookSet(bookList);
 
         assertEquals(0.25, bookSet.getMaxDiscount(), delta);
@@ -348,48 +348,48 @@ public class BookSetTest {
     @Test
     public void canCalculateCostOfBookSetWithDiscount5Persent() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 1));
         bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 1));
         BookSet bookSet = new BookSet(bookList);
 
-        assertEquals(Price.BOOK_PRICE * 2 * 0.95 + Price.BOOK_PRICE, bookSet.cost(), delta);
+        assertEquals(bookSet.BOOK_PRICE * 2 * 0.95 + bookSet.BOOK_PRICE, bookSet.cost(), delta);
     }
 
     @Test
     public void canCalculateCostOfBookSetWithDiscount10Persent() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
+        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 1));
         bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
         BookSet bookSet = new BookSet(bookList);
 
-        assertEquals(Price.BOOK_PRICE * 3 * 0.9, bookSet.cost(), delta);
+        assertEquals(bookSet.BOOK_PRICE * 3 * 0.9, bookSet.cost(), delta);
     }
 
     @Test
     public void canCalculateCostOfBookSetWithDiscount20Persent() {
         ArrayList<Book> bookList = new ArrayList<Book>();
-        bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
+        bookList.add(new Book(HarryPotterBooks.philosophersStone, 3));
+        bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 1));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
         bookList.add(new Book(HarryPotterBooks.gobletOfFire, 3));
         BookSet bookSet = new BookSet(bookList);
 
-        assertEquals(Price.BOOK_PRICE * 4 * 0.8 + Price.BOOK_PRICE * 3, bookSet.cost(), delta);
+        assertEquals(bookSet.BOOK_PRICE * 4 * 0.8 + bookSet.BOOK_PRICE * 5, bookSet.cost(), delta);
     }
 
     @Test
     public void canCalculateCostOfBookSetWithDiscount25Persent() {
         ArrayList<Book> bookList = new ArrayList<Book>();
         bookList.add(new Book(HarryPotterBooks.philosophersStone, 1));
-        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 2));
-        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 1));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 3));
+        bookList.add(new Book(HarryPotterBooks.prisonerOfAzkaban, 2));
         bookList.add(new Book(HarryPotterBooks.gobletOfFire, 3));
         bookList.add(new Book(HarryPotterBooks.orderOfThePhoenix, 2));
-        bookList.add(new Book(HarryPotterBooks.gobletOfFire, 1));
+        bookList.add(new Book(HarryPotterBooks.chamberOfSecret, 1));
         BookSet bookSet = new BookSet(bookList);
 
-        assertEquals(Price.BOOK_PRICE * 5 * 0.75 + Price.BOOK_PRICE * 5, bookSet.cost(), delta);
+        assertEquals(bookSet.BOOK_PRICE * 5 * 0.75 + bookSet.BOOK_PRICE * 7, bookSet.cost(), delta);
     }
 }

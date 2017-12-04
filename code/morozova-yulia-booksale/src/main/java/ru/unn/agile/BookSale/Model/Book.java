@@ -25,11 +25,11 @@ public class Book {
         return this.count;
     }
 
-    public void setCount(int newCount) {
+    public void setCount(final int newCount) {
         this.count = newCount;
     }
 
-    public boolean isEqual(Book book) {
+    public boolean isEqual(final Book book) {
         return this.part == book.part;
     }
 }
