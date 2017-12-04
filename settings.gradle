@@ -1,3 +1,107 @@
+// Averin Andrey
+
+
+
+// Bastrakova Ksenia
+
+
+
+// Bespalov Max
+
+
+
+// Vershinina Olga
+
+
+
+// Volokitin Valentin
+
+
+
+// Gerasimov Dmitriy
+
+
+
+// Gladilov Gleb
+
+
+
+// Gorbunova Natalia
+
+
+
+// Krivonosov Mikhail
+
+
+
+// Kuzmin Pavel
+
+
+
+// Kuldaev Alexander
+
+
+
+// Levin Vadim
+
+
+
+// Morozova Julia
+include "code/morozova-yulia-booksale"
+project(":code/morozova-yulia-booksale").name = "morozova-yulia-booksale-Model"
+
+// Novak Alexander
+include "code/number-system-converter"
+project(":code/number-system-converter").name = "number-system-converter"
+
+// Ovsuhno Anton
+
+
+
+// Pichugin Gregory
+
+
+
+// Reshetova Anastasya
+
+
+
+// Rozanov Anatoliy
+
+
+
+// Roy Victor
+
+
+
+// Sadova Daria
+
+
+
+// Semerenko Alexander
+
+
+
+// Semichev Uriy
+
+
+
+// Tretiyakiva Olga
+
+
+
+// Uvarov Denis
+
+
+
+// Umnikov Eugene
+
+
+
+// Shestakova Svetlana
+
+
+
 // Bevzuk Anton
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
@@ -41,7 +145,3 @@ include "code/korniakov-kirill-lab3/View"
 project(":code/korniakov-kirill-lab3/View").name = "korniakov-kirill-lab3-View"
 include "code/korniakov-kirill-lab3/Infrastructure"
 project(":code/korniakov-kirill-lab3/Infrastructure").name = "korniakov-kirill-lab3-Infrastructure"
-
-// Morozova Yulia
-include "code/morozova-yulia-booksale"
-project(":code/morozova-yulia-booksale").name = "morozova-yulia-booksale-Model"
