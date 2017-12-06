@@ -48,12 +48,11 @@ public final class DescriptiveStatistics {
         if (inputSample.length == 1) {
             return inputSample[0];
         }
-        double[] workingSample = inputSample.clone();
+        final double[] workingSample = inputSample.clone();
         Arrays.sort(workingSample);
         final int medianIndex = workingSample.length / 2;
         if (isEven(workingSample.length)) {
-            final int medianTopIndex = medianIndex - 1;
-            return (workingSample[medianIndex] + workingSample[medianTopIndex]) / 2;
+            return (workingSample[medianIndex] + workingSample[medianIndex - 1]) / 2;
         } else {
             return workingSample[medianIndex];
         }
@@ -69,7 +68,7 @@ public final class DescriptiveStatistics {
                 frequencyMap.put(element, 1);
             }
         }
-        int highestFrequency = Collections.max(frequencyMap.values());
+        final int highestFrequency = Collections.max(frequencyMap.values());
         List<Integer> modes = new LinkedList<>();
         for (int element : frequencyMap.keySet()) {
             if (frequencyMap.get(element) == highestFrequency) {
@@ -127,6 +126,13 @@ public final class DescriptiveStatistics {
         }
     }
 
-    private DescriptiveStatistics() {
+    private boolean test() {
+        return this.a == 1;
     }
+
+    private DescriptiveStatistics() {
+        this.a = 1;
+    }
+
+    private int a;
 }
