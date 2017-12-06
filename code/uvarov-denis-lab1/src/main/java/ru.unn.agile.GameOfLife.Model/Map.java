@@ -7,7 +7,7 @@ public class Map {
 
     public Map(final int[][] grid) {
         if (grid.length < 1) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Cannot create MAP: Empty grid!");
         }
         this.sizeX = grid.length;
 
@@ -17,7 +17,7 @@ public class Map {
             isValidLength = isValidLength && (grid[0].length == grid[i].length);
         }
         if (!isValidLength || grid[0].length < 1) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect grid size!");
         }
         this.sizeY = grid[0].length;
         boolean isValidValues = true;
@@ -29,7 +29,7 @@ public class Map {
         if (isValidValues) {
             this.grid = grid;
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Grid has incorrect states!");
         }
     }
 

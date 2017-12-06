@@ -34,7 +34,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldShouldParseCorrectInput() {
+    public void shouldParseCorrectInput() {
         String[] inputArray = {"2 3", "..", "..", ".."};
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);

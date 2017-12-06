@@ -15,11 +15,12 @@ public class GameOfLife {
 
     public void readCurrentGeneration(final String[] input) {
         if (input.length < MINIMAL_INPUT_STRINGS_COUNT) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "Incorrect input value! Not enough count of input strings");
         }
         String[] sizeParse = input[0].split(" ");
         if (sizeParse.length != SIZE_TYPES_COUNT) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect count of grid size parameters!");
         }
 
         int[] numArr = new int[SIZE_TYPES_COUNT];
@@ -32,14 +33,14 @@ public class GameOfLife {
         int sizeY = numArr[1];
 
         if (sizeY != input.length - 1) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect Y-axis value!");
         }
 
         int[][] arrayForGrid = new int[sizeX][sizeY];
 
         for (int i = 0; i < sizeY; i++) {
             if (input[i + 1].length() != sizeX) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Incorrect X-axis value!");
             } else {
                 for (int j = 0; j < sizeX; j++) {
                     arrayForGrid[j][i] = convertSymbolToDot(input[i + 1].charAt(j));
@@ -78,7 +79,7 @@ public class GameOfLife {
 
     public Map getCurrentGeneration() {
         if (currentGeneration == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Current generation was not set!");
         } else {
             return currentGeneration;
         }
@@ -86,7 +87,7 @@ public class GameOfLife {
 
     public Map getNextGeneration() {
         if (nextGeneration == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Next generation was not calculated!");
         } else {
             return nextGeneration;
         }
@@ -106,7 +107,7 @@ public class GameOfLife {
         } else if (value == '*') {
             return 1;
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect argument '" + value + "'!");
         }
     }
 
@@ -116,7 +117,7 @@ public class GameOfLife {
         } else if (value == 1) {
             return "*";
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect state value: '" + value + "'!");
         }
     }
 }
