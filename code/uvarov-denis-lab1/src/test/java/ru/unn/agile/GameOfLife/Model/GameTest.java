@@ -69,18 +69,6 @@ public class GameTest {
         testGame.readCurrentGeneration(inputArray);
         testGame.buildNextGeneration();
         String[] outputArray = testGame.writeNextGeneration();
-        assertTrue(isEqualsStrings(correctOutputArray, outputArray));
-    }
-
-    private static boolean isEqualsStrings(final String[] firstArray, final String[] secondArray) {
-        boolean result = true;
-        try {
-            for (int i = 0; i < firstArray.length; i++) {
-                result = result && firstArray[i].equals(secondArray[i]);
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return result;
+        assertArrayEquals(correctOutputArray, outputArray);
     }
 }

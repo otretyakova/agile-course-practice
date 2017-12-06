@@ -29,7 +29,7 @@ public class MapTest {
         int[][] grid = {{1, 0, 0}, {0, 1, 0}};
         int[] gridSize = {2, 3};
         Map testMap = new Map(grid);
-        assertTrue(isEqualsIntArrays(testMap.getSize(), gridSize));
+        assertArrayEquals(testMap.getSize(), gridSize);
         assertEquals(testMap.getSizeX(), 2);
         assertEquals(testMap.getSizeY(), 3);
         assertTrue(isEqualsGrids(grid, testMap.getGrid()));
