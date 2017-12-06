@@ -23,8 +23,8 @@
 
 
 // Gladilov Gleb
-
-
+include "code/converter-temperature"
+project(":code/converter-temperature").name = "converter-temperature-Model"
 
 // Gorbunova Natalia
 
