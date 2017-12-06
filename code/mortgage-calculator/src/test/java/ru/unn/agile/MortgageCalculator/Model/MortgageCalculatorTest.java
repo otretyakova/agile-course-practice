@@ -10,7 +10,7 @@ public class MortgageCalculatorTest {
     @Test
     public void canCalculateDifferentiatedMortgage() {
         MortgageCalculator calc = new MortgageCalculator(1000, 3, "month", (float) 0.05);
-        assertEquals(Arrays.asList(337, 336, 335), calc.differentiatedPayment());
+        assertEquals(Arrays.asList(338, 336, 335), calc.differentiatedPayment());
     }
 
     @Test
@@ -22,8 +22,8 @@ public class MortgageCalculatorTest {
     @Test
     public void canCalculateDifferentiatedMortgageWithYearPeriodType() {
         MortgageCalculator calc = new MortgageCalculator(100000, 1, "year", (float) 0.05);
-        assertEquals(Arrays.asList(8750, 8715, 8680, 8646, 8611, 8576, 8541, 8507,
-                8473, 8438, 8404, 8372), calc.differentiatedPayment());
+        assertEquals(Arrays.asList(8750, 8715, 8681, 8646, 8611, 8576, 8542, 8507,
+                8472, 8437, 8403, 8368), calc.differentiatedPayment());
     }
 
     @Test

@@ -8,7 +8,7 @@ import static java.lang.Math.round;
 
 public class MortgageCalculator {
     public static final int MONTH_IN_YEAR = 12;
-    private int amount;
+    private float amount;
     private int period;
     private String periodType;
     private float rate;
@@ -16,7 +16,7 @@ public class MortgageCalculator {
     private int payment;
     private String error;
 
-    public MortgageCalculator(final int amount, final int period, final String periodType,
+    public MortgageCalculator(final float amount, final int period, final String periodType,
                               final float rate) {
         this.amount = amount;
         this.period = period;
@@ -26,16 +26,20 @@ public class MortgageCalculator {
     }
 
     public List<Integer> differentiatedPayment() {
-        int n = 0, amountT = amount;
+        int n = 0;
+        float amountT = amount;
         if (period != 0) {
             if (rate != 0) {
-                if (periodType != null && periodType.equals("month")) {
-                    n = period;
-                } else if (periodType != null && periodType.equals("year")) {
-                    n = period * MONTH_IN_YEAR;
-                } else {
-                    error = "Type of period is undefined";
-                    return null;
+                switch (periodType) {
+                    case "month":
+                        n = period;
+                        break;
+                    case "year":
+                        n = period * MONTH_IN_YEAR;
+                        break;
+                    default:
+                        error = "Type of period is undefined";
+                        return null;
                 }
                 for (int i = 0; i < n; i++) {
                     payments.add(round(amountT / (n - i) + amountT * (rate / MONTH_IN_YEAR)));
@@ -78,15 +82,18 @@ public class MortgageCalculator {
 
     public int printPayments(final String paymentType, final int periodNumber) {
         int pay = 0;
-        if (paymentType != null && paymentType.equals("differentiated")) {
-            payments = differentiatedPayment();
-            pay = payments.get(periodNumber);
-        } else if (paymentType != null && paymentType.equals("annuity")) {
-            payment = annuityPayment();
-            pay = payment;
-        } else {
-            error = "Can't print payment of undefined type of payment";
-            return 0;
+        switch (paymentType) {
+            case "differentiated":
+                payments = differentiatedPayment();
+                pay = payments.get(periodNumber);
+                break;
+            case "annuity":
+                payment = annuityPayment();
+                pay = payment;
+                break;
+            default:
+                error = "Can't print payment of undefined type of payment";
+                return 0;
         }
         return pay;
     }
