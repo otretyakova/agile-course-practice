@@ -1,22 +1,16 @@
 package ru.unn.agile.string_calculator.model;
 
-public class StringCalculator {
+public final class StringCalculator {
     public int add(final String input) throws IllegalArgumentException {
         if (input == null) {
             throw new IllegalArgumentException("Incorrect data");
         }
-        if ("".equals(input)) {
+        if (input.isEmpty()) {
             return 0;
         }
-        String str = input;
-        String delimiter = ",\n";
-        String firstSymbol = input.substring(0, 1);
-        if (firstSymbol.matches("[,.:;]")) {
-            delimiter += firstSymbol;
-            str = input.substring(2);
-        }
 
-        String[] numbers = str.split("[" + delimiter + "]");
+        String delimiter = extractDelimiter(input);
+        String[] numbers = split(input, delimiter);
 
         checkIncorrectData(numbers);
         checkNegatives(numbers);
@@ -28,22 +22,41 @@ public class StringCalculator {
         return sum;
     }
 
+    private String extractDelimiter(final String input) {
+        String delimiter = ",\n";
+        String firstSymbol = input.substring(0, 1);
+        if (firstSymbol.matches("[,.:;]")) {
+            delimiter += firstSymbol;
+        }
+        return delimiter;
+    }
+
+    private String[] split(final String input, final String delimiter) {
+        String str = input;
+        String firstSymbol = str.substring(0, 1);
+        if (firstSymbol.matches("[,.:;]")) {
+            str = str.substring(2);
+        }
+        return str.split("[" + delimiter + "]");
+    }
+
     private void checkNegatives(final String[] numbers) {
-        String error = "Negatives ";
+        StringBuilder error = new StringBuilder(ERROR_BUFFER_SIZE);
+        error.append("Negatives ");
         for (String number: numbers) {
             if (Integer.parseInt(number) < 0) {
-                error += number + " ";
+                error.append(number).append(" ");
             }
         }
-        if (!"Negatives ".equals(error)) {
-            error += "not allowed";
-            throw new IllegalArgumentException(error);
+        if (!"Negatives ".equals(error.toString())) {
+            error.append("not allowed");
+            throw new IllegalArgumentException(error.toString());
         }
     }
 
     private void checkIncorrectData(final String[] numbers) {
         for (String number: numbers) {
-            if ("".equals(number) || !isNumeric(number)) {
+            if (number.isEmpty() || !isNumeric(number)) {
                 throw new IllegalArgumentException("Incorrect data");
             }
         }
@@ -57,4 +70,5 @@ public class StringCalculator {
         }
         return true;
     }
+    private static final int ERROR_BUFFER_SIZE = 50;
 }
