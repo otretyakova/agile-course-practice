@@ -128,11 +128,4 @@ public class PrimeNumber {
         return this.primeNum;
     }
 
-    public void printAllPrimeList() {
-
-        for (Integer prime : primeNum) {
-             System.out.printf("%i\n", prime.intValue());
-        }
-    }
-
 }
