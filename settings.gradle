@@ -96,8 +96,8 @@ project(":code/numbers-in-words").name = "numbers-in-words-Model"
 
 
 // Umnikov Eugene
-
-
+include "code/triangle"
+project(":code/triangle").name = "triangle"
 
 // Shestakova Svetlana
 
