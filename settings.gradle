@@ -31,8 +31,8 @@ project(":code/converter-temperature").name = "converter-temperature-Model"
 
 
 // Krivonosov Mikhail
-
-
+include "code/PolynomialCalculator"
+project(":code/PolynomialCalculator").name = "PolynomialCalculator-Model"
 
 // Kuzmin Pavel
 
@@ -105,10 +105,6 @@ project(":code/number-system-converter").name = "number-system-converter"
 // Bevzuk Anton
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
-
-// Krivonosov Mikhail, lab1
-include "code/PolynomialCalculator"
-project(":code/PolynomialCalculator").name = "PolynomialCalculator-Model"
 
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
