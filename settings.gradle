@@ -43,8 +43,8 @@ project(":code/converter-temperature").name = "converter-temperature-Model"
 
 
 // Levin Vadim
-include "code/statistical-values"
-project(":code/statistical-values").name = "statistical-values"
+include "code/statistical-values/Model"
+project(":code/statistical-values/Model").name = "statistical-values-Model"
 
 // Morozova Julia
 
