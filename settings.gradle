@@ -102,6 +102,9 @@ project(":code/triangle").name = "triangle"
 // Shestakova Svetlana
 
 
+// Roy Viktor 
+include "code/string_calculator"
+project(":code/string_calculator").name = "string_calculator-Model"
 
 // Bevzuk Anton
 include "code/bevzuk-anton"
