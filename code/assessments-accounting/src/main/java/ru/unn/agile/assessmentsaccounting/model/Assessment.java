@@ -1,6 +1,7 @@
 package ru.unn.agile.assessmentsaccounting.model;
 
 public enum Assessment {
+
     VeryBad(1),
     Bad(2),
     Satisfactorily(3),
@@ -9,13 +10,13 @@ public enum Assessment {
     Great(6),
     Perfect(7);
 
-    private int mark;
-
     Assessment(final int mark) {
         this.mark = mark;
     }
 
-    int getMark() {
+    public int getMark() {
         return this.mark;
     }
+
+    private int mark;
 }

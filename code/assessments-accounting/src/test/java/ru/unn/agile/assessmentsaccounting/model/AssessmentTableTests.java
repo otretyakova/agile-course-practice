@@ -3,9 +3,15 @@ package ru.unn.agile.assessmentsaccounting.model;
 import org.junit.Test;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 public class AssessmentTableTests {
 
@@ -66,19 +72,15 @@ public class AssessmentTableTests {
         assertTrue(table.getSubjects().get(0).equals(newName));
     }
 
-    @Test
-    public void canRenameSubjectIntoSameName() {
+    @Test(expected = InvalidParameterException.class)
+    public void canNotRenameSubjectIntoSameName() {
         AssessmentsTable table = new AssessmentsTable();
         String subject = "Making bugs";
         String student = "Max Bespalov";
-        Assessment assessment = Assessment.Perfect;
 
         table.addStudent(student);
         table.addSubject(subject);
-        table.addAssessment(assessment, student, subject);
         table.renameSubject(subject, subject);
-
-        assertEquals(table.getAssessmentsForStudent(subject, student).get(0), assessment);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -118,17 +120,19 @@ public class AssessmentTableTests {
         String name = "Max Bespalov";
         table.addStudent(name);
 
-        List<Student> students = table.getStudents();
+        Set<Student> students = table.getStudents();
+        Iterator<Student> iterator = students.iterator();
         assertEquals(students.size(), 1);
-        assertTrue(students.get(0).getName().equals(name));
+        assertTrue(iterator.next().getName().equals(name));
     }
 
-    @Test(expected = InvalidParameterException.class)
+    @Test
     public void canNotAddExistingStudent() {
         AssessmentsTable table = new AssessmentsTable();
         String name = "Max Bespalov";
         table.addStudent(name);
         table.addStudent(name);
+        assertEquals(table.getStudents().size(), 1);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -168,7 +172,8 @@ public class AssessmentTableTests {
         table.addStudent(name);
         String newName = "Very lazy student";
         table.renameStudent(name, newName);
-        assertTrue(table.getStudents().get(0).getName().equals(newName));
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertTrue(iterator.next().getName().equals(newName));
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -196,7 +201,8 @@ public class AssessmentTableTests {
         table.addStudent(studentName);
         table.addAssessment(assessment, studentName, subject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(subject).get(0), assessment);
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertEquals(iterator.next().getAssessments(subject).get(0), assessment);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -219,22 +225,20 @@ public class AssessmentTableTests {
     public void canAddAssessmentsToTwoStudents() {
         AssessmentsTable table = new AssessmentsTable();
         String subject = "Agile course";
-        String firstStudentName = "Max Bespalov";
-        String secondStudentName = "Ivan Ivanov";
         Assessment firstAssessment = Assessment.Bad;
         Assessment secondAssessment = Assessment.VeryGood;
         Assessment thirdAssessment = Assessment.Satisfactorily;
 
         table.addSubject(subject);
-        table.addStudent(firstStudentName);
-        table.addStudent(secondStudentName);
-        table.addAssessment(firstAssessment, firstStudentName, subject);
-        table.addAssessment(secondAssessment, secondStudentName, subject);
-        table.addAssessment(thirdAssessment, secondStudentName, subject);
+        table.addStudent("Max");
+        table.addStudent("Ivan");
+        table.addAssessment(firstAssessment, "Max", subject);
+        table.addAssessment(secondAssessment, "Ivan", subject);
+        table.addAssessment(thirdAssessment, "Ivan", subject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(subject).get(0), firstAssessment);
-        assertEquals(table.getStudents().get(1).getAssessments(subject).get(0), secondAssessment);
-        assertEquals(table.getStudents().get(1).getAssessments(subject).get(1), thirdAssessment);
+        assertEquals(table.getAssessmentsForStudent(subject, "Max").get(0), firstAssessment);
+        assertEquals(table.getAssessmentsForStudent(subject, "Ivan").get(0), secondAssessment);
+        assertEquals(table.getAssessmentsForStudent(subject, "Ivan").get(1), thirdAssessment);
     }
 
     @Test
@@ -252,9 +256,10 @@ public class AssessmentTableTests {
         table.addAssessment(firstAssessment, studentName, firstSubject);
         table.addAssessment(secondAssessment, studentName, secondSubject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(firstSubject).get(0),
+        Student maxBespalov = table.getStudents().iterator().next();
+        assertEquals(maxBespalov.getAssessments(firstSubject).get(0),
                 firstAssessment);
-        assertEquals(table.getStudents().get(0).getAssessments(secondSubject).get(0),
+        assertEquals(maxBespalov.getAssessments(secondSubject).get(0),
                 secondAssessment);
     }
 
@@ -270,7 +275,8 @@ public class AssessmentTableTests {
         table.addAssessment(assessment, studentName, subject);
         table.removeAssessment(0, studentName, subject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(subject).size(), 0);
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertEquals(iterator.next().getAssessments(subject).size(), 0);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -312,7 +318,8 @@ public class AssessmentTableTests {
         table.addAssessment(assessment, studentName, subject);
         table.changeAsessment(0, newAssessment, studentName, subject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(subject).get(0), newAssessment);
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertEquals(iterator.next().getAssessments(subject).get(0), newAssessment);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -342,7 +349,8 @@ public class AssessmentTableTests {
         table.changeAsessment(0, secondAssessment, studentName, subject);
         table.changeAsessment(0, thirdAssessment, studentName, subject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(subject).get(0), thirdAssessment);
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertEquals(iterator.next().getAssessments(subject).get(0), thirdAssessment);
     }
 
     @Test
@@ -361,8 +369,9 @@ public class AssessmentTableTests {
         table.addStudent(secondStudentName);
         table.addAssessment(assessment, students, subject);
 
-        assertEquals(table.getStudents().get(0).getAssessments(subject).get(0), assessment);
-        assertEquals(table.getStudents().get(1).getAssessments(subject).get(0), assessment);
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertEquals(iterator.next().getAssessments(subject).get(0), assessment);
+        assertEquals(iterator.next().getAssessments(subject).get(0), assessment);
     }
 
     @Test
@@ -586,7 +595,8 @@ public class AssessmentTableTests {
 
         table.removeSubject(subject);
 
-        assertFalse(table.getStudents().get(0).hasSubject(subject));
-        assertFalse(table.getStudents().get(1).hasSubject(subject));
+        Iterator<Student> iterator = table.getStudents().iterator();
+        assertFalse(iterator.next().isRegisteredForSubject(subject));
+        assertFalse(iterator.next().isRegisteredForSubject(subject));
     }
 }

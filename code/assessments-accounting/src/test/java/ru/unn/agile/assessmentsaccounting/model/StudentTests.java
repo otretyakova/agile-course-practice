@@ -3,7 +3,10 @@ package ru.unn.agile.assessmentsaccounting.model;
 import org.junit.Test;
 import java.security.InvalidParameterException;
 import java.util.List;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class StudentTests {
 
@@ -46,13 +49,13 @@ public class StudentTests {
         student.addSubject(subject);
     }
 
-    @Test(expected = InvalidParameterException.class)
+    @Test
     public void canRemoveAddedSubject() {
         Student student = new Student("Max Bespalov");
         String subject = "Game development";
         student.addSubject(subject);
         student.removeSubject(subject);
-        student.getAssessments(subject);
+        assertFalse(student.isRegisteredForSubject(subject));
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -74,31 +77,27 @@ public class StudentTests {
         student.getAssessments(subject);
     }
 
-    @Test
-    public void canRenameSubjectIntoSameNameWithoutAssessmentLosing() {
+    @Test(expected = InvalidParameterException.class)
+    public void caNotRenameSubjectIntoSameName() {
         Student student = new Student("Max Bespalov");
         String subject = "Agile course";
-        Assessment assessment = Assessment.VeryBad;
 
         student.addSubject(subject);
-        student.addAssessment(assessment, subject);
         student.renameSubject(subject, subject);
-
-        assertEquals(student.getAssessments(subject).get(0), assessment);
     }
 
     @Test
-    public void afterAddingSubjectStudentHasIt() {
+    public void afterAddingSubjectStudentRegisteredForIt() {
         Student student = new Student("Max Bespalov");
         String subject = "Agile course";
         student.addSubject(subject);
-        assertTrue(student.hasSubject(subject));
+        assertTrue(student.isRegisteredForSubject(subject));
     }
 
     @Test
     public void studentDoesNotHaveSubjectThatWasNotAdded() {
         Student student = new Student("Max Bespalov");
-        assertFalse(student.hasSubject("Game development"));
+        assertFalse(student.isRegisteredForSubject("Game development"));
     }
 
     @Test
