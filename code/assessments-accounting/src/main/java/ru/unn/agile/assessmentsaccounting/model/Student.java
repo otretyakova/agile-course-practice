@@ -9,7 +9,7 @@ import java.util.Map;
 public class Student {
 
     protected Student(final String name) {
-        if (isStringInvalid(name)) {
+        if (isSubjectInvalid(name)) {
             throw new InvalidParameterException("Name is null or empty");
         }
         this.name = name;
@@ -31,7 +31,7 @@ public class Student {
     }
 
     public void setName(final String name) {
-        if (isStringInvalid(name)) {
+        if (isSubjectInvalid(name)) {
             throw new InvalidParameterException("Name is null or empty");
         }
         if (name == this.name) {
@@ -41,7 +41,7 @@ public class Student {
     }
 
     public void addSubject(final String subject) {
-        if (isStringInvalid(subject) || isRegisteredForSubject(subject)) {
+        if (isSubjectInvalid(subject) || isRegisteredForSubject(subject)) {
             throw new InvalidParameterException("Subject - " + subject
                     + " doesn't exist for this student");
         }
@@ -49,7 +49,7 @@ public class Student {
     }
 
     public void renameSubject(final String oldName, final String newName) {
-        if (!isRegisteredForSubject(oldName) || isStringInvalid(newName)
+        if (!isRegisteredForSubject(oldName) || isSubjectInvalid(newName)
                 || isRegisteredForSubject(newName)) {
             throw new InvalidParameterException("Invalid renameSubject arguments oldName "
                     + oldName + " newName - " + newName);
@@ -126,7 +126,7 @@ public class Student {
         }
     }
 
-    private boolean isStringInvalid(final String value) {
+    private boolean isSubjectInvalid(final String value) {
         return value == null || value.isEmpty();
     }
 

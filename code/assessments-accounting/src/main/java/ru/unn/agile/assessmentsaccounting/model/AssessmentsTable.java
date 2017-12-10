@@ -2,6 +2,7 @@ package ru.unn.agile.assessmentsaccounting.model;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public class AssessmentsTable {
     }
 
     public void addSubject(final String subject) {
-        if (subject == null || subject.isEmpty() || subjects.contains(subject)) {
+        if (isStringInvalid(subject) || subjects.contains(subject)) {
             throw new InvalidParameterException("Invalid new subject - " + subject);
         }
         subjects.add(subject);
@@ -39,13 +40,10 @@ public class AssessmentsTable {
     }
 
     public void renameSubject(final String oldName, final String newName) {
-        if (!subjects.contains(oldName) || subjects.contains(newName)
-                || newName == null || newName.isEmpty()) {
+        if (!subjects.contains(oldName) || isStringInvalid(newName)
+                || subjects.contains(newName)) {
             throw new InvalidParameterException("Invalid renameSubject arguments oldName "
                     + oldName + " newName - " + newName);
-        }
-        if (newName.equals(oldName)) {
-            return;
         }
         subjects.set(subjects.indexOf(oldName), newName);
         for (Student student : students) {
@@ -54,22 +52,19 @@ public class AssessmentsTable {
     }
 
     public void addStudent(final String name) {
-        if (name == null || name.isEmpty()) {
+        if (isStringInvalid(name)) {
             throw new InvalidParameterException();
         }
         students.add(new Student(name));
     }
 
     public void renameStudent(final String oldName, final String newName) {
-        if (newName == null || newName.isEmpty()) {
+        if (isStringInvalid(newName) || students.contains(newName)) {
             throw new InvalidParameterException("Invalid renameStudent arguments oldName "
                     + oldName + " newName - " + newName);
         }
 
         Student student = findStudent(oldName);
-        if (newName.equals(oldName)) {
-            return;
-        }
         student.setName(newName);
     }
 
@@ -116,7 +111,7 @@ public class AssessmentsTable {
 
     public List<Assessment> getAssessments(final String subject) {
         checkSubject(subject);
-        List<Assessment> assessments = new ArrayList<Assessment>();
+        List<Assessment> assessments = new LinkedList<Assessment>();
         for (Student student : students) {
             assessments.addAll(student.getAssessments(subject));
         }
@@ -166,7 +161,7 @@ public class AssessmentsTable {
                 return student;
             }
         }
-        throw new InvalidParameterException("Table doesn't containt student - " + name);
+        throw new InvalidParameterException("Table doesn't contain student - " + name);
     }
 
     private double getAverage(final List<Assessment> assessments) {
@@ -186,6 +181,10 @@ public class AssessmentsTable {
             throw new InvalidParameterException("Table doesn't contain subject - "
                     + subject);
         }
+    }
+
+    private boolean isStringInvalid(final String value) {
+        return value == null || value.isEmpty();
     }
 
     private List<String> subjects;
