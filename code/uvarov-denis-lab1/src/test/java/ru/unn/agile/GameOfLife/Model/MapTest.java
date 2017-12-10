@@ -2,9 +2,16 @@ package ru.unn.agile.GameOfLife.Model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MapTest {
+
+    @Test(expected = IllegalArgumentException.class)
+    public void couldNotCreateMapWithNullArgument() {
+        Map testMap = new Map(null);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void couldNotCreateMapWithIncorrectGrid() {
@@ -27,12 +34,65 @@ public class MapTest {
     @Test
     public void shouldCreateMapWithInputParameters() {
         int[][] grid = {{1, 0, 0}, {0, 1, 0}};
+        Map testMap = new Map(grid);
+        assertTrue(isEqualsGrids(grid, testMap.getGrid()));
+    }
+
+    @Test
+    public void shouldCorrectlyCalculateSizeOfGrid() {
+        int[][] grid = {{1, 0, 0}, {0, 1, 0}};
         int[] gridSize = {2, 3};
         Map testMap = new Map(grid);
         assertArrayEquals(testMap.getSize(), gridSize);
-        assertEquals(testMap.getSizeX(), 2);
-        assertEquals(testMap.getSizeY(), 3);
-        assertTrue(isEqualsGrids(grid, testMap.getGrid()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void couldNotReturnAliveNeighborsCountForIncorrectCoordinates() {
+        int[][] grid = {{0}};
+        Map testMap = new Map(grid);
+        testMap.countAliveNeighbors(1, 1);
+    }
+
+    @Test
+    public void shouldReturnZeroForDeadGrid() {
+        int[][] grid = {{0}};
+        Map testMap = new Map(grid);
+        assertEquals(0, testMap.countAliveNeighbors(0, 0));
+    }
+
+    @Test
+    public void shouldReturnCorrectValueForUpperLeftPoint() {
+        int[][] grid = {{1, 1}, {1, 1}};
+        Map testMap = new Map(grid);
+        assertEquals(3, testMap.countAliveNeighbors(0, 0));
+    }
+
+    @Test
+    public void shouldReturnCorrectValueForUpperRightPoint() {
+        int[][] grid = {{1, 1}, {1, 1}};
+        Map testMap = new Map(grid);
+        assertEquals(3, testMap.countAliveNeighbors(1, 0));
+    }
+
+    @Test
+    public void shouldReturnCorrectValueForLowerLeftPoint() {
+        int[][] grid = {{1, 1}, {1, 1}};
+        Map testMap = new Map(grid);
+        assertEquals(3, testMap.countAliveNeighbors(0, 1));
+    }
+
+    @Test
+    public void shouldReturnCorrectValueForLowerRightPoint() {
+        int[][] grid = {{1, 1}, {1, 1}};
+        Map testMap = new Map(grid);
+        assertEquals(3, testMap.countAliveNeighbors(1, 1));
+    }
+
+    @Test
+    public void shouldReturnCorrectValueForPointWith8Neighbors() {
+        int[][] grid = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+        Map testMap = new Map(grid);
+        assertEquals(testMap.countAliveNeighbors(1, 1), 8);
     }
 
     public static boolean isEqualsIntArrays(final int[] firstArray, final int[] secondArray) {
@@ -57,19 +117,5 @@ public class MapTest {
             return false;
         }
         return result;
-    }
-
-    @Test
-    public void shouldReturnZeroForDeadGrid() {
-        int[][] grid = {{0}};
-        Map testMap = new Map(grid);
-        assertEquals(testMap.countAliveNeighbors(0, 0), 0);
-    }
-
-    @Test
-    public void shouldReturnCorrectValueForAliveNeighbors() {
-        int[][] grid = {{0, 1}, {1, 1}};
-        Map testMap = new Map(grid);
-        assertEquals(testMap.countAliveNeighbors(0, 0), 3);
     }
 }

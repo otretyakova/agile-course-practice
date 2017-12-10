@@ -1,12 +1,6 @@
 package ru.unn.agile.GameOfLife.Model;
 
 public class GameOfLife {
-    private static final int SIZE_TYPES_COUNT = 2;
-    private static final int MINIMAL_INPUT_STRINGS_COUNT = 2;
-    private static final int MIN_ALIVE_NEIGHBORS = 3;
-    private static final int MAX_ALIVE_NEIGHBORS = 4;
-    private Map currentGeneration;
-    private Map nextGeneration;
 
     public GameOfLife() {
         currentGeneration = null;
@@ -14,6 +8,9 @@ public class GameOfLife {
     }
 
     public void readCurrentGeneration(final String[] input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Argument cannot be null!");
+        }
         if (input.length < MINIMAL_INPUT_STRINGS_COUNT) {
             throw new IllegalArgumentException(
                     "Incorrect input value! Not enough count of input strings");
@@ -29,21 +26,21 @@ public class GameOfLife {
             numArr[i] = Integer.parseInt(sizeParse[i]);
         }
 
-        int sizeX = numArr[0];
-        int sizeY = numArr[1];
+        final int sizeX = numArr[0];
+        final int sizeY = numArr[1];
 
         if (sizeY != input.length - 1) {
-            throw new IllegalArgumentException("Incorrect Y-axis value!");
+            throw new IllegalArgumentException("Incorrect Y-axis size!");
         }
 
         int[][] arrayForGrid = new int[sizeX][sizeY];
 
         for (int i = 0; i < sizeY; i++) {
             if (input[i + 1].length() != sizeX) {
-                throw new IllegalArgumentException("Incorrect X-axis value!");
+                throw new IllegalArgumentException("Incorrect X-axis size!");
             } else {
                 for (int j = 0; j < sizeX; j++) {
-                    arrayForGrid[j][i] = convertSymbolToDot(input[i + 1].charAt(j));
+                    arrayForGrid[j][i] = parseSymbolToState(input[i + 1].charAt(j));
                 }
             }
         }
@@ -58,20 +55,20 @@ public class GameOfLife {
         for (int i = 0; i < nextGeneration.getSizeY(); i++) {
             output[1 + i] = "";
             for (int j = 0; j < nextGeneration.getSizeX(); j++) {
-                output[1 + i] = output[1 + i].concat(convertDotToSymbol(grid[j][i]));
+                output[1 + i] = output[1 + i].concat(codeStateToSymbol(grid[j][i]));
             }
         }
         return output;
     }
 
     public void buildNextGeneration() {
-        int sizeX = getCurrentGeneration().getSizeX();
-        int sizeY = getCurrentGeneration().getSizeY();
+        final int sizeX = getCurrentGeneration().getSizeX();
+        final int sizeY = getCurrentGeneration().getSizeY();
         int[][] gridForNexGen = new int[sizeX][sizeY];
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 int aliveNeighbors = currentGeneration.countAliveNeighbors(i, j);
-                gridForNexGen[i][j] = rulesForNeighbors(aliveNeighbors);
+                gridForNexGen[i][j] = rulesForNetState(aliveNeighbors);
             }
         }
         nextGeneration = new Map(gridForNexGen);
@@ -93,15 +90,16 @@ public class GameOfLife {
         }
     }
 
-    private static int rulesForNeighbors(final int count) {
-        if (count >= MIN_ALIVE_NEIGHBORS && count <= MAX_ALIVE_NEIGHBORS) {
+    private static int rulesForNetState(final int aliveNeighborsCount) {
+        if (aliveNeighborsCount >= MIN_ALIVE_NEIGHBORS
+                && aliveNeighborsCount <= MAX_ALIVE_NEIGHBORS) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    private static int convertSymbolToDot(final char value) {
+    private static int parseSymbolToState(final char value) {
         if (value == '.') {
             return 0;
         } else if (value == '*') {
@@ -111,7 +109,7 @@ public class GameOfLife {
         }
     }
 
-    private static String convertDotToSymbol(final int value) {
+    private static String codeStateToSymbol(final int value) {
         if (value == 0) {
             return ".";
         } else if (value == 1) {
@@ -120,4 +118,11 @@ public class GameOfLife {
             throw new IllegalArgumentException("Incorrect state value: '" + value + "'!");
         }
     }
+
+    private static final int SIZE_TYPES_COUNT = 2;
+    private static final int MINIMAL_INPUT_STRINGS_COUNT = 2;
+    private static final int MIN_ALIVE_NEIGHBORS = 3;
+    private static final int MAX_ALIVE_NEIGHBORS = 4;
+    private Map currentGeneration;
+    private Map nextGeneration;
 }

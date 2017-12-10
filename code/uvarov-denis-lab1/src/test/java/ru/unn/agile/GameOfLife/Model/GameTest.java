@@ -2,9 +2,16 @@ package ru.unn.agile.GameOfLife.Model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
 
 public class GameTest {
+    @Test(expected = IllegalArgumentException.class)
+    public void couldNotWorkWithNullInput() {
+        GameOfLife testGame = new GameOfLife();
+        testGame.readCurrentGeneration(null);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void couldNotWorkWithIncorrectInput() {
         String[] inputArray = {"", ""};
@@ -34,12 +41,21 @@ public class GameTest {
     }
 
     @Test
-    public void shouldParseCorrectInput() {
+    public void shouldCorrectlyParseInputGridSize() {
         String[] inputArray = {"2 3", "..", "..", ".."};
+        int[] gridSize = new int[]{2, 3};
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);
-        assertEquals(testGame.getCurrentGeneration().getSizeX(), 2);
-        assertEquals(testGame.getCurrentGeneration().getSizeY(), 3);
+        assertArrayEquals(testGame.getCurrentGeneration().getSize(), gridSize);
+    }
+
+    @Test
+    public void shouldParseCorrectInput() {
+        String[] inputArray = {"2 3", "..", "..", ".."};
+        int[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
+        GameOfLife testGame = new GameOfLife();
+        testGame.readCurrentGeneration(inputArray);
+        assertTrue(MapTest.isEqualsGrids(testGame.getCurrentGeneration().getGrid(), correctGrid));
     }
 
     @Test(expected = NullPointerException.class)
@@ -49,15 +65,22 @@ public class GameTest {
     }
 
     @Test
-    public void shouldCreateCorrectNextGenerarionGrid() {
+    public void shouldCreateNextGenerationWithCorrectSize() {
+        String[] inputArray = {"2 3", "..", "*.", ".."};
+        int[] gridSize = new int[]{2, 3};
+        GameOfLife testGame = new GameOfLife();
+        testGame.readCurrentGeneration(inputArray);
+        testGame.buildNextGeneration();
+        assertArrayEquals(testGame.getCurrentGeneration().getSize(), gridSize);
+    }
+
+    @Test
+    public void shouldCreateCorrectNextGenerationGrid() {
         String[] inputArray = {"2 3", "..", "*.", ".."};
         int[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);
         testGame.buildNextGeneration();
-
-        assertEquals(testGame.getCurrentGeneration().getSizeX(), 2);
-        assertEquals(testGame.getCurrentGeneration().getSizeY(), 3);
         assertTrue(MapTest.isEqualsGrids(testGame.getNextGeneration().getGrid(), correctGrid));
     }
 
@@ -70,5 +93,27 @@ public class GameTest {
         testGame.buildNextGeneration();
         String[] outputArray = testGame.writeNextGeneration();
         assertArrayEquals(correctOutputArray, outputArray);
+    }
+
+    @Test
+    public void verifyThatItShouldBeCorrectResultFor9x6InputGrid() {
+        String[] inputArray = {"9 6",
+                "*..**..**",
+                ".......**",
+                "*...**...",
+                "....**..*",
+                "**.......",
+                "**..**..*"};
+        String[] correctOutputArray = {"9 6",
+                ".......**",
+                "...******",
+                "....*****",
+                "**..**...",
+                "**..**...",
+                "**......."};
+        GameOfLife testGame = new GameOfLife();
+        testGame.readCurrentGeneration(inputArray);
+        testGame.buildNextGeneration();
+        assertArrayEquals(correctOutputArray, testGame.writeNextGeneration());
     }
 }

@@ -1,11 +1,10 @@
 package ru.unn.agile.GameOfLife.Model;
 
 public class Map {
-    private int sizeX;
-    private int sizeY;
-    private int[][] grid;
-
     public Map(final int[][] grid) {
+        if (grid == null) {
+            throw new IllegalArgumentException("Argument cannot be null!");
+        }
         if (grid.length < 1) {
             throw new IllegalArgumentException("Cannot create MAP: Empty grid!");
         }
@@ -50,10 +49,15 @@ public class Map {
     }
 
     public int countAliveNeighbors(final int coordX, final int coordY) {
-        return leftNeighbor(coordX, coordY) + rightNeighbor(coordX, coordY)
-                + upperNeighbor(coordX, coordY) + lowerNeighbor(coordX, coordY)
-                + leftUpperNeighbor(coordX, coordY) + rightUpperNeighbor(coordX, coordY)
-                + leftLowerNeighbor(coordX, coordY) + rightLowerNeighbor(coordX, coordY);
+        if (coordX < getSizeX() && coordY < getSizeY()
+                && coordX >= 0 && coordY >= 0) {
+            return leftNeighbor(coordX, coordY) + rightNeighbor(coordX, coordY)
+                    + upperNeighbor(coordX, coordY) + lowerNeighbor(coordX, coordY)
+                    + leftUpperNeighbor(coordX, coordY) + rightUpperNeighbor(coordX, coordY)
+                    + leftLowerNeighbor(coordX, coordY) + rightLowerNeighbor(coordX, coordY);
+        } else {
+            throw new IllegalArgumentException("Incorrect coordinates of point!");
+        }
     }
 
     private int leftNeighbor(final int coordX, final int coordY) {
@@ -65,7 +69,7 @@ public class Map {
     }
 
     private int upperNeighbor(final int coordX, final int coordY) {
-        return (coordX != 0) ? grid[coordX - 1][coordY] : 0;
+        return (coordY != 0) ? grid[coordX][coordY - 1] : 0;
     }
 
     private int lowerNeighbor(final int coordX, final int coordY) {
@@ -91,4 +95,8 @@ public class Map {
         return (coordX != sizeX - 1 && coordY != sizeY - 1)
                 ? grid[coordX + 1][coordY + 1] : 0;
     }
+
+    private int sizeX;
+    private int sizeY;
+    private int[][] grid;
 }
