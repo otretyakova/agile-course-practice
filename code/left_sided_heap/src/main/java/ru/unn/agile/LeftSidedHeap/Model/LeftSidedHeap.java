@@ -79,6 +79,21 @@ public class LeftSidedHeap<T> {
         return retVal;
     }
 
+    public boolean contains(final Collection<SimpleEntry<Integer, T>> collection) {
+        boolean result = true;
+        for (SimpleEntry<Integer, T> keyValuePair : collection) {
+            SimpleEntry<Integer, T> foundElement = search(keyValuePair.getKey());
+            result = false;
+            if (foundElement != null) {
+                result = search(keyValuePair.getKey()).equals(keyValuePair);
+            }
+            if (!result) {
+                break;
+            }
+        }
+        return result;
+    }
+
     public boolean merge(final LeftSidedHeap<T> heap) {
         boolean bResult = true;
         if (heap == null) {

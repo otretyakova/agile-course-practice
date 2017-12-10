@@ -25,29 +25,27 @@ public class LeftSidedHeapTests {
     }
 
     @Test
-    public void canCreateHeapWith3Elements() {
-        ArrayList<SimpleEntry<Integer, Integer>> array = new ArrayList<>();
-        array.add(new SimpleEntry<>(3, 10));
-        array.add(new SimpleEntry<>(15, -4));
-        array.add(new SimpleEntry<>(5, 12));
-        LeftSidedHeap<Integer> heap = new LeftSidedHeap<>(array);
-        assertTrue(heap.search(3).equals(new SimpleEntry<>(3, 10)));
-        assertTrue(heap.search(5).equals(new SimpleEntry<>(5, 12)));
-        assertTrue(heap.search(15).equals(new SimpleEntry<>(15, -4)));
-        assertTrue(heap.size() == 3);
+    public void canCreateHeapWith10Elements() {
+        ArrayList<SimpleEntry<Integer, Integer>> initArray =
+                getArrayWithPositiveKeysSize10andMinKey0Value1();
+        LeftSidedHeap<Integer> heap = new LeftSidedHeap<>(initArray);
+        assertTrue(heap.contains(initArray));
+        assertTrue(heap.size() == 10);
     }
 
     @Test
     public void canAdd10ElementsToEmptyHeap() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
-        addElements(heap, 10);
+        ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 10);
+        assertTrue(heap.contains(addedElements));
         assertTrue(heap.size() == 10);
     }
 
     @Test
     public void canAdd10ElementsToHeapWith6Elements() {
         LeftSidedHeap<Integer> heap = prepareHeap(6);
-        addElements(heap, 10);
+        ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 10);
+        assertTrue(heap.contains(addedElements));
         assertTrue(heap.size() == 16);
     }
 
@@ -78,23 +76,49 @@ public class LeftSidedHeapTests {
     }
 
     @Test
+    public void canContainExistedElements() {
+        LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1(123);
+        ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 5);
+        assertTrue(heap.contains(addedElements));
+    }
+
+    @Test
+    public void cantContainUnexistedElements() {
+        LeftSidedHeap<Integer> heap = prepareHeap(5);
+        ArrayList<SimpleEntry<Integer, Integer>> randArray = new ArrayList<>();
+        randArray.add(new SimpleEntry<>(-2, 3));
+        randArray.add(new SimpleEntry<>(33, 41));
+        assertFalse(heap.contains(randArray));
+    }
+
+    @Test
+    public void canDoContainForEmptyHeap() {
+        boolean thrown = true;
+        LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
+        try {
+            heap.contains(getArrayWithPositiveKeysSize10andMinKey0Value1());
+        } catch (Exception ex) {
+            thrown = false;
+        }
+        assertTrue(thrown);
+    }
+
+    @Test
     public void cantRemoveElementFromEmptyHeap() {
+        boolean thrown = false;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         try {
             heap.remove(0);
-            Assert.fail();
         } catch (IllegalStateException ex) {
+            thrown = true;
         }
+        assertTrue(thrown);
     }
 
     @Test
     public void cantRemoveUnexistedElement() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
-        try {
-            assertTrue(heap.remove(-1) == null);
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        assertTrue(heap.remove(-1) == null);
         assertTrue(heap.size() == 10);
     }
 
@@ -102,24 +126,15 @@ public class LeftSidedHeapTests {
     public void cantRemoveUniqueElementTwice() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         heap.add(new SimpleEntry<>(-1, 4));
-        try {
-            assertTrue(heap.remove(-1).equals(new SimpleEntry<>(-1, 4)));
-            assertTrue(heap.remove(-1) == null);
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
-        assertTrue(heap.size() == 10);
+        heap.remove(-1).equals(new SimpleEntry<>(-1, 4));
+        assertTrue(heap.remove(-1) == null);
     }
 
     @Test
     public void canAdd3ElementsAndRemove3Elements() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 3);
-        try {
-            removeRandomElements(heap, addedElements, 3);
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        removeRandomElements(heap, addedElements, 3);
         assertTrue(heap.size() == 0);
     }
 
@@ -127,44 +142,40 @@ public class LeftSidedHeapTests {
     public void canAdd5ElementsAndRemove3Elements() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 5);
-        try {
-            removeRandomElements(heap, addedElements, 3);
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        removeRandomElements(heap, addedElements, 3);
         assertTrue(heap.size() == 2);
     }
 
     @Test
     public void cantAdd5ElementsAndRemove6Elements() {
+        boolean thrown = false;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 5);
+        removeRandomElements(heap, addedElements, 5);
         try {
-            removeRandomElements(heap, addedElements, 5);
             heap.remove(0);
-            Assert.fail();
         } catch (IllegalStateException ex) {
+            thrown = true;
         }
+        assertTrue(thrown);
     }
 
     @Test
     public void cantGetMinFromEmptyHeap() {
+        boolean thrown = false;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         try {
             heap.getMin();
-            Assert.fail();
         } catch (IllegalStateException ex) {
+            thrown = true;
         }
+        assertTrue(thrown);
     }
 
     @Test
     public void canGetMinimumCorrectly() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
-        try {
-            assertTrue(heap.getMin().equals(new SimpleEntry<>(0, 1)));
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        assertTrue(heap.getMin().equals(new SimpleEntry<>(0, 1)));
     }
 
     @Test
@@ -172,72 +183,50 @@ public class LeftSidedHeapTests {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         heap.add(new SimpleEntry<>(-2, 1));
         heap.add(new SimpleEntry<>(-1, 5));
-        try {
-            assertTrue(heap.remove(-2).equals(new SimpleEntry<>(-2, 1)));
-            assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, 5)));
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        assertTrue(heap.remove(-2).equals(new SimpleEntry<>(-2, 1)));
+        assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, 5)));
     }
 
     @Test
     public void canGetNewMinAfterAddIt() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         heap.add(new SimpleEntry<>(-1, -2));
-        try {
-            assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, -2)));
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, -2)));
     }
 
     @Test
     public void cantMergeHeapWithNull() {
-        LeftSidedHeap<Integer> heap1 = prepareHeap(5);
-        LeftSidedHeap<Integer> heap2 = null;
-        assertFalse(heap1.merge(heap2));
-        assertTrue(heap1.size() == 5);
+        LeftSidedHeap<Integer> mainHeap = prepareHeap(5);
+        LeftSidedHeap<Integer> nullHeap = null;
+        assertFalse(mainHeap.merge(nullHeap));
     }
 
     @Test
     public void canMergeEmptyHeapWithNotEmpty() {
-        LeftSidedHeap<Integer> heap1 = new LeftSidedHeap<>();
-        LeftSidedHeap<Integer> heap2 = prepareHeap(5);
-        try {
-            final SimpleEntry<Integer, Integer> expectedMin = heap2.getMin();
-            assertTrue(heap1.merge(heap2));
-            assertTrue(heap1.size() == 5);
-            assertTrue(heap1.getMin().equals(expectedMin));
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        LeftSidedHeap<Integer> firstHeap = new LeftSidedHeap<>();
+        LeftSidedHeap<Integer> secondHeap = prepareHeap(5);
+        assertTrue(firstHeap.merge(secondHeap));
+        assertTrue(firstHeap.size() == 5);
     }
 
     @Test
     public void canMergeNotEmptyHeapWithEmpty() {
-        LeftSidedHeap<Integer> heap1 = prepareHeap(6);
-        LeftSidedHeap<Integer> heap2 = new LeftSidedHeap<>();
-        try {
-            final SimpleEntry<Integer, Integer> expectedMin = heap1.getMin();
-            assertTrue(heap1.merge(heap2));
-            assertTrue(heap1.size() == 6);
-            assertTrue(heap1.getMin().equals(expectedMin));
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        LeftSidedHeap<Integer> mainHeap = prepareHeap(6);
+        LeftSidedHeap<Integer> emptyHeap = new LeftSidedHeap<>();
+        assertTrue(mainHeap.merge(emptyHeap));
+        assertTrue(mainHeap.size() == 6);
     }
 
     @Test
     public void canMergeTwoHeaps() {
-        LeftSidedHeap<Integer> heap1 = createHeapWithPositiveKeysSize10andMinKey0Value1();
-        LeftSidedHeap<Integer> heap2 = createHeapWithPositiveKeysSize10andMinKey0Value1(100);
-        assertTrue(heap1.merge(heap2));
-        assertTrue(heap1.size() == 20);
-        try {
-            assertTrue(heap1.getMin().equals(new SimpleEntry<>(0, 1)));
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
+        ArrayList<SimpleEntry<Integer, Integer>> firstHeapElements
+                = getArrayWithPositiveKeysSize10andMinKey0Value1(0);
+        ArrayList<SimpleEntry<Integer, Integer>> secondHeapElements
+                = getArrayWithPositiveKeysSize10andMinKey0Value1(100);
+        LeftSidedHeap<Integer> firstHeap = new LeftSidedHeap<>(firstHeapElements);
+        LeftSidedHeap<Integer> secondHeap = new LeftSidedHeap<>(secondHeapElements);
+        assertTrue(firstHeap.merge(secondHeap));
+        assertTrue(firstHeap.contains(firstHeapElements) && firstHeap.contains(secondHeapElements));
     }
 
     private ArrayList<SimpleEntry<Integer, Integer>>
@@ -291,16 +280,18 @@ public class LeftSidedHeapTests {
 
     private ArrayList<SimpleEntry<Integer, Integer>> addElements(
             final LeftSidedHeap<Integer> heap, final int numElements) {
-        ArrayList<SimpleEntry<Integer, Integer>> array =
+        ArrayList<SimpleEntry<Integer, Integer>> tempArray =
                 getArrayWithPositiveKeysSize10andMinKey0Value1();
-        if (numElements <= array.size()) {
+        ArrayList<SimpleEntry<Integer, Integer>> resultArray = new ArrayList<>();
+        if (numElements <= tempArray.size()) {
             for (int i = 0; i < numElements; i++) {
-                heap.add(array.get(i));
+                heap.add(tempArray.get(i));
+                resultArray.add(tempArray.get(i));
             }
         } else {
             Assert.fail("This function can add not more than 10 elements!");
         }
-        return array;
+        return resultArray;
     }
 
     private void removeRandomElements(final LeftSidedHeap<Integer> heap,
