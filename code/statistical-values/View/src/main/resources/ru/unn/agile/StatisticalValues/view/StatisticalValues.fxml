@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.StatisticalValues.view.StatisticalValues">
    <children>
-      <Pane id="mainPane" prefHeight="200.0" prefWidth="500.0">
+      <Pane id="mainPane" layoutY="5.0" prefHeight="200.0" prefWidth="500.0">
          <children>
             <MenuButton id="mbStatistic" mnemonicParsing="false" text="Statistic">
               <items>
@@ -22,11 +23,14 @@
             </MenuButton>
             <Label id="lbOrder" layoutX="5.0" layoutY="30.0" text="Order" visible="false" />
             <TextField id="tfOrder" layoutX="5.0" layoutY="50.0" prefHeight="25.0" prefWidth="27.0" text="0" visible="false" />
+            <CheckBox id="cbUnbiased" layoutX="41.0" layoutY="53.0" mnemonicParsing="false" text="Unbiased" visible="false" />
             <Label id="lbValues" layoutX="5.0" layoutY="80.0" prefHeight="15.0" prefWidth="44.0" text="Values" visible="false" />
             <TextField id="tfValues" layoutY="100.0" prefHeight="25.0" prefWidth="500.0" text="0.0, 0.0" visible="false" />
             <Button id="btCalculate" layoutX="5.0" layoutY="140.0" mnemonicParsing="false" text="Calculate" visible="false" />
             <Label id="lbResult" layoutX="97.0" layoutY="130.0" text="Result" visible="false" />
-            <Label id="lbResultValue" layoutX="102.0" layoutY="147.0" text="0.0" visible="false" />
+            <Label id="lbResultValue" layoutX="102.0" layoutY="147.0" visible="false" />
+            <Label id="lbStatus" layoutX="5.0" layoutY="175.0" text="Status" />
+            <Label id="lbStatusValue" layoutX="60.0" layoutY="175.0" text="Waiting" />
          </children></Pane>
    </children>
 </AnchorPane>
