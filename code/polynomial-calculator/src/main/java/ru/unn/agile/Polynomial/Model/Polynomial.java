@@ -31,7 +31,7 @@ public class Polynomial {
 
     @Override
     public boolean equals(final Object object) {
-        if (this.getClass() != object.getClass()) {
+        if (!(object instanceof Polynomial)) {
             return false;
         }
         Polynomial poly = (Polynomial) object;
