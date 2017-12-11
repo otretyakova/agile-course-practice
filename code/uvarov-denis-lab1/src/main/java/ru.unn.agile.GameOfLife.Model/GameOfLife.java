@@ -1,12 +1,6 @@
 package ru.unn.agile.GameOfLife.Model;
 
 public class GameOfLife {
-
-    public GameOfLife() {
-        currentGeneration = null;
-        nextGeneration = null;
-    }
-
     public void readCurrentGeneration(final String[] input) {
         if (input == null) {
             throw new IllegalArgumentException("Argument cannot be null!");
@@ -35,12 +29,12 @@ public class GameOfLife {
 
         int[][] arrayForGrid = new int[sizeX][sizeY];
 
-        for (int i = 0; i < sizeY; i++) {
-            if (input[i + 1].length() != sizeX) {
+        for (int y = 0; y < sizeY; y++) {
+            if (input[y + 1].length() != sizeX) {
                 throw new IllegalArgumentException("Incorrect X-axis size!");
             } else {
-                for (int j = 0; j < sizeX; j++) {
-                    arrayForGrid[j][i] = parseSymbolToState(input[i + 1].charAt(j));
+                for (int x = 0; x < sizeX; x++) {
+                    arrayForGrid[x][y] = parseSymbolToState(input[y + 1].charAt(x));
                 }
             }
         }
@@ -52,10 +46,10 @@ public class GameOfLife {
         int[][] grid = getNextGeneration().getGrid();
         String[] output = new String[1 + nextGeneration.getSizeY()];
         output[0] = String.format("%d %d", nextGeneration.getSizeX(), nextGeneration.getSizeY());
-        for (int i = 0; i < nextGeneration.getSizeY(); i++) {
-            output[1 + i] = "";
-            for (int j = 0; j < nextGeneration.getSizeX(); j++) {
-                output[1 + i] = output[1 + i].concat(codeStateToSymbol(grid[j][i]));
+        for (int y = 0; y < nextGeneration.getSizeY(); y++) {
+            output[1 + y] = "";
+            for (int x = 0; x < nextGeneration.getSizeX(); x++) {
+                output[1 + y] = output[1 + y].concat(codeStateToSymbol(grid[x][y]));
             }
         }
         return output;
@@ -65,10 +59,10 @@ public class GameOfLife {
         final int sizeX = getCurrentGeneration().getSizeX();
         final int sizeY = getCurrentGeneration().getSizeY();
         int[][] gridForNexGen = new int[sizeX][sizeY];
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                int aliveNeighbors = currentGeneration.countAliveNeighbors(i, j);
-                gridForNexGen[i][j] = rulesForNetState(aliveNeighbors);
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                int aliveNeighbors = currentGeneration.countAliveNeighbors(x, y);
+                gridForNexGen[x][y] = rulesForNetState(aliveNeighbors);
             }
         }
         nextGeneration = new Map(gridForNexGen);

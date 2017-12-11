@@ -12,17 +12,17 @@ public class Map {
 
         boolean isValidLength = true;
 
-        for (int i = 1; i < sizeX; i++) {
-            isValidLength = isValidLength && (grid[0].length == grid[i].length);
+        for (int x = 1; x < sizeX; x++) {
+            isValidLength = isValidLength && (grid[0].length == grid[x].length);
         }
         if (!isValidLength || grid[0].length < 1) {
             throw new IllegalArgumentException("Incorrect grid size!");
         }
         this.sizeY = grid[0].length;
         boolean isValidValues = true;
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                isValidValues = isValidValues && grid[i][j] >= 0 && grid[i][j] <= 1;
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                isValidValues = isValidValues && grid[x][y] >= 0 && grid[x][y] <= 1;
             }
         }
         if (isValidValues) {
