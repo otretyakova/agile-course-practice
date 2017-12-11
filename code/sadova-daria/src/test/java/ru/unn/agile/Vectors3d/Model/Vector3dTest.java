@@ -1,7 +1,10 @@
 package ru.unn.agile.vectors.model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class Vector3dTest {
 
@@ -59,7 +62,7 @@ public class Vector3dTest {
     }
 
     @Test
-    public void canFindDotProductWith90DegreesBetweenThem() {
+    public void canFindDotProductBetweenOrthogonalVectors() {
         Vector3d first = new Vector3d(1, 2, 3);
         Vector3d second = new Vector3d(1, 4, -3);
         double dotProd = first.dotProduct(second);
