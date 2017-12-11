@@ -4,7 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class Vector3dTest {
-    private final double delta = 1e-6;
 
     @Test
     public void canCreateVector3d() {
@@ -26,13 +25,14 @@ public class Vector3dTest {
     @Test
     public void canLengthBeFromZeroVector() {
         Vector3d vector = new Vector3d(0, 0, 0);
-        double len = vector.vectorLength();
+        double len = vector.length();
         assertEquals(0, len, delta);
     }
+
     @Test
     public void canFindLength() {
         Vector3d vector = new Vector3d(0, 3, 4);
-        double len = vector.vectorLength();
+        double len = vector.length();
         assertEquals(5, len, delta);
     }
 
@@ -50,12 +50,12 @@ public class Vector3dTest {
         double dotProd = first.dotProduct(second);
         assertEquals(32, dotProd, delta);
     }
+
     @Test
-    public void canFindFalseDotProduct() {
+    public void checkZeroVector() {
         Vector3d first = new Vector3d(1, 2, 3);
-        Vector3d second = new Vector3d(4, 5, 6);
-        double dotProd = first.dotProduct(second);
-        assertFalse(33 == dotProd);
+        boolean check = first.isVectorNotZero();
+        assertTrue(check);
     }
 
     @Test
@@ -84,21 +84,12 @@ public class Vector3dTest {
     }
 
     @Test
-    public void canFindCrossProductEvenIfResultIsNormalised() {
+    public void canFindCrossProductEvenIfResultIsNormalized() {
         Vector3d first = new Vector3d(1, 2, 3);
         Vector3d second = new Vector3d(4, 5, 6);
         Vector3d result = new Vector3d(1, -2, 1);
         Vector3d crossProd = first.crossProduct(second);
         assertFalse(result.equalNormalized(crossProd));
-    }
-
-    @Test
-    public void canFindFalseCrossProduct() {
-        Vector3d first = new Vector3d(1, 2, 3);
-        Vector3d second = new Vector3d(4, 5, 6);
-        Vector3d result = new Vector3d(3, 6, -3);
-        Vector3d crossProd = first.crossProduct(second);
-        assertFalse(result.equalComplitely(crossProd));
     }
 
     @Test
@@ -109,6 +100,8 @@ public class Vector3dTest {
         Vector3d crossProd = first.crossProduct(second);
         assertTrue(result.equalComplitely(crossProd));
     }
+
+    private final double delta = 1e-6;
 }
 
 

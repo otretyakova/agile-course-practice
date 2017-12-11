@@ -1,10 +1,6 @@
 package ru.unn.agile.vectors.model;
 
 public class Vector3d {
-    private double x;
-    private double y;
-    private double z;
-
     public double getX() {
         return this.x;
     }
@@ -23,13 +19,13 @@ public class Vector3d {
         this.z = z;
     }
 
-    public double vectorLength() {
+    public double length() {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
     }
 
     public Vector3d normalize() {
-        if (isVectorValid()) {
-            double len = vectorLength();
+        if (isVectorNotZero()) {
+            double len = length();
             return new Vector3d(x / len, y / len, z / len);
         }
         return new Vector3d(0, 0, 0);
@@ -46,7 +42,7 @@ public class Vector3d {
         return new Vector3d(newX, newY, newZ);
     }
 
-    private boolean isVectorValid() {
+    public boolean isVectorNotZero() {
         return (getX() != 0) && (getY() != 0) && (getZ() != 0);
     }
 
@@ -57,5 +53,9 @@ public class Vector3d {
     public boolean equalNormalized(final Vector3d first) {
         return normalize().equalComplitely(first.normalize());
     }
+
+    private double x;
+    private double y;
+    private double z;
 }
 
