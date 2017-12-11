@@ -61,8 +61,8 @@ class ModeEvaluator implements Computable {
     @Override
     public Printable compute() {
         Integer[] statistic = Arrays.stream(
-            DescriptiveStatistics.mode(inputSample)).boxed().toArray(Integer[]::new
-        );
+            DescriptiveStatistics.mode(inputSample)
+        ).boxed().toArray(Integer[]::new);
         return new VectorStatistic<>(statistic);
     }
 

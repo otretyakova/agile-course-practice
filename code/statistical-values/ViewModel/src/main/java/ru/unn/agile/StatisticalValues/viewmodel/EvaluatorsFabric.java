@@ -19,7 +19,7 @@ public final class EvaluatorsFabric {
             return new MeanEvaluator(inputSample);
         } else if ("Median".equals(statistic)) {
             double[] inputSample = StringPropertyConverter.convertToDoubles(
-                    viewModel.valuesProperty()
+                viewModel.valuesProperty()
             );
             return new MedianEvaluator(inputSample);
         } else if ("Mode".equals(statistic)) {
