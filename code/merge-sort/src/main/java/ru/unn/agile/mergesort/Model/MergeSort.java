@@ -1,53 +1,49 @@
 package ru.unn.agile.mergesort.Model;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public final class MergeSort {
 
-    private interface IPrecede<T extends Comparable<T>> {
-        // Return if a preceds b according to the order being used
-        boolean precede(T a, T b);
-    }
-    public static <T extends Comparable<T>> List<T> ascendingSort(final List<T> values) {
-        class PrecedAscending implements IPrecede<T> {
-            public boolean precede(final T a, final T b) {
-                return a.compareTo(b) < 0;
-            }
-        }
-        return mergeSort(values, new PrecedAscending());
+    public static <T> Collection<T> sort(final Collection<T> values,
+                                         final Comparator<T> comparator) {
+        return mergeSort(values, comparator);
     }
 
-    public static <T extends Comparable<T>> List<T> descendingSort(
-            final List<T> values) {
-        class PrecedDescending implements IPrecede<T> {
-            public boolean precede(final T a, final T b) {
-                return a.compareTo(b) > 0;
+    public static <T extends Comparable<T>> Collection<T> sort(final Collection<T> values) {
+
+        class Precede<T extends Comparable<T>> implements Comparator<T> {
+           public int compare(final T a, final T b) {
+                return a.compareTo(b);
             }
         }
-        return mergeSort(values, new PrecedDescending());
+        return mergeSort(values, new Precede<T>());
     }
 
-    private static <T extends Comparable<T>> List<T> mergeSort(final List<T> input,
-                                                               final IPrecede<T> compareFunc) {
+    private static <T> Collection<T> mergeSort(final Collection<T> input,
+                                               final Comparator<T> comparator) {
+        List<T> inputList = new LinkedList<T>(input);
+        return mergeSortList(inputList, comparator);
+    }
+
+    private static <T> List<T> mergeSortList(final List<T> input,
+                                             final Comparator<T> comparator) {
         if (input.size() < 2) {
             return input;
         }
         int middleIndex = input.size() / 2;
-        List<T> firstHalf = new ArrayList<T>(input.subList(0, middleIndex));
-        List<T> secondHalf = new ArrayList<T>(input.subList(middleIndex, input.size()));
-        List<T> sortedFirstHalf = mergeSort(firstHalf, compareFunc);
-        List<T> sortedSecondHalf = mergeSort(secondHalf, compareFunc);
-        return merge(sortedFirstHalf, sortedSecondHalf, compareFunc);
+        List<T> firstHalf = new LinkedList<T>(input.subList(0, middleIndex));
+        List<T> secondHalf = new LinkedList<T>(input.subList(middleIndex, input.size()));
+        List<T> sortedFirstHalf = mergeSortList(firstHalf, comparator);
+        List<T> sortedSecondHalf = mergeSortList(secondHalf, comparator);
+        return merge(sortedFirstHalf, sortedSecondHalf, comparator);
     }
 
-    private static <T extends Comparable<T>> List<T> merge(final List<T> first,
-                                                           final List<T> second,
-                                                           final IPrecede<T> compareFunc) {
+    private static <T> List<T> merge(final List<T> first, final List<T> second,
+                                     final Comparator<T> comparator) {
         int firstIndex = 0;
         int secondIndex = 0;
-        ArrayList<T> result = new ArrayList<T>();
+        List<T> result = new LinkedList<T>();
         while (firstIndex < first.size() && secondIndex < second.size()) {
-            if (compareFunc.precede(second.get(secondIndex), first.get(firstIndex))) {
+            if (comparator.compare(second.get(secondIndex), first.get(firstIndex)) < 0) {
                 result.add(second.get(secondIndex++));
             } else {
                 result.add(first.get(firstIndex++));
@@ -61,8 +57,7 @@ public final class MergeSort {
         }
         return result;
     }
-
     private MergeSort() {
+    }
 
-    };
 }

@@ -1,40 +1,48 @@
 package ru.unn.agile.mergesort.Model;
 
 class Car implements Comparable<Car> {
-    private int maxSpeed;
-    private int serialNumber;
+
     Car(final int theMaxSpeed) {
-        init(theMaxSpeed, 10);
+        init(theMaxSpeed, 0);
     }
+
     Car(final int theMaxSpeed, final int theSerialNumber) {
         init(theMaxSpeed, theSerialNumber);
     }
+
     void init(final int theMaxSpeed, final int theSerialNumber) {
         maxSpeed = theMaxSpeed;
         serialNumber = theSerialNumber;
     }
-    public int compareTo(final Car first) {
-        if (first.maxSpeed == maxSpeed) {
-            return 0;
-        }
-        if (first.maxSpeed < maxSpeed) {
-            return 1;
-        } else {
-            return -1;
-        }
+
+    public int compareTo(final Car other) {
+        return maxSpeed  - other.maxSpeed;
     }
+
     @Override
-    public int hashCode() {
-        return maxSpeed;
-    }
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == this) {
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
         }
-        if (obj == null || obj.getClass() != this.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return (this.maxSpeed == ((Car) obj).maxSpeed);
+
+        Car car = (Car) o;
+
+        if (maxSpeed != car.maxSpeed) {
+            return false;
+        }
+        return serialNumber == car.serialNumber;
     }
+
+    @Override
+    public int hashCode() {
+        int result = maxSpeed;
+        result = 31 * result + serialNumber;
+        return result;
+    }
+
+    private int maxSpeed;
+    private int serialNumber;
 }
