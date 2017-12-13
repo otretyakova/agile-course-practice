@@ -1,10 +1,114 @@
+// Averin Andrey
+
+
+
+// Bastrakova Ksenia
+
+
+
+// Bespalov Max
+
+
+
+// Vershinina Olga
+include "code/DistanceBetweenVectors"
+project(":code/DistanceBetweenVectors").name = "DistanceBetweenVectors-Model"
+
+// Volokitin Valentin
+
+
+
+// Gerasimov Dmitriy
+
+
+
+// Gladilov Gleb
+include "code/converter-temperature"
+project(":code/converter-temperature").name = "converter-temperature-Model"
+
+// Gorbunova Natalia
+include "code/mortgage-calculator"
+project (":code/mortgage-calculator").name= "mortgage-calculator-Model"
+
+// Krivonosov Mikhail
+include "code/polynomial-calculator"
+project(":code/polynomial-calculator").name = "polynomial-calculator-Model"
+
+// Kuzmin Pavel
+
+
+
+// Kuldaev Alexander
+
+
+
+// Levin Vadim
+include "code/statistical-values"
+project(":code/statistical-values").name = "statistical-values"
+
+// Morozova Julia
+
+
+
+// Novak Alexander
+include "code/number-system-converter"
+project(":code/number-system-converter").name = "number-system-converter"
+
+// Ovsuhno Anton
+
+
+
+// Pichugin Gregory
+
+
+
+// Reshetova Anastasya
+
+
+
+// Rozanov Anatoliy
+include "code/numbers-in-words"
+project(":code/numbers-in-words").name = "numbers-in-words-Model"
+
+
+// Roy Victor
+
+
+
+// Sadova Daria
+
+
+
+// Semerenko Alexander
+
+
+
+// Semichev Uriy
+
+
+
+// Tretiyakiva Olga
+
+
+
+// Uvarov Denis
+
+
+
+// Umnikov Eugene
+include "code/triangle"
+project(":code/triangle").name = "triangle"
+
+// Shestakova Svetlana
+
+
+// Roy Viktor
+include "code/string_calculator"
+project(":code/string_calculator").name = "string_calculator-Model"
+
 // Bevzuk Anton
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
-
-// Gorbunova Natalya
-include "code/mortgage-calculator"
-project(":code/mortgage-calculator").name = "mortgage-calculator-Model"
 
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
