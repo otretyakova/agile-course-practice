@@ -6,12 +6,11 @@ import java.util.List;
 
 import static java.lang.Math.sqrt;
 
+enum Methods {
+    Eratosthenes, Simple
+}
+
 public class PrimeNumber {
-
-    private Integer leftLim;
-    private Integer rightLim;
-
-    private List<Integer> primeNum;
 
     public void setLim(final Integer left, final Integer right) {
         if (left < right) {
@@ -25,6 +24,44 @@ public class PrimeNumber {
         if (this.leftLim < 1) {
             this.leftLim = 1;
         }
+    }
+
+
+    public PrimeNumber(final Integer left, final Integer right) {
+        if (left > right) {
+            this.leftLim = right;
+            this.rightLim = left;
+        } else {
+            this.leftLim = left;
+            this.rightLim = right;
+        }
+
+        if (this.leftLim < 1) {
+            this.leftLim = 1;
+        }
+
+        this.primeNum = new ArrayList<Integer>();
+    }
+
+    public void findPrimeNumberFromRange(Methods method) {
+        if (method == Methods.Eratosthenes) {
+            findPrimeNumberFromRangeEratosthenes();
+        }
+        if (method == Methods.Simple) {
+            findPrimeNumberFromRangeSimpleSearch();
+        }
+    }
+
+    public Integer getLeftLim() {
+        return this.leftLim;
+    }
+
+    public Integer getRightLim() {
+        return this.rightLim;
+    }
+
+    public List<Integer> getPrimeList() {
+        return this.primeNum;
     }
 
     private boolean[] eratosthenes(final Integer num) {
@@ -56,7 +93,7 @@ public class PrimeNumber {
             return false;
         }
 
-        Integer limitNum = (int) (sqrt(num + 1));
+        Integer limitNum = (Integer)(int)(sqrt(num + 1));
 
         for (Integer divider = 2; divider <= limitNum; divider++) {
             if (num % divider == 0) {
@@ -67,23 +104,7 @@ public class PrimeNumber {
         return true;
     }
 
-    public PrimeNumber(final Integer left, final Integer right) {
-        if (left > right) {
-            this.leftLim = right;
-            this.rightLim = left;
-        } else {
-            this.leftLim = left;
-            this.rightLim = right;
-        }
-
-        if (this.leftLim < 1) {
-            this.leftLim = 1;
-        }
-
-        this.primeNum = new ArrayList<Integer>();
-    }
-
-    public void findPrimeNumberFromRangeSimpleSearch() {
+    private void findPrimeNumberFromRangeSimpleSearch() {
         this.primeNum.clear();
 
         for (Integer testNum = this.leftLim; testNum <= this.rightLim; testNum++) {
@@ -94,10 +115,10 @@ public class PrimeNumber {
             if (testNum == Integer.MAX_VALUE) {
                 break;
             }
-       }
+        }
     }
 
-    public void findPrimeNumberFromRangeEratosthenes() {
+    private void findPrimeNumberFromRangeEratosthenes() {
 
         if (rightLim > 0) {
 
@@ -116,16 +137,9 @@ public class PrimeNumber {
         }
     }
 
-    public int getLeftLim() {
-        return this.leftLim;
-    }
+    private Integer leftLim;
+    private Integer rightLim;
 
-    public int getRightLim() {
-        return this.rightLim;
-    }
-
-    public List<Integer> getPrimeList() {
-        return this.primeNum;
-    }
+    private List<Integer> primeNum;
 
 }
