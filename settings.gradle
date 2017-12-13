@@ -15,8 +15,8 @@ include "code/DistanceBetweenVectors"
 project(":code/DistanceBetweenVectors").name = "DistanceBetweenVectors-Model"
 
 // Volokitin Valentin
-
-
+include "code/Prime_number"
+project(":code/Prime_number").name = "PrimeNumber-Model"
 
 // Gerasimov Dmitriy
 include "code/left_sided_heap"
@@ -109,10 +109,6 @@ project(":code/string_calculator").name = "string_calculator-Model"
 // Bevzuk Anton
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
-
-// Prime Number Volokitin Valentin
-include "code/Prime_number"
-project(":code/Prime_number").name = "PrimeNumber"
 
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"

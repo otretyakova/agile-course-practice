@@ -71,7 +71,7 @@ public class PrimeNumber {
         isPrime[0] = false;
         isPrime[1] = false;
 
-        Integer limitNum = (int) (sqrt(num + 1));
+        Integer limitNum = (Integer) (int) (sqrt(num + 1));
 
         for (Integer divider = 2; divider <= limitNum; divider++) {
             if (isPrime[divider]) {
@@ -93,7 +93,7 @@ public class PrimeNumber {
             return false;
         }
 
-        Integer limitNum = (Integer)(int)(sqrt(num + 1));
+        Integer limitNum = (Integer) (int) (sqrt(num + 1));
 
         for (Integer divider = 2; divider <= limitNum; divider++) {
             if (num % divider == 0) {
