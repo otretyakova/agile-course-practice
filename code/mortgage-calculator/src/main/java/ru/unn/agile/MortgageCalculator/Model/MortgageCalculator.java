@@ -5,14 +5,12 @@ import java.util.List;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.round;
-import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.periodType.month;
-import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.periodType.year;
+import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.month;
+import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.year;
 
 public class MortgageCalculator {
     public static final int MONTH_IN_YEAR = 12;
-
-    public enum periodType {month, year}
-
+    public enum PERIODTYPE { month, year };
     private float amount;
     private int period;
     private float rate;
@@ -27,7 +25,7 @@ public class MortgageCalculator {
         payments = new ArrayList<Integer>();
     }
 
-    public List<Integer> differentiatedPayment(periodType t) {
+    public List<Integer> differentiatedPayment(final PERIODTYPE t) {
         int n = 0;
         float amountT = amount;
         if (period != 0) {
@@ -58,7 +56,7 @@ public class MortgageCalculator {
         }
     }
 
-    public int annuityPayment(periodType t) {
+    public int annuityPayment(final PERIODTYPE t) {
         int n = period;
         if (period != 0) {
             if (rate != 0) {
@@ -82,7 +80,7 @@ public class MortgageCalculator {
         }
     }
 
-    public int getPayments(final String paymentType, final int periodNumber, periodType t) {
+    public int getPayments(final String paymentType, final int periodNumber, final PERIODTYPE t) {
         switch (paymentType) {
             case "differentiated":
                 return differentiatedPayment(t).get(periodNumber);

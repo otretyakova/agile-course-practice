@@ -5,8 +5,8 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
-import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.periodType.month;
-import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.periodType.year;
+import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.month;
+import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.year;
 
 public class MortgageCalculatorTest {
     @Test
