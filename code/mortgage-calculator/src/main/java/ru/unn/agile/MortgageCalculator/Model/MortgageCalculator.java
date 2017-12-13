@@ -9,14 +9,7 @@ import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYP
 import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.year;
 
 public class MortgageCalculator {
-    public static final int MONTH_IN_YEAR = 12;
     public enum PERIODTYPE { month, year };
-    private float amount;
-    private int period;
-    private float rate;
-    private List<Integer> payments;
-    private int payment;
-    private String error;
 
     public MortgageCalculator(final float amount, final int period, final float rate) {
         this.amount = amount;
@@ -95,4 +88,12 @@ public class MortgageCalculator {
     public String getError() {
         return error;
     }
+
+    private static final int MONTH_IN_YEAR = 12;
+    private float amount;
+    private int period;
+    private float rate;
+    private List<Integer> payments;
+    private int payment;
+    private String error;
 }
