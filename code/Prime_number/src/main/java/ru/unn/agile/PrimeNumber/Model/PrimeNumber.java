@@ -43,7 +43,7 @@ public class PrimeNumber {
         this.primeNum = new ArrayList<Integer>();
     }
 
-    public void findPrimeNumberFromRange(Methods method) {
+    public void findPrimeNumberFromRange(final Methods method) {
         if (method == Methods.Eratosthenes) {
             findPrimeNumberFromRangeEratosthenes();
         }
