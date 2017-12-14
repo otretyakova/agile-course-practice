@@ -111,8 +111,8 @@ include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
 
 // Sadova Daria
-include "code/sadova-daria"
-project(":code/sadova-daria").name = "sadova-daria-Model"
+include "code/vectors3d"
+project(":code/vectors3d").name = "vectors3d-Model"
 
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
