@@ -1,7 +1,10 @@
 package ru.unn.agile.LeftSidedHeap.Model;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import java.util.AbstractMap.SimpleEntry;
 
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class LeftSidedHeapTests {
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void canCreateEmptyHeap() {
@@ -29,24 +34,21 @@ public class LeftSidedHeapTests {
         ArrayList<SimpleEntry<Integer, Integer>> initArray =
                 getArrayWithPositiveKeysSize10andMinKey0Value1();
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>(initArray);
-        assertTrue(heap.contains(initArray));
-        assertTrue(heap.size() == 10);
+        assertTrue(heap.contains(initArray) && heap.size() == 10);
     }
 
     @Test
     public void canAdd10ElementsToEmptyHeap() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 10);
-        assertTrue(heap.contains(addedElements));
-        assertTrue(heap.size() == 10);
+        assertTrue(heap.contains(addedElements) && heap.size() == 10);
     }
 
     @Test
     public void canAdd10ElementsToHeapWith6Elements() {
         LeftSidedHeap<Integer> heap = prepareHeap(6);
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 10);
-        assertTrue(heap.contains(addedElements));
-        assertTrue(heap.size() == 16);
+        assertTrue(heap.contains(addedElements) && heap.size() == 16);
     }
 
     @Test
@@ -93,40 +95,28 @@ public class LeftSidedHeapTests {
 
     @Test
     public void canDoContainForEmptyHeap() {
-        boolean thrown = true;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
-        try {
-            heap.contains(getArrayWithPositiveKeysSize10andMinKey0Value1());
-        } catch (Exception ex) {
-            thrown = false;
-        }
-        assertTrue(thrown);
+        assertFalse(heap.contains(getArrayWithPositiveKeysSize10andMinKey0Value1()));
     }
 
     @Test
     public void cantRemoveElementFromEmptyHeap() {
-        boolean thrown = false;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
-        try {
-            heap.remove(0);
-        } catch (IllegalStateException ex) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        exception.expect(IllegalStateException.class);
+        heap.remove(0);
     }
 
     @Test
     public void cantRemoveUnexistedElement() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
-        assertTrue(heap.remove(-1) == null);
-        assertTrue(heap.size() == 10);
+        assertTrue(heap.remove(-1) == null && heap.size() == 10);
     }
 
     @Test
     public void cantRemoveUniqueElementTwice() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         heap.add(new SimpleEntry<>(-1, 4));
-        heap.remove(-1).equals(new SimpleEntry<>(-1, 4));
+        heap.remove(-1);
         assertTrue(heap.remove(-1) == null);
     }
 
@@ -148,28 +138,18 @@ public class LeftSidedHeapTests {
 
     @Test
     public void cantAdd5ElementsAndRemove6Elements() {
-        boolean thrown = false;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 5);
         removeRandomElements(heap, addedElements, 5);
-        try {
-            heap.remove(0);
-        } catch (IllegalStateException ex) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        exception.expect(IllegalStateException.class);
+        heap.remove(0);
     }
 
     @Test
     public void cantGetMinFromEmptyHeap() {
-        boolean thrown = false;
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
-        try {
-            heap.getMin();
-        } catch (IllegalStateException ex) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        exception.expect(IllegalStateException.class);
+        heap.getMin();
     }
 
     @Test
@@ -183,7 +163,7 @@ public class LeftSidedHeapTests {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         heap.add(new SimpleEntry<>(-2, 1));
         heap.add(new SimpleEntry<>(-1, 5));
-        assertTrue(heap.remove(-2).equals(new SimpleEntry<>(-2, 1)));
+        heap.remove(-2);
         assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, 5)));
     }
 
@@ -204,17 +184,21 @@ public class LeftSidedHeapTests {
     @Test
     public void canMergeEmptyHeapWithNotEmpty() {
         LeftSidedHeap<Integer> firstHeap = new LeftSidedHeap<>();
-        LeftSidedHeap<Integer> secondHeap = prepareHeap(5);
-        assertTrue(firstHeap.merge(secondHeap));
-        assertTrue(firstHeap.size() == 5);
+        ArrayList<SimpleEntry<Integer, Integer>> secondHeapElements
+                = getArrayWithPositiveKeysSize10andMinKey0Value1();
+        LeftSidedHeap<Integer> secondHeap = new LeftSidedHeap<>(secondHeapElements);
+        firstHeap.merge(secondHeap);
+        assertTrue(firstHeap.contains(secondHeapElements) && firstHeap.size() == 10);
     }
 
     @Test
     public void canMergeNotEmptyHeapWithEmpty() {
-        LeftSidedHeap<Integer> mainHeap = prepareHeap(6);
+        ArrayList<SimpleEntry<Integer, Integer>> mainHeapElements
+                = getArrayWithPositiveKeysSize10andMinKey0Value1();
+        LeftSidedHeap<Integer> mainHeap = new LeftSidedHeap<>(mainHeapElements);
         LeftSidedHeap<Integer> emptyHeap = new LeftSidedHeap<>();
         assertTrue(mainHeap.merge(emptyHeap));
-        assertTrue(mainHeap.size() == 6);
+        assertTrue(mainHeap.contains(mainHeapElements) && mainHeap.size() == 10);
     }
 
     @Test
@@ -225,7 +209,7 @@ public class LeftSidedHeapTests {
                 = getArrayWithPositiveKeysSize10andMinKey0Value1(100);
         LeftSidedHeap<Integer> firstHeap = new LeftSidedHeap<>(firstHeapElements);
         LeftSidedHeap<Integer> secondHeap = new LeftSidedHeap<>(secondHeapElements);
-        assertTrue(firstHeap.merge(secondHeap));
+        firstHeap.merge(secondHeap);
         assertTrue(firstHeap.contains(firstHeapElements) && firstHeap.contains(secondHeapElements));
     }
 
