@@ -42,9 +42,6 @@ public class Vector3d {
         return new Vector3d(newX, newY, newZ);
     }
 
-    public boolean isVectorNotZero() {
-        return (getX() != 0) && (getY() != 0) && (getZ() != 0);
-    }
 
     public boolean equalComplitely(final Vector3d first) {
         return (getX() == first.getX()) && (getY() == first.getY()) && (getZ() == first.getZ());
@@ -52,6 +49,10 @@ public class Vector3d {
 
     public boolean equalNormalized(final Vector3d first) {
         return normalize().equalComplitely(first.normalize());
+    }
+
+    private boolean isVectorNotZero() {
+        return (getX() != 0) && (getY() != 0) && (getZ() != 0);
     }
 
     private double x;

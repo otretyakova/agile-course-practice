@@ -1,6 +1,7 @@
 package ru.unn.agile.vectors.model;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,6 +20,7 @@ public class Vector3dTest {
         Vector3d vector = new Vector3d(-1, 2, -1);
         assertNotNull(vector);
     }
+
     @Test
     public void canCreateVector3dWithZeroValues() {
         Vector3d vector = new Vector3d(0, 0, 0);
@@ -52,13 +54,6 @@ public class Vector3dTest {
         Vector3d second = new Vector3d(4, 5, 6);
         double dotProd = first.dotProduct(second);
         assertEquals(32, dotProd, delta);
-    }
-
-    @Test
-    public void checkZeroVector() {
-        Vector3d first = new Vector3d(1, 2, 3);
-        boolean check = first.isVectorNotZero();
-        assertTrue(check);
     }
 
     @Test
