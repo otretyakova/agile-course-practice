@@ -1,21 +1,24 @@
 package ru.unn.agile.assessmentsaccounting.model;
 
 import java.security.InvalidParameterException;
+import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 public class AssessmentsTable {
 
     public AssessmentsTable() {
-        this.subjects = new ArrayList<String>();
+        this.subjects = new HashMap<String, UUID>();
         this.students = new HashSet<Student>();
     }
 
     public List<String> getSubjects() {
-        return subjects;
+        return new ArrayList<String>(subjects.keySet());
     }
 
     public Set<Student> getStudents() {
@@ -23,32 +26,31 @@ public class AssessmentsTable {
     }
 
     public void addSubject(final String subject) {
-        if (isStringInvalid(subject) || subjects.contains(subject)) {
+        if (isStringInvalid(subject) || subjects.containsKey(subject)) {
             throw new InvalidParameterException("Invalid new subject - " + subject);
         }
-        subjects.add(subject);
+        subjects.put(subject, UUID.randomUUID());
     }
 
     public void removeSubject(final String subject) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         subjects.remove(subject);
         for (Student student : students) {
-            if (student.isRegisteredForSubject(subject)) {
-                student.removeSubject(subject);
+            if (student.isRegisteredForSubject(uuid)) {
+                student.removeSubject(uuid);
             }
         }
     }
 
     public void renameSubject(final String oldName, final String newName) {
-        if (!subjects.contains(oldName) || isStringInvalid(newName)
-                || subjects.contains(newName)) {
+        if (!subjects.containsKey(oldName) || isStringInvalid(newName)
+                || subjects.containsKey(newName)) {
             throw new InvalidParameterException("Invalid renameSubject arguments oldName "
                     + oldName + " newName - " + newName);
         }
-        subjects.set(subjects.indexOf(oldName), newName);
-        for (Student student : students) {
-            student.renameSubject(oldName, newName);
-        }
+        UUID uuid = subjects.get(oldName);
+        subjects.remove(oldName);
+        subjects.put(newName, uuid);
     }
 
     public void addStudent(final String name) {
@@ -76,12 +78,12 @@ public class AssessmentsTable {
     public void addAssessment(final Assessment assessment,
                               final String studentName,
                               final String subject) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         Student student = findStudent(studentName);
-        if (!student.isRegisteredForSubject(subject)) {
-            student.addSubject(subject);
+        if (!student.isRegisteredForSubject(uuid)) {
+            student.addSubject(uuid);
         }
-        student.addAssessment(assessment, subject);
+        student.addAssessment(assessment, uuid);
     }
 
     public void addAssessment(final Assessment assessment,
@@ -95,44 +97,45 @@ public class AssessmentsTable {
     public void removeAssessment(final int assessmentIndex,
                                  final String studentName,
                                  final String subject) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         Student student = findStudent(studentName);
-        student.removeAssessmentAt(assessmentIndex, subject);
+        student.removeAssessmentAt(assessmentIndex, uuid);
     }
 
     public void changeAsessment(final int asessmentIndex,
                                 final Assessment value,
                                 final String studentName,
                                 final String subject) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         Student student = findStudent(studentName);
-        student.changeAssessmentAt(asessmentIndex, value, subject);
+        student.changeAssessmentAt(asessmentIndex, value, uuid);
     }
 
     public List<Assessment> getAssessments(final String subject) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         List<Assessment> assessments = new LinkedList<Assessment>();
         for (Student student : students) {
-            assessments.addAll(student.getAssessments(subject));
+            assessments.addAll(student.getAssessments(uuid));
         }
         return assessments;
     }
 
     public List<Assessment> getAssessmentsForStudent(final String subject,
                                                           final String studentName) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         Student student = findStudent(studentName);
-        return student.getAssessments(subject);
+        return student.getAssessments(uuid);
     }
 
     public double getAverageAssessmentForSubject(final String subject) {
-        int summOfAssessments = 0;
+        int sumOfAssessments = 0;
         int assessmentsCount = 0;
+        UUID uuid = getSubjectUUID(subject);
         for (Student student : students) {
-            List<Assessment> assessments = student.getAssessments(subject);
+            List<Assessment> assessments = student.getAssessments(uuid);
             if (assessments != null) {
                 for (Assessment assessment : assessments) {
-                    summOfAssessments += assessment.getMark();
+                    sumOfAssessments += assessment.getMark();
                 }
                 assessmentsCount += assessments.size();
             }
@@ -141,7 +144,7 @@ public class AssessmentsTable {
             throw new InvalidParameterException("Subject - " + subject
                     + "doesn't contain any assessments");
         }
-        return summOfAssessments / (double) assessmentsCount;
+        return sumOfAssessments / (double) assessmentsCount;
     }
 
     public double getAverageAssessmentForStudent(final String studentName) {
@@ -150,9 +153,17 @@ public class AssessmentsTable {
     }
 
     public double getAverageAssessment(final String studentName, final String subject) {
-        checkSubject(subject);
+        UUID uuid = getSubjectUUID(subject);
         Student student = findStudent(studentName);
-        return getAverage(student.getAssessments(subject));
+        return getAverage(student.getAssessments(uuid));
+    }
+
+    public UUID getSubjectUUID(final String subject) {
+        if (!subjects.containsKey(subject)) {
+            throw new InvalidParameterException("Table doesn't contain subject - "
+                    + subject);
+        }
+        return subjects.get(subject);
     }
 
     private Student findStudent(final String name) {
@@ -169,24 +180,17 @@ public class AssessmentsTable {
             throw new InvalidParameterException("Assessments are null or empty");
         }
         int assessmentsCount = assessments.size();
-        int summOfAssessments = 0;
+        int sumOfAssessments = 0;
         for (Assessment assessment : assessments) {
-            summOfAssessments += assessment.getMark();
+            sumOfAssessments += assessment.getMark();
         }
-        return summOfAssessments / (double) assessmentsCount;
-    }
-
-    private void checkSubject(final String subject) {
-        if (!subjects.contains(subject)) {
-            throw new InvalidParameterException("Table doesn't contain subject - "
-                    + subject);
-        }
+        return sumOfAssessments / (double) assessmentsCount;
     }
 
     private boolean isStringInvalid(final String value) {
         return value == null || value.isEmpty();
     }
 
-    private List<String> subjects;
+    private Map<String, UUID> subjects;
     private Set<Student> students;
 }

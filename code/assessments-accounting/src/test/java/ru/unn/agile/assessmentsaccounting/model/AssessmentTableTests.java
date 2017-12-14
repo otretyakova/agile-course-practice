@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -549,6 +550,7 @@ public class AssessmentTableTests {
 
         table.addStudent(student);
         table.addSubject(subject);
+        UUID subjectUuid = table.getSubjectUUID(subject);
         table.addAssessment(Assessment.Good, student, subject);
 
         String newStudent = "Excited student";
@@ -557,8 +559,8 @@ public class AssessmentTableTests {
         table.removeSubject(subject);
 
         Iterator<Student> iterator = table.getStudents().iterator();
-        assertFalse(iterator.next().isRegisteredForSubject(subject));
-        assertFalse(iterator.next().isRegisteredForSubject(subject));
+        assertFalse(iterator.next().isRegisteredForSubject(subjectUuid));
+        assertFalse(iterator.next().isRegisteredForSubject(subjectUuid));
     }
 
     private AssessmentsTable table;

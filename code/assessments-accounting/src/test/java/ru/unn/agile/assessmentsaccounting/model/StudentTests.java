@@ -3,6 +3,8 @@ package ru.unn.agile.assessmentsaccounting.model;
 import org.junit.Test;
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.UUID;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,155 +32,110 @@ public class StudentTests {
     @Test
     public void canAddSubject() {
         Student student = new Student("Max Bespalov");
-        String subject = "Algebra";
-        student.addSubject(subject);
-        assertNotNull(student.getAssessments(subject));
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void canNotAddUnnamedSubject() {
-        Student student = new Student("Max Bespalov");
-        student.addSubject("");
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        assertNotNull(student.getAssessments(subjectUuid));
     }
 
     @Test(expected = InvalidParameterException.class)
     public void canNotAddExistingSubject() {
         Student student = new Student("Max Bespalov");
-        String subject = "The most annoying subject";
-        student.addSubject(subject);
-        student.addSubject(subject);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        student.addSubject(subjectUuid);
     }
 
     @Test
     public void canRemoveAddedSubject() {
         Student student = new Student("Max Bespalov");
-        String subject = "Game development";
-        student.addSubject(subject);
-        student.removeSubject(subject);
-        assertFalse(student.isRegisteredForSubject(subject));
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        student.removeSubject(subjectUuid);
+        assertFalse(student.isRegisteredForSubject(subjectUuid));
     }
 
     @Test(expected = InvalidParameterException.class)
     public void canNotRemoveNotExistingSubject() {
         Student student = new Student("Max Bespalov");
-        student.removeSubject("Laying on sofa");
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void canRenameSubject() {
-        Student student = new Student("Max Bespalov");
-        String subject = "Philosophy";
-        String newName = "Some useless subject";
-
-        student.addSubject(subject);
-        student.renameSubject(subject, newName);
-
-        assertNotNull(student.getAssessments(newName));
-        student.getAssessments(subject);
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void caNotRenameSubjectIntoSameName() {
-        Student student = new Student("Max Bespalov");
-        String subject = "Agile course";
-
-        student.addSubject(subject);
-        student.renameSubject(subject, subject);
+        student.removeSubject(UUID.randomUUID());
     }
 
     @Test
     public void afterAddingSubjectStudentRegisteredForIt() {
         Student student = new Student("Max Bespalov");
-        String subject = "Agile course";
-        student.addSubject(subject);
-        assertTrue(student.isRegisteredForSubject(subject));
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        assertTrue(student.isRegisteredForSubject(subjectUuid));
     }
 
     @Test
     public void studentDoesNotHaveSubjectThatWasNotAdded() {
         Student student = new Student("Max Bespalov");
-        assertFalse(student.isRegisteredForSubject("Game development"));
+        assertFalse(student.isRegisteredForSubject(UUID.randomUUID()));
     }
 
     @Test
     public void canAddAssessmentForTheSubject() {
         Student student = new Student("Max Bespalov");
-        String subject = "Agile course";
-        student.addSubject(subject);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
         Assessment assessment = Assessment.VeryBad;
-        student.addAssessment(assessment, subject);
-        assertEquals(assessment, student.getAssessments(subject).get(0));
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void canNotSetEmptyNameOfTheSubject() {
-        Student student = new Student("Max Bespalov");
-        String subject = "Philosophy";
-        student.addSubject(subject);
-        student.renameSubject(subject, "");
+        student.addAssessment(assessment, subjectUuid);
+        assertEquals(assessment, student.getAssessments(subjectUuid).get(0));
     }
 
     @Test
     public void canRemoveAddedAssessment() {
         Student student = new Student("Max Bespalov");
-        String subject = "C++ development";
-        student.addSubject(subject);
-        student.addAssessment(Assessment.Satisfactorily, subject);
-        student.removeAssessmentAt(0, subject);
-        assertEquals(student.getAssessments(subject).size(), 0);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        student.addAssessment(Assessment.Satisfactorily, subjectUuid);
+        student.removeAssessmentAt(0, subjectUuid);
+        assertEquals(student.getAssessments(subjectUuid).size(), 0);
     }
 
     @Test(expected = InvalidParameterException.class)
     public void canNotRemoveAlreadyRemovedAssessment() {
         Student student = new Student("Max Bespalov");
-        String subject = "Python development";
-        student.addAssessment(Assessment.Bad, subject);
-        student.removeAssessmentAt(0, subject);
-        student.removeAssessmentAt(0, subject);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addAssessment(Assessment.Bad, subjectUuid);
+        student.removeAssessmentAt(0, subjectUuid);
+        student.removeAssessmentAt(0, subjectUuid);
     }
 
     @Test
     public void canAddTwoAssessments() {
         Student student = new Student("Max Bespalov");
-        String subject = "useless speaking";
-        student.addSubject(subject);
-        student.addAssessment(Assessment.Good, subject);
-        student.addAssessment(Assessment.Great, subject);
-        assertEquals(student.getAssessments(subject).get(1), Assessment.Great);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        student.addAssessment(Assessment.Good, subjectUuid);
+        student.addAssessment(Assessment.Great, subjectUuid);
+        assertEquals(student.getAssessments(subjectUuid).get(1), Assessment.Great);
     }
 
     @Test(expected = InvalidParameterException.class)
     public void canNotRemoveAssessmentFromIndexHigherOrEqualsAssessmentsSize() {
         Student student = new Student("Max Bespalov");
-        String subject = "Russian language";
-        student.addSubject(subject);
-        student.removeAssessmentAt(0, subject);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        student.removeAssessmentAt(0, subjectUuid);
     }
 
     @Test(expected = InvalidParameterException.class)
     public void canNotRemoveAssessmentOfRemovedSubject() {
         Student student = new Student("Max Bespalov");
-        String subject = "Visiting pairs";
-        student.addAssessment(Assessment.Bad, subject);
-        student.removeSubject(subject);
-        student.removeAssessmentAt(0, subject);
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void canNotRemoveAssessmentOfRenamedSubject() {
-        Student student = new Student("Max Bespalov");
-        String subject = "Unnecessary subject";
-        student.addAssessment(Assessment.VeryBad, subject);
-        student.renameSubject(subject, "Very important subject in the last week before session");
-        student.removeAssessmentAt(0, subject);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addAssessment(Assessment.Bad, subjectUuid);
+        student.removeSubject(subjectUuid);
+        student.removeAssessmentAt(0, subjectUuid);
     }
 
     @Test(expected = InvalidParameterException.class)
     public void canNotRemoveAssessmentAtNegativeIndex() {
         Student student = new Student("Max Bespalov");
-        String subject = "Pizza making";
-        student.addSubject(subject);
-        student.removeAssessmentAt(-1, subject);
+        UUID subjectUuid = UUID.randomUUID();
+        student.addSubject(subjectUuid);
+        student.removeAssessmentAt(-1, subjectUuid);
     }
 
     @Test
@@ -190,16 +147,16 @@ public class StudentTests {
     @Test
     public void canGetAssessments() {
         Student student = new Student("Max Bespalov");
-        String firstSubject = "Combining assessments";
-        String secondSubject = "Program design";
-        String thirdSubject = "Delivering lab works in the last day before deadline";
+        UUID firstSubjectUuid = UUID.randomUUID();
+        UUID secondSubjectUuid = UUID.randomUUID();
+        UUID thirdSubjectUuid = UUID.randomUUID();
 
-        student.addSubject(firstSubject);
-        student.addSubject(secondSubject);
-        student.addSubject(thirdSubject);
-        student.addAssessment(Assessment.Good, firstSubject);
-        student.addAssessment(Assessment.Bad, secondSubject);
-        student.addAssessment(Assessment.Great, thirdSubject);
+        student.addSubject(firstSubjectUuid);
+        student.addSubject(secondSubjectUuid);
+        student.addSubject(thirdSubjectUuid);
+        student.addAssessment(Assessment.Good, firstSubjectUuid);
+        student.addAssessment(Assessment.Bad, secondSubjectUuid);
+        student.addAssessment(Assessment.Great, thirdSubjectUuid);
 
         List<Assessment> allAssessments = student.getAssessments();
         assertEquals(allAssessments.size(), 3);
