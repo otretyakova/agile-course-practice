@@ -1,4 +1,4 @@
-package ru.unn.agile.string_calculator.model;
+package ru.unn.agile.String_calculator.model;
 
 public final class StringCalculator {
     public int add(final String input) throws IllegalArgumentException {

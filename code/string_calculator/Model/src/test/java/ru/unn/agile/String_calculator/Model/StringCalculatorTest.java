@@ -1,4 +1,4 @@
-package ru.unn.agile.string_calculator.model;
+package ru.unn.agile.String_calculator.model;
 
 import org.junit.Test;
 import org.junit.Before;
