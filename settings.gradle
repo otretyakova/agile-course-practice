@@ -69,8 +69,8 @@ project(":code/number-system-converter").name = "number-system-converter"
 // Rozanov Anatoliy
 include "code/numbers-in-words"
 project(":code/numbers-in-words").name = "numbers-in-words-Model"
-include "code/string_calculator/View"
-project(":code/string_calculator/View").name = "string_calculator-View"
+include "code/string-calculator/View"
+project(":code/string-calculator/View").name = "string-calculator-View"
 
 // Roy Victor
 
@@ -104,8 +104,8 @@ project(":code/triangle").name = "triangle"
 
 
 // Roy Viktor 
-include "code/string_calculator/Model"
-project(":code/string_calculator/Model").name = "string_calculator-Model"
+include "code/string-calculator/Model"
+project(":code/string-calculator/Model").name = "string-calculator-Model"
 
 // Bevzuk Anton
 include "code/bevzuk-anton"
