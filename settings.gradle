@@ -19,8 +19,8 @@ project(":code/DistanceBetweenVectors").name = "DistanceBetweenVectors-Model"
 
 
 // Gerasimov Dmitriy
-
-
+include "code/left_sided_heap"
+project(":code/left_sided_heap").name = "lheap-Model"
 
 // Gladilov Gleb
 include "code/converter-temperature"
