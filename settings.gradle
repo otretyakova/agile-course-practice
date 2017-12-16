@@ -7,8 +7,8 @@
 
 
 // Bespalov Max
-
-
+include "code/assessments-accounting"
+project(":code/assessments-accounting").name = "assessments-accounting"
 
 // Vershinina Olga
 include "code/DistanceBetweenVectors"
