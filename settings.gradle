@@ -11,8 +11,13 @@
 
 
 // Vershinina Olga
-include "code/DistanceBetweenVectors"
-project(":code/DistanceBetweenVectors").name = "DistanceBetweenVectors-Model"
+include "code/DistanceBetweenVectors/Model"
+project(":code/DistanceBetweenVectors/Model").name = "DistanceBetweenVectors-Model"
+include "code/DistanceBetweenVectors/ViewModel"
+project(":code/DistanceBetweenVectors/ViewModel").name = "DistanceBetweenVectors-ViewModel"
+include "code/DistanceBetweenVectors/View"
+project(":code/DistanceBetweenVectors/View").name = "DistanceBetweenVectors-View"
+
 
 // Volokitin Valentin
 
