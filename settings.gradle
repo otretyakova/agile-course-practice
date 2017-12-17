@@ -63,7 +63,8 @@ project(":code/number-system-converter").name = "number-system-converter"
 
 
 // Reshetova Anastasya
-
+include "code/Quadratic-equation"
+project(":code/Quadratic-equation").name = "Quadratic-equation"
 
 
 // Rozanov Anatoliy

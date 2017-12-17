@@ -28,16 +28,16 @@ public class QuadraticEquation {
 
     public double getDiscriminant() {
         final int d = 4;
-        if (this.a == 0) {
+        if ((this.getA() > -1e-15) && (this.getA() < 1e-15)) {
             throw new IllegalArgumentException("Discriminant is not exist.");
         } else {
-            return this.b * this.b - d * this.a * this.c;
+            return this.getB() * this.getB() - d * this.getA() * this.getC();
         }
     }
 
     public int getNumberofRealRoots() {
-        if (this.a > 0) {
-            if (this.getDiscriminant() == 0) {
+        if ((this.getA() < -1e-15) || (this.getA() > 1e-15)) {
+            if ((this.getDiscriminant() > -1e-15) && (this.getDiscriminant() < 1e-15)) {
                 return 1;
             } else {
                 if (this.getDiscriminant() > 0) {
@@ -60,13 +60,13 @@ public class QuadraticEquation {
     }
 
     public Pair<Double, Double> solveQuadraticEquationReal() {
-        if (this.getA() == 0) {
+        if ((this.getA() > -1e-15) && (this.getA() < 1e-15)) {
             return new Pair<Double, Double>((-1) * this.getC() / this.getB(), null);
         }
         if (this.getDiscriminant() < 0) {
             return new Pair<Double, Double>(null, null);
         }
-        if (this.getDiscriminant() == 0) {
+        if ((this.getDiscriminant() > -1e-15) && (this.getDiscriminant() < 1e-15)) {
             return new Pair<Double, Double>((-1) * this.getB() / 2 / this.getA(), null);
         }
         return new Pair<Double, Double>(
