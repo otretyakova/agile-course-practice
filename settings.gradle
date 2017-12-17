@@ -31,8 +31,12 @@ project(":code/converter-temperature").name = "converter-temperature-Model"
 
 
 // Krivonosov Mikhail
-include "code/polynomial-calculator"
-project(":code/polynomial-calculator").name = "polynomial-calculator-Model"
+include "code/polynomial-calculator/Model"
+project(":code/polynomial-calculator/Model").name = "polynomial-calculator-Model"
+include "code/polynomial-calculator/ViewModel"
+project(":code/polynomial-calculator/ViewModel").name = "polynomial-calculator-ViewModel"
+include "code/polynomial-calculator/View"
+project(":code/polynomial-calculator/View").name = "polynomial-calculator-View"
 
 // Kuzmin Pavel
 
