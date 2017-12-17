@@ -1,4 +1,4 @@
-package ru.unn.agile.NumberSystemConverter;
+package ru.unn.agile.NumberSystemConverter.model;
 
 import org.junit.Test;
 

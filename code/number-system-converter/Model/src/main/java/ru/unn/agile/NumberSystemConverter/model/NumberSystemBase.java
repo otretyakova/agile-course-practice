@@ -1,4 +1,4 @@
-package ru.unn.agile.NumberSystemConverter;
+package ru.unn.agile.NumberSystemConverter.model;
 
 public enum NumberSystemBase {
     BIN(2),

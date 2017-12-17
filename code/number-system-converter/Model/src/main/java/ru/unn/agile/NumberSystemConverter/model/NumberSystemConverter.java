@@ -1,4 +1,5 @@
-package ru.unn.agile.NumberSystemConverter;
+package ru.unn.agile.NumberSystemConverter.model;
+
 
 public final class NumberSystemConverter {
 
