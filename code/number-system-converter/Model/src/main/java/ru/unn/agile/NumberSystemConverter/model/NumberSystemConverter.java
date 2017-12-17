@@ -7,7 +7,7 @@ public final class NumberSystemConverter {
     }
 
     public static String convert(final String input, final NumberSystemBase src,
-                          final NumberSystemBase dst) {
+                          final NumberSystemBase dst) throws IllegalArgumentException {
         String outputDEC = convertANY2DEC(input, src);
         return convertDEC2ANY(outputDEC, dst);
     }
