@@ -71,6 +71,8 @@ include "code/numbers-in-words"
 project(":code/numbers-in-words").name = "numbers-in-words-Model"
 include "code/string-calculator/View"
 project(":code/string-calculator/View").name = "string-calculator-View"
+include "code/string-calculator/ViewModel"
+project(":code/string-calculator/ViewModel").name = "string-calculator-ViewModel"
 
 // Roy Victor
 
