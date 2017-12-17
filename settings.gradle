@@ -51,8 +51,8 @@ project(":code/statistical-values").name = "statistical-values"
 
 
 // Novak Alexander
-include "code/number-system-converter"
-project(":code/number-system-converter").name = "number-system-converter"
+include "code/number-system-converter/Model"
+project(":code/number-system-converter/Model").name = "number-system-converter-Model"
 
 // Ovsuhno Anton
 
