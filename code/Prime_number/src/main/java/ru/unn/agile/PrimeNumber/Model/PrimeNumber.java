@@ -28,17 +28,7 @@ public class PrimeNumber {
 
 
     public PrimeNumber(final Integer left, final Integer right) {
-        if (left > right) {
-            this.leftLim = right;
-            this.rightLim = left;
-        } else {
-            this.leftLim = left;
-            this.rightLim = right;
-        }
-
-        if (this.leftLim < 1) {
-            this.leftLim = 1;
-        }
+        this.setLim(left, right);
 
         this.primeNum = new ArrayList<Integer>();
     }
