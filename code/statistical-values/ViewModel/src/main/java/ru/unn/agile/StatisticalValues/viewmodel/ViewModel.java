@@ -1,19 +1,103 @@
 package ru.unn.agile.StatisticalValues.viewmodel;
 
-import javafx.beans.property.*;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class ViewModel {
-    public ViewModel() {
-        statistic.set("Statistic");
+    public ObjectProperty<Statistic> statisticProperty() {
+        return statistic;
+    }
 
+    public ObservableList<Statistic> getAvailableStatistics() {
+        return availableStatistics.get();
+    }
+
+    public StringProperty orderProperty() {
+        return order;
+    }
+
+    public BooleanProperty orderVisibilityProperty() {
+        return orderVisibility;
+    }
+
+    public boolean isOrderVisible() {
+        return orderVisibility.get();
+    }
+
+    public BooleanProperty isBiasedProperty() {
+        return isBiased;
+    }
+
+    public BooleanProperty isBiasedVisibilityProperty() {
+        return isBiasedVisibility;
+    }
+
+    public boolean isBiasVisible() {
+        return isBiasedVisibility.get();
+    }
+
+    public StringProperty valuesProperty() {
+        return values;
+    }
+
+    public BooleanProperty valuesVisibilityProperty() {
+        return valuesVisibility;
+    }
+
+    public boolean isValuesVisible() {
+        return valuesVisibility.get();
+    }
+
+    public BooleanProperty calculateVisibilityProperty() {
+        return calculateVisibility;
+    }
+
+    public boolean isCalculateVisible() {
+        return calculateVisibility.get();
+    }
+
+    public StringProperty resultProperty() {
+        return result;
+    }
+
+    public BooleanProperty resultVisibilityProperty() {
+        return resultVisibility;
+    }
+
+    public boolean isResultVisible() {
+        return resultVisibility.get();
+    }
+
+    public StringProperty statusProperty() {
+        return status;
+    }
+
+    public void calculate() {
+        if (!statusProperty().get().equals(Status.READY.toString())) {
+            return;
+        }
+
+        Printable value;
+        try {
+            value = evaluator.compute();
+        } catch (IllegalArgumentException exception) {
+            status.set(Status.BAD + ": " + exception.getMessage());
+            return;
+        }
+
+        printResult(value.print());
+        status.set(Status.SUCCESS.toString());
+    }
+
+    public ViewModel() {
         order.set("0");
         orderVisibility.set(false);
 
@@ -36,81 +120,12 @@ public class ViewModel {
         values.addListener(new PropertyChangeListener<>());
     }
 
-    public StringProperty statisticProperty() {
-        return statistic;
-    }
-
-    public boolean isSupported(final String statistic) {
-        return AVAILABLE_STATISTICS.contains(statistic);
-    }
-
-    public final ObservableList<String> getStatistics() {
-        return statistics.get();
-    }
-
-    public StringProperty orderProperty() {
-        return order;
-    }
-
-    public BooleanProperty orderVisibilityProperty() {
-        return orderVisibility;
-    }
-
-    public BooleanProperty isBiasedProperty() {
-        return isBiased;
-    }
-
-    public BooleanProperty isBiasedVisibilityProperty() {
-        return isBiasedVisibility;
-    }
-
-    public StringProperty valuesProperty() {
-        return values;
-    }
-
-    public BooleanProperty valuesVisibilityProperty() {
-        return valuesVisibility;
-    }
-
-    public BooleanProperty calculateVisibilityProperty() {
-        return calculateVisibility;
-    }
-
-    public StringProperty resultProperty() {
-        return result;
-    }
-
-    public BooleanProperty resultVisibilityProperty() {
-        return resultVisibility;
-    }
-
-    public StringProperty statusProperty() {
-        return status;
-    }
-
-    public void calculate() {
-        if (!statusProperty().get().equals(Status.READY.toString())) {
-            return;
-        }
-
-        Printable value;
-        try {
-            value = evaluator.compute();
-        } catch (IllegalArgumentException exception) {
-            status.set("Bad format: " + exception.getMessage());
-            return;
-        }
-
-        printResult(value.print());
-        status.set(Status.SUCCESS.toString());
-    }
-
     private boolean isOrderEmpty() {
-        return orderVisibilityProperty().get() && orderProperty().get().isEmpty();
+        return isOrderVisible() && orderProperty().get().isEmpty();
     }
 
     private boolean isValuesEmpty() {
-        return valuesVisibilityProperty().get() && valuesProperty().get().isEmpty();
+        return isValuesVisible() && valuesProperty().get().isEmpty();
     }
 
     private void enableCalculation() {
@@ -132,25 +147,11 @@ public class ViewModel {
         result.set(resultText);
     }
 
-    private final StringProperty statistic = new SimpleStringProperty();
-    private static final List<String> AVAILABLE_STATISTICS = Collections.unmodifiableList(
-        new ArrayList<String>() {{
-            add("Mean");
-            add("Median");
-            add("Mode");
-            add("Variance");
-            add("Std");
-            add("Moment");
-            add("Central moment");
-        }}
-    );
-
-    private static List<String> getAvailableStatistics() {
-        return AVAILABLE_STATISTICS;
-    }
-
-    private final ObjectProperty<ObservableList<String>> statistics =
-        new SimpleObjectProperty<>(FXCollections.observableArrayList(getAvailableStatistics()));
+    private final ObjectProperty<Statistic> statistic = new SimpleObjectProperty<>();
+    private final ObjectProperty<ObservableList<Statistic>> availableStatistics =
+        new SimpleObjectProperty<>(
+            FXCollections.observableArrayList(Statistic.values())
+        );
 
     private final StringProperty  order = new SimpleStringProperty();
     private final BooleanProperty orderVisibility = new SimpleBooleanProperty();
@@ -185,7 +186,7 @@ public class ViewModel {
             try {
                 evaluator = EvaluatorsFabric.create(ViewModel.this);
             } catch (Exception exception) {
-                status.set("Bad format: " + exception.getMessage());
+                status.set(Status.BAD + ": " + exception.getMessage());
                 disableCalculation();
                 return;
             }
@@ -197,6 +198,7 @@ public class ViewModel {
 
 enum Status {
     WAIT("Wait for input"),
+    BAD("Bad format"),
     READY("Press 'Calculate'"),
     SUCCESS("Success");
 
@@ -208,3 +210,4 @@ enum Status {
     }
     private final String name;
 }
+

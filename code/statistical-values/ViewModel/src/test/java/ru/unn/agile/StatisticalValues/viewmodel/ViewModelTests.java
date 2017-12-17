@@ -5,7 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
     @Before
@@ -20,21 +21,19 @@ public class ViewModelTests {
 
     @Test
     public void canSetDefaultValues() {
-        assertEquals("Statistic", viewModel.statisticProperty().get());
-
         assertEquals("0", viewModel.orderProperty().get());
-        assertFalse(viewModel.orderVisibilityProperty().get());
+        assertFalse(viewModel.isOrderVisible());
 
         assertFalse(viewModel.isBiasedProperty().get());
-        assertFalse(viewModel.isBiasedVisibilityProperty().get());
+        assertFalse(viewModel.isBiasVisible());
 
         assertEquals("0.0, 0.0", viewModel.valuesProperty().get());
-        assertFalse(viewModel.valuesVisibilityProperty().get());
+        assertFalse(viewModel.isValuesVisible());
 
         assertEquals("", viewModel.resultProperty().get());
-        assertFalse(viewModel.resultVisibilityProperty().get());
+        assertFalse(viewModel.isResultVisible());
 
-        assertFalse(viewModel.calculateVisibilityProperty().get());
+        assertFalse(viewModel.isCalculateVisible());
 
         assertEquals(Status.WAIT.toString(), viewModel.statusProperty().get());
     }
@@ -46,140 +45,168 @@ public class ViewModelTests {
     }
 
     @Test
-    public void fieldsAreInvisibleWhenStatisticHasNotBeenChosen() {
+    public void orderIsInvisibleWhenStatisticHasNotBeenChosen() {
         viewModel.calculate();
-        assertFalse(viewModel.orderVisibilityProperty().get());
-        assertFalse(viewModel.isBiasedVisibilityProperty().get());
-        assertFalse(viewModel.valuesVisibilityProperty().get());
-        assertFalse(viewModel.calculateVisibilityProperty().get());
-        assertFalse(viewModel.resultVisibilityProperty().get());
+
+        assertFalse(viewModel.isOrderVisible());
     }
 
     @Test
-    public void calculationIsInvisibleByUndefinedStatistic() {
-        viewModel.statisticProperty().set("Undefined");
+    public void biasIsInvisibleWhenStatisticHasNotBeenChosen() {
+        viewModel.calculate();
 
-        assertFalse(viewModel.calculateVisibilityProperty().get());
+        assertFalse(viewModel.isBiasVisible());
+    }
+
+    @Test
+    public void valuesAreInvisibleWhenStatisticHasNotBeenChosen() {
+        viewModel.calculate();
+
+        assertFalse(viewModel.isValuesVisible());
+    }
+
+    @Test
+    public void calculateIsInvisibleWhenStatisticHasNotBeenChosen() {
+        viewModel.calculate();
+
+        assertFalse(viewModel.isResultVisible());
+    }
+
+    @Test
+    public void resultIsInvisibleWhenStatisticHasNotBeenChosen() {
+        viewModel.calculate();
+
+        assertFalse(viewModel.isResultVisible());
     }
 
     @Test
     public void calculationIsInvisibleByInvalidOrder() {
-        viewModel.statisticProperty().set("Moment");
+        viewModel.statisticProperty().set(Statistic.MOMENT);
 
         viewModel.orderProperty().set("Invalid");
 
-        assertFalse(viewModel.calculateVisibilityProperty().get());
+        assertFalse(viewModel.isCalculateVisible());
     }
 
     @Test
     public void calculationIsInvisibleByInvalidValues() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
         viewModel.valuesProperty().set("Invalid");
 
-        assertFalse(viewModel.calculateVisibilityProperty().get());
+        assertFalse(viewModel.isCalculateVisible());
+    }
+
+    @Test
+    public void statusIsBadFormatByNegativeOrder() {
+        viewModel.statisticProperty().set(Statistic.MOMENT);
+        viewModel.orderProperty().set("-1");
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.statusProperty().get().contains(Status.BAD.toString()));
     }
 
     @Test
     public void calculationIsVisibleBySettingStatistic() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        assertTrue(viewModel.calculateVisibilityProperty().get());
+        assertTrue(viewModel.isCalculateVisible());
     }
 
     @Test
     public void orderIsVisibleBySettingStatisticUsingOrder() {
-        viewModel.statisticProperty().set("Moment");
+        viewModel.statisticProperty().set(Statistic.MOMENT);
 
-        assertTrue(viewModel.orderVisibilityProperty().get());
+        assertTrue(viewModel.isOrderVisible());
     }
 
     @Test
     public void orderIsInvisibleBySettingStatisticWithoutOrder() {
-        viewModel.statisticProperty().set("Std");
+        viewModel.statisticProperty().set(Statistic.STD);
 
-        assertFalse(viewModel.orderVisibilityProperty().get());
+        assertFalse(viewModel.isOrderVisible());
     }
 
     @Test
     public void orderIsHiddenBySettingStatisticWithoutOrder() {
-        viewModel.statisticProperty().set("Moment");
+        viewModel.statisticProperty().set(Statistic.MOMENT);
 
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        assertFalse(viewModel.orderVisibilityProperty().get());
+        assertFalse(viewModel.isOrderVisible());
     }
 
     @Test
     public void orderIsShownBySettingStatisticUsingOrder() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        viewModel.statisticProperty().set("Moment");
+        viewModel.statisticProperty().set(Statistic.MOMENT);
 
-        assertTrue(viewModel.orderVisibilityProperty().get());
+        assertTrue(viewModel.isOrderVisible());
     }
 
     @Test
     public void biasIsVisibleBySettingStatisticUsingBias() {
-        viewModel.statisticProperty().set("Variance");
+        viewModel.statisticProperty().set(Statistic.VARIANCE);
 
-        assertTrue(viewModel.isBiasedVisibilityProperty().get());
+        assertTrue(viewModel.isBiasVisible());
     }
 
     @Test
     public void biasIsInvisibleBySettingStatisticWithoutBias() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        assertFalse(viewModel.isBiasedVisibilityProperty().get());
+        assertFalse(viewModel.isBiasVisible());
     }
 
     @Test
     public void biasIsHiddenBySettingStatisticWithoutBias() {
-        viewModel.statisticProperty().set("Variance");
+        viewModel.statisticProperty().set(Statistic.VARIANCE);
 
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        assertFalse(viewModel.isBiasedVisibilityProperty().get());
+        assertFalse(viewModel.isBiasVisible());
     }
 
     @Test
     public void biasIsShownBySettingStatisticUsingBias() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        viewModel.statisticProperty().set("Variance");
+        viewModel.statisticProperty().set(Statistic.VARIANCE);
 
-        assertTrue(viewModel.isBiasedVisibilityProperty().get());
+        assertTrue(viewModel.isBiasVisible());
     }
 
     @Test
     public void resultIsInvisibleBeforeCalculate() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
-        assertFalse(viewModel.resultVisibilityProperty().get());
+        assertFalse(viewModel.isResultVisible());
     }
 
     @Test
     public void resultIsVisibleAfterCalculate() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
         viewModel.calculate();
 
-        assertTrue(viewModel.resultVisibilityProperty().get());
+        assertTrue(viewModel.isResultVisible());
     }
 
     @Test
     public void resultIsHiddenByInvalidInput() {
-        viewModel.statisticProperty().set("Moment");
+        viewModel.statisticProperty().set(Statistic.MOMENT);
         viewModel.calculate();
 
         viewModel.orderProperty().set("");
 
-        assertFalse(viewModel.resultVisibilityProperty().get());
+        assertFalse(viewModel.isResultVisible());
     }
 
     @Test
     public void statusIsWaitByEmptyInput() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
         viewModel.calculate();
 
         viewModel.valuesProperty().set("");
@@ -189,14 +216,14 @@ public class ViewModelTests {
 
     @Test
     public void statusIsReadyBySettingStatistic() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
         assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void statusIsSuccessByCalculation() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
         viewModel.calculate();
 
@@ -205,46 +232,46 @@ public class ViewModelTests {
 
     @Test
     public void calculateIsHiddenByNotNumbersInValues() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
 
         viewModel.valuesProperty().set("0.0,;");
 
-        assertFalse(viewModel.calculateVisibilityProperty().get());
+        assertFalse(viewModel.isCalculateVisible());
     }
 
     @Test
     public void calculateIsHiddenByRealNumbersInValuesForMode() {
-        viewModel.statisticProperty().set("Mode");
+        viewModel.statisticProperty().set(Statistic.MODE);
 
         viewModel.valuesProperty().set("0.0, 1.0");
 
-        assertFalse(viewModel.calculateVisibilityProperty().get());
+        assertFalse(viewModel.isCalculateVisible());
     }
 
     @Test
     public void resultIsHiddenByRealNumbersInValuesForMode() {
-        viewModel.statisticProperty().set("Mode");
+        viewModel.statisticProperty().set(Statistic.MODE);
 
         viewModel.valuesProperty().set("0.0, 1.0");
 
-        assertFalse(viewModel.resultVisibilityProperty().get());
+        assertFalse(viewModel.isResultVisible());
     }
 
     @Test
     public void resultHasSeveralNumbersForMode() {
-        viewModel.statisticProperty().set("Mode");
+        viewModel.statisticProperty().set(Statistic.MODE);
         viewModel.valuesProperty().set("1, 2, 3, 4, 5, 6");
 
         viewModel.calculate();
 
         String result = viewModel.resultProperty().get();
-        assertTrue(0 < getNumberOfOccurrences(result, ','));
+        assertTrue(0 < getNumberOfOccurrences(result));
     }
 
 
     @Test
     public void meanIsCalculatedCorrectly() {
-        viewModel.statisticProperty().set("Mean");
+        viewModel.statisticProperty().set(Statistic.MEAN);
         viewModel.valuesProperty().set("1.0, 2.0, 3.0");
 
         viewModel.calculate();
@@ -255,7 +282,7 @@ public class ViewModelTests {
 
     @Test
     public void varianceIsCalculatedCorrectly() {
-        viewModel.statisticProperty().set("Variance");
+        viewModel.statisticProperty().set(Statistic.VARIANCE);
         viewModel.valuesProperty().set("0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0");
         viewModel.isBiasedProperty().set(true);
 
@@ -266,7 +293,7 @@ public class ViewModelTests {
 
     @Test
     public void unbiasedVarianceIsCalculatedCorrectly() {
-        viewModel.statisticProperty().set("Variance");
+        viewModel.statisticProperty().set(Statistic.VARIANCE);
         viewModel.valuesProperty().set("0.0, 1.0, 2.0, 3.0, 4.0");
 
         viewModel.calculate();
@@ -276,7 +303,7 @@ public class ViewModelTests {
 
     @Test
     public void modeIsCalculatedCorrectly() {
-        viewModel.statisticProperty().set("Mode");
+        viewModel.statisticProperty().set(Statistic.MODE);
         viewModel.valuesProperty().set("4, 5, 3, 2, 1, 1");
 
         viewModel.calculate();
@@ -286,7 +313,7 @@ public class ViewModelTests {
 
     @Test
     public void modeForBimodalSampleIsCalculatedCorrect() {
-        viewModel.statisticProperty().set("Mode");
+        viewModel.statisticProperty().set(Statistic.MODE);
         viewModel.valuesProperty().set("3, 2, 2, 1, 4, 5, 4, 10");
 
         viewModel.calculate();
@@ -296,7 +323,7 @@ public class ViewModelTests {
 
     @Test
     public void momentForPositiveOrderIsCalculatedCorrect() {
-        viewModel.statisticProperty().set("Moment");
+        viewModel.statisticProperty().set(Statistic.MOMENT);
         viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 2.5");
         viewModel.orderProperty().set("5");
 
@@ -308,7 +335,7 @@ public class ViewModelTests {
 
     @Test
     public void centralMomentForPositiveOrderIsCalculatedCorrect() {
-        viewModel.statisticProperty().set("Central moment");
+        viewModel.statisticProperty().set(Statistic.CENTRAL_MOMENT);
         viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 4.0");
         viewModel.orderProperty().set("5");
 
@@ -320,7 +347,7 @@ public class ViewModelTests {
 
     @Test
     public void biasedStandardDeviationIsCalculatedCorrectly() {
-        viewModel.statisticProperty().set("Std");
+        viewModel.statisticProperty().set(Statistic.STD);
         viewModel.valuesProperty().set("2.0, 4.0, 4.0, 5.0, 4.0, 5.0, 7.0, 9.0");
         viewModel.isBiasedProperty().set(true);
 
@@ -331,7 +358,7 @@ public class ViewModelTests {
 
     @Test
     public void unBiasedStandardDeviationIsCalculatedCorrectly() {
-        viewModel.statisticProperty().set("Std");
+        viewModel.statisticProperty().set(Statistic.STD);
         viewModel.valuesProperty().set("2.0, 4.0, 4.0, 5.0, 4.0, 5.0, 7.0, 9.0");
         viewModel.isBiasedProperty().set(false);
 
@@ -340,10 +367,30 @@ public class ViewModelTests {
         assertEquals(2.1380899, Double.valueOf(viewModel.resultProperty().get()), 10e-6);
     }
 
-    private int getNumberOfOccurrences(final String src, final char target) {
+    @Test
+    public void medianIsCalculatedCorrectlyForSampleWithOddLength() {
+        viewModel.statisticProperty().set(Statistic.MEDIAN);
+        viewModel.valuesProperty().set("10.0, 5.0, 6.0, 7.0, 3.0, 1.0, 2.0, 4.0, 8.0, 9.0, 0.0");
+
+        viewModel.calculate();
+
+        assertEquals("5.0", viewModel.resultProperty().get());
+    }
+
+    @Test
+    public void medianIsCalculatedCorrectlyForSampleWithEvenLength() {
+        viewModel.statisticProperty().set(Statistic.MEDIAN);
+        viewModel.valuesProperty().set("1.0, 3.0, 0.0, 2.0, 4.0, 9.0, 7.0, 8.0, 6.0, 5.0");
+
+        viewModel.calculate();
+
+        assertEquals("4.5", viewModel.resultProperty().get());
+    }
+
+    private int getNumberOfOccurrences(final String src) {
         int numberOfOccurrences = 0;
         for (int position = 0; position < src.length(); position++) {
-            if (src.charAt(position) == target) {
+            if (src.charAt(position) == ',') {
                 numberOfOccurrences++;
             }
         }

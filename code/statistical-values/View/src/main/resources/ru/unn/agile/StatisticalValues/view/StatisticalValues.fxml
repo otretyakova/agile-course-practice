@@ -16,7 +16,7 @@
                 fx:id="cbStatistic"
                 prefWidth="150.0"
                 promptText="Statistic"
-                items="${viewModel.statistics}"
+                items="${viewModel.availableStatistics}"
             />
             <Label
                 fx:id="lbOrder"
@@ -73,7 +73,7 @@
                 layoutY="147.0"
             />
             <Label
-                fx:id="lbStatus"
+                id="lbStatus"
                 layoutX="5.0"
                 layoutY="175.0"
                 text="Status"

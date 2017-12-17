@@ -1,6 +1,5 @@
 package ru.unn.agile.StatisticalValues.model;
 
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;

@@ -1,35 +1,15 @@
 package ru.unn.agile.StatisticalValues.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
+import ru.unn.agile.StatisticalValues.viewmodel.Statistic;
 import ru.unn.agile.StatisticalValues.viewmodel.ViewModel;
 
 public class StatisticalValues {
-    @FXML
-    private ViewModel viewModel;
-    @FXML
-    private ComboBox<String> cbStatistic;
-    @FXML
-    private TextField tfOrder;
-    @FXML
-    private Label lbOrder;
-    @FXML
-    private CheckBox cbIsBiased;
-    @FXML
-    private TextField tfValues;
-    @FXML
-    private Label lbValues;
-    @FXML
-    private Label lbResultValue;
-    @FXML
-    private Label lbResult;
-    @FXML
-    private Label lbStatusValue;
-    @FXML
-    private Button btCalculate;
-
     @FXML
     void initialize() {
         cbStatistic.valueProperty().bindBidirectional(viewModel.statisticProperty());
@@ -51,12 +31,30 @@ public class StatisticalValues {
 
         lbStatusValue.textProperty().bindBidirectional(viewModel.statusProperty());
 
-        btCalculate.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(final ActionEvent actionEvent) {
-                viewModel.calculate();
-            }
-        });
+        btCalculate.setOnAction(actionEvent -> viewModel.calculate());
         btCalculate.visibleProperty().bindBidirectional(viewModel.calculateVisibilityProperty());
     }
+
+    @FXML
+    private ViewModel viewModel;
+    @FXML
+    private ComboBox<Statistic> cbStatistic;
+    @FXML
+    private TextField tfOrder;
+    @FXML
+    private Label lbOrder;
+    @FXML
+    private CheckBox cbIsBiased;
+    @FXML
+    private TextField tfValues;
+    @FXML
+    private Label lbValues;
+    @FXML
+    private Label lbResultValue;
+    @FXML
+    private Label lbResult;
+    @FXML
+    private Label lbStatusValue;
+    @FXML
+    private Button btCalculate;
 }
