@@ -34,10 +34,17 @@ public class ViewModelTests {
     }
 
     @Test
-    public void statusIsReadyWhenFieldsAreFill() {
+    public void statusIsReadyWhenCorrectInput() {
         viewModel.inputStringProperty().set("2,2");
 
         assertEquals(Status.READY.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void calculateButtonIsEnabledWhenCorrectInput() {
+        viewModel.inputStringProperty().set("2,2");
+
+        assertFalse(viewModel.isCalculationDisabled());
     }
 
     @Test
@@ -66,20 +73,6 @@ public class ViewModelTests {
         viewModel.inputStringProperty().set("2,-2");
 
         assertTrue(viewModel.isCalculationDisabled());
-    }
-
-    @Test
-    public void statusIsReadyWhenCorrectInput() {
-        viewModel.inputStringProperty().set("2,2");
-
-        assertEquals(Status.READY.toString(), viewModel.getStatus());
-    }
-
-    @Test
-    public void calculateButtonIsEnabledWhenCorrectInput() {
-        viewModel.inputStringProperty().set("2,2");
-
-        assertFalse(viewModel.isCalculationDisabled());
     }
 
     @Test

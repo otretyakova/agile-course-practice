@@ -41,20 +41,32 @@ public class ViewModel {
         return inputString.get();
     }
 
+    public StringProperty inputStringProperty() {
+        return inputString;
+    }
+
+    public StringProperty resultProperty() {
+        return result;
+    }
+
     public final String getResult() {
         return result.get();
+    }
+
+    public StringProperty statusProperty() {
+        return status;
     }
 
     public final String getStatus() {
         return status.get();
     }
 
-    public final boolean isCalculationDisabled() {
-        return calculationDisabled.get();
+    public BooleanProperty calculationDisabledProperty() {
+        return calculationDisabled;
     }
 
-    public StringProperty inputStringProperty() {
-        return inputString;
+    public final boolean isCalculationDisabled() {
+        return calculationDisabled.get();
     }
 
     private Status getInputStatus() {
