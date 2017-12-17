@@ -25,7 +25,6 @@ public class ConverterTemperature {
 
     @FXML
     void initialize() {
-        // Two-way binding hasn't supported by FXML yet, so place it in code-behind
         inputTemp.textProperty().bindBidirectional(viewModel.inputTemperatureProperty());
         cbOperation.valueProperty().bindBidirectional(viewModel.inputTypeProperty());
         cbOperation1.valueProperty().bindBidirectional(viewModel.outputTypeProperty());

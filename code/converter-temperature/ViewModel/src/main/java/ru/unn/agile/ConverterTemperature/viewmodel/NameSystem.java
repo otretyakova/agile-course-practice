@@ -6,11 +6,11 @@ public enum NameSystem {
     KELVIN("KELVIN"),
     NEWTON("NEWTON");
 
-    private final String name;
     NameSystem(final String name) {
         this.name = name;
     }
     public String toString() {
         return name;
     }
+    private final String name;
 }

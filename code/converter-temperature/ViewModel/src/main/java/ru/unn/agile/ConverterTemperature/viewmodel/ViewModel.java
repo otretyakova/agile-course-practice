@@ -13,21 +13,6 @@ import java.util.*;
 
 
 public class ViewModel {
-    private final StringProperty inputTemperature = new SimpleStringProperty();
-    private final ObjectProperty<ObservableList<NameSystem>> inputTypes =
-            new SimpleObjectProperty<>(FXCollections.observableArrayList(NameSystem.values()));
-    private final ObjectProperty<NameSystem> inputType = new SimpleObjectProperty<>();
-
-    private final ObjectProperty<ObservableList<NameSystem>> outputTypes =
-            new SimpleObjectProperty<>(FXCollections.observableArrayList(NameSystem.values()));
-    private final ObjectProperty<NameSystem> outputType = new SimpleObjectProperty<>();
-    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
-
-    private final StringProperty result = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
-
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
-
     public ViewModel() {
         inputTemperature.set("");
         inputType.set(NameSystem.CELSIUS);
@@ -35,7 +20,7 @@ public class ViewModel {
         result.set("");
         status.set(Status.WAITING.toString());
 
-        BooleanBinding couldCalculate = new BooleanBinding() {
+        BooleanBinding canCalculate = new BooleanBinding() {
             {
                 super.bind(inputTemperature);
             }
@@ -44,12 +29,11 @@ public class ViewModel {
                 return getInputStatus() == Status.READY;
             }
         };
-        calculationDisabled.bind(couldCalculate.not());
+        calculationDisabled.bind(canCalculate.not());
 
-        // Add listeners to the input text fields
-        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
+        final List<StringProperty> fields = new ArrayList<StringProperty>() {{
             add(inputTemperature);
-        } };
+        }};
 
         for (StringProperty field : fields) {
             final ValueChangeListener listener = new ValueChangeListener();
@@ -65,12 +49,15 @@ public class ViewModel {
     public StringProperty resultProperty() {
         return result;
     }
+    
     public final String getResult() {
         return result.get();
     }
+    
     public StringProperty statusProperty() {
         return status;
     }
+    
     public final String getStatus() {
         return status.get();
     }
@@ -78,9 +65,11 @@ public class ViewModel {
     public ObjectProperty<ObservableList<NameSystem>> inputTypesProperty() {
         return inputTypes;
     }
+    
     public final ObservableList<NameSystem> getInputTypes() {
         return inputTypes.get();
     }
+    
     public ObjectProperty<NameSystem> inputTypeProperty() {
         return inputType;
     }
@@ -88,9 +77,11 @@ public class ViewModel {
     public ObjectProperty<ObservableList<NameSystem>> outputTypesProperty() {
         return outputTypes;
     }
+    
     public final ObservableList<NameSystem> getOutputTypes() {
         return outputTypes.get();
     }
+    
     public ObjectProperty<NameSystem> outputTypeProperty() {
         return outputType;
     }
@@ -98,6 +89,7 @@ public class ViewModel {
     public BooleanProperty calculationDisabledProperty() {
         return calculationDisabled;
     }
+    
     public final boolean isCalculationDisabled() {
         return calculationDisabled.get();
     }
@@ -127,9 +119,29 @@ public class ViewModel {
                 result.set(formattedDouble);
             }
         } catch (IllegalArgumentException excep) {
-            status.set(Status.UNPHYSICAL_INPUT.toString());
+            status.set(Status.IMPOSSIBLE.toString());
         }
     }
+
+    private final StringProperty inputTemperature = new SimpleStringProperty();
+    
+    private final ObjectProperty<ObservableList<NameSystem>> inputTypes =
+            new SimpleObjectProperty<>(FXCollections.observableArrayList(NameSystem.values()));
+    
+    private final ObjectProperty<NameSystem> inputType = new SimpleObjectProperty<>();
+
+    private final ObjectProperty<ObservableList<NameSystem>> outputTypes =
+            new SimpleObjectProperty<>(FXCollections.observableArrayList(NameSystem.values()));
+    
+    private final ObjectProperty<NameSystem> outputType = new SimpleObjectProperty<>();
+    
+    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
+
+    private final StringProperty result = new SimpleStringProperty();
+    
+    private final StringProperty status = new SimpleStringProperty();
+
+    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
 
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
@@ -140,7 +152,7 @@ public class ViewModel {
             if (!inputTemperature.get().isEmpty()) {
                 Double.parseDouble(inputTemperature.get());
             }
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException excep) {
             inputStatus = Status.BAD_FORMAT;
         }
 
@@ -155,8 +167,8 @@ public class ViewModel {
         }
     }
 
-    private static final Map<String, Conversion> MATCHCONVERTER = Collections.unmodifiableMap(
-            new HashMap<String, Conversion>() {{
+    private static final Map<String, Conversion> MATCHCONVERTER = Collections.unmodifiableMap
+        (new HashMap<String, Conversion>() {{
                 put("CELSIUS_TO_FAHRENHEIT", Conversion.CELSIUS_TO_FAHRENHEIT);
                 put("CELSIUS_TO_KELVIN", Conversion.CELSIUS_TO_KELVIN);
                 put("CELSIUS_TO_NEWTON", Conversion.CELSIUS_TO_NEWTON);
@@ -181,7 +193,7 @@ enum Status {
     READY("Press 'Convert' or Enter"),
     BAD_FORMAT("Bad format"),
     SUCCESS("Success"),
-    UNPHYSICAL_INPUT("Your input data is colder than heart of ex-girlfriend");
+    IMPOSSIBLE("Your input data is colder than heart of ex-girlfriend");
 
     private final String name;
     Status(final String name) {

@@ -39,7 +39,9 @@ public class ViewModelTests {
     @Test
     public void canConvertDefaultWhereInputSetZero() {
         viewModel.inputTemperatureProperty().set("0.0");
+
         viewModel.convert();
+
         assertEquals("32.00", viewModel.resultProperty().get());
     }
 
@@ -48,7 +50,9 @@ public class ViewModelTests {
         viewModel.inputTemperatureProperty().set("0.0");
         viewModel.inputTypeProperty().set(NameSystem.CELSIUS);
         viewModel.outputTypeProperty().set(NameSystem.CELSIUS);
+
         viewModel.convert();
+
         assertEquals("0.0", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
@@ -80,6 +84,7 @@ public class ViewModelTests {
     public void canSetInputAndOutputConversionsOperation() {
         viewModel.inputTypeProperty().set(NameSystem.FAHRENHEIT);
         viewModel.outputTypeProperty().set(NameSystem.CELSIUS);
+
         assertEquals(NameSystem.FAHRENHEIT, viewModel.inputTypeProperty().get());
         assertEquals(NameSystem.CELSIUS, viewModel.outputTypeProperty().get());
     }
@@ -93,8 +98,10 @@ public class ViewModelTests {
     @Test
     public void statusIsUnphysicalWhneInputLessThanAbsoluteZero() {
         viewModel.inputTemperatureProperty().set("-1000.0");
+
         viewModel.convert();
-        assertEquals(Status.UNPHYSICAL_INPUT.toString(), viewModel.statusProperty().get());
+
+        assertEquals(Status.IMPOSSIBLE.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -112,7 +119,9 @@ public class ViewModelTests {
     @Test
     public void canSetSuccessMessage() {
         viewModel.inputTemperatureProperty().set("1");
+
         viewModel.convert();
+
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
 
@@ -121,7 +130,9 @@ public class ViewModelTests {
         viewModel.inputTypeProperty().set(NameSystem.KELVIN);
         viewModel.outputTypeProperty().set(NameSystem.FAHRENHEIT);
         viewModel.inputTemperatureProperty().set("198.15");
+
         viewModel.convert();
+
         assertEquals("-103.00", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
@@ -131,7 +142,9 @@ public class ViewModelTests {
         viewModel.inputTypeProperty().set(NameSystem.CELSIUS);
         viewModel.outputTypeProperty().set(NameSystem.KELVIN);
         viewModel.inputTemperatureProperty().set("0");
+
         viewModel.convert();
+
         assertEquals("273.15", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
@@ -141,7 +154,9 @@ public class ViewModelTests {
         viewModel.inputTypeProperty().set(NameSystem.NEWTON);
         viewModel.outputTypeProperty().set(NameSystem.FAHRENHEIT);
         viewModel.inputTemperatureProperty().set("0");
+
         viewModel.convert();
+
         assertEquals("32.00", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
@@ -151,7 +166,9 @@ public class ViewModelTests {
         viewModel.inputTypeProperty().set(NameSystem.NEWTON);
         viewModel.outputTypeProperty().set(NameSystem.FAHRENHEIT);
         viewModel.inputTemperatureProperty().set("100.00");
+
         viewModel.convert();
+
         assertEquals("577.45", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
@@ -161,7 +178,9 @@ public class ViewModelTests {
         viewModel.inputTypeProperty().set(NameSystem.CELSIUS);
         viewModel.outputTypeProperty().set(NameSystem.CELSIUS);
         viewModel.inputTemperatureProperty().set("100.0");
+
         viewModel.convert();
+
         assertEquals("100.0", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
