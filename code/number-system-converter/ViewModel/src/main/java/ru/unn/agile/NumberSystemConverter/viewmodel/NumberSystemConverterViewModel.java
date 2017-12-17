@@ -89,6 +89,13 @@ public class NumberSystemConverterViewModel {
         }
     }
 
+    public void closeErrorDialog() {
+        if (this.isErrorMessageShown()) {
+            this.errorMessageIsShown.set(false);
+            this.errorMessage.set("");
+        }
+    }
+
     private void bindConversionAvailability() {
         BooleanBinding couldConvert = new BooleanBinding() {
             {

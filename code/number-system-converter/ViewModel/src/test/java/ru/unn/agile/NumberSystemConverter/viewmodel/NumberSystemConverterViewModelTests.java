@@ -248,12 +248,21 @@ public class NumberSystemConverterViewModelTests {
     @Test
     public void conversionFromHexadecimalToBinaryHasCorrectResult() {
         this.viewModel.baseNumberSystemProperty().set(NumberSystemBase.HEX);
-        this.viewModel.numberInBaseNumberSystemProperty().set("123FB4");
+        this.viewModel.numberInBaseNumberSystemProperty().set("A3F");
         this.viewModel.targetNumberSystemProperty().set(NumberSystemBase.BIN);
 
         this.viewModel.convert();
 
-        assertEquals("100100011111110110100", this.viewModel.numberInTargetNumberSystemProperty().get());
+        assertEquals("101000111111", this.viewModel.numberInTargetNumberSystemProperty().get());
+    }
+
+    @Test
+    public void canCloseErrorDialogIfErrorOccurredInConversion() {
+        this.viewModel.errorMessageIsShownProperty().set(true);
+
+        this.viewModel.closeErrorDialog();
+
+        assertFalse(this.viewModel.isErrorMessageShown());
     }
 
     private NumberSystemConverterViewModel viewModel;
