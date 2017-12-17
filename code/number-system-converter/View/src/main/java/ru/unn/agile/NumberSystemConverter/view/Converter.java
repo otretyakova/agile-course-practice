@@ -1,13 +1,14 @@
 package ru.unn.agile.NumberSystemConverter.view;
 
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
 import ru.unn.agile.NumberSystemConverter.viewmodel.NumberSystemConverterViewModel;
-
 
 
 public class Converter {
@@ -33,21 +34,19 @@ public class Converter {
                 this.viewModel.conversionEnabledProperty().not()
         );
 
-        this.buttonConvert.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                viewModel.convert();
-            }
-        });
+        this.buttonConvert.setOnAction(event -> viewModel.convert());
 
-        this.viewModel.errorMessageIsShownProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, this.viewModel.getErrorMessage(), ButtonType.CLOSE);
-                alert.showAndWait()
-                        .filter(response -> response == ButtonType.CLOSE)
-                        .ifPresent(response -> this.viewModel.closeErrorDialog());
+        this.viewModel.errorMessageIsShownProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText(this.viewModel.getErrorMessage());
+                    alert.showAndWait()
+                            .filter(response -> response == ButtonType.OK)
+                            .ifPresent(response -> this.viewModel.closeErrorDialog());
+                }
             }
-        });
+        );
     }
 
     @FXML
