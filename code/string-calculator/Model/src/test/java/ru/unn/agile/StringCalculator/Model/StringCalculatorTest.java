@@ -2,15 +2,10 @@ package ru.unn.agile.StringCalculator.Model;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class StringCalculatorTest {
-    @Test
-    public void canAddStringWithoutNumbers() {
-        assertEquals(0, StringCalculator.add(""));
-    }
-
     @Test
     public void canAddStringWithOneNumber() {
         assertEquals(1, StringCalculator.add("1"));
@@ -84,6 +79,11 @@ public class StringCalculatorTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void canAddStringWithoutNumbers() {
+        StringCalculator.add("");
+    }
+
     @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithIncorrectData() {
         StringCalculator.add("sadfasdf");
@@ -120,17 +120,17 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void isIncorrectDataReturnsTrueWhenIncorrectData() {
-        assertTrue(StringCalculator.isIncorrectData("2,a"));
+    public void isBadFormatReturnsTrueWhenIncorrectData() {
+         assertTrue(StringCalculator.isBadFormat("2,a"));
+     }
+
+    @Test
+    public void isBadFormatReturnsTrueWhenNegativeNumberInData() {
+        assertTrue(StringCalculator.isBadFormat("2,-2"));
     }
 
     @Test
-    public void isIncorrectDataReturnsTrueWhenNegativeNumberInData() {
-        assertTrue(StringCalculator.isIncorrectData("2,-2"));
-    }
-
-    @Test
-    public void isIncorrectDataReturnsFalseWhenCorrectData() {
-        assertFalse(StringCalculator.isIncorrectData("2,2"));
+    public void isBadFormatReturnsFalseWhenCorrectData() {
+        assertFalse(StringCalculator.isBadFormat("2,2"));
     }
 }

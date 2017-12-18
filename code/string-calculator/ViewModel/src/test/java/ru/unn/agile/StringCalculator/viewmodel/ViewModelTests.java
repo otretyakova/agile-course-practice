@@ -76,6 +76,20 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canReportBadFormatWhenDelimiterIsIncorrect() {
+        viewModel.inputStringProperty().set(";2,2,2");
+
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void calculateButtonIsDisabledWhenDelimiterIsIncorrect() {
+        viewModel.inputStringProperty().set(";2,2,2");
+
+        assertTrue(viewModel.isCalculationDisabled());
+    }
+
+    @Test
     public void statusIsWaitingWhenCalculateWithEmptyFields() {
         viewModel.calculate();
 

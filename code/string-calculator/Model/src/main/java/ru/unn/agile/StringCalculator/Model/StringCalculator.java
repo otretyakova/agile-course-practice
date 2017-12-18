@@ -2,18 +2,10 @@ package ru.unn.agile.StringCalculator.Model;
 
 public final class StringCalculator {
     public static int add(final String input) throws IllegalArgumentException {
-        if (input == null) {
-            throw new IllegalArgumentException("Incorrect data");
-        }
-        if (input.isEmpty()) {
-            return 0;
-        }
+        checkBadFormat(input);
 
         String delimiter = extractDelimiter(input);
         String[] numbers = split(input, delimiter);
-
-        checkIncorrectData(numbers);
-        checkNegatives(numbers);
 
         int sum = 0;
         for (String number : numbers) {
@@ -22,17 +14,24 @@ public final class StringCalculator {
         return sum;
     }
 
-    public static Boolean isIncorrectData(final String input) {
-        String delimiter = extractDelimiter(input);
-        String[] numbers = split(input, delimiter);
-
+    public static Boolean isBadFormat(final String input) {
         try {
-            checkIncorrectData(numbers);
-            checkNegatives(numbers);
-            return false;
+            checkBadFormat(input);
         } catch (IllegalArgumentException e) {
             return true;
         }
+        return false;
+    }
+
+    private static void checkBadFormat(final String input) {
+        if (input == null || input.isEmpty()) {
+            throw new IllegalArgumentException("Incorrect data");
+        }
+        String delimiter = extractDelimiter(input);
+        String[] numbers = split(input, delimiter);
+
+        checkIncorrectData(numbers);
+        checkNegatives(numbers);
     }
 
     private static String extractDelimiter(final String input) {

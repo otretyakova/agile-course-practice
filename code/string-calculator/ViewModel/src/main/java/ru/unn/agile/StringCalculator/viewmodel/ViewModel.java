@@ -73,7 +73,7 @@ public class ViewModel {
         Status inputStatus = Status.READY;
         if (getInputString().isEmpty()) {
             inputStatus = Status.WAITING;
-        } else if (StringCalculator.isIncorrectData(getInputString())) {
+        } else if (StringCalculator.isBadFormat(getInputString())) {
             inputStatus = Status.BAD_FORMAT;
         }
         return inputStatus;
