@@ -24,18 +24,6 @@ public final class MetricsDistance {
         return distanceBetweenVectors;
     }
 
-    private static void validateInputArgs(final float[] vector1, final float[] vector2) {
-        if (isVectorsNull(vector1, vector2)) {
-            throw new IllegalArgumentException("Вектор не инициализирован!");
-        }
-        if (isVectorsZeroLength(vector1, vector2)) {
-            throw new IllegalArgumentException("Вектор имеет длину 0!");
-        }
-        if (!isLengthEquals(vector1, vector2)) {
-            throw new IllegalArgumentException("Векторы разных размеров!");
-        }
-    }
-
     public static float calculateDistanceMinkowski(final float[] vector1, final float[] vector2,
                                                    final int p) {
         validateInputArgs(vector1, vector2);
@@ -57,6 +45,32 @@ public final class MetricsDistance {
         return  distanceBetweenVectors;
     }
 
+    public enum Metric {
+        Chebyshev("Chebyshev"), Minkowski("Minkowski");
+
+        private final String name;
+        Metric(final String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    private static void validateInputArgs(final float[] vector1, final float[] vector2) {
+        if (isVectorsNull(vector1, vector2)) {
+            throw new IllegalArgumentException("Вектор не инициализирован!");
+        }
+        if (isVectorsZeroLength(vector1, vector2)) {
+            throw new IllegalArgumentException("Вектор имеет длину 0!");
+        }
+        if (!isLengthEquals(vector1, vector2)) {
+            throw new IllegalArgumentException("Векторы разных размеров!");
+        }
+    }
+
     private static boolean isVectorsNull(final float[] vector1, final float[] vector2) {
         return (vector1 == null) || (vector2 == null);
     }
@@ -74,19 +88,5 @@ public final class MetricsDistance {
     }
 
     private MetricsDistance() {
-    }
-
-    public enum Metric {
-        Chebyshev("Chebyshev"), Minkowski("Minkowski");
-
-        private final String name;
-        Metric(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
     }
 }

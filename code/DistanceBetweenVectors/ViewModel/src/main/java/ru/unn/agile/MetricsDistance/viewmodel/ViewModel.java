@@ -6,7 +6,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.beans.binding.BooleanBinding;
-//import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
 import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
 import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
 
@@ -50,12 +49,17 @@ public class ViewModel {
     }
 
     public void calculate() {
-        if (calculationDisabled.get()) {
+        if (isCalculationDisabled()) {
             return;
         }
 
-        final float[] vec1 = {Float.parseFloat(x1.get()), Float.parseFloat(y1.get())};
-        final float[] vec2 = {Float.parseFloat(x2.get()), Float.parseFloat(y2.get())};
+        float vec1x = Float.parseFloat(x1.get());
+        float vec1y = Float.parseFloat(y1.get());
+        float vec2x = Float.parseFloat(x2.get());
+        float vec2y = Float.parseFloat(y2.get());
+        final float[] vec1 = {vec1x, vec1y};
+        final float[] vec2 = {vec2x, vec2y};
+
         final int dimension = 2;
         if (metric.get().name().equals("Chebyshev")) {
             result.set(Float.toString(MetricsDistance.calculateDistanceChebyshev(vec1, vec2)));
@@ -64,7 +68,6 @@ public class ViewModel {
             result.set(Float.toString(
                     MetricsDistance.calculateDistanceMinkowski(vec1, vec2, dimension)));
         }
-        System.out.print(result.toString());
         status.set(Status.SUCCESS.toString());
     }
 
@@ -83,7 +86,10 @@ public class ViewModel {
     public ObjectProperty<Metric> metricProperty() {
         return metric;
     }
-    public final ObservableList<Metric> getMetircs() {
+    public Metric getMetric() {
+        return metric.get();
+    }
+    public final ObservableList<Metric> getMetrics() {
         return metrics.get();
     }
     public final String getResult() {

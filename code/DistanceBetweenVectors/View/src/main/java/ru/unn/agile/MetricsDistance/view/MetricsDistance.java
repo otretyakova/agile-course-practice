@@ -28,7 +28,6 @@ public class MetricsDistance {
     @FXML
     void initialize() {
 
-        // Two-way binding hasn't supported by FXML yet, so place it in code-behind
         txtV1x.textProperty().bindBidirectional(viewModel.x1Property());
         txtV1y.textProperty().bindBidirectional(viewModel.y1Property());
         txtV2x.textProperty().bindBidirectional(viewModel.x2Property());
