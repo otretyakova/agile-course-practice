@@ -14,21 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewModel {
-    private final StringProperty x1 = new SimpleStringProperty();
-    private final StringProperty y1 = new SimpleStringProperty();
-    private final StringProperty x2 = new SimpleStringProperty();
-    private final StringProperty y2 = new SimpleStringProperty();
-    private final StringProperty result = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
-    private final ObjectProperty<ObservableList<Metric>> metrics =
-            new SimpleObjectProperty<>(FXCollections.observableArrayList(Metric.values()));
-    private final ObjectProperty<Metric> metric = new SimpleObjectProperty<>();
-    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 
-
-
-    // FXML needs default c-tor for binding
     public ViewModel() {
         x1.set("");
         y1.set("");
@@ -49,7 +35,6 @@ public class ViewModel {
         };
         calculationDisabled.bind(couldCalculate.not());
 
-        // Add listeners to the input text fields
         final List<StringProperty> fields = new ArrayList<StringProperty>() { {
             add(x1);
             add(y1);
@@ -119,6 +104,18 @@ public class ViewModel {
     public final String getStatus() {
         return status.get();
     }
+
+    private final StringProperty x1 = new SimpleStringProperty();
+    private final StringProperty y1 = new SimpleStringProperty();
+    private final StringProperty x2 = new SimpleStringProperty();
+    private final StringProperty y2 = new SimpleStringProperty();
+    private final StringProperty result = new SimpleStringProperty();
+    private final StringProperty status = new SimpleStringProperty();
+    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
+    private final ObjectProperty<ObservableList<Metric>> metrics =
+            new SimpleObjectProperty<>(FXCollections.observableArrayList(Metric.values()));
+    private final ObjectProperty<Metric> metric = new SimpleObjectProperty<>();
+    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
