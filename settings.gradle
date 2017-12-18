@@ -76,7 +76,8 @@ project(":code/numbers-in-words").name = "numbers-in-words-Model"
 
 
 // Sadova Daria
-
+include "code/vectors3d"
+project(":code/vectors3d").name = "vectors3d-Model"
 
 
 // Semerenko Alexander
@@ -109,10 +110,6 @@ project(":code/string_calculator").name = "string_calculator-Model"
 // Bevzuk Anton
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
-
-// Sadova Daria
-include "code/vectors3d"
-project(":code/vectors3d").name = "vectors3d-Model"
 
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
