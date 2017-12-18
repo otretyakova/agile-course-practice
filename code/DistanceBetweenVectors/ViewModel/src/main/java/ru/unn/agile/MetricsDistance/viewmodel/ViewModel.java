@@ -76,11 +76,38 @@ public class ViewModel {
     public StringProperty y2Property() {
         return y2;
     }
+    public String getX1() {
+        return x1.get();
+    }
+    public String getY1() {
+        return y1.get();
+    }
+    public String getX2() {
+        return x2.get();
+    }
+    public String getY2() {
+        return y2.get();
+    }
+    public void setX1(final String str) {
+        x1.set(str);
+    }
+    public void setY1(final String str) {
+        y1.set(str);
+    }
+    public void setX2(final String str) {
+        x2.set(str);
+    }
+    public void setY2(final String str) {
+        y2.set(str);
+    }
     public ObjectProperty<Metric> metricProperty() {
         return metric;
     }
     public Metric getMetric() {
         return metric.get();
+    }
+    public void setMetric(final Metric met) {
+        metric.set(met);
     }
     public final ObservableList<Metric> getMetrics() {
         return metrics.get();
@@ -118,22 +145,22 @@ public class ViewModel {
 
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
-        if (x1.get().isEmpty() || y1.get().isEmpty()
-                || x2.get().isEmpty() || x2.get().isEmpty()) {
+        if (getX1().isEmpty() || getY1().isEmpty()
+                || getX2().isEmpty() || getY2().isEmpty()) {
             inputStatus = Status.WAITING;
         }
         try {
-            if (!x1.get().isEmpty()) {
-                Double.parseDouble(x1.get());
+            if (!getX1().isEmpty()) {
+                Double.parseDouble(getX1());
             }
-            if (!y1.get().isEmpty()) {
-                Double.parseDouble(y1.get());
+            if (!getY1().isEmpty()) {
+                Double.parseDouble(getY1());
             }
-            if (!x2.get().isEmpty()) {
-                Double.parseDouble(x2.get());
+            if (!getX2().isEmpty()) {
+                Double.parseDouble(getX2());
             }
-            if (!y2.get().isEmpty()) {
-                Double.parseDouble(y2.get());
+            if (!getY2().isEmpty()) {
+                Double.parseDouble(getY2());
             }
         } catch (NumberFormatException nfe) {
             inputStatus = Status.BAD_FORMAT;
