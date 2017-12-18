@@ -39,13 +39,13 @@ public class ViewModelTests {
 
     @Test
     public void canReportBadFormat() {
-        viewModel.x1Property().set("a");
+        viewModel.setX1("a");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
     @Test
     public void statusIsWaitingIfNotEnoughCorrectData() {
-        viewModel.x1Property().set("1");
+        viewModel.setX1("1");
         assertEquals(Status.WAITING.toString(), viewModel.getStatus());
     }
 
