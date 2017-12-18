@@ -46,7 +46,29 @@ public final class MetricsDistance {
     }
 
     public enum Metric {
-        Chebyshev("Chebyshev"), Minkowski("Minkowski");
+        Chebyshev("Chebyshev") {
+            public float apply(final float[] vector1, final float[] vector2) {
+                return calculateDistanceChebyshev(vector1, vector2);
+            }
+        },
+        MinkowskiL1("MinkowskiL1") {
+            private static final int DIM = 1;
+            public float apply(final float[] vector1, final float[] vector2) {
+                return calculateDistanceMinkowski(vector1, vector2, DIM);
+            }
+        },
+        MinkowskiL2("MinkowskiL2") {
+            private static final int DIM = 2;
+            public float apply(final float[] vector1, final float[] vector2) {
+                return calculateDistanceMinkowski(vector1, vector2, DIM);
+            }
+        },
+        MinkowskiL3("MinkowskiL3") {
+            private static final int DIM = 3;
+            public float apply(final float[] vector1, final float[] vector2) {
+                return calculateDistanceMinkowski(vector1, vector2, DIM);
+            }
+        };
 
         private final String name;
         Metric(final String name) {
@@ -57,6 +79,8 @@ public final class MetricsDistance {
         public String toString() {
             return name;
         }
+
+        public abstract float apply(float[] vector1, float[] vector2);
     }
 
     private static void validateInputArgs(final float[] vector1, final float[] vector2) {

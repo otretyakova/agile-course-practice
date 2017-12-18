@@ -6,7 +6,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.beans.binding.BooleanBinding;
-import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
 import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
 
 import java.util.ArrayList;
@@ -60,14 +59,8 @@ public class ViewModel {
         final float[] vec1 = {vec1x, vec1y};
         final float[] vec2 = {vec2x, vec2y};
 
-        final int dimension = 2;
-        if (metric.get().name().equals("Chebyshev")) {
-            result.set(Float.toString(MetricsDistance.calculateDistanceChebyshev(vec1, vec2)));
-        }
-        if (metric.get().name().equals("Minkowski")) {
-            result.set(Float.toString(
-                    MetricsDistance.calculateDistanceMinkowski(vec1, vec2, dimension)));
-        }
+        float floatResult = getMetric().apply(vec1, vec2);
+        result.set(Float.toString(floatResult));
         status.set(Status.SUCCESS.toString());
     }
 

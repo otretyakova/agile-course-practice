@@ -74,9 +74,21 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canSetMinkowskiMetric() {
-        viewModel.metricProperty().set(Metric.Minkowski);
-        assertEquals(Metric.Minkowski, viewModel.getMetric());
+    public void canSetMinkowskiL1Metric() {
+        viewModel.metricProperty().set(Metric.MinkowskiL1);
+        assertEquals(Metric.MinkowskiL1, viewModel.getMetric());
+    }
+
+    @Test
+    public void canSetMinkowskiL2Metric() {
+        viewModel.metricProperty().set(Metric.MinkowskiL2);
+        assertEquals(Metric.MinkowskiL2, viewModel.getMetric());
+    }
+
+    @Test
+    public void canSetMinkowskiL3Metric() {
+        viewModel.metricProperty().set(Metric.MinkowskiL3);
+        assertEquals(Metric.MinkowskiL3, viewModel.getMetric());
     }
 
     @Test
@@ -118,9 +130,25 @@ public class ViewModelTests {
     }
 
     @Test
-    public void minkowskiMetircHasCorrectResult() {
+    public void minkowskiL1MetircHasCorrectResult() {
         setInputData("3", "3", "1", "3");
-        viewModel.metricProperty().set(Metric.Minkowski);
+        viewModel.metricProperty().set(Metric.MinkowskiL1);
+        viewModel.calculate();
+        assertEquals("2.0", viewModel.resultProperty().get());
+    }
+
+    @Test
+    public void minkowskiL2MetircHasCorrectResult() {
+        setInputData("3", "3", "1", "3");
+        viewModel.metricProperty().set(Metric.MinkowskiL2);
+        viewModel.calculate();
+        assertEquals("2.0", viewModel.resultProperty().get());
+    }
+
+    @Test
+    public void minkowskiL3MetircHasCorrectResult() {
+        setInputData("3", "3", "1", "3");
+        viewModel.metricProperty().set(Metric.MinkowskiL3);
         viewModel.calculate();
         assertEquals("2.0", viewModel.resultProperty().get());
     }
