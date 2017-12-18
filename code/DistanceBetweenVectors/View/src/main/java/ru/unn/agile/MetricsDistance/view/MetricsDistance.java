@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import ru.unn.agile.MetricsDistance.viewmodel.ViewModel;
+import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
 
 public class MetricsDistance {
     @FXML
@@ -20,7 +21,7 @@ public class MetricsDistance {
     @FXML
     private TextField txtV2y;
     @FXML
-    private ComboBox<String> cbOperation;
+    private ComboBox<Metric> cbOperation;
     @FXML
     private Button btnCalc;
 
@@ -33,7 +34,7 @@ public class MetricsDistance {
         txtV2x.textProperty().bindBidirectional(viewModel.x2Property());
         txtV2y.textProperty().bindBidirectional(viewModel.y2Property());
 
-        cbOperation.valueProperty().bindBidirectional(viewModel.operationProperty());
+        cbOperation.valueProperty().bindBidirectional(viewModel.metricProperty());
 
         btnCalc.setOnAction(new EventHandler<ActionEvent>() {
             @Override
