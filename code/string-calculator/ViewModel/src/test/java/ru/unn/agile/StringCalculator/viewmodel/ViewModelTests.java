@@ -35,82 +35,69 @@ public class ViewModelTests {
 
     @Test
     public void statusIsReadyWhenCorrectInput() {
-        viewModel.inputStringProperty().set("2,2");
-
+        viewModel.setInputString("2,2");
         assertEquals(Status.READY.toString(), viewModel.getStatus());
     }
 
     @Test
     public void calculateButtonIsEnabledWhenCorrectInput() {
-        viewModel.inputStringProperty().set("2,2");
-
+        viewModel.setInputString("2,2");
         assertFalse(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void canReportBadFormatWhenIncorrectInput() {
-        viewModel.inputStringProperty().set("2,a");
-
+        viewModel.setInputString("2,a");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
     @Test
     public void calculateButtonIsDisabledWhenIncorrectInput() {
-        viewModel.inputStringProperty().set("2,a");
-
+        viewModel.setInputString("2,a");
         assertTrue(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void canReportBadFormatWhenNegativeNumberInInput() {
-        viewModel.inputStringProperty().set("2,-2");
-
+        viewModel.setInputString("2,-2");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
     @Test
     public void calculateButtonIsDisabledWhenNegativeNumberInInput() {
-        viewModel.inputStringProperty().set("2,-2");
-
+        viewModel.setInputString("2,-2");
         assertTrue(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void canReportBadFormatWhenDelimiterIsIncorrect() {
-        viewModel.inputStringProperty().set(";2,2,2");
-
+        viewModel.setInputString(";2,2,2");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
     @Test
     public void calculateButtonIsDisabledWhenDelimiterIsIncorrect() {
-        viewModel.inputStringProperty().set(";2,2,2");
-
+        viewModel.setInputString(";2,2,2");
         assertTrue(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void statusIsWaitingWhenCalculateWithEmptyFields() {
         viewModel.calculate();
-
         assertEquals(Status.WAITING.toString(), viewModel.getStatus());
     }
 
     @Test
-    public void correctResultWhenCalculate() {
-        viewModel.inputStringProperty().set("2,2");
-
+    public void calculateReturnsCorrectResultWhenCorrectInputString() {
+        viewModel.setInputString("2,2");
         viewModel.calculate();
-
         assertEquals("4", viewModel.getResult());
     }
 
     @Test
     public void canSetSuccessMessage() {
-        viewModel.inputStringProperty().set("2,2");
-
+        viewModel.setInputString("2,2");
         viewModel.calculate();
-
         assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
     }
 }

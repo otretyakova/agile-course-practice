@@ -29,12 +29,16 @@ public class ViewModel {
     }
 
     public void calculate() {
-        if (calculationDisabled.get()) {
+        if (isCalculationDisabled()) {
             return;
         }
 
         result.set(Integer.toString(StringCalculator.add(getInputString())));
         status.set(Status.SUCCESS.toString());
+    }
+
+    public void setInputString(final String inputString) {
+        this.inputString.set(inputString);
     }
 
     public final String getInputString() {

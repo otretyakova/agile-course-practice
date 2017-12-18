@@ -17,8 +17,6 @@ public class Calculator {
 
     @FXML
     void initialize() {
-
-        // Two-way binding hasn't supported by FXML yet, so place it in code-behind
         txtInputString.textProperty().bindBidirectional(viewModel.inputStringProperty());
         btnCalc.setOnAction(new EventHandler<ActionEvent>() {
             @Override
