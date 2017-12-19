@@ -28,8 +28,7 @@ public class QuadraticEquation {
 
     public double getDiscriminant() {
         final int d = 4;
-        final double delta = 1e-15;
-        if ((this.getA() > -delta) && (this.getA() < delta)) {
+        if (this.isLinear()) {
             throw new IllegalArgumentException("Discriminant is not exist.");
         } else {
             return this.getB() * this.getB() - d * this.getA() * this.getC();
@@ -38,7 +37,7 @@ public class QuadraticEquation {
 
     public int getNumberofRealRoots() {
         final double delta = 1e-15;
-        if ((this.getA() < -delta) || (this.getA() > delta)) {
+        if (!this.isLinear()) {
             if ((this.getDiscriminant() > -delta) && (this.getDiscriminant() < delta)) {
                 return 1;
             } else {
@@ -63,29 +62,35 @@ public class QuadraticEquation {
 
     public Pair<Double, Double> solveQuadraticEquationReal() {
         final double delta = 1e-15;
-        if ((this.getA() > -delta) && (this.getA() < delta)) {
+        if (this.isLinear()) {
             return new Pair<Double, Double>((-1) * this.getC() / this.getB(), null);
         }
         if (this.getDiscriminant() < 0) {
             return new Pair<Double, Double>(null, null);
         }
         if ((this.getDiscriminant() > -delta) && (this.getDiscriminant() < delta)) {
-            return new Pair<Double, Double>((-1) * this.getB() / 2 / this.getA(), null);
+            return new Pair<Double, Double>(-this.getB() / 2 / this.getA(), null);
         }
         return new Pair<Double, Double>(
-                ((-1) * this.getB() + Math.sqrt(this.getDiscriminant())) / 2 / this.getA(),
-                ((-1) * this.getB() - Math.sqrt(this.getDiscriminant())) / 2 / this.getA());
+                (-this.getB() + Math.sqrt(this.getDiscriminant())) / 2 / this.getA(),
+                (-this.getB() - Math.sqrt(this.getDiscriminant())) / 2 / this.getA());
     }
 
     public Pair<Complex, Complex> solveQuadraticEquationImaginary() {
         if (getNumberofImaginaryRoots() == 0) {
             return new Pair<Complex, Complex>(null, null);
         }
-        Complex first = new Complex((-1) * this.getB() / 2 / this.getA(),
-                Math.sqrt((-1) * this.getDiscriminant()) / 2);
-        Complex second = new Complex((-1) * this.getB() / 2 / this.getA(),
-                (-1) * Math.sqrt((-1) * this.getDiscriminant()) / 2);
+        Complex first = new Complex(-this.getB() / 2 / this.getA(),
+                Math.sqrt(-this.getDiscriminant()) / 2);
+        Complex second = new Complex(-this.getB() / 2 / this.getA(),
+                -Math.sqrt(-this.getDiscriminant()) / 2);
        return new Pair<Complex, Complex>(first, second);
+    }
+
+    private boolean isLinear() {
+        final double delta = 1e-15;
+        return (this.getA() > -delta) && (this.getA() < delta);
+
     }
 
     private double a;
