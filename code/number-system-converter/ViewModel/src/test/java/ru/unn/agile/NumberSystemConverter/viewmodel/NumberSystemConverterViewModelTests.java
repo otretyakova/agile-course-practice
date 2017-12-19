@@ -265,5 +265,15 @@ public class NumberSystemConverterViewModelTests {
         assertFalse(this.viewModel.isErrorMessageShown());
     }
 
+    @Test
+    public void errorMessageIsNotEmptyIfTryingToConvertNumberInWrongNumberSystem() {
+        this.viewModel.baseNumberSystemProperty().set(NumberSystemBase.BIN);
+        this.viewModel.numberInBaseNumberSystemProperty().set("1234");
+
+        this.viewModel.convert();
+
+        assertTrue(this.viewModel.getErrorMessage().length() > 0);
+    }
+
     private NumberSystemConverterViewModel viewModel;
 }

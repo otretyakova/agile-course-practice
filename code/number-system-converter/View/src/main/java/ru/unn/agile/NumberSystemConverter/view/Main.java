@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(final Stage primaryStage) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("Converter.fxml"));
-            primaryStage.setTitle("Converter");
+            primaryStage.setTitle("Number system converter");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
         } catch (IOException ioException) {

@@ -1,6 +1,5 @@
 package ru.unn.agile.NumberSystemConverter.view;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ComboBox;

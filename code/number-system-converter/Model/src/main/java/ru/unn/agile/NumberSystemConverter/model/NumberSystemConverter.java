@@ -3,9 +3,6 @@ package ru.unn.agile.NumberSystemConverter.model;
 
 public final class NumberSystemConverter {
 
-    private NumberSystemConverter() {
-    }
-
     public static String convert(final String input, final NumberSystemBase src,
                           final NumberSystemBase dst) throws IllegalArgumentException {
         String outputDEC = convertANY2DEC(input, src);
@@ -14,8 +11,8 @@ public final class NumberSystemConverter {
 
     private static String convertANY2DEC(final String input, final NumberSystemBase src)
                                                             throws IllegalArgumentException {
-        long decResult = 0L;
         validateInput(input, src.getBaseSystem());
+        long decResult = 0L;
         int numberLength = input.length();
         for (int pos = 0; pos < numberLength; pos++) {
             int curElem = Character.getNumericValue((input.charAt(pos)));
@@ -56,5 +53,8 @@ public final class NumberSystemConverter {
                 throw new IllegalArgumentException("Input string contains incorrect symbols");
             }
         }
+    }
+
+    private NumberSystemConverter() {
     }
 }
