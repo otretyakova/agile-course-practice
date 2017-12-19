@@ -97,7 +97,6 @@ public class ViewModel {
         if (calculationDisabled.get()) {
             return;
         }
-        double input = Double.parseDouble(inputTemperature.get());
         Double resultDouble = 0.0;
         String in = inputType.get().toString();
         String out = outputType.get().toString();
@@ -149,7 +148,7 @@ public class ViewModel {
         }
         try {
             if (!inputTemperature.get().isEmpty()) {
-                Double.parseDouble(inputTemperature.get());
+               input = Double.parseDouble(inputTemperature.get());
             }
         } catch (NumberFormatException excep) {
             inputStatus = Status.BAD_FORMAT;
@@ -185,6 +184,8 @@ public class ViewModel {
             put("NEWTON_TO_KELVIN", Conversion.NEWTON_TO_KELVIN);
         }}
     );
+
+    private double input;
 }
 
 enum Status {
