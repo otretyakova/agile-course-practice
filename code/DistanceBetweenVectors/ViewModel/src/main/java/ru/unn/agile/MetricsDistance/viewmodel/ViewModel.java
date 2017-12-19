@@ -151,16 +151,16 @@ public class ViewModel {
         }
         try {
             if (!getX1().isEmpty()) {
-                Double.parseDouble(getX1());
+                Float.parseFloat(getX1());
             }
             if (!getY1().isEmpty()) {
-                Double.parseDouble(getY1());
+                Float.parseFloat(getY1());
             }
             if (!getX2().isEmpty()) {
-                Double.parseDouble(getX2());
+                Float.parseFloat(getX2());
             }
             if (!getY2().isEmpty()) {
-                Double.parseDouble(getY2());
+                Float.parseFloat(getY2());
             }
         } catch (NumberFormatException nfe) {
             inputStatus = Status.BAD_FORMAT;
