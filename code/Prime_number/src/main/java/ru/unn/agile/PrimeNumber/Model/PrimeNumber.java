@@ -12,7 +12,7 @@ enum Methods {
 
 public class PrimeNumber {
 
-    public void setLim(final Integer left, final Integer right) {
+    public final void setLim(final Integer left, final Integer right) {
         if (left < right) {
             this.leftLim = left;
             this.rightLim = right;
