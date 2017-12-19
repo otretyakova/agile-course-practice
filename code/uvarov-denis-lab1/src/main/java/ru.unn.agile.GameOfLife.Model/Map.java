@@ -10,26 +10,23 @@ public class Map {
         }
         this.sizeX = grid.length;
 
-        boolean isValidLength = true;
-
         for (int x = 1; x < sizeX; x++) {
-            isValidLength = isValidLength && (grid[0].length == grid[x].length);
+            if (grid[0].length != grid[x].length) {
+                throw new IllegalArgumentException("Incorrect input value at line " + x + "!");
+            }
         }
-        if (!isValidLength || grid[0].length < 1) {
+        if (grid[0].length < 1) {
             throw new IllegalArgumentException("Incorrect grid size!");
         }
         this.sizeY = grid[0].length;
-        boolean isValidValues = true;
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                isValidValues = isValidValues && grid[x][y] >= 0 && grid[x][y] <= 1;
+                if (grid[x][y] < 0 || grid[x][y] > 1) {
+                    throw new IllegalArgumentException("Grid has incorrect states!");
+                }
             }
         }
-        if (isValidValues) {
-            this.grid = grid;
-        } else {
-            throw new IllegalArgumentException("Grid has incorrect states!");
-        }
+        this.grid = grid;
     }
 
     public int getSizeX() {

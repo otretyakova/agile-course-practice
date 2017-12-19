@@ -96,26 +96,28 @@ public class MapTest {
     }
 
     public static boolean isEqualsIntArrays(final int[] firstArray, final int[] secondArray) {
-        boolean result = true;
         try {
             for (int i = 0; i < firstArray.length; i++) {
-                result = result && (firstArray[i] == secondArray[i]);
+                if (firstArray[i] != secondArray[i]) {
+                    return false;
+                }
             }
         } catch (Exception e) {
             return false;
         }
-        return result;
+        return true;
     }
 
     public static boolean isEqualsGrids(final int[][] firstGrid, final int[][] secondGrid) {
-        boolean result = true;
         try {
             for (int i = 0; i < firstGrid.length; i++) {
-                result = result && isEqualsIntArrays(firstGrid[i], secondGrid[i]);
+                if (!isEqualsIntArrays(firstGrid[i], secondGrid[i])) {
+                    return false;
+                }
             }
         } catch (Exception e) {
             return false;
         }
-        return result;
+        return true;
     }
 }
