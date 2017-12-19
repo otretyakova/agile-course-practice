@@ -47,7 +47,7 @@ public class ViewModel {
         return translateButtonDisabled;
     }
 
-    public final   void setNumber(final String inputNumber) {
+    public final void setNumber(final String inputNumber) {
         number.set(inputNumber);
     }
 
@@ -77,12 +77,18 @@ public class ViewModel {
 
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
+
         if ((getInputNumber().isEmpty()) || (getInputNumber().equals("-"))) {
             inputStatus = Status.WAITING;
-            } else {
+        } else {
             try {
-                NumbersInWordsConverter.convert(getInputNumber());
-            } catch (IllegalArgumentException excp) {
+                double inputNumber = Double.parseDouble(getInputNumber());
+                double borderTop = NumbersInWordsConverter.getBorderTop();
+                double borderBottom = NumbersInWordsConverter.getBorderBottom();
+                if ((inputNumber <= borderBottom) || (inputNumber >= borderTop)) {
+                    inputStatus = Status.BAD_FORMAT;
+                }
+            } catch (NumberFormatException nfe) {
                 inputStatus = Status.BAD_FORMAT;
             }
         }
@@ -101,7 +107,6 @@ public class ViewModel {
     private final StringProperty number = new SimpleStringProperty();
     private final StringProperty resultWord = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
-
     private final BooleanProperty translateButtonDisabled = new SimpleBooleanProperty();
     private final ValueChangeListener inputNumberChangedListener = new ValueChangeListener();
 }

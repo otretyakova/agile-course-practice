@@ -66,13 +66,13 @@ public class ViewModelTests {
     }
 
     @Test
-    public void statusIsBadFormatWhenInputNumberTooBig() {
+    public void statusIsBadFormatWhenInputTooBigNumber() {
         viewModel.setNumber("1000000000000");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
     @Test
-    public void statusIsBadFormatWhenInputNumberTooSmall() {
+    public void statusIsBadFormatWhenInputTooBigNegativeNumber() {
         viewModel.setNumber("-1000000000000");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
@@ -96,19 +96,19 @@ public class ViewModelTests {
     }
 
     @Test
-    public void translateButtonIsDisabledWhenInputNumberTooBig() {
+    public void translateButtonIsDisabledWhenInputTooBigNumber() {
         viewModel.setNumber("1000000000000");
         assertTrue(viewModel.isTranslateButtonDisabled());
     }
 
     @Test
-    public void translateButtonIsDisabledWhenInputNumberTooSmall() {
+    public void translateButtonIsDisabledWhenInputTooBigNegativeNumber() {
         viewModel.setNumber("-1000000000000");
         assertTrue(viewModel.isTranslateButtonDisabled());
     }
 
     @Test
-    public void translateButtonIsEnabledWhenCorrectInput() {
+    public void translateButtonIsEnabledWhenCorrectInputNumber() {
         viewModel.setNumber("2.2");
         assertFalse(viewModel.isTranslateButtonDisabled());
     }
@@ -159,6 +159,22 @@ public class ViewModelTests {
     public void translateButtonIsDisabledAfterClearInputNumber() {
         viewModel.setNumber("894");
         viewModel.setNumber("");
+        assertTrue(viewModel.isTranslateButtonDisabled());
+    }
+
+    @Test
+    public void statusIsBadFormatAfterInputIncorrectNumber() {
+        viewModel.setNumber("894");
+        viewModel.translate();
+        viewModel.setNumber("894a");
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void translateButtonIsDisabledAfterInputIncorrectNumber() {
+        viewModel.setNumber("894");
+        viewModel.translate();
+        viewModel.setNumber("894a");
         assertTrue(viewModel.isTranslateButtonDisabled());
     }
 

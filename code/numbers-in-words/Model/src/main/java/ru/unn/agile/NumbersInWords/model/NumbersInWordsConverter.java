@@ -37,6 +37,14 @@ public final class NumbersInWordsConverter {
         return integerConvertedNumber.append(decimalConvertedNumber).toString();
     }
 
+    public static double getBorderTop() {
+        return BORDER_TOP;
+    }
+
+    public static double getBorderBottom() {
+        return BORDER_BOTTOM;
+    }
+
     private static String convertIntegerPart(final String number) throws IllegalArgumentException {
         StringBuilder convertedNumber = new StringBuilder();
 
@@ -197,6 +205,8 @@ public final class NumbersInWordsConverter {
     private static final int MILLIARD_POSITION = 3;
     private static final int MILLION_POSITION = 2;
     private static final int THOUSAND_POSITION = 1;
+    private static final double BORDER_TOP = 1000000000000.0;
+    private static final double BORDER_BOTTOM = -1000000000000.0;
 
     private NumbersInWordsConverter() {
     }

@@ -385,4 +385,15 @@ public class NumbersInWordsConverterTest {
         assertEquals("negative nine point nine", convertedNumber);
     }
 
+    @Test
+    public void canGetBorderTop() {
+        double borderTop = NumbersInWordsConverter.getBorderTop();
+        assertEquals(1000000000000.0, borderTop, 1e-12);
+    }
+
+    @Test
+    public void canGetBorderBottom() {
+        double borderBottom = NumbersInWordsConverter.getBorderBottom();
+        assertEquals(-1000000000000.0, borderBottom, 1e-12);
+    }
 }
