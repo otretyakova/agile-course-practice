@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
 
 public class MapTest {
 
@@ -35,7 +34,7 @@ public class MapTest {
     public void shouldCreateMapWithInputParameters() {
         int[][] grid = {{1, 0, 0}, {0, 1, 0}};
         Map testMap = new Map(grid);
-        assertTrue(isEqualsGrids(grid, testMap.getGrid()));
+        assertArrayEquals(grid, testMap.getGrid());
     }
 
     @Test
@@ -93,31 +92,5 @@ public class MapTest {
         int[][] grid = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
         Map testMap = new Map(grid);
         assertEquals(testMap.countAliveNeighbors(1, 1), 8);
-    }
-
-    public static boolean isEqualsIntArrays(final int[] firstArray, final int[] secondArray) {
-        try {
-            for (int i = 0; i < firstArray.length; i++) {
-                if (firstArray[i] != secondArray[i]) {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isEqualsGrids(final int[][] firstGrid, final int[][] secondGrid) {
-        try {
-            for (int i = 0; i < firstGrid.length; i++) {
-                if (!isEqualsIntArrays(firstGrid[i], secondGrid[i])) {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 }

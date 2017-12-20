@@ -1,8 +1,6 @@
 package ru.unn.agile.GameOfLife.Model;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
 
 public class GameTest {
@@ -55,7 +53,7 @@ public class GameTest {
         int[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);
-        assertTrue(MapTest.isEqualsGrids(testGame.getCurrentGeneration().getGrid(), correctGrid));
+        assertArrayEquals(testGame.getCurrentGeneration().getGrid(), correctGrid);
     }
 
     @Test(expected = NullPointerException.class)
@@ -81,7 +79,7 @@ public class GameTest {
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);
         testGame.buildNextGeneration();
-        assertTrue(MapTest.isEqualsGrids(testGame.getNextGeneration().getGrid(), correctGrid));
+        assertArrayEquals(testGame.getNextGeneration().getGrid(), correctGrid);
     }
 
     @Test
