@@ -1,6 +1,9 @@
 package ru.unn.agile.mergesort.Model;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class MergeSort {
 
