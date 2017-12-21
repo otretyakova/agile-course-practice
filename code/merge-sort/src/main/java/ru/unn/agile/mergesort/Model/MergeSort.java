@@ -1,4 +1,5 @@
 package ru.unn.agile.mergesort.Model;
+
 import java.util.*;
 
 public final class MergeSort {

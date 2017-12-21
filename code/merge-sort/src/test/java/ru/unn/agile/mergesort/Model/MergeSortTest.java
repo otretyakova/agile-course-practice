@@ -1,8 +1,7 @@
 package ru.unn.agile.mergesort.Model;
+
 import org.junit.Test;
-
 import java.util.*;
-
 import static org.junit.Assert.assertEquals;
 
 
