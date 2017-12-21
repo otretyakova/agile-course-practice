@@ -48,7 +48,7 @@ public class QuadraticEquation {
         if (this.isLinear()) {
             throw new IllegalArgumentException("Discriminant is not exist.");
         } else {
-            return b * b - DISCRIMINANTPARAMETER * a * c;
+            return b * b - DISCRIMINANT_MULTIPLIER * a * c;
         }
     }
 
@@ -95,12 +95,16 @@ public class QuadraticEquation {
        return new Pair<Complex, Complex>(first, second);
     }
 
+    private boolean isNumberZero(final double value) {
+        return (value > -DELTA) && (value < DELTA);
+    }
+
     private boolean isLinear() {
-        return (a > -DELTA) && (a < DELTA);
+        return isNumberZero(a);
     }
 
     private boolean hasZeroDiscriminant() {
-        return (this.getDiscriminant() > -DELTA) && (this.getDiscriminant() < DELTA);
+        return isNumberZero(this.getDiscriminant());
     }
 
     private int numberOfRootsIfIsNotLinear() {
@@ -115,6 +119,6 @@ public class QuadraticEquation {
     private double a;
     private double b;
     private double c;
-    private static final int DISCRIMINANTPARAMETER = 4;
+    private static final int DISCRIMINANT_MULTIPLIER = 4;
     private static final double DELTA = 1e-15;
 }
