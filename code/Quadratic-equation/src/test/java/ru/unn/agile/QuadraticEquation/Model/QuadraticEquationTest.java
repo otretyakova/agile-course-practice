@@ -1,197 +1,216 @@
 package ru.unn.agile.quadraticequation.model;
 
 import javafx.util.Pair;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class QuadraticEquationTest {
 
-    @Test
-    public void canCreateQuadraticEquation() {
-        QuadraticEquation equation = new QuadraticEquation(1, 2, 3);
-        assertNotNull(equation);
+    @Before
+    public void createEquation() {
+        equation = new QuadraticEquation(1, 1, 1);
+    }
+
+    @After
+    public void deleteEquation() {
+        equation = null;
     }
 
     @Test
+    public void canCreateQuadraticEquation() {
+        equation.setABC(1, 2, 3);
+        assertNotNull(equation);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void willThrowExceptionIfDegenerateEquation() {
-        try {
-            new QuadraticEquation(0, 0, 2);
-            fail("Object can't be created");
-        } catch (IllegalArgumentException error) {
-        }
+        new QuadraticEquation(0, 0, 2);
     }
 
     @Test
     public void canGetSimpleDiscriminant() {
-        double discriminant = equationDiscriminant(1, 0, 0);
+        equation.setABC(1, 0, 0);
+        double discriminant = equation.getDiscriminant();
         assertEquals(0, discriminant, 1e-15);
     }
 
     @Test
     public void canGetPositiveDiscriminant() {
-        double discriminant = equationDiscriminant(1, 0, -1);
+        equation.setABC(1, 0, -1);
+        double discriminant = equation.getDiscriminant();
         assertEquals(4, discriminant, 1e-15);
     }
 
     @Test
     public void canGetNegativeDiscriminant() {
-        double discriminant = equationDiscriminant(1, 2, 3);
+        equation.setABC(1, 2, 3);
+        double discriminant = equation.getDiscriminant();
         assertEquals(-8, discriminant, 1e-15);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void willThrowExceptionIfDiscriminantNotExist() {
-        try {
-            double discriminant = equationDiscriminant(0, 1, 0);
-            fail("Object can't be get");
-        } catch (IllegalArgumentException error) {
-        }
+        equation.setABC(0, 1, 0);
+        double discriminant = equation.getDiscriminant();
     }
 
     @Test
     public void canGetNumberofRealRootsSimple() {
-        int number = equationRealRootsNumber(1, 0, 0);
+        equation.setABC(1, 0, 0);
+        int number = equation.getNumberofRealRoots();
         assertEquals(1, number);
     }
 
     @Test
     public void canGetNumberofRealRootsTwo() {
-        int number = equationRealRootsNumber(1, 2, -1);
+        equation.setABC(1, 2, -1);
+        int number = equation.getNumberofRealRoots();
         assertEquals(2, number);
     }
 
     @Test
     public void canGetNumberofRealRootsNull() {
-        int number = equationRealRootsNumber(1, 2, 2);
+        equation.setABC(1, 2, 2);
+        int number = equation.getNumberofRealRoots();
         assertEquals(0, number);
     }
 
     @Test
     public void canGetNumberofRealRootsLinearEquation() {
-        int number = equationRealRootsNumber(0, 2, 2);
+        equation.setABC(0, 2, 2);
+        int number = equation.getNumberofRealRoots();
         assertEquals(1, number);
     }
 
     @Test
     public void canGetNumberofImaginaryRootsSimple() {
-        int number = equationImaginaryRootsNumber(1, 0, 0);
+        equation.setABC(1, 0, 0);
+        int number = equation.getNumberofImaginaryRoots();
         assertEquals(0, number);
     }
 
     @Test
     public void canGetNumberofImaginaryRoots() {
-        int number = equationImaginaryRootsNumber(1, 4, 5);
+        equation.setABC(1, 4, 5);
+        int number = equation.getNumberofImaginaryRoots();
         assertEquals(2, number);
     }
 
     @Test
-    public void canSolveQuadraticEquationSimpleFirst() {
-        Pair<Double, Double> solve = equationRealSolve(4, 0, 0);
+    public void canFindFirstRootOfSimpleQuadraticEquation() {
+        equation.setABC(4, 0, 0);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(0.0, solve.getKey(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationSimpleSecond() {
-        Pair<Double, Double> solve = equationRealSolve(4, 0, 0);
+    public void canFindSecondRootOfSimpleQuadraticEquation() {
+        equation.setABC(4, 0, 0);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(null, solve.getValue());
     }
 
     @Test
-    public void canSolveQuadraticEquationOneRealRootFirst() {
-        Pair<Double, Double> solve = equationRealSolve(1, 4, 4);
+    public void canFindFirstRootOfQuadraticEquationWithOneRealRoot() {
+        equation.setABC(1, 4, 4);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(-2.0, solve.getKey(), 1e-15);
     }
 
     @Test
-    public void canSolveLinearEquationOneRealRootFirst() {
-        Pair<Double, Double> solve = equationRealSolve(0, 6, -2);
+    public void canFindFirstRootOfLinearEquation() {
+        equation.setABC(0, 6, -2);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(1.0 / 3, solve.getKey(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationNoRealRootsFirst() {
-        Pair<Double, Double> solve = equationRealSolve(6, -4, 3.3);
+    public void canFindFirstRootOfQuadraticEquationWithNoRealRoots() {
+        equation.setABC(6, -4, 3.3);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(null, solve.getKey());
     }
 
     @Test
-    public void canSolveQuadraticEquationNoRealRootsSecond() {
-        Pair<Double, Double> solve = equationRealSolve(6, -4, 3.3);
+    public void canFindSecondRootOfQuadraticEquationWithNoRealRoots() {
+        equation.setABC(6, -4, 3.3);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(null, solve.getKey());
     }
 
     @Test
-    public void canSolveQuadraticEquationTwoRealRootsFirst() {
-        Pair<Double, Double> solve = equationRealSolve(-2, 3, 1);
+    public void canFindFirstRootOfQuadraticEquationWithTwoRealRoots() {
+        equation.setABC(-2, 3, 1);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(0.75 - Math.sqrt(17) / 4, solve.getKey(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationTwoRealRootsSecond() {
-        Pair<Double, Double> solve = equationRealSolve(-2, 3, 1);
+    public void canFindSecondRootOfQuadraticEquationWithTwoRealRoots() {
+        equation.setABC(-2, 3, 1);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
         assertEquals(0.75 + Math.sqrt(17) / 4, solve.getValue(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationNoImaginaryRootsFirst() {
-        Pair<Complex, Complex> solve = equationImaginarySolve(-1, -4, 3.3);
+    public void canFindFirstRootOfQuadraticEquationWithDoubleCoefficients() {
+        equation.setABC(-0.4, 0.3, 0.2);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
+        assertEquals((-0.3 + Math.sqrt(0.41)) / (-0.8), solve.getKey(), 1e-15);
+    }
+
+    @Test
+    public void canFindSecondRootOfQuadraticEquationWithDoubleCoefficients() {
+        equation.setABC(-0.4, 0.3, 0.2);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
+        assertEquals((-0.3 - Math.sqrt(0.41)) / (-0.8), solve.getValue(), 1e-15);
+    }
+
+    @Test
+    public void canFindFirstRootOfQuadraticEquationWithNoImaginaryRoots() {
+        equation.setABC(-1, -4, 3.3);
+        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
         assertEquals(null, solve.getKey());
     }
 
     @Test
-    public void canSolveQuadraticEquationNoImaginaryRootsSecond() {
-        Pair<Complex, Complex> solve = equationImaginarySolve(-1, -4, 3.3);
+    public void canFindSecondRootOfQuadraticEquationWithNoImaginaryRoots() {
+        equation.setABC(-1, -4, 3.3);
+        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
         assertEquals(null, solve.getValue());
     }
 
     @Test
-    public void canSolveQuadraticEquationImaginaryRootsFirstRe() {
-        Pair<Complex, Complex> solve = equationImaginarySolve(3, -4, 3);
+    public void canFindRePartOfFirstRootOfQuadraticEquationWithTwoImaginaryRoots() {
+        equation.setABC(3, -4, 3);
+        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
         assertEquals(2.0 / 3, solve.getKey().getReal(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationImaginaryRootsFirstIm() {
-        Pair<Complex, Complex> solve = equationImaginarySolve(3, -4, 3);
+    public void canFindImPartOfFirstRootOfQuadraticEquationWithTwoImaginaryRoots() {
+        equation.setABC(3, -4, 3);
+        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
         assertEquals(Math.sqrt(20) / 2, solve.getKey().getImaginary(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationImaginaryRootsSecondRe() {
-        Pair<Complex, Complex> solve = equationImaginarySolve(3, -4, 3);
+    public void canFindRePartOfSecondRootOfQuadraticEquationWithTwoImaginaryRoots() {
+        equation.setABC(3, -4, 3);
+        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
         assertEquals(2.0 / 3, solve.getValue().getReal(), 1e-15);
     }
 
     @Test
-    public void canSolveQuadraticEquationImaginaryRootsSecondIm() {
-        Pair<Complex, Complex> solve = equationImaginarySolve(3, -4, 3);
+    public void canFindImPartOfSecondRootOfQuadraticEquationWithTwoImaginaryRoots() {
+        equation.setABC(3, -4, 3);
+        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
         assertEquals((-1) * Math.sqrt(20) / 2, solve.getValue().getImaginary(), 1e-15);
     }
 
-    private double equationDiscriminant(final double a, final double b, final double c) {
-        QuadraticEquation equation = new QuadraticEquation(a, b, c);
-        return equation.getDiscriminant();
-    }
-
-    private int equationRealRootsNumber(final double a, final double b, final double c) {
-        QuadraticEquation equation = new QuadraticEquation(a, b, c);
-        return equation.getNumberofRealRoots();
-    }
-
-    private int equationImaginaryRootsNumber(final double a, final double b, final double c) {
-        QuadraticEquation equation = new QuadraticEquation(a, b, c);
-        return equation.getNumberofImaginaryRoots();
-    }
-
-    private Pair<Double, Double> equationRealSolve(final double a, final double b, final double c) {
-        QuadraticEquation equation = new QuadraticEquation(a, b, c);
-        return equation.solveQuadraticEquationReal();
-    }
-
-    private Pair<Complex, Complex> equationImaginarySolve(
-            final double a, final double b, final double c) {
-        QuadraticEquation equation = new QuadraticEquation(a, b, c);
-        return equation.solveQuadraticEquationImaginary();
-    }
-
+    private QuadraticEquation equation;
 }

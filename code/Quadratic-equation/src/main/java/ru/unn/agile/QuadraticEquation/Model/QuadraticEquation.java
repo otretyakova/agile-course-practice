@@ -16,6 +16,24 @@ public class QuadraticEquation {
         return c;
     }
 
+    public void setA(final double aA) {
+        a = aA;
+    }
+
+    public void setB(final double bB) {
+        b = bB;
+    }
+
+    public void setC(final double cC) {
+        c = cC;
+    }
+
+    public void setABC(final double aA, final double bB, final double cC) {
+        a = aA;
+        b = bB;
+        c = cC;
+    }
+
     public QuadraticEquation(final double a, final double b, final double c) {
         if ((a == 0) && (b == 0)) {
             throw new IllegalArgumentException("QuadraticEquation is degenerated.");
@@ -27,26 +45,16 @@ public class QuadraticEquation {
     }
 
     public double getDiscriminant() {
-        final int d = 4;
         if (this.isLinear()) {
             throw new IllegalArgumentException("Discriminant is not exist.");
         } else {
-            return this.getB() * this.getB() - d * this.getA() * this.getC();
+            return b * b - DISCRIMINANTPARAMETER * a * c;
         }
     }
 
     public int getNumberofRealRoots() {
-        final double delta = 1e-15;
         if (!this.isLinear()) {
-            if ((this.getDiscriminant() > -delta) && (this.getDiscriminant() < delta)) {
-                return 1;
-            } else {
-                if (this.getDiscriminant() > 0) {
-                    return 2;
-                } else {
-                    return 0;
-                }
-            }
+            return numberOfRootsIfIsNotLinear();
         } else {
             return 1;
         }
@@ -63,37 +71,50 @@ public class QuadraticEquation {
     public Pair<Double, Double> solveQuadraticEquationReal() {
         final double delta = 1e-15;
         if (this.isLinear()) {
-            return new Pair<Double, Double>((-1) * this.getC() / this.getB(), null);
+            return new Pair<Double, Double>((-1) * c / b, null);
         }
         if (this.getDiscriminant() < 0) {
             return new Pair<Double, Double>(null, null);
         }
         if ((this.getDiscriminant() > -delta) && (this.getDiscriminant() < delta)) {
-            return new Pair<Double, Double>(-this.getB() / 2 / this.getA(), null);
+            return new Pair<Double, Double>(-b / 2 / a, null);
         }
         return new Pair<Double, Double>(
-                (-this.getB() + Math.sqrt(this.getDiscriminant())) / 2 / this.getA(),
-                (-this.getB() - Math.sqrt(this.getDiscriminant())) / 2 / this.getA());
+                (-b + Math.sqrt(this.getDiscriminant())) / 2 / a,
+                (-b - Math.sqrt(this.getDiscriminant())) / 2 / a);
     }
 
     public Pair<Complex, Complex> solveQuadraticEquationImaginary() {
-        if (getNumberofImaginaryRoots() == 0) {
+        if (this.getNumberofImaginaryRoots() == 0) {
             return new Pair<Complex, Complex>(null, null);
         }
-        Complex first = new Complex(-this.getB() / 2 / this.getA(),
+        Complex first = new Complex(-b / 2 / a,
                 Math.sqrt(-this.getDiscriminant()) / 2);
-        Complex second = new Complex(-this.getB() / 2 / this.getA(),
-                -Math.sqrt(-this.getDiscriminant()) / 2);
+        Complex second = new Complex(first.getReal(),
+                -first.getImaginary());
        return new Pair<Complex, Complex>(first, second);
     }
 
     private boolean isLinear() {
-        final double delta = 1e-15;
-        return (this.getA() > -delta) && (this.getA() < delta);
-
+        return (a > -DELTA) && (a < DELTA);
     }
 
+    private boolean hasZeroDiscriminant() {
+        return (this.getDiscriminant() > -DELTA) && (this.getDiscriminant() < DELTA);
+    }
+
+    private int numberOfRootsIfIsNotLinear() {
+        if (this.hasZeroDiscriminant()) {
+            return 1;
+        } else if (this.getDiscriminant() > 0) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
     private double a;
     private double b;
     private double c;
+    private static final int DISCRIMINANTPARAMETER = 4;
+    private static final double DELTA = 1e-15;
 }
