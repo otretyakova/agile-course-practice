@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(final Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("ConverterTemperature.fxml"));
-        primaryStage.setTitle("ConverterTemperature");
+        primaryStage.setTitle("Temperature Converter");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

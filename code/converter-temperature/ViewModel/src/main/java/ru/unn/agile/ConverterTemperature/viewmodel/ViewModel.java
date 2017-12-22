@@ -1,15 +1,25 @@
 package ru.unn.agile.ConverterTemperature.viewmodel;
 
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ru.unn.agile.ConverterTemperature.Model.Conversion;
 import ru.unn.agile.ConverterTemperature.Model.ConverterTemperature;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 
 
 public class ViewModel {
@@ -77,6 +87,7 @@ public class ViewModel {
     public ObjectProperty<ObservableList<NameSystem>> outputTypesProperty() {
         return outputTypes;
     }
+
     public final ObservableList<NameSystem> getOutputTypes() {
         return outputTypes.get();
     }

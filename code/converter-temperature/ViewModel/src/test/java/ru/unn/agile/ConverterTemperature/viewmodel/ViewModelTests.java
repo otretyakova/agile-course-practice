@@ -9,9 +9,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
-
-    private ViewModel viewModel;
-
     @Before
     public void setUp() {
         viewModel = new ViewModel();
@@ -68,6 +65,7 @@ public class ViewModelTests {
         viewModel.inputTemperatureProperty().set("1.0");
         assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
     }
+
     @Test
     public void canReportBadFormat() {
         viewModel.inputTemperatureProperty().set("a");
@@ -107,13 +105,13 @@ public class ViewModelTests {
     @Test
     public void calculateButtonIsDisabledWhenInputIsEmpty() {
         viewModel.inputTemperatureProperty().set("");
-        assertTrue(viewModel.calculationDisabledProperty().get());
+        assertTrue(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void calculateButtonIsEnabledWhenInputIsSet() {
         viewModel.inputTemperatureProperty().set("1");
-        assertFalse(viewModel.calculationDisabledProperty().get());
+        assertFalse(viewModel.isCalculationDisabled());
     }
 
     @Test
@@ -184,4 +182,6 @@ public class ViewModelTests {
         assertEquals("100.0", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
     }
+
+    private ViewModel viewModel;
 }
