@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import ru.unn.agile.NumbersInWords.viewmodel.*?>
 
-<AnchorPane prefHeight="266.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.NumbersInWords.view.TranslatorNumbers">
+<AnchorPane prefHeight="266.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.NumbersInWords.view.NumbersTranslator">
     <fx:define>
         <ViewModel fx:id="viewModel" />
     </fx:define>

@@ -7,11 +7,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
     @Override
     public void start(final Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("TranslatorNumbers.fxml"));
-        primaryStage.setTitle("TranslatorNumbers");
+        Parent root = FXMLLoader.load(getClass().getResource("NumbersTranslator.fxml"));
+        primaryStage.setTitle("Numbers Translator");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
