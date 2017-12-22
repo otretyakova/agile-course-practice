@@ -3,7 +3,10 @@ package ru.unn.agile.StringCalculator.viewmodel;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.property.*;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import ru.unn.agile.StringCalculator.Model.StringCalculator;
 
