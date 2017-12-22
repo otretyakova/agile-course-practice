@@ -1,6 +1,11 @@
 package ru.unn.agile.MetricsDistance.viewmodel;
 
-import javafx.beans.property.*;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -52,12 +57,12 @@ public class ViewModel {
             return;
         }
 
-        float vec1x = Float.parseFloat(x1.get());
-        float vec1y = Float.parseFloat(y1.get());
-        float vec2x = Float.parseFloat(x2.get());
-        float vec2y = Float.parseFloat(y2.get());
-        final float[] vec1 = {vec1x, vec1y};
-        final float[] vec2 = {vec2x, vec2y};
+        float float_vec1x = Float.parseFloat(x1.get());
+        float float_vec1y = Float.parseFloat(y1.get());
+        float float_vec2x = Float.parseFloat(x2.get());
+        float float_vec2y = Float.parseFloat(y2.get());
+        final float[] vec1 = {float_vec1x, float_vec1y};
+        final float[] vec2 = {float_vec2x, float_vec2y};
 
         float floatResult = getMetric().apply(vec1, vec2);
         result.set(Float.toString(floatResult));
@@ -67,66 +72,87 @@ public class ViewModel {
     public StringProperty x1Property() {
         return x1;
     }
+
     public StringProperty y1Property() {
         return y1;
     }
+
     public StringProperty x2Property() {
         return x2;
     }
+
     public StringProperty y2Property() {
         return y2;
     }
+
     public String getX1() {
         return x1.get();
     }
+
     public String getY1() {
         return y1.get();
     }
+
     public String getX2() {
         return x2.get();
     }
+
     public String getY2() {
         return y2.get();
     }
+
     public void setX1(final String str) {
         x1.set(str);
     }
+
     public void setY1(final String str) {
         y1.set(str);
     }
+
     public void setX2(final String str) {
         x2.set(str);
     }
+
     public void setY2(final String str) {
         y2.set(str);
     }
+
     public ObjectProperty<Metric> metricProperty() {
         return metric;
     }
+
     public Metric getMetric() {
         return metric.get();
     }
+
     public void setMetric(final Metric met) {
         metric.set(met);
     }
+
     public final ObservableList<Metric> getMetrics() {
         return metrics.get();
     }
+
     public final String getResult() {
         return result.get();
     }
+
     public StringProperty resultProperty() {
         return result;
     }
+
     public BooleanProperty calculationDisabledProperty() {
         return calculationDisabled;
     }
+
     public final boolean isCalculationDisabled() {
         return calculationDisabled.get();
     }
+
     public StringProperty statusProperty() {
         return status;
     }
+
     public final String getStatus() {
         return status.get();
     }
@@ -192,3 +218,4 @@ enum Status {
         return name;
     }
 }
+
