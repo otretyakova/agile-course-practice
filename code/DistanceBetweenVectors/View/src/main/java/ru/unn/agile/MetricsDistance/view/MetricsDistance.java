@@ -14,7 +14,8 @@ public class MetricsDistance {
         txtV1y.textProperty().bindBidirectional(viewModel.y1Property());
         txtV2x.textProperty().bindBidirectional(viewModel.x2Property());
         txtV2y.textProperty().bindBidirectional(viewModel.y2Property());
-        cbOperation.valueProperty().bindBidirectional(viewModel.metricProperty());
+        txtDim.textProperty().bindBidirectional(viewModel.dimProperty());
+        cbMetric.valueProperty().bindBidirectional(viewModel.metricProperty());
         btnCalc.setOnAction(event -> viewModel.calculate());
     }
 
@@ -29,7 +30,9 @@ public class MetricsDistance {
     @FXML
     private TextField txtV2y;
     @FXML
-    private ComboBox<Metric> cbOperation;
+    private TextField txtDim;
+    @FXML
+    private ComboBox<Metric> cbMetric;
     @FXML
     private Button btnCalc;
 }

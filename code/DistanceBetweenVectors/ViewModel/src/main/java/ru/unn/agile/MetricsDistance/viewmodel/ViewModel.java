@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.beans.binding.BooleanBinding;
+import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
 import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
 
 import java.util.ArrayList;
@@ -23,13 +24,15 @@ public class ViewModel {
         y1.set("");
         x2.set("");
         y2.set("");
+        dim.set("");
         metric.set(Metric.Chebyshev);
+
         result.set("");
         status.set(Status.WAITING.toString());
 
         BooleanBinding couldCalculate = new BooleanBinding() {
             {
-                super.bind(x1, y1, x2, y2);
+                super.bind(x1, y1, x2, y2, dim);
             }
             @Override
             protected boolean computeValue() {
@@ -43,6 +46,7 @@ public class ViewModel {
             add(y1);
             add(x2);
             add(y2);
+            add(dim);
         } };
 
         for (StringProperty field : fields) {
@@ -57,14 +61,20 @@ public class ViewModel {
             return;
         }
 
-        float float_vec1x = Float.parseFloat(x1.get());
-        float float_vec1y = Float.parseFloat(y1.get());
-        float float_vec2x = Float.parseFloat(x2.get());
-        float float_vec2y = Float.parseFloat(y2.get());
-        final float[] vec1 = {float_vec1x, float_vec1y};
-        final float[] vec2 = {float_vec2x, float_vec2y};
+        float floatVec1x = Float.parseFloat(x1.get());
+        float floatVec1y = Float.parseFloat(y1.get());
+        float floatVec2x = Float.parseFloat(x2.get());
+        float floatVec2y = Float.parseFloat(y2.get());
+        final float[] vec1 = {floatVec1x, floatVec1y};
+        final float[] vec2 = {floatVec2x, floatVec2y};
 
-        float floatResult = getMetric().apply(vec1, vec2);
+        float floatResult;
+        if (getMetric() == Metric.Chebyshev) {
+            floatResult = MetricsDistance.calculateDistanceChebyshev(vec1, vec2);
+        } else {
+            int intDim = Integer.parseInt(dim.get());
+            floatResult = MetricsDistance.calculateDistanceMinkowski(vec1, vec2, intDim);
+        }
         result.set(Float.toString(floatResult));
         status.set(Status.SUCCESS.toString());
     }
@@ -85,6 +95,10 @@ public class ViewModel {
         return y2;
     }
 
+    public StringProperty dimProperty() {
+        return dim;
+    }
+
     public String getX1() {
         return x1.get();
     }
@@ -99,6 +113,10 @@ public class ViewModel {
 
     public String getY2() {
         return y2.get();
+    }
+
+    public String getDim() {
+        return dim.get();
     }
 
     public void setX1(final String str) {
@@ -117,6 +135,10 @@ public class ViewModel {
         y2.set(str);
     }
 
+    public void setDim(final String str) {
+        dim.set(str);
+    }
+
     public ObjectProperty<Metric> metricProperty() {
         return metric;
     }
@@ -131,6 +153,14 @@ public class ViewModel {
 
     public final ObservableList<Metric> getMetrics() {
         return metrics.get();
+    }
+
+    public final boolean isChebyshevMetric() {
+        return getMetric() == Metric.Chebyshev;
+    }
+
+    public final boolean isMinkowskiMetric() {
+        return getMetric() == Metric.Minkowski;
     }
 
     public final String getResult() {
@@ -161,6 +191,7 @@ public class ViewModel {
     private final StringProperty y1 = new SimpleStringProperty();
     private final StringProperty x2 = new SimpleStringProperty();
     private final StringProperty y2 = new SimpleStringProperty();
+    private final StringProperty dim = new SimpleStringProperty();
     private final StringProperty result = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
     private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
@@ -169,10 +200,15 @@ public class ViewModel {
     private final ObjectProperty<Metric> metric = new SimpleObjectProperty<>();
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 
+    private boolean isParamsEmpty() {
+        return getX1().isEmpty() || getY1().isEmpty()
+                || getX2().isEmpty() || getY2().isEmpty()
+                || (isMinkowskiMetric() && getDim().isEmpty());
+    }
+
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
-        if (getX1().isEmpty() || getY1().isEmpty()
-                || getX2().isEmpty() || getY2().isEmpty()) {
+        if (isParamsEmpty()) {
             inputStatus = Status.WAITING;
         }
         try {
@@ -188,10 +224,12 @@ public class ViewModel {
             if (!getY2().isEmpty()) {
                 Float.parseFloat(getY2());
             }
+            if (isMinkowskiMetric() && !getDim().isEmpty()) {
+                Integer.parseInt(getDim());
+            }
         } catch (NumberFormatException nfe) {
             inputStatus = Status.BAD_FORMAT;
         }
-
         return inputStatus;
     }
 

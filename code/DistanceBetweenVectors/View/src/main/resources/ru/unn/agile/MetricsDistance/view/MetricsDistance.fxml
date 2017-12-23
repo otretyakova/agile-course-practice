@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import ru.unn.agile.MetricsDistance.viewmodel.*?>
+
 <AnchorPane prefHeight="146.0" prefWidth="336.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.MetricsDistance.view.MetricsDistance">
     <fx:define>
         <ViewModel fx:id="viewModel" />
@@ -52,19 +53,21 @@
             </HBox>
                 <HBox>
                <children>
-                   <ComboBox fx:id="cbOperation" items="${viewModel.metrics}" prefWidth="150.0" />
+                   <ComboBox fx:id="cbMetric" items="${viewModel.metrics}" prefWidth="150.0" />
                    <Separator prefHeight="0.0" prefWidth="17.0" visible="false" />
-                   <Label prefHeight="16.0" prefWidth="56.0" text="Status: " />
-                   <Label fx:id="lbStatus" maxWidth="1.7976931348623157E308" text="${viewModel.status}" HBox.hgrow="ALWAYS" />
+                   <Label minWidth="-Infinity" text="dim:" />
+                   <TextField fx:id="txtDim" layoutX="91.0" layoutY="10.0" prefHeight="26.0" prefWidth="44.0" />
                </children>
                 </HBox>
                 <HBox>
                     <children>
-                        <Button fx:id="btnCalc" defaultButton="true" disable="${viewModel.calculationDisabled}"
-                                maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Calculate" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnCalc" defaultButton="true" disable="${viewModel.calculationDisabled}" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Calculate" HBox.hgrow="ALWAYS" />
                         <Separator prefHeight="4.0" prefWidth="136.0" visible="false" />
+                        <Label prefHeight="16.0" prefWidth="56.0" text="Status: " />
+                        <Label fx:id="lbStatus" maxWidth="1.7976931348623157E308" text="${viewModel.status}" HBox.hgrow="ALWAYS" />
+                        <Separator prefHeight="5.0" prefWidth="70.0" visible="false" />
                         <Label prefHeight="16.0" prefWidth="56.0" text="Result: " />
-                        <Label fx:id="lbStatus" maxWidth="1.7976931348623157E308" text="${viewModel.result}" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="lbResult" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="26.0" text="${viewModel.result}" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
             </children>

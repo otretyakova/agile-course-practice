@@ -26,6 +26,7 @@ public class ViewModelTests {
         assertEquals("", viewModel.getY1());
         assertEquals("", viewModel.getX2());
         assertEquals("", viewModel.getY2());
+        assertEquals("", viewModel.getDim());
         assertEquals(Metric.Chebyshev, viewModel.getMetric());
         assertEquals("", viewModel.getResult());
         assertEquals(Status.WAITING.toString(), viewModel.getStatus());
@@ -56,7 +57,7 @@ public class ViewModelTests {
 
     @Test
     public void calculateButtonIsDisabledWhenFormatIsBad() {
-        setInputData("1", "2", "3", "4");
+        setInputData("1", "2", "3", "4", "");
         viewModel.setX1("trash");
         assertTrue(viewModel.isCalculationDisabled());
     }
@@ -69,26 +70,14 @@ public class ViewModelTests {
 
     @Test
     public void calculateButtonIsEnabledWithCorrectInput() {
-        setInputData("1", "2", "3", "4");
+        setInputData("1", "2", "3", "4", "");
         assertFalse(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void canSetMinkowskiL1Metric() {
-        viewModel.setMetric(Metric.MinkowskiL1);
-        assertEquals(Metric.MinkowskiL1, viewModel.getMetric());
-    }
-
-    @Test
-    public void canSetMinkowskiL2Metric() {
-        viewModel.setMetric(Metric.MinkowskiL2);
-        assertEquals(Metric.MinkowskiL2, viewModel.getMetric());
-    }
-
-    @Test
-    public void canSetMinkowskiL3Metric() {
-        viewModel.setMetric(Metric.MinkowskiL3);
-        assertEquals(Metric.MinkowskiL3, viewModel.getMetric());
+        viewModel.setMetric(Metric.Minkowski);
+        assertEquals(Metric.Minkowski, viewModel.getMetric());
     }
 
     @Test
@@ -104,7 +93,7 @@ public class ViewModelTests {
 
     @Test
     public void chebyshevMetricHasCorrectResult() {
-        setInputData("2", "2", "1", "3");
+        setInputData("2", "2", "1", "3", "");
         viewModel.setMetric(Metric.Chebyshev);
         viewModel.calculate();
         assertEquals("1.0", viewModel.getResult());
@@ -112,7 +101,7 @@ public class ViewModelTests {
 
     @Test
     public void canSetSuccessMessage() {
-        setInputData("1", "2", "3", "4");
+        setInputData("1", "2", "3", "4", "");
         viewModel.calculate();
         assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
     }
@@ -125,48 +114,49 @@ public class ViewModelTests {
 
     @Test
     public void statusIsReadyWhenSetProperData() {
-        setInputData("1", "2", "3", "4");
+        setInputData("1", "2", "3", "4", "");
         assertEquals(Status.READY.toString(), viewModel.getStatus());
     }
 
     @Test
     public void minkowskiL1MetircHasCorrectResult() {
-        setInputData("3", "3", "1", "3");
-        viewModel.setMetric(Metric.MinkowskiL1);
+        setInputData("3", "3", "1", "3", "1");
+        viewModel.setMetric(Metric.Minkowski);
         viewModel.calculate();
         assertEquals("2.0", viewModel.resultProperty().get());
     }
 
     @Test
     public void minkowskiL2MetircHasCorrectResult() {
-        setInputData("3", "3", "1", "3");
-        viewModel.setMetric(Metric.MinkowskiL2);
+        setInputData("3", "3", "1", "3", "2");
+        viewModel.setMetric(Metric.Minkowski);
         viewModel.calculate();
         assertEquals("2.0", viewModel.resultProperty().get());
     }
-
     @Test
     public void minkowskiL3MetircHasCorrectResult() {
-        setInputData("3", "3", "1", "3");
-        viewModel.setMetric(Metric.MinkowskiL3);
+        setInputData("3", "3", "1", "3", "3");
+        viewModel.setMetric(Metric.Minkowski);
         viewModel.calculate();
         assertEquals("2.0", viewModel.resultProperty().get());
     }
 
     @Test
     public void chebyshevMetricWithNegativeNumbersHasCorrectResult() {
-        setInputData("1.2", "2.3", "-1.4", "-2.5");
+        setInputData("1.2", "2.3", "-1.4", "-2.5", "");
         viewModel.setMetric(Metric.Chebyshev);
         viewModel.calculate();
         assertEquals("4.8", viewModel.resultProperty().get());
     }
     private ViewModel viewModel;
 
-    private void setInputData(final String x1, final String y1, final String x2, final String y2) {
+    private void setInputData(final String x1, final String y1, final String x2, final String y2,
+                              final String dim) {
         viewModel.setX1(x1);
         viewModel.setY1(y1);
         viewModel.setX2(x2);
         viewModel.setY2(y2);
+        viewModel.setDim(dim);
     }
 
 }
