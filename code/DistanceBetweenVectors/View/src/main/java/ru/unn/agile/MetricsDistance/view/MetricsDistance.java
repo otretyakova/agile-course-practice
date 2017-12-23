@@ -10,10 +10,10 @@ import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
 public class MetricsDistance {
     @FXML
     void initialize() {
-        txtV1x.textProperty().bindBidirectional(viewModel.x1Property());
-        txtV1y.textProperty().bindBidirectional(viewModel.y1Property());
-        txtV2x.textProperty().bindBidirectional(viewModel.x2Property());
-        txtV2y.textProperty().bindBidirectional(viewModel.y2Property());
+        txtV1x.textProperty().bindBidirectional(viewModel.vec1XProperty());
+        txtV1y.textProperty().bindBidirectional(viewModel.vec1YProperty());
+        txtV2x.textProperty().bindBidirectional(viewModel.vec2XProperty());
+        txtV2y.textProperty().bindBidirectional(viewModel.vec2YProperty());
         txtDim.textProperty().bindBidirectional(viewModel.dimProperty());
         cbMetric.valueProperty().bindBidirectional(viewModel.metricProperty());
         btnCalc.setOnAction(event -> viewModel.calculate());

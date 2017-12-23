@@ -22,10 +22,10 @@ public class ViewModelTests {
 
     @Test
     public void canSetDefaultValues() {
-        assertEquals("", viewModel.getX1());
-        assertEquals("", viewModel.getY1());
-        assertEquals("", viewModel.getX2());
-        assertEquals("", viewModel.getY2());
+        assertEquals("", viewModel.getVec1X());
+        assertEquals("", viewModel.getVec1Y());
+        assertEquals("", viewModel.getVec2X());
+        assertEquals("", viewModel.getVec2Y());
         assertEquals("", viewModel.getDim());
         assertEquals(Metric.Chebyshev, viewModel.getMetric());
         assertEquals("", viewModel.getResult());
@@ -40,13 +40,13 @@ public class ViewModelTests {
 
     @Test
     public void canReportBadFormat() {
-        viewModel.setX1("a");
+        viewModel.setVec1X("a");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
     @Test
     public void statusIsWaitingIfNotEnoughCorrectData() {
-        viewModel.setX1("1");
+        viewModel.setVec1X("1");
         assertEquals(Status.WAITING.toString(), viewModel.getStatus());
     }
 
@@ -58,13 +58,13 @@ public class ViewModelTests {
     @Test
     public void calculateButtonIsDisabledWhenFormatIsBad() {
         setInputData("1", "2", "3", "4", "");
-        viewModel.setX1("trash");
+        viewModel.setVec1X("trash");
         assertTrue(viewModel.isCalculationDisabled());
     }
 
     @Test
     public void calculateButtonIsDisabledWithIncompleteInput() {
-        viewModel.setX1("1");
+        viewModel.setVec1X("1");
         assertTrue(viewModel.isCalculationDisabled());
     }
 
@@ -108,7 +108,7 @@ public class ViewModelTests {
 
     @Test
     public void canSetBadFormatMessage() {
-        viewModel.setX1("#selfie");
+        viewModel.setVec1X("#selfie");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
@@ -150,12 +150,12 @@ public class ViewModelTests {
     }
     private ViewModel viewModel;
 
-    private void setInputData(final String x1, final String y1, final String x2, final String y2,
-                              final String dim) {
-        viewModel.setX1(x1);
-        viewModel.setY1(y1);
-        viewModel.setX2(x2);
-        viewModel.setY2(y2);
+    private void setInputData(final String vec1X, final String vec1Y, final String vec2X,
+                              final String vec2Y, final String dim) {
+        viewModel.setVec1X(vec1X);
+        viewModel.setVec1Y(vec1Y);
+        viewModel.setVec2X(vec2X);
+        viewModel.setVec2Y(vec2Y);
         viewModel.setDim(dim);
     }
 

@@ -20,10 +20,10 @@ import java.util.List;
 public class ViewModel {
 
     public ViewModel() {
-        x1.set("");
-        y1.set("");
-        x2.set("");
-        y2.set("");
+        vec1X.set("");
+        vec1Y.set("");
+        vec2X.set("");
+        vec2Y.set("");
         dim.set("");
         metric.set(Metric.Chebyshev);
 
@@ -32,7 +32,7 @@ public class ViewModel {
 
         BooleanBinding couldCalculate = new BooleanBinding() {
             {
-                super.bind(x1, y1, x2, y2, dim);
+                super.bind(vec1X, vec1Y, vec2X, vec2Y, dim);
             }
             @Override
             protected boolean computeValue() {
@@ -42,10 +42,10 @@ public class ViewModel {
         calculationDisabled.bind(couldCalculate.not());
 
         final List<StringProperty> fields = new ArrayList<StringProperty>() { {
-            add(x1);
-            add(y1);
-            add(x2);
-            add(y2);
+            add(vec1X);
+            add(vec1Y);
+            add(vec2X);
+            add(vec2Y);
             add(dim);
         } };
 
@@ -61,10 +61,10 @@ public class ViewModel {
             return;
         }
 
-        float floatVec1x = Float.parseFloat(x1.get());
-        float floatVec1y = Float.parseFloat(y1.get());
-        float floatVec2x = Float.parseFloat(x2.get());
-        float floatVec2y = Float.parseFloat(y2.get());
+        float floatVec1x = Float.parseFloat(vec1X.get());
+        float floatVec1y = Float.parseFloat(vec1Y.get());
+        float floatVec2x = Float.parseFloat(vec2X.get());
+        float floatVec2y = Float.parseFloat(vec2Y.get());
         final float[] vec1 = {floatVec1x, floatVec1y};
         final float[] vec2 = {floatVec2x, floatVec2y};
 
@@ -79,60 +79,60 @@ public class ViewModel {
         status.set(Status.SUCCESS.toString());
     }
 
-    public StringProperty x1Property() {
-        return x1;
+    public StringProperty vec1XProperty() {
+        return vec1X;
     }
 
-    public StringProperty y1Property() {
-        return y1;
+    public StringProperty vec1YProperty() {
+        return vec1Y;
     }
 
-    public StringProperty x2Property() {
-        return x2;
+    public StringProperty vec2XProperty() {
+        return vec2X;
     }
 
-    public StringProperty y2Property() {
-        return y2;
+    public StringProperty vec2YProperty() {
+        return vec2Y;
     }
 
     public StringProperty dimProperty() {
         return dim;
     }
 
-    public String getX1() {
-        return x1.get();
+    public String getVec1X() {
+        return vec1X.get();
     }
 
-    public String getY1() {
-        return y1.get();
+    public String getVec1Y() {
+        return vec1Y.get();
     }
 
-    public String getX2() {
-        return x2.get();
+    public String getVec2X() {
+        return vec2X.get();
     }
 
-    public String getY2() {
-        return y2.get();
+    public String getVec2Y() {
+        return vec2Y.get();
     }
 
     public String getDim() {
         return dim.get();
     }
 
-    public void setX1(final String str) {
-        x1.set(str);
+    public void setVec1X(final String str) {
+        vec1X.set(str);
     }
 
-    public void setY1(final String str) {
-        y1.set(str);
+    public void setVec1Y(final String str) {
+        vec1Y.set(str);
     }
 
-    public void setX2(final String str) {
-        x2.set(str);
+    public void setVec2X(final String str) {
+        vec2X.set(str);
     }
 
-    public void setY2(final String str) {
-        y2.set(str);
+    public void setVec2Y(final String str) {
+        vec2Y.set(str);
     }
 
     public void setDim(final String str) {
@@ -187,10 +187,10 @@ public class ViewModel {
         return status.get();
     }
 
-    private final StringProperty x1 = new SimpleStringProperty();
-    private final StringProperty y1 = new SimpleStringProperty();
-    private final StringProperty x2 = new SimpleStringProperty();
-    private final StringProperty y2 = new SimpleStringProperty();
+    private final StringProperty vec1X = new SimpleStringProperty();
+    private final StringProperty vec1Y = new SimpleStringProperty();
+    private final StringProperty vec2X = new SimpleStringProperty();
+    private final StringProperty vec2Y = new SimpleStringProperty();
     private final StringProperty dim = new SimpleStringProperty();
     private final StringProperty result = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
@@ -201,8 +201,8 @@ public class ViewModel {
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 
     private boolean isParamsEmpty() {
-        return getX1().isEmpty() || getY1().isEmpty()
-                || getX2().isEmpty() || getY2().isEmpty()
+        return getVec1X().isEmpty() || getVec1Y().isEmpty()
+                || getVec2X().isEmpty() || getVec2Y().isEmpty()
                 || (isMinkowskiMetric() && getDim().isEmpty());
     }
 
@@ -212,17 +212,17 @@ public class ViewModel {
             inputStatus = Status.WAITING;
         }
         try {
-            if (!getX1().isEmpty()) {
-                Float.parseFloat(getX1());
+            if (!getVec1X().isEmpty()) {
+                Float.parseFloat(getVec1X());
             }
-            if (!getY1().isEmpty()) {
-                Float.parseFloat(getY1());
+            if (!getVec1Y().isEmpty()) {
+                Float.parseFloat(getVec1Y());
             }
-            if (!getX2().isEmpty()) {
-                Float.parseFloat(getX2());
+            if (!getVec2X().isEmpty()) {
+                Float.parseFloat(getVec2X());
             }
-            if (!getY2().isEmpty()) {
-                Float.parseFloat(getY2());
+            if (!getVec2Y().isEmpty()) {
+                Float.parseFloat(getVec2Y());
             }
             if (isMinkowskiMetric() && !getDim().isEmpty()) {
                 Integer.parseInt(getDim());
