@@ -71,8 +71,12 @@ project(":code/number-system-converter").name = "number-system-converter"
 
 
 // Rozanov Anatoliy
-include "code/numbers-in-words"
-project(":code/numbers-in-words").name = "numbers-in-words-Model"
+include "code/numbers-in-words/Model"
+project(":code/numbers-in-words/Model").name = "numbers-in-words-Model"
+include "code/numbers-in-words/View"
+project(":code/numbers-in-words/View").name = "numbers-in-words-View"
+include "code/numbers-in-words/ViewModel"
+project(":code/numbers-in-words/ViewModel").name = "numbers-in-words-ViewModel"
 
 // Roy Victor
 
