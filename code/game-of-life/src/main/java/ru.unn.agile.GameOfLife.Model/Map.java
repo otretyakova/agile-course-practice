@@ -1,7 +1,9 @@
 package ru.unn.agile.GameOfLife.Model;
 
 public class Map {
-    public Map(final int[][] grid) {
+    public static final int AVAILABLE_STATES_COUNT = 2;
+
+    public Map(final byte[][] grid) {
         if (grid == null) {
             throw new IllegalArgumentException("Argument cannot be null!");
         }
@@ -21,7 +23,7 @@ public class Map {
         this.sizeY = grid[0].length;
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                if (grid[x][y] < 0 || grid[x][y] > 1) {
+                if (!isValidState(grid[x][y])) {
                     throw new IllegalArgumentException("Grid has incorrect states!");
                 }
             }
@@ -29,24 +31,16 @@ public class Map {
         this.grid = grid;
     }
 
-    public int getSizeX() {
-        return sizeX;
-    }
-
-    public int getSizeY() {
-        return sizeY;
-    }
-
     public int[] getSize() {
-        return new int[]{getSizeX(), getSizeY()};
+        return new int[]{sizeX, sizeY};
     }
 
-    public int[][] getGrid() {
+    public byte[][] getGrid() {
         return grid;
     }
 
     public int countAliveNeighbors(final int coordX, final int coordY) {
-        if (coordX < getSizeX() && coordY < getSizeY()
+        if (coordX < sizeX && coordY < sizeY
                 && coordX >= 0 && coordY >= 0) {
             return leftNeighbor(coordX, coordY) + rightNeighbor(coordX, coordY)
                     + upperNeighbor(coordX, coordY) + lowerNeighbor(coordX, coordY)
@@ -93,7 +87,11 @@ public class Map {
                 ? grid[coordX + 1][coordY + 1] : 0;
     }
 
+    private boolean isValidState(final byte checkState) {
+        return (0 <= checkState && checkState < AVAILABLE_STATES_COUNT);
+    }
+
     private int sizeX;
     private int sizeY;
-    private int[][] grid;
+    private byte[][] grid;
 }

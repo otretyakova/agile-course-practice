@@ -27,7 +27,7 @@ public class GameOfLife {
             throw new IllegalArgumentException("Incorrect Y-axis size!");
         }
 
-        int[][] arrayForGrid = new int[sizeX][sizeY];
+        byte[][] arrayForGrid = new byte[sizeX][sizeY];
 
         for (int y = 0; y < sizeY; y++) {
             if (input[y + 1].length() != sizeX) {
@@ -43,22 +43,24 @@ public class GameOfLife {
     }
 
     public String[] writeNextGeneration() {
-        int[][] grid = getNextGeneration().getGrid();
-        String[] output = new String[1 + nextGeneration.getSizeY()];
-        output[0] = String.format("%d %d", nextGeneration.getSizeX(), nextGeneration.getSizeY());
-        for (int y = 0; y < nextGeneration.getSizeY(); y++) {
+        byte[][] grid = getNextGeneration().getGrid();
+        int gridSizeX = nextGeneration.getSize()[0];
+        int gridSizeY = nextGeneration.getSize()[1];
+        String[] output = new String[1 + gridSizeY];
+        output[0] = String.format("%d %d", gridSizeX, gridSizeY);
+        for (int y = 0; y < gridSizeY; y++) {
             output[1 + y] = "";
-            for (int x = 0; x < nextGeneration.getSizeX(); x++) {
-                output[1 + y] = output[1 + y].concat(codeStateToSymbol(grid[x][y]));
+            for (int x = 0; x < gridSizeX; x++) {
+                output[1 + y] = output[1 + y] + convertStateToSymbol(grid[x][y]);
             }
         }
         return output;
     }
 
     public void buildNextGeneration() {
-        final int sizeX = getCurrentGeneration().getSizeX();
-        final int sizeY = getCurrentGeneration().getSizeY();
-        int[][] gridForNexGen = new int[sizeX][sizeY];
+        final int sizeX = getCurrentGeneration().getSize()[0];
+        final int sizeY = getCurrentGeneration().getSize()[1];
+        byte[][] gridForNexGen = new byte[sizeX][sizeY];
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 int aliveNeighbors = currentGeneration.countAliveNeighbors(x, y);
@@ -84,7 +86,7 @@ public class GameOfLife {
         }
     }
 
-    private static int rulesForNetState(final int aliveNeighborsCount) {
+    private static byte rulesForNetState(final int aliveNeighborsCount) {
         if (aliveNeighborsCount >= MIN_ALIVE_NEIGHBORS
                 && aliveNeighborsCount <= MAX_ALIVE_NEIGHBORS) {
             return 1;
@@ -93,26 +95,24 @@ public class GameOfLife {
         }
     }
 
-    private static int parseSymbolToState(final char value) {
-        if (value == '.') {
-            return 0;
-        } else if (value == '*') {
-            return 1;
+    private static byte parseSymbolToState(final int value) {
+        int answer = STATES_IN_SYMBOL_FORMAT.indexOf(value);
+        if (answer != -1) {
+            return ((byte) answer);
         } else {
             throw new IllegalArgumentException("Incorrect argument '" + value + "'!");
         }
     }
 
-    private static String codeStateToSymbol(final int value) {
-        if (value == 0) {
-            return ".";
-        } else if (value == 1) {
-            return "*";
+    private static char convertStateToSymbol(final byte value) {
+        if (STATES_IN_SYMBOL_FORMAT.length() >= Map.AVAILABLE_STATES_COUNT) {
+            return STATES_IN_SYMBOL_FORMAT.charAt(value);
         } else {
             throw new IllegalArgumentException("Incorrect state value: '" + value + "'!");
         }
     }
 
+    private static final String STATES_IN_SYMBOL_FORMAT = ".*";
     private static final int SIZE_TYPES_COUNT = 2;
     private static final int MINIMAL_INPUT_STRINGS_COUNT = 2;
     private static final int MIN_ALIVE_NEIGHBORS = 3;

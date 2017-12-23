@@ -50,7 +50,7 @@ public class GameTest {
     @Test
     public void shouldParseCorrectInput() {
         String[] inputArray = {"2 3", "..", "..", ".."};
-        int[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
+        byte[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);
         assertArrayEquals(testGame.getCurrentGeneration().getGrid(), correctGrid);
@@ -75,7 +75,7 @@ public class GameTest {
     @Test
     public void shouldCreateCorrectNextGenerationGrid() {
         String[] inputArray = {"2 3", "..", "*.", ".."};
-        int[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
+        byte[][] correctGrid = {{0, 0, 0}, {0, 0, 0}};
         GameOfLife testGame = new GameOfLife();
         testGame.readCurrentGeneration(inputArray);
         testGame.buildNextGeneration();
