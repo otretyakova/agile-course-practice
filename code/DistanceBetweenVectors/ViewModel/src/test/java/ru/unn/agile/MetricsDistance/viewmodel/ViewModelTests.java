@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
+import ru.unn.agile.MetricsDistance.Model.Metric;
 
 public class ViewModelTests {
 

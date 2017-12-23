@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.beans.binding.BooleanBinding;
 import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
-import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
+import ru.unn.agile.MetricsDistance.Model.Metric;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ViewModel {
         } };
 
         for (StringProperty field : fields) {
-            final ValueChangeListener listener = new ValueChangeListener();
+            final ObserverChangedValues listener = new ObserverChangedValues();
             field.addListener(listener);
             valueChangedListeners.add(listener);
         }
@@ -194,7 +194,7 @@ public class ViewModel {
     private final StringProperty dim = new SimpleStringProperty();
     private final StringProperty result = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
+    private final List<ObserverChangedValues> valueChangedListeners = new ArrayList<>();
     private final ObjectProperty<ObservableList<Metric>> metrics =
             new SimpleObjectProperty<>(FXCollections.observableArrayList(Metric.values()));
     private final ObjectProperty<Metric> metric = new SimpleObjectProperty<>();
@@ -233,27 +233,12 @@ public class ViewModel {
         return inputStatus;
     }
 
-    private class ValueChangeListener implements ChangeListener<String> {
+    private class ObserverChangedValues implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
-                            final String oldValue, final String newValue) {
+                            final String oldVal, final String newVal) {
             status.set(getInputStatus().toString());
         }
-    }
-}
-
-enum Status {
-    WAITING("Please provide input data"),
-    READY("Press 'Calculate' or Enter"),
-    BAD_FORMAT("Bad format"),
-    SUCCESS("Success");
-
-    private final String name;
-    Status(final String name) {
-        this.name = name;
-    }
-    public String toString() {
-        return name;
     }
 }
 

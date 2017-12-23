@@ -45,20 +45,6 @@ public final class MetricsDistance {
         return  distanceBetweenVectors;
     }
 
-    public enum Metric {
-        Chebyshev("Chebyshev"), Minkowski("Minkowski");
-
-        private final String name;
-        Metric(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
     private static void validateInputArgs(final float[] vector1, final float[] vector2) {
         if (isVectorsNull(vector1, vector2)) {
             throw new IllegalArgumentException("Вектор не инициализирован!");

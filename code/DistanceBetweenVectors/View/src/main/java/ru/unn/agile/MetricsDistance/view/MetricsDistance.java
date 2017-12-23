@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import ru.unn.agile.MetricsDistance.viewmodel.ViewModel;
-import ru.unn.agile.MetricsDistance.Model.MetricsDistance.Metric;
+import ru.unn.agile.MetricsDistance.Model.Metric;
 
 public class MetricsDistance {
     @FXML
