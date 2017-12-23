@@ -23,8 +23,12 @@ include "code/left_sided_heap"
 project(":code/left_sided_heap").name = "lheap-Model"
 
 // Gladilov Gleb
-include "code/converter-temperature"
-project(":code/converter-temperature").name = "converter-temperature-Model"
+include "code/converter-temperature/Model"
+project(":code/converter-temperature/Model").name = "converter-temperature-Model"
+include "code/converter-temperature/ViewModel"
+project(":code/converter-temperature/ViewModel").name = "converter-temperature-ViewModel"
+include "code/converter-temperature/View"
+project(":code/converter-temperature/View").name = "converter-temperature-View"
 
 // Gorbunova Natalia
 
