@@ -24,8 +24,13 @@ include "code/Prime_number"
 project(":code/Prime_number").name = "PrimeNumber-Model"
 
 // Gerasimov Dmitriy
-include "code/left_sided_heap"
-project(":code/left_sided_heap").name = "lheap-Model"
+include "code/left_sided_heap/Model"
+project(":code/left_sided_heap/Model").name = "lheap-Model"
+include "code/left_sided_heap/ViewModel"
+project(":code/left_sided_heap/ViewModel").name = "left_sided_heap-ViewModel"
+include "code/left_sided_heap/View"
+project(":code/left_sided_heap/View").name = "left_sided_heap-View"
+
 
 // Gladilov Gleb
 include "code/converter-temperature/Model"
