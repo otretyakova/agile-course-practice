@@ -16,22 +16,22 @@ public class QuadraticEquation {
         return c;
     }
 
-    public void setA(final double aA) {
-        a = aA;
+    public void setA(final double a) {
+        this.a = a;
     }
 
-    public void setB(final double bB) {
-        b = bB;
+    public void setB(final double b) {
+        this.b = b;
     }
 
-    public void setC(final double cC) {
-        c = cC;
+    public void setC(final double c) {
+        this.c = c;
     }
 
-    public void setABC(final double aA, final double bB, final double cC) {
-        a = aA;
-        b = bB;
-        c = cC;
+    public void setABC(final double a, final double b, final double c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
     public QuadraticEquation(final double a, final double b, final double c) {
