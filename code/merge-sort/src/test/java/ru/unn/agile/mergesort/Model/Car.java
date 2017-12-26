@@ -30,10 +30,7 @@ class Car implements Comparable<Car> {
 
         Car car = (Car) o;
 
-        if (maxSpeed != car.maxSpeed) {
-            return false;
-        }
-        return serialNumber == car.serialNumber;
+        return maxSpeed == car.maxSpeed;
     }
 
     @Override

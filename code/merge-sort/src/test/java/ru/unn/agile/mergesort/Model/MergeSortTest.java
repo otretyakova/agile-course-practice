@@ -180,7 +180,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void isSortStableCustomTypeWithComparator() {
+    public void sortIsStableForCustomTypeWithComparator() {
         Collection<Car> input = Arrays.asList(new Car(8840, 1111),
                 new Car(11, 2), new Car(15, 3),
                 new Car(15, 4), new Car(13, 800),

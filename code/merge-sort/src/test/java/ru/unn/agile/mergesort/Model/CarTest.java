@@ -36,10 +36,10 @@ public class CarTest {
     }
 
     @Test
-    public void areCarsWithDifferentSerialNumberNotEqual() {
+    public void areCarsWithDifferentSerialEqual() {
         Car car = new Car(2, 8);
         Car other = new Car(2, 7);
-        assertFalse(car.equals(other));
+        assertTrue(car.equals(other));
     }
 
     @Test
