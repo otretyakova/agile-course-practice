@@ -87,10 +87,6 @@ public class Range {
                 || range.isOverlapsOnLeftBound(this.rightBound);
     }
 
-    private int numberOfIntPoints;
-    private Boundary leftBound;
-    private Boundary rightBound;
-
     private void calculateNumberOfIntPoints() {
         this.numberOfIntPoints = rightBound.value() - leftBound.value() + 1;
         if (!leftBound.isIncluded()) {
@@ -147,4 +143,8 @@ public class Range {
             throw new IllegalArgumentException("The argument must belong to the class Range");
         }
     }
+
+    private int numberOfIntPoints;
+    private Boundary leftBound;
+    private Boundary rightBound;
 }

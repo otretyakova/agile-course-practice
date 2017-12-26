@@ -49,9 +49,6 @@ public class Boundary {
         return this.value > value;
     }
 
-    private int value;
-    private boolean isIncluded;
-
     private void checkNull(final Object object) {
         if (object == null) {
             throw new IllegalArgumentException("Argument must not be null");
@@ -63,4 +60,7 @@ public class Boundary {
             throw new IllegalArgumentException("The argument must belong to the class Boundary");
         }
     }
+
+    private int value;
+    private boolean isIncluded;
 }
