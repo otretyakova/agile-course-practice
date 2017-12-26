@@ -22,8 +22,10 @@ project(":code/DistanceBetweenVectors/View").name = "DistanceBetweenVectors-View
 
 
 // Volokitin Valentin
-include "code/Prime_number"
-project(":code/Prime_number").name = "PrimeNumber-Model"
+include "code/prime-number/Model"
+project(":code/prime-number/Model").name = "PrimeNumber-Model"
+include "code/prime-number/View"
+project(":code/prime-number/View").name = "PrimeNumber-View"
 
 // Gerasimov Dmitriy
 include "code/left_sided_heap"
