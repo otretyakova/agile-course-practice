@@ -1,4 +1,4 @@
-package ru.unn.agile.PrimeNumber.View;
+package ru.unn.agile.PrimeNumber.view;
 
 //import javafx.event.ActionEvent;
 //import javafx.event.EventHandler;
