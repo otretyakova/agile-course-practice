@@ -68,10 +68,24 @@ public class ViewModelTests {
     }
 
     @Test
+    public void solveIsDisabledIfTwoFirstCoefsAreZero() {
+        viewModel.aProperty().set("0");
+        viewModel.bProperty().set("0");
+        assertTrue(viewModel.solutionDisabledProperty().get());
+    }
+
+    @Test
     public void statusIsOkIfEvenFirstCoefIsZeroAndSecondIsNot() {
         viewModel.aProperty().set("0");
         viewModel.bProperty().set("1");
         assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+    }
+
+    @Test
+    public void solveIsEnabledIfEvenFirstCoefIsZeroAndSecondIsNot() {
+        viewModel.aProperty().set("0");
+        viewModel.bProperty().set("1");
+        assertTrue(!viewModel.solutionDisabledProperty().get());
     }
 
     @Test
@@ -82,6 +96,13 @@ public class ViewModelTests {
     }
 
     @Test
+    public void solveIsEnabledIfEvenFirstCoefIsEmptyAndSecondIsNot() {
+        viewModel.aProperty().set("");
+        viewModel.bProperty().set("1");
+        assertTrue(!viewModel.solutionDisabledProperty().get());
+    }
+
+    @Test
     public void statusIsOkIfEvenSecondCoefIsZeroAndFirstIsNot() {
         viewModel.aProperty().set("123");
         viewModel.bProperty().set("0");
@@ -89,10 +110,24 @@ public class ViewModelTests {
     }
 
     @Test
+    public void solveIsEnabledIfEvenSecondCoefIsZeroAndFirstIsNot() {
+        viewModel.aProperty().set("123");
+        viewModel.bProperty().set("0");
+        assertTrue(!viewModel.solutionDisabledProperty().get());
+    }
+
+    @Test
     public void statusIsOkIfEvenSecondCoefIsEmptyAndFirstIsNot() {
         viewModel.aProperty().set("123");
         viewModel.bProperty().set("");
         assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+    }
+
+    @Test
+    public void solveIsEnabledIfEvenSecondCoefIsEmptyAndFirstIsNot() {
+        viewModel.aProperty().set("123");
+        viewModel.bProperty().set("");
+        assertTrue(!viewModel.solutionDisabledProperty().get());
     }
 
     @Test
@@ -301,4 +336,6 @@ public class ViewModelTests {
         viewModel.cProperty().set("3");
     }
 }
+
+
 

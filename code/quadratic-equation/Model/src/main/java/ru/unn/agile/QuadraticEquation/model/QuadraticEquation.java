@@ -38,7 +38,7 @@ public class QuadraticEquation {
     }
 
     public QuadraticEquation(final double a, final double b, final double c) {
-        if ((a == 0) && (b == 0)) {
+        if ((Math.abs(a) < DELTA) && (Math.abs(b) < DELTA)) {
             throw new IllegalArgumentException("QuadraticEquation is degenerated.");
         } else {
             this.a = a;
@@ -51,7 +51,7 @@ public class QuadraticEquation {
         double newA = Double.parseDouble(a);
         double newB = Double.parseDouble(b);
         double newC = Double.parseDouble(c);
-        if ((newA == 0) && (newB == 0)) {
+        if ((Math.abs(newA) < DELTA) && (Math.abs(newB) < DELTA)) {
             throw new IllegalArgumentException("QuadraticEquation is degenerated.");
         } else {
             this.a = newA;
@@ -92,7 +92,7 @@ public class QuadraticEquation {
         if (this.isLinear()) {
             return new Pair<Double, Double>((-1) * c / b, null);
         }
-        if (this.getDiscriminant() < 0) {
+        if (this.getDiscriminant() < DELTA) {
             return new Pair<Double, Double>(null, null);
         }
         if ((this.getDiscriminant() > -DELTA) && (this.getDiscriminant() < DELTA)) {
@@ -120,7 +120,7 @@ public class QuadraticEquation {
             result.add(toString(first));
             return result;
         }
-        if (this.getDiscriminant() > 0) {
+        if (this.getDiscriminant() > -DELTA) {
             Complex first = new Complex(this.realFirst(), 0.);
             Complex second = new Complex(this.realSecond(), 0.);
             result.add(toString(first));
@@ -131,6 +131,14 @@ public class QuadraticEquation {
         result.add(toString(this.cmplxFirst()));
         result.add(toString(this.cmplxSecond()));
         return result;
+    }
+
+    public static double getBorderTop() {
+        return BORDER_TOP;
+    }
+
+    public static double getBorderBottom() {
+        return BORDER_BOTTOM;
     }
 
     private boolean isNumberZero(final double value) {
@@ -148,19 +156,11 @@ public class QuadraticEquation {
     private int numberOfRootsIfIsNotLinear() {
         if (this.hasZeroDiscriminant()) {
             return 1;
-        } else if (this.getDiscriminant() > 0) {
+        } else if (this.getDiscriminant() > -DELTA) {
             return 2;
         } else {
             return 0;
         }
-    }
-
-    public static double getBorderTop() {
-        return BORDER_TOP;
-    }
-
-    public static double getBorderBottom() {
-        return BORDER_BOTTOM;
     }
 
     private Complex cmplxFirst() {

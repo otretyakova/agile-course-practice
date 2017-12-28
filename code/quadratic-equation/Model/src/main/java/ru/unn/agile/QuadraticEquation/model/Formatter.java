@@ -2,8 +2,6 @@ package ru.unn.agile.QuadraticEquation.model;
 
 public final class Formatter {
 
-    private Formatter() { }
-
     public static String formatPositiveDouble(final double value) {
         if (value < 0) {
             throw new IllegalArgumentException();
@@ -39,11 +37,15 @@ public final class Formatter {
         String re = formatPositiveDouble(Math.abs(z.getReal()));
         String im = formatPositiveDouble(Math.abs(z.getImaginary()));
         buffer.append(re)
-            .append(z.getImaginary() < 0 ? " - " : " + ")
-            .append(im)
-            .append("i");
+                .append(z.getImaginary() < 0 ? " - " : " + ")
+                .append(im)
+                .append("i");
         return buffer.toString();
     }
 
+    private Formatter() {
+    }
 }
+
+
 

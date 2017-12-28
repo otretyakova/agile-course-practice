@@ -4,6 +4,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class QuadraticEquationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void willThrowExceptionIfDegenerateEquation() {
-            new QuadraticEquation(0, 0, 2);
+        new QuadraticEquation(0, 0, 2);
     }
 
     @Test
@@ -105,9 +106,10 @@ public class QuadraticEquationTest {
 
     @Test
     public void canFindFirstRootOfSimpleQuadraticEquation() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(4, 0, 0);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(0.0, solve.getKey(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        assertEquals("0.0 + 0.0i", result.get(0));
     }
 
     @Test
@@ -119,9 +121,10 @@ public class QuadraticEquationTest {
 
     @Test
     public void canFindFirstRootOfQuadraticEquationWithOneRealRoot() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(1, 4, 4);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(-2.0, solve.getKey(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        assertEquals("-2.0 + 0.0i", result.get(0));
     }
 
     @Test

@@ -4,24 +4,13 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import ru.unn.agile.QuadraticEquation.model.QuadraticEquation;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.unn.agile.QuadraticEquation.model.QuadraticEquation;
+
 public class ViewModel {
-    private final StringProperty a = new SimpleStringProperty();
-    private final StringProperty b = new SimpleStringProperty();
-    private final StringProperty c = new SimpleStringProperty();
-    private final List<StringProperty> result = new ArrayList<>();
-
-    private final StringProperty answer1 = new SimpleStringProperty();
-    private final StringProperty answer2 = new SimpleStringProperty();
-
-    private final BooleanProperty solutionDisabled = new SimpleBooleanProperty();
-    private final StringProperty status = new SimpleStringProperty();
-    private final List<ChangeStatus> inputChangedListeners = new ArrayList<>();
 
     public ViewModel() {
         a.set("");
@@ -177,10 +166,10 @@ public class ViewModel {
         }
         double borderTop = QuadraticEquation.getBorderTop();
         double borderBottom = QuadraticEquation.getBorderBottom();
-        if ((a < borderBottom) || (b > borderTop)) {
+        if ((a < borderBottom) || (a > borderTop)) {
             return Status.BAD_FORMAT;
         }
-        if ((a < borderBottom) || (b > borderTop)) {
+        if ((b < borderBottom) || (b > borderTop)) {
             return Status.BAD_FORMAT;
         }
         return Status.READY;
@@ -194,6 +183,17 @@ public class ViewModel {
         }
     }
 
+    private final StringProperty a = new SimpleStringProperty();
+    private final StringProperty b = new SimpleStringProperty();
+    private final StringProperty c = new SimpleStringProperty();
+    private final List<StringProperty> result = new ArrayList<>();
+
+    private final StringProperty answer1 = new SimpleStringProperty();
+    private final StringProperty answer2 = new SimpleStringProperty();
+
+    private final BooleanProperty solutionDisabled = new SimpleBooleanProperty();
+    private final StringProperty status = new SimpleStringProperty();
+    private final List<ChangeStatus> inputChangedListeners = new ArrayList<>();
     private static final double EPS = 1e-6;
 }
 
@@ -213,4 +213,5 @@ enum Status {
         return name;
     }
 }
+
 
