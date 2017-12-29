@@ -84,10 +84,6 @@ public class QuadraticEquation {
         }
     }
 
-    public String toString(final Complex number) {
-        return Formatter.getFormatted(number);
-    }
-
     public Pair<Double, Double> solveQuadraticEquationReal() {
         if (this.isLinear()) {
             return new Pair<Double, Double>((-1) * c / b, null);
@@ -112,34 +108,29 @@ public class QuadraticEquation {
         List<String> result = new ArrayList<String>();
         if (this.isLinear()) {
             Complex first = new Complex((-1) * this.getC() / this.getB(), 0.);
-            result.add(toString(first));
+            result.add(first.toString());
             return result;
         }
         if ((this.getDiscriminant() > -DELTA) && (this.getDiscriminant() < DELTA)) {
             Complex first = new Complex((-1) * this.getB() / 2 / this.getA(), 0.);
-            result.add(toString(first));
+            result.add(first.toString());
             return result;
         }
         if (this.getDiscriminant() > -DELTA) {
             Complex first = new Complex(this.realFirst(), 0.);
             Complex second = new Complex(this.realSecond(), 0.);
-            result.add(toString(first));
-            result.add(toString(second));
+            result.add(first.toString());
+            result.add(second.toString());
             return result;
         }
 
-        result.add(toString(this.cmplxFirst()));
-        result.add(toString(this.cmplxSecond()));
+        result.add(this.cmplxFirst().toString());
+        result.add(this.cmplxSecond().toString());
         return result;
     }
 
-    public static double getBorderTop() {
-        return BORDER_TOP;
-    }
-
-    public static double getBorderBottom() {
-        return BORDER_BOTTOM;
-    }
+    public static final double BORDER_TOP = 10e12;
+    public static final double BORDER_BOTTOM = -10e12;
 
     private boolean isNumberZero(final double value) {
         return (value > -DELTA) && (value < DELTA);
@@ -186,6 +177,4 @@ public class QuadraticEquation {
     private double c;
     private static final int DISCRIMINANT_MULTIPLIER = 4;
     private static final double DELTA = 1e-15;
-    private static final double BORDER_TOP = 10e12;
-    private static final double BORDER_BOTTOM = -10e12;
 }

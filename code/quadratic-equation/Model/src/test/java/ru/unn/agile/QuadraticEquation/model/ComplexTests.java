@@ -25,7 +25,6 @@ public class ComplexTests {
         assertEquals(1.0, number.getReal(), DELTA);
     }
 
-
     @Test
     public void canSetZeroRealValue() {
         Complex number = new Complex(0, 2);
@@ -59,32 +58,33 @@ public class ComplexTests {
     @Test
     public void canConvert() {
         Complex z = new Complex(1, 2);
-        assertEquals("1.0 + 2.0i", z.toString());
+        assertEquals("1 + 2i", z.toString());
     }
 
     @Test
     public void canConvertFloat() {
         Complex z = new Complex(3.14, 2);
-        assertEquals("3.14 + 2.0i", z.toString());
+        assertEquals("3.14 + 2i", z.toString());
     }
 
     @Test
     public void canConvertLongNumber() {
         Complex z = new Complex(1, 1.2456e-2);
-        assertEquals("1.0 + 0.01i", z.toString());
+        assertEquals("1 + 0.01246i", z.toString());
     }
 
     @Test
     public void canConvertNegativeReal() {
         Complex z = new Complex(-1, 1);
-        assertEquals("-1.0 + 1.0i", z.toString());
+        assertEquals("-1 + 1i", z.toString());
     }
 
     @Test
     public void canConvertNegativeImaginary() {
         Complex z = new Complex(1, -1);
-        assertEquals("1.0 - 1.0i", z.toString());
+        assertEquals("1 - 1i", z.toString());
     }
+
     private static final double DELTA = 1e-6;
 }
 

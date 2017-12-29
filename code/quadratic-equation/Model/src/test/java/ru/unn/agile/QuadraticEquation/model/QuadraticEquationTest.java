@@ -35,6 +35,11 @@ public class QuadraticEquationTest {
         new QuadraticEquation(0, 0, 2);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void willThrowExceptionIfDegenerateEquationWithZeroABCoeffs() {
+        new QuadraticEquation("0", "0", "2");
+    }
+
     @Test
     public void canGetSimpleDiscriminant() {
         equation.setABC(1, 0, 0);
@@ -109,7 +114,7 @@ public class QuadraticEquationTest {
         List<String> result = new ArrayList<String>();
         equation.setABC(4, 0, 0);
         result = equation.solveQuadraticEquation();
-        assertEquals("0.0 + 0.0i", result.get(0));
+        assertEquals("0 + 0i", result.get(0));
     }
 
     @Test
@@ -120,11 +125,18 @@ public class QuadraticEquationTest {
     }
 
     @Test
+    public void canFindSolutionOfSimpleQuadraticEquationWithZeroDiscr() {
+        equation.setABC(1, 2, 1);
+        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
+        assertEquals(null, solve.getValue());
+    }
+
+    @Test
     public void canFindFirstRootOfQuadraticEquationWithOneRealRoot() {
         List<String> result = new ArrayList<String>();
         equation.setABC(1, 4, 4);
         result = equation.solveQuadraticEquation();
-        assertEquals("-2.0 + 0.0i", result.get(0));
+        assertEquals("-2 + 0i", result.get(0));
     }
 
     @Test

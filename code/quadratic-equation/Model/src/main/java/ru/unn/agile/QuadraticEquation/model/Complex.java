@@ -6,6 +6,7 @@ public class Complex {
         this.re = real;
         this.im = imaginary;
     }
+
     public void setReal(final double real) {
         this.re = real;
     }
@@ -22,6 +23,7 @@ public class Complex {
         return im;
     }
 
+    @Override
     public String toString() {
         return Formatter.getFormatted(this);
     }

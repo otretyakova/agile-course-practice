@@ -4,7 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class ViewModelTests {
     private ViewModel viewModel;
@@ -24,32 +26,32 @@ public class ViewModelTests {
         assertEquals("", viewModel.aProperty().get());
         assertEquals("", viewModel.bProperty().get());
         assertEquals("", viewModel.cProperty().get());
-        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.WAITING.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void statusIsWaitingWhenSolutionWithEmptyFields() {
         viewModel.solve();
-        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.WAITING.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void statusIsReadyWhenFieldsAreFill() {
         setInputData();
-        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.READY.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canReportBadFormat() {
         viewModel.aProperty().set("a");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.BAD_FORMAT.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void statusIsWaitingIfNotEnoughCorrectData() {
         viewModel.aProperty().set("");
         viewModel.bProperty().set("");
-        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.WAITING.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -57,14 +59,14 @@ public class ViewModelTests {
         viewModel.aProperty().set("");
         viewModel.bProperty().set("");
         viewModel.cProperty().set("12345");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.BAD_FORMAT.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void statusIsBadIfTwoFirstCoefsAreZero() {
         viewModel.aProperty().set("0");
         viewModel.bProperty().set("0");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.BAD_FORMAT.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -78,56 +80,56 @@ public class ViewModelTests {
     public void statusIsOkIfEvenFirstCoefIsZeroAndSecondIsNot() {
         viewModel.aProperty().set("0");
         viewModel.bProperty().set("1");
-        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.READY.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void solveIsEnabledIfEvenFirstCoefIsZeroAndSecondIsNot() {
         viewModel.aProperty().set("0");
         viewModel.bProperty().set("1");
-        assertTrue(!viewModel.solutionDisabledProperty().get());
+        assertFalse(viewModel.solutionDisabledProperty().get());
     }
 
     @Test
     public void statusIsOkIfEvenFirstCoefIsEmptyAndSecondIsNot() {
         viewModel.aProperty().set("");
         viewModel.bProperty().set("1");
-        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.READY.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void solveIsEnabledIfEvenFirstCoefIsEmptyAndSecondIsNot() {
         viewModel.aProperty().set("");
         viewModel.bProperty().set("1");
-        assertTrue(!viewModel.solutionDisabledProperty().get());
+        assertFalse(viewModel.solutionDisabledProperty().get());
     }
 
     @Test
     public void statusIsOkIfEvenSecondCoefIsZeroAndFirstIsNot() {
         viewModel.aProperty().set("123");
         viewModel.bProperty().set("0");
-        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.READY.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void solveIsEnabledIfEvenSecondCoefIsZeroAndFirstIsNot() {
         viewModel.aProperty().set("123");
         viewModel.bProperty().set("0");
-        assertTrue(!viewModel.solutionDisabledProperty().get());
+        assertFalse(viewModel.solutionDisabledProperty().get());
     }
 
     @Test
     public void statusIsOkIfEvenSecondCoefIsEmptyAndFirstIsNot() {
         viewModel.aProperty().set("123");
         viewModel.bProperty().set("");
-        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.READY.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void solveIsEnabledIfEvenSecondCoefIsEmptyAndFirstIsNot() {
         viewModel.aProperty().set("123");
         viewModel.bProperty().set("");
-        assertTrue(!viewModel.solutionDisabledProperty().get());
+        assertFalse(viewModel.solutionDisabledProperty().get());
     }
 
     @Test
@@ -160,7 +162,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("2");
         viewModel.cProperty().set("1");
         viewModel.solve();
-        assertTrue(viewModel.getResult().contains("-1.0 + 0.0i"));
+        assertTrue(viewModel.getSolution().contains("-1 + 0i"));
     }
 
     @Test
@@ -169,7 +171,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("");
         viewModel.cProperty().set("");
         viewModel.solve();
-        assertTrue(viewModel.getResult().contains("0.0 + 0.0i"));
+        assertTrue(viewModel.getSolution().contains("0 + 0i"));
     }
 
     @Test
@@ -225,7 +227,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("5");
         viewModel.cProperty().set("");
         viewModel.solve();
-        assertTrue(viewModel.getResult().contains("0.0 + 0.0i"));
+        assertTrue(viewModel.getSolution().contains("0 + 0i"));
     }
 
     @Test
@@ -234,7 +236,17 @@ public class ViewModelTests {
         viewModel.bProperty().set("5");
         viewModel.cProperty().set("-10");
         viewModel.solve();
-        assertTrue(viewModel.getResult().contains("2.0 + 0.0i"));
+        assertTrue(viewModel.getSolution().contains("2 + 0i"));
+    }
+
+    @Test
+    public void solutionHasCorrectResultWithSmallCoeffs() {
+        viewModel.aProperty().set("1");
+        viewModel.bProperty().set("-1.00005");
+        viewModel.cProperty().set("0.00005");
+        viewModel.solve();
+        assertTrue(viewModel.getSolution().contains("1 + 0i"));
+        assertTrue(viewModel.getSolution().contains("0.00005 + 0i"));
     }
 
     @Test
@@ -243,12 +255,8 @@ public class ViewModelTests {
         viewModel.bProperty().set("-1");
         viewModel.cProperty().set("");
         viewModel.solve();
-        boolean flag = false;
-        if (viewModel.getResult().contains("0.0 + 0.0i")
-                && viewModel.getResult().contains("1.0 + 0.0i")) {
-            flag = true;
-        }
-        assertTrue(flag);
+        assertTrue(viewModel.getSolution().contains("0 + 0i"));
+        assertTrue(viewModel.getSolution().contains("0 + 0i"));
     }
 
     @Test
@@ -257,12 +265,8 @@ public class ViewModelTests {
         viewModel.bProperty().set("5");
         viewModel.cProperty().set("6");
         viewModel.solve();
-        boolean flag = false;
-        if (viewModel.getResult().contains("-2.0 + 0.0i")
-                && viewModel.getResult().contains("-3.0 + 0.0i")) {
-            flag = true;
-        }
-        assertTrue(flag);
+        assertTrue(viewModel.getSolution().contains("-2 + 0i"));
+        assertTrue(viewModel.getSolution().contains("-3 + 0i"));
     }
 
     @Test
@@ -271,19 +275,15 @@ public class ViewModelTests {
         viewModel.bProperty().set("6");
         viewModel.cProperty().set("10");
         viewModel.solve();
-        boolean flag = false;
-        if (viewModel.getResult().contains("-3.0 - 1.0i")
-                && viewModel.getResult().contains("-3.0 + 1.0i")) {
-            flag = true;
-        }
-        assertTrue(flag);
+        assertTrue(viewModel.getSolution().contains("-3 - 1i"));
+        assertTrue(viewModel.getSolution().contains("-3 + 1i"));
     }
 
     @Test
     public void canSetSuccessMessage() {
         setInputData();
         viewModel.solve();
-        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.SUCCESS.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -291,7 +291,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("2");
         viewModel.cProperty().set("3");
         viewModel.solve();
-        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.SUCCESS.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -299,21 +299,21 @@ public class ViewModelTests {
         viewModel.aProperty().set("1");
         viewModel.cProperty().set("3");
         viewModel.solve();
-        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.SUCCESS.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetSuccessMessageOnlyWithFirstCoef() {
         viewModel.aProperty().set("1");
         viewModel.solve();
-        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.SUCCESS.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetSuccessMessageOnlyWithSecondCoef() {
         viewModel.bProperty().set("1");
         viewModel.solve();
-        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.SUCCESS.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -321,13 +321,13 @@ public class ViewModelTests {
         viewModel.aProperty().set("1");
         viewModel.bProperty().set("3");
         viewModel.solve();
-        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.SUCCESS.getStatusName(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessage() {
         viewModel.aProperty().set("#=-badMess");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
+        assertEquals(Status.BAD_FORMAT.getStatusName(), viewModel.statusProperty().get());
     }
 
     private void setInputData() {
