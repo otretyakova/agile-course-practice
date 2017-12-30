@@ -393,7 +393,7 @@ public class PolynomialTest {
     @Test
     public void canConvertEmptyPolynomialToString() {
         Polynomial poly = new Polynomial();
-        assertTrue(poly.toString().equals("0.0"));
+        assertEquals(poly.toString(), "0.0");
     }
 
     @Test
@@ -401,7 +401,7 @@ public class PolynomialTest {
         Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{
             put(5, 0.0);
         }});
-        assertTrue(poly.toString().equals("0.0"));
+        assertEquals(poly.toString(), "0.0");
     }
 
     @Test
@@ -409,7 +409,7 @@ public class PolynomialTest {
         Polynomial poly = new Polynomial(new TreeMap<Integer, Double>() {{
             put(0, 1.0);
         }});
-        assertTrue(poly.toString().equals("1.0x^(0)"));
+        assertEquals(poly.toString(), "1.0x^(0)");
     }
 
     @Test
@@ -418,8 +418,8 @@ public class PolynomialTest {
             put(1234, -41464.0001); put(-20001, 7777.7);
             put(201321, -84541.8888); put(-1000005, -9412.0);
         }});
-        assertTrue(poly.toString().equals(
-                "-9412.0x^(-1000005)+7777.7x^(-20001)-41464.0001x^(1234)-84541.8888x^(201321)"));
+        assertEquals(poly.toString(),
+                "-9412.0x^(-1000005)+7777.7x^(-20001)-41464.0001x^(1234)-84541.8888x^(201321)");
     }
 
     @Test
@@ -428,7 +428,7 @@ public class PolynomialTest {
             put(1234, -41464.0001); put(-20001, 7777.7);
             put(201321, -84541.8888); put(-1000005, 0.0);
         }});
-        assertTrue(poly.toString().equals(
-                "7777.7x^(-20001)-41464.0001x^(1234)-84541.8888x^(201321)"));
+        assertEquals(poly.toString(),
+                "7777.7x^(-20001)-41464.0001x^(1234)-84541.8888x^(201321)");
     }
 }

@@ -1,5 +1,7 @@
 package ru.unn.agile.Polynomial.view;
 
+import ru.unn.agile.Polynomial.viewmodel.Operation;
+import ru.unn.agile.Polynomial.viewmodel.Status;
 import ru.unn.agile.Polynomial.viewmodel.ViewModel;
 
 import javax.swing.JComboBox;
@@ -21,7 +23,7 @@ public final class Calculator {
     private JTextField txtFirstPolynomial;
     private JTextField txtSecondPolynomial;
     private JButton btnCalc;
-    private JComboBox<ViewModel.Operation> cbOperation;
+    private JComboBox<Operation> cbOperation;
 
     private Calculator(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -66,7 +68,7 @@ public final class Calculator {
     }
 
     private void loadListOfOperations() {
-        ViewModel.Operation[] operations = ViewModel.Operation.values();
+        Operation[] operations = Operation.values();
         cbOperation.setModel(new JComboBox<>(operations).getModel());
     }
 
@@ -74,12 +76,13 @@ public final class Calculator {
         viewModel.setFirstPolynomial(txtFirstPolynomial.getText());
         viewModel.setSecondPolynomial(txtSecondPolynomial.getText());
 
-        viewModel.setOperation((ViewModel.Operation) cbOperation.getSelectedItem());
+        viewModel.setOperation((Operation) cbOperation.getSelectedItem());
     }
 
     private void backBind() {
         btnCalc.setEnabled(viewModel.isButtonCalculateEnabled());
         txtResult.setText(viewModel.getResult());
-        lbStatus.setText(viewModel.getStatus());
+        Status status = viewModel.getStatus();
+        lbStatus.setText(status.toString());
     }
 }

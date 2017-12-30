@@ -1,6 +1,5 @@
 package ru.unn.agile.Polynomial.viewmodel;
 
-import ru.unn.agile.Polynomial.model.Parser;
 import ru.unn.agile.Polynomial.model.Polynomial;
 
 public class ViewModel {
@@ -21,7 +20,7 @@ public class ViewModel {
         return result;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -76,30 +75,6 @@ public class ViewModel {
         }
     }
 
-    public enum Operation {
-        ADD("Add"),
-        SUB("Sub"),
-        MULTIPLY("Mul");
-        private final String name;
-
-        Operation(final String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
-
-    public final class Status {
-        public static final String WAITING = "Please provide input data";
-        public static final String READY = "Press 'Calculate'";
-        public static final String BAD_FORMAT = "Bad format";
-        public static final String SUCCESS = "Success";
-
-        private Status() { }
-    }
-
     private boolean isInputAvailable() {
         return !firstPolynomial.isEmpty() && !secondPolynomial.isEmpty();
     }
@@ -124,6 +99,6 @@ public class ViewModel {
     private String firstPolynomial;
     private String secondPolynomial;
     private Operation operation;
+    private Status status;
     private String result;
-    private String status;
 }
