@@ -125,11 +125,6 @@ public class ParserTests {
     }
 
     @Test
-    public void cantParseMonomialWhereLeftCurlyIsX() {
-        assertNull(Parser.getPolynomial("1x^x0)"));
-    }
-
-    @Test
     public void canParseZeroMonomial() {
         Polynomial poly = Parser.getPolynomial("0.0x^(6)");
         assertNotNull(poly);
