@@ -197,6 +197,11 @@ public class ParserTests {
     }
 
     @Test
+    public void cantParseSpecialPolynomial() {
+        assertNull(Parser.getPolynomial("1x^(1x^(1)1)"));
+    }
+
+    @Test
     public void cantParsePolynomialWithTrash() {
         assertNull(Parser.getPolynomial("1x^(2)+word"));
     }
