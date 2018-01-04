@@ -18,6 +18,10 @@ public final class Parser {
         Polynomial polynomial = new Polynomial();
         try {
             for (int i = 0; i < coefficientsAndDegrees.length; i += 2) {
+                if (coefficientsAndDegrees[i].charAt(0) != '+'
+                        && coefficientsAndDegrees[i].charAt(0) != '-') {
+                    throw new Exception("No sign between monomials!");
+                }
                 Double coefficient = Double.parseDouble(coefficientsAndDegrees[i]);
                 Integer degree = Integer.parseInt(coefficientsAndDegrees[i + 1]);
                 polynomial.addMonomial(degree, coefficient);

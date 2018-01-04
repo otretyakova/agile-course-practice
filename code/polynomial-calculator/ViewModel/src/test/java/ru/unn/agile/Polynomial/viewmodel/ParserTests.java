@@ -192,6 +192,11 @@ public class ParserTests {
     }
 
     @Test
+    public void cantParsePolynomialWithoutSignBetweenMonomials() {
+        assertNull(Parser.getPolynomial("1x^(1)1x^(1)"));
+    }
+
+    @Test
     public void cantParsePolynomialWithTrash() {
         assertNull(Parser.getPolynomial("1x^(2)+word"));
     }
