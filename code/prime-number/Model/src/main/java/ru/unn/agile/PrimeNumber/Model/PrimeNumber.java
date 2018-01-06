@@ -6,11 +6,10 @@ import java.util.List;
 
 import static java.lang.Math.sqrt;
 
-enum Methods {
-    Eratosthenes, Simple
-}
-
 public class PrimeNumber {
+    public enum Methods {
+        ERATOSTHENES, SIMPLE
+    }
 
     public final void setLim(final Integer left, final Integer right) {
         if (left < right) {
@@ -34,10 +33,10 @@ public class PrimeNumber {
     }
 
     public void findPrimeNumberFromRange(final Methods method) {
-        if (method == Methods.Eratosthenes) {
+        if (method == Methods.ERATOSTHENES) {
             findPrimeNumberFromRangeEratosthenes();
         }
-        if (method == Methods.Simple) {
+        if (method == Methods.SIMPLE) {
             findPrimeNumberFromRangeSimpleSearch();
         }
     }
