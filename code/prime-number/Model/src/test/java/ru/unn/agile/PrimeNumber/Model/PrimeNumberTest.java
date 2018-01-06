@@ -3,6 +3,7 @@ package ru.unn.agile.PrimeNumber.Model;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
+import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 import static org.junit.Assert.assertEquals;
 
@@ -61,7 +62,7 @@ public class PrimeNumberTest {
         List<Integer> prime = new ArrayList<Integer>();
         prime.add(2);
 
-        searchOne.findPrimeNumberFromRange(Methods.Simple);
+        searchOne.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = searchOne.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -76,7 +77,7 @@ public class PrimeNumberTest {
         prime.add(2);
         prime.add(3);
 
-        searchTwo.findPrimeNumberFromRange(Methods.Simple);
+        searchTwo.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = searchTwo.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -91,7 +92,7 @@ public class PrimeNumberTest {
         prime.add(5);
         prime.add(7);
 
-        searchOne.findPrimeNumberFromRange(Methods.Simple);
+        searchOne.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = searchOne.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -106,7 +107,7 @@ public class PrimeNumberTest {
         prime.add(7);
         prime.add(11);
 
-        search.findPrimeNumberFromRange(Methods.Simple);
+        search.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -121,7 +122,7 @@ public class PrimeNumberTest {
         prime.add(2);
         prime.add(3);
 
-        search.findPrimeNumberFromRange(Methods.Simple);
+        search.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -134,7 +135,7 @@ public class PrimeNumberTest {
         PrimeNumber search = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
 
-        search.findPrimeNumberFromRange(Methods.Simple);
+        search.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -149,7 +150,7 @@ public class PrimeNumberTest {
         prime.add(1000000007);
         prime.add(1000000009);
 
-        search.findPrimeNumberFromRange(Methods.Simple);
+        search.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -163,7 +164,7 @@ public class PrimeNumberTest {
         List<Integer> prime = new ArrayList<Integer>();
         prime.add(Integer.MAX_VALUE);
 
-        search.findPrimeNumberFromRange(Methods.Simple);
+        search.findPrimeNumberFromRange(Methods.SIMPLE);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -177,7 +178,7 @@ public class PrimeNumberTest {
         List<Integer> prime = new ArrayList<Integer>();
         prime.add(11);
 
-        searchOne.findPrimeNumberFromRange(Methods.Eratosthenes);
+        searchOne.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = searchOne.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -192,7 +193,7 @@ public class PrimeNumberTest {
         prime.add(13);
         prime.add(17);
 
-        searchTwo.findPrimeNumberFromRange(Methods.Eratosthenes);
+        searchTwo.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = searchTwo.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -207,7 +208,7 @@ public class PrimeNumberTest {
         prime.add(7);
         prime.add(11);
 
-        searchOne.findPrimeNumberFromRange(Methods.Eratosthenes);
+        searchOne.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = searchOne.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -222,7 +223,7 @@ public class PrimeNumberTest {
         prime.add(3);
         prime.add(5);
 
-        search.findPrimeNumberFromRange(Methods.Eratosthenes);
+        search.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -236,7 +237,7 @@ public class PrimeNumberTest {
         List<Integer> prime = new ArrayList<Integer>();
         prime.add(2);
 
-        search.findPrimeNumberFromRange(Methods.Eratosthenes);
+        search.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -249,7 +250,7 @@ public class PrimeNumberTest {
         PrimeNumber search = new PrimeNumber(left, right);
         List<Integer> prime = new ArrayList<Integer>();
 
-        search.findPrimeNumberFromRange(Methods.Eratosthenes);
+        search.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);
@@ -265,7 +266,7 @@ public class PrimeNumberTest {
         prime.add(1013);
         prime.add(1019);
 
-        search.findPrimeNumberFromRange(Methods.Eratosthenes);
+        search.findPrimeNumberFromRange(Methods.ERATOSTHENES);
         List<Integer> resPrime = search.getPrimeList();
 
         assertEquals(prime, resPrime);

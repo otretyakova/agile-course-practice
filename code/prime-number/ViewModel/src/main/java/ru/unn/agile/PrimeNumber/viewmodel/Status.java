@@ -1,6 +1,6 @@
-package ru.unn.agile.PrimeNumber.ViewModel;
+package ru.unn.agile.PrimeNumber.viewmodel;
 
-enum Status {
+public enum Status {
     WAITING("Please provide input data"),
     READY("Press 'Find' or Enter to find prime numbers"),
     BAD_FORMAT("Bad format"),

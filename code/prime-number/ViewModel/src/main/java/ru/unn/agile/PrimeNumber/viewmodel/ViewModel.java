@@ -40,7 +40,7 @@ public class ViewModel {
         } };
 
         for (StringProperty field : fields) {
-            final ValueChangeListener listener = new ValueChangeListener();
+            final PropertyChangeListener listener = new PropertyChangeListener();
             field.addListener(listener);
             valueChangedListeners.add(listener);
         }
@@ -50,22 +50,21 @@ public class ViewModel {
         return status.get();
     }
 
-    public void calculate()
-    {
+    public void calculate() {
         if (calculationDisabled.get()) {
-            return ;
+            return;
         }
         Integer left = Integer.parseInt(rangeFrom.get());
         Integer right = Integer.parseInt(rangeTo.get());
-        PrimeNumber primes = new PrimeNumber(left,right);
+        PrimeNumber primes = new PrimeNumber(left, right);
         primes.findPrimeNumberFromRange(method.get());
-        ArrayList<Integer> primesList = new ArrayList<Integer> (primes.getPrimeList());
+        ArrayList<Integer> primesList = new ArrayList<Integer>(primes.getPrimeList());
 
         Integer count = Integer.min(Integer.parseInt(maxCountPrimes.get()), primesList.size());
         String ans = "";
-        if (primesList.size() > 0) {
-            ans = "Found " + primesList.size() + " primes in the range from " +
-                    left.toString() + " to " + right.toString() + ".\n";
+        if (!primesList.isEmpty()) {
+            ans = "Found " + primesList.size() + " primes in the range from "
+                    + left.toString() + " to " + right.toString() + ".\n";
             if (count > 0) {
                 ans += "Here are " + count + " of them:\n";
                 int j = 0;
@@ -87,18 +86,19 @@ public class ViewModel {
                 ans += "\n";
             }
         } else {
-            ans = "There are no primes in the range from " +
-                    left.toString() + " to " + right.toString() + ".\n";
+            ans = "There are no primes in the range from "
+                    + left.toString() + " to " + right.toString() + ".\n";
         }
         currentAnswer.set(ans);
         status.set(Status.SUCCESS.toString());
         answersList.add(ans);
     }
 
-    private Status getInputStatus()
-    {
+    private Status getInputStatus() {
         Status inputStatus = Status.READY;
-        if (rangeFrom.get().isEmpty() || rangeTo.get().isEmpty() || maxCountPrimes.get().isEmpty()) {
+        if (rangeFrom.get().isEmpty()
+            || rangeTo.get().isEmpty()
+            || maxCountPrimes.get().isEmpty()) {
             inputStatus = Status.WAITING;
         }
         try {
@@ -121,8 +121,7 @@ public class ViewModel {
         return inputStatus;
     }
 
-    public void chooseAnswerById(Integer id)
-    {
+    public void chooseAnswerById(final Integer id) {
         currentAnswer.set(answersList.get(id));
     }
 
@@ -167,11 +166,11 @@ public class ViewModel {
     private final StringProperty currentAnswer = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
+    private final List<PropertyChangeListener> valueChangedListeners = new ArrayList<>();
     private final ObjectProperty<Methods> method = new SimpleObjectProperty<>();
     private final ListProperty<String> answersList = new SimpleListProperty<>();
 
-    private class ValueChangeListener implements ChangeListener<String> {
+    private class PropertyChangeListener implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
