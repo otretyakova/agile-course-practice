@@ -1,4 +1,4 @@
-package ru.unn.agile.PrimeNumber.ViewModel;
+package ru.unn.agile.PrimeNumber.viewmodel;
 
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
