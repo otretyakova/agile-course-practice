@@ -17,7 +17,8 @@ include "code/DistanceBetweenVectors/ViewModel"
 project(":code/DistanceBetweenVectors/ViewModel").name = "DistanceBetweenVectors-ViewModel"
 include "code/DistanceBetweenVectors/View"
 project(":code/DistanceBetweenVectors/View").name = "DistanceBetweenVectors-View"
-
+include "code/DistanceBetweenVectors/Infrastructure"
+project(":code/DistanceBetweenVectors/Infrastructure").name = "DistanceBetweenVectors-Infrastructure"
 
 // Volokitin Valentin
 include "code/Prime_number"

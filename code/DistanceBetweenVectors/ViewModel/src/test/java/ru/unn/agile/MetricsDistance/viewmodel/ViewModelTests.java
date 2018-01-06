@@ -13,9 +13,15 @@ import ru.unn.agile.MetricsDistance.Model.Metric;
 
 public class ViewModelTests {
 
+    public void setExternalViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setUp() {
-        viewModel = new ViewModel(new FakeLogger());
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -221,14 +227,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
         String message = viewModel.getLog().get(0);
+        String expectedMessage = getProperlyFormattedArgumentsInfo();
 
-        assertTrue(message.matches(".*Arguments"
-                + ": Vec1X = " + viewModel.getVec1X()
-                + "; Vec1Y = " + viewModel.getVec1Y()
-                + "; Vec2X = " + viewModel.getVec2X()
-                + "; Vec2Y = " + viewModel.getVec2Y()
-                + "; Metric = " + viewModel.getMetric()
-                + "; Result = " + viewModel.getResult() + ".*"));
+        assertTrue(message.matches(expectedMessage));
     }
 
     @Test
@@ -251,15 +252,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
         String message = viewModel.getLog().get(0);
+        String expectedMessage = getProperlyFormattedArgumentsInfo();
 
-        assertTrue(message.matches(".*Arguments"
-                + ": Vec1X = " + viewModel.getVec1X()
-                + "; Vec1Y = " + viewModel.getVec1Y()
-                + "; Vec2X = " + viewModel.getVec2X()
-                + "; Vec2Y = " + viewModel.getVec2Y()
-                + "; Metric = " + viewModel.getMetric()
-                + "; Dim = " + viewModel.getDim()
-                + "; Result = " + viewModel.getResult() + ".*"));
+        assertTrue(message.matches(expectedMessage));
     }
 
     @Test
@@ -328,7 +323,7 @@ public class ViewModelTests {
         viewModel.onMetricChanged(Metric.Chebyshev, Metric.Minkowski);
         String message = viewModel.getLogs();
 
-        assertEquals(LogMessages.METRIC_WAS_CHANGED + "Minkowski\n", message);
+        assertTrue(message.matches(".*" + LogMessages.METRIC_WAS_CHANGED + "Minkowski\n"));
     }
 
     @Test
@@ -338,7 +333,8 @@ public class ViewModelTests {
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
         String message = viewModel.getLogs();
 
-        assertEquals(LogMessages.EDITING_FINISHED + "Input arguments are: [1; ; ; ; ]\n", message);
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
+                + "Input arguments are: \\[1; ; ; ; \\]\n"));
     }
 
     @Test
@@ -352,6 +348,19 @@ public class ViewModelTests {
     }
 
     private ViewModel viewModel;
+
+    private String getProperlyFormattedArgumentsInfo() {
+        String argumentsInfo = ".*Arguments"
+                + ": Vec1X = " + viewModel.getVec1X()
+                + "; Vec1Y = " + viewModel.getVec1Y()
+                + "; Vec2X = " + viewModel.getVec2X()
+                + "; Vec2Y = " + viewModel.getVec2Y()
+                + "; Metric = " + viewModel.getMetric();
+        if (viewModel.getMetric() == Metric.Minkowski)
+            argumentsInfo += "; Dim = " + viewModel.getDim();
+        argumentsInfo += "; Result = " + viewModel.getResult() + ".*";
+        return argumentsInfo;
+    }
 
     private void setInputData(final String vec1X, final String vec1Y, final String vec2X,
                               final String vec2Y, final String dim) {

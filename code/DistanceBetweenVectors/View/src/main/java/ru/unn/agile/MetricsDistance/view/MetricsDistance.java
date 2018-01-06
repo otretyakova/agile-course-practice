@@ -6,10 +6,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import ru.unn.agile.MetricsDistance.viewmodel.ViewModel;
 import ru.unn.agile.MetricsDistance.Model.Metric;
+import ru.unn.agile.MetricsDistance.Infrastructure.TxtLogger;
 
 public class MetricsDistance {
     @FXML
     void initialize() {
+        viewModel.setLogger(new TxtLogger("./TxtLogger-lab3.log"));
+
         txtV1x.textProperty().bindBidirectional(viewModel.vec1XProperty());
         txtV1y.textProperty().bindBidirectional(viewModel.vec1YProperty());
         txtV2x.textProperty().bindBidirectional(viewModel.vec2XProperty());
