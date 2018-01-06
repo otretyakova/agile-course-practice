@@ -4,7 +4,6 @@ public enum Operation {
     ADD("Add"),
     SUB("Sub"),
     MULTIPLY("Mul");
-    private final String name;
 
     Operation(final String name) {
         this.name = name;
@@ -13,4 +12,6 @@ public enum Operation {
     public String toString() {
         return name;
     }
+
+    private final String name;
 }

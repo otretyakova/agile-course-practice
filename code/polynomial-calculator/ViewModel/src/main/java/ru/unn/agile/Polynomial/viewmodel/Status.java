@@ -5,7 +5,6 @@ public enum Status {
     READY("Press 'Calculate'"),
     BAD_FORMAT("Bad format"),
     SUCCESS("Success");
-    private final String name;
 
     Status(final String name) {
         this.name = name;
@@ -14,4 +13,6 @@ public enum Status {
     public String toString() {
         return name;
     }
+
+    private final String name;
 }

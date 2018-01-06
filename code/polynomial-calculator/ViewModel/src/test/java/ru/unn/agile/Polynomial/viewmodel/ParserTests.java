@@ -115,6 +115,11 @@ public class ParserTests {
     }
 
     @Test
+    public void cantParseMonomialWhereSpecialSequencesStandViceVersa() {
+        assertNull(Parser.getPolynomial("85)1x^("));
+    }
+
+    @Test
     public void cantParseMonomialsWhereSpecialCharSequencesAreUsed() {
         assertNull(Parser.getPolynomial("1x^x0)"));
         assertNull(Parser.getPolynomial("1xyx0)"));
@@ -249,11 +254,18 @@ public class ParserTests {
     }
 
     @Test
+    public void canParsePolynomialWithWhitespacesBetweenMonomials() {
+        Polynomial poly = Parser.getPolynomial("11x^(2) - 5x^(1) + 13x^(0)");
+        assertNotNull(poly);
+        assertEquals("13.0x^(0)-5.0x^(1)+11.0x^(2)", poly.toString());
+    }
+
+    @Test
     public void canParseArbitraryPolynomial() {
         Polynomial poly = Parser.getPolynomial(
-                "1133123.000107x^(-423)-0.0000009x^(1)-999x^(0)");
+                "1133123.000107x^(-423) - 0.0000009x^(1)+999x^(0)");
         assertNotNull(poly);
-        assertEquals("1133123.000107x^(-423)-999.0x^(0)-9.0E-7x^(1)",
+        assertEquals("1133123.000107x^(-423)+999.0x^(0)-9.0E-7x^(1)",
                 poly.toString());
     }
 

@@ -7,20 +7,13 @@ public final class Parser {
         if (!isValidText(txt)) {
             return null;
         }
-        String strPolynomial = new String(txt);
-        if (strPolynomial.charAt(0) != '-') {
-            strPolynomial = "+" + strPolynomial;
-        }
-        strPolynomial = strPolynomial.replace('^', 'y');
-        strPolynomial = strPolynomial.replaceAll("[()]", "z");
-        strPolynomial = strPolynomial.replaceAll("xyz", "z");
-        String[] coefficientsAndDegrees = strPolynomial.split("z");
+        String[] coefficientsAndDegrees = getCoefficientsAndDegrees(txt);
         Polynomial polynomial = new Polynomial();
         try {
             for (int i = 0; i < coefficientsAndDegrees.length; i += 2) {
                 if (coefficientsAndDegrees[i].charAt(0) != '+'
                         && coefficientsAndDegrees[i].charAt(0) != '-') {
-                    throw new Exception("No sign between monomials!");
+                    throw new Exception("Invalid sign between monomials!");
                 }
                 Double coefficient = Double.parseDouble(coefficientsAndDegrees[i]);
                 Integer degree = Integer.parseInt(coefficientsAndDegrees[i + 1]);
@@ -32,20 +25,34 @@ public final class Parser {
         return polynomial;
     }
 
-    private static boolean isValidText(final String txt) {
-        boolean result;
-        result = !txt.isEmpty();
-        result &= txt.indexOf(' ') == -1;
-        result &= txt.indexOf('y') == -1;
-        result &= txt.indexOf('z') == -1;
-        result &= (txt.replaceAll("[(]", "").length()
-                == txt.replaceAll("[)]", "").length());
-        String tempTxt = txt.replace('^', 'y');
-        tempTxt = tempTxt.replace('(', 'z');
-        tempTxt = tempTxt.replaceAll("xyz", "(");
-        result &= (tempTxt.replaceAll("[(]", "").length()
-                == tempTxt.replaceAll("[)]", "").length());
+    private static String removeWhitespacesAroundSign(final String txt) {
+        String result = txt.replaceAll("\\)\\s\\+\\s", ")+");
+        result = result.replaceAll("\\)\\s\\-\\s", ")-");
         return result;
+    }
+
+    private static boolean isValidText(final String txt) {
+        boolean result = false;
+        if (!txt.isEmpty()) {
+            String changedText = txt.replaceAll("\\)\\d", "");
+            result = (txt.length() == changedText.length());
+            changedText = removeWhitespacesAroundSign(txt);
+            result &= (changedText.replaceAll("[0-9.x\\+\\-\\^\\(\\)]", "").isEmpty());
+            changedText = txt.replaceAll("x\\^\\(", "a");
+            result &= (changedText.replaceAll("a", "aa").length()
+                    == changedText.replaceAll("\\)", "aa").length());
+        }
+        return result;
+    }
+
+    private static String[] getCoefficientsAndDegrees(final String txt) {
+        String strPolynomial = removeWhitespacesAroundSign(txt);
+        if (strPolynomial.charAt(0) != '-') {
+            strPolynomial = "+" + strPolynomial;
+        }
+        strPolynomial = strPolynomial.replaceAll("x\\^\\(", "a");
+        strPolynomial = strPolynomial.replaceAll("\\)", "a");
+        return strPolynomial.split("a");
     }
 
     private Parser() { }
