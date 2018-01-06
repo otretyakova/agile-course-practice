@@ -1,4 +1,4 @@
-package ru.unn.agile.StringCalculator.model;
+package ru.unn.agile.StringCalculator.Model;
 
 public final class StringCalculator {
     public static int add(final String input) throws IllegalArgumentException {
@@ -38,7 +38,7 @@ public final class StringCalculator {
         String delimiter = ",\n";
         String firstSymbol = input.substring(0, 1);
         if (firstSymbol.matches("[,.:;]")) {
-            delimiter += firstSymbol;
+            delimiter = firstSymbol + "\n";
         }
         return delimiter;
     }

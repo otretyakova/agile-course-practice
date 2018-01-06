@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import ru.unn.agile.StringCalculator.model.StringCalculator;
+import ru.unn.agile.StringCalculator.Model.StringCalculator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +33,13 @@ public class ViewModel {
             return;
         }
 
-        result.set(Integer.toString(StringCalculator.add(getInputString())));
+        String inputString = getInputString();
+        result.set(Integer.toString(StringCalculator.add(getCorrectString(inputString))));
         status.set(Status.SUCCESS.toString());
 
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
-        message.append("Input string = ").append(getInputString());
+        message.append("Input string = ").append(getInputString())
+                .append("; Result = ").append(getResult());
         logger.log(message.toString());
         updateLogs();
     }
@@ -47,7 +49,7 @@ public class ViewModel {
             return;
         }
 
-        for (ValueModifyListener listener : valueChangedListeners) {
+        for (ValueChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
                 StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
                 message.append("Input string = ").append(getInputString());
@@ -96,7 +98,7 @@ public class ViewModel {
     }
 
     public final String getLogs() {
-        return logs.get();
+        return logsProperty().get();
     }
 
     public BooleanProperty calculationDisabledProperty() {
@@ -116,7 +118,7 @@ public class ViewModel {
     private final StringProperty status = new SimpleStringProperty();
     private final StringProperty logs = new SimpleStringProperty();
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
-    private List<ValueModifyListener> valueChangedListeners;
+    private List<ValueChangeListener> valueChangedListeners;
     private ILogger logger;
 
     private void initialize() {
@@ -141,21 +143,30 @@ public class ViewModel {
 
         valueChangedListeners = new ArrayList<>();
         for (StringProperty value : values) {
-            final ValueModifyListener listener = new ValueModifyListener();
+            final ValueChangeListener listener = new ValueChangeListener();
             value.addListener(listener);
             valueChangedListeners.add(listener);
         }
     }
 
     private Status getInputStatus() {
+        String inputString = getInputString();
         Status inputStatus = Status.READY;
-        if (getInputString().isEmpty()) {
+        if (inputString.isEmpty() || inputString.matches("[,.:;]")) {
             inputStatus = Status.WAITING;
-        } else if (StringCalculator.isBadFormat(getInputString())) {
+        } else if (StringCalculator.isBadFormat(getCorrectString(inputString))) {
             inputStatus = Status.BAD_FORMAT;
         }
 
         return inputStatus;
+    }
+
+    private String getCorrectString(final String input) {
+        if (input.substring(0, 1).matches("[,.:;]")) {
+            return input.substring(0, 1) + "\n" + input.substring(1);
+        } else {
+            return input;
+        }
     }
 
     private void updateLogs() {
@@ -168,7 +179,7 @@ public class ViewModel {
         setLogs(record);
     }
 
-    private class ValueModifyListener implements ChangeListener<String> {
+    private class ValueChangeListener implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {

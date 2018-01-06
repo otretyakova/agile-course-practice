@@ -2,6 +2,8 @@ package ru.unn.agile.StringCalculator.infrastructure;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import java.io.BufferedReader;
@@ -38,6 +40,16 @@ public class TxtLoggerTests {
 
         String message = txtLogger.getLog().get(0);
         assertTrue(message.matches(".*" + testMessage + ".*"));
+    }
+
+    @Test
+    public void canWriteTwoLogMessage() {
+        String[] messages = {"Test message 1", "Test message 2"};
+
+        txtLogger.log(messages[0]);
+        txtLogger.log(messages[1]);
+
+        assertEquals(2, txtLogger.getLog().size());
     }
 
     @Test
