@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.ObservableList;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
@@ -44,10 +45,6 @@ public class ViewModel {
             field.addListener(listener);
             valueChangedListeners.add(listener);
         }
-    }
-
-    public String getStatus() {
-        return status.get();
     }
 
     public void calculate() {
@@ -137,6 +134,16 @@ public class ViewModel {
     public String getCurrentAnswer() {
         return currentAnswer.get();
     }
+    public final String getStatus() {
+        return status.get();
+    }
+
+    public final boolean isCalculationDisabled() {
+        return calculationDisabled.get();
+    }
+    public final ObservableList<Methods> getMethods() {
+        return methods.get();
+    }
 
     public StringProperty rangeFromProperty() {
         return rangeFrom;
@@ -149,6 +156,9 @@ public class ViewModel {
     }
     public StringProperty currentAnswerProperty() {
         return currentAnswer;
+    }
+    public StringProperty statusProperty() {
+        return status;
     }
     public BooleanProperty calculationDisabledProperty() {
         return calculationDisabled;
@@ -168,6 +178,8 @@ public class ViewModel {
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
     private final List<PropertyChangeListener> valueChangedListeners = new ArrayList<>();
     private final ObjectProperty<Methods> method = new SimpleObjectProperty<>();
+    private final ObjectProperty<ObservableList<Methods>> methods =
+            new SimpleObjectProperty<>(FXCollections.observableArrayList(Methods.values()));
     private final ListProperty<String> answersList = new SimpleListProperty<>();
 
     private class PropertyChangeListener implements ChangeListener<String> {

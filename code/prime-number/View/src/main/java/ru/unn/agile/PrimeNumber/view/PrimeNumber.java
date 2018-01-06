@@ -1,46 +1,59 @@
 package ru.unn.agile.PrimeNumber.view;
 
-//import javafx.event.ActionEvent;
-//import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.ComboBox;
-//import javafx.scene.control.TextField;
-//import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
-//import ru.unn.agile.PrimeNumber.ViewModel.PrimeNumber;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ListView;
+import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
+
+import ru.unn.agile.PrimeNumber.viewmodel.ViewModel;
 
 public class PrimeNumber {
-    /*@FXML
+    @FXML
     private ViewModel viewModel;
     @FXML
-    private TextField txtZ1Re;
+    private TextField txtFrom;
     @FXML
-    private TextField txtZ1Im;
+    private TextField txtTo;
     @FXML
-    private TextField txtZ2Re;
+    private TextField txtNumberOfPrimes;
     @FXML
-    private TextField txtZ2Im;
+    private ChoiceBox<Methods> cbMethods;
     @FXML
-    private ComboBox<Operation> cbOperation;
+    private Button buFind;
     @FXML
-    private Button btnCalc;
-*/
+    private ListView lstQuery;
+
     @FXML
+    @SuppressWarnings("unchecked")
     void initialize() {
+        txtFrom.textProperty().bindBidirectional(viewModel.rangeFromProperty());
+        txtTo.textProperty().bindBidirectional(viewModel.rangeToProperty());
+        txtNumberOfPrimes.textProperty().bindBidirectional(viewModel.maxCountPrimesProperty());
 
-        // Two-way binding hasn't supported by FXML yet, so place it in code-behind
-        /*txtZ1Re.textProperty().bindBidirectional(viewModel.re1Property());
-        txtZ1Im.textProperty().bindBidirectional(viewModel.im1Property());
-        txtZ2Re.textProperty().bindBidirectional(viewModel.re2Property());
-        txtZ2Im.textProperty().bindBidirectional(viewModel.im2Property());
+        cbMethods.valueProperty().bindBidirectional(viewModel.methodProperty());
 
-        cbOperation.valueProperty().bindBidirectional(viewModel.operationProperty());
+        lstQuery.itemsProperty().bindBidirectional(viewModel.answersListProperty());
+        lstQuery.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<String>() {
+                @Override
+                public void changed(final ObservableValue<? extends String> observable,
+                                    final String oldValue, final String newValue) {
+                    viewModel.chooseAnswerById(lstQuery.getSelectionModel().getSelectedIndex());
+                }
+            }
+        );
 
-        btnCalc.setOnAction(new EventHandler<ActionEvent>() {
+        buFind.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {
                 viewModel.calculate();
             }
-        });*/
+        });
     }
 }
