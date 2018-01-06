@@ -300,7 +300,7 @@ public class ViewModelTests {
                 + viewModel.getVec1Y() + "; "
                 + viewModel.getVec2X() + "; "
                 + viewModel.getVec2Y() + "; "
-                + viewModel.getDim()+ "\\]"));
+                + viewModel.getDim() + "\\]"));
     }
 
     @Test
@@ -356,8 +356,9 @@ public class ViewModelTests {
                 + "; Vec2X = " + viewModel.getVec2X()
                 + "; Vec2Y = " + viewModel.getVec2Y()
                 + "; Metric = " + viewModel.getMetric();
-        if (viewModel.getMetric() == Metric.Minkowski)
+        if (viewModel.getMetric() == Metric.Minkowski) {
             argumentsInfo += "; Dim = " + viewModel.getDim();
+        }
         argumentsInfo += "; Result = " + viewModel.getResult() + ".*";
         return argumentsInfo;
     }

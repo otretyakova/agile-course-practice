@@ -1,4 +1,4 @@
-package ru.unn.agile.MetricsDistance;
+package ru.unn.agile.MetricsDistance.infrastructure;
 
 import org.junit.Test;
 import org.junit.Before;

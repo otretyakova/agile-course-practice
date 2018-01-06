@@ -297,13 +297,12 @@ public class ViewModel {
 
     private String createMessageAfterCalculation() {
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
-        message.append("Arguments")
-                .append(": Vec1X = ").append(getVec1X())
+        message.append("Arguments: Vec1X = ").append(getVec1X())
                 .append("; Vec1Y = ").append(getVec1Y())
                 .append("; Vec2X = ").append(getVec2X())
                 .append("; Vec2Y = ").append(getVec2Y())
                 .append("; Metric = ").append(getMetric().toString());
-        if(getMetric() == Metric.Minkowski) {
+        if (getMetric() == Metric.Minkowski) {
             message.append("; Dim = ").append(getDim());
         }
         message.append("; Result = ").append(getResult()).append(".");
