@@ -5,11 +5,9 @@ import java.util.List;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.round;
-import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.month;
-import static ru.unn.agile.MortgageCalculator.Model.MortgageCalculator.PERIODTYPE.year;
 
 public class MortgageCalculator {
-    public enum PERIODTYPE { month, year };
+    public enum PeriodType { month, year };
 
     public MortgageCalculator(final float amount, final int period, final float rate) {
         this.amount = amount;
@@ -18,75 +16,67 @@ public class MortgageCalculator {
         payments = new ArrayList<Integer>();
     }
 
-    public List<Integer> differentiatedPayment(final PERIODTYPE t) {
-        int n = 0;
+    public List<Integer> differentiatedPayment(final PeriodType paymentPeriod) {
+        int periodNumber = 0;
         float amountT = amount;
         if (period != 0) {
             if (rate != 0) {
-                switch (t) {
+                switch (paymentPeriod) {
                     case month:
-                        n = period;
+                        periodNumber = period;
                         break;
                     case year:
-                        n = period * MONTH_IN_YEAR;
+                        periodNumber = period * MONTH_IN_YEAR;
                         break;
                     default:
-                        error = "Type of period is undefined";
-                        return null;
+                        throw new IllegalArgumentException("Type of period is undefined");
                 }
-                for (int i = 0; i < n; i++) {
-                    payments.add(round(amountT / (n - i) + amountT * (rate / MONTH_IN_YEAR)));
-                    amountT -= amount / n;
+                for (int i = 0; i < periodNumber; i++) {
+                    payments.add(round(amountT / (periodNumber - i) + amountT * (rate
+                            / MONTH_IN_YEAR)));
+                    amountT -= amount / periodNumber;
                 }
                 return payments;
             } else {
-                error = "Rate is zero";
-                return null;
+                throw new IllegalArgumentException("Rate is zero");
             }
         } else {
-            error = "Period is zero";
-            return null;
+            throw new IllegalArgumentException("Period is zero");
         }
     }
 
-    public int annuityPayment(final PERIODTYPE t) {
+    public int annuityPayment(final PeriodType paymentPeriod) {
         int n = period;
         if (period != 0) {
             if (rate != 0) {
-                if (t != null && !t.equals(month)
-                        && !t.equals(year)) {
-                    error = "Type of period is undefined";
-                    return 0;
-                } else if (t != null && t.equals(year)) {
+                if (paymentPeriod != null && !paymentPeriod.equals(PeriodType.month)
+                        && !paymentPeriod.equals(PeriodType.year)) {
+                    throw new IllegalArgumentException("Type of period is undefined");
+                } else if (paymentPeriod != null && paymentPeriod.equals(PeriodType.year)) {
                     n *= MONTH_IN_YEAR;
                 }
                 payment = (int) (amount * (((rate / MONTH_IN_YEAR) * pow(1 + rate / MONTH_IN_YEAR,
                         n)) / (pow(1 + (rate / MONTH_IN_YEAR), n) - 1)));
                 return payment;
             } else {
-                error = "Rate is zero";
-                return 0;
+                throw new IllegalArgumentException("Rate is zero");
             }
         } else {
-            error = "Period is zero";
-            return 0;
+            throw new IllegalArgumentException("Period is zero");
         }
     }
 
-    public int getPayments(final String paymentType, final int periodNumber, final PERIODTYPE t) {
+    public int getPayments(final String paymentType, final int periodNumber,
+                           final PeriodType paymentPeriod) {
         switch (paymentType) {
             case "differentiated":
-                return differentiatedPayment(t).get(periodNumber);
+                return differentiatedPayment(paymentPeriod).get(periodNumber);
             case "annuity":
-                return annuityPayment(t);
+                return annuityPayment(paymentPeriod);
             default:
-                error = "Can't print payment of undefined type of payment";
-                return 0;
+                throw new IllegalArgumentException("Can't print payment of undefined "
+                        + "type of payment");
         }
-    }
-
-    public String getError() {
-        return error;
     }
 
     private static final int MONTH_IN_YEAR = 12;
@@ -95,5 +85,4 @@ public class MortgageCalculator {
     private float rate;
     private List<Integer> payments;
     private int payment;
-    private String error;
 }
