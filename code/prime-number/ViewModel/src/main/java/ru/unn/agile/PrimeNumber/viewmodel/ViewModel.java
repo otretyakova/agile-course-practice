@@ -53,42 +53,56 @@ public class ViewModel {
         }
         Integer left = Integer.parseInt(rangeFrom.get());
         Integer right = Integer.parseInt(rangeTo.get());
+
+        long startTime = System.nanoTime();
+
         PrimeNumber primes = new PrimeNumber(left, right);
         primes.findPrimeNumberFromRange(method.get());
         ArrayList<Integer> primesList = new ArrayList<Integer>(primes.getPrimeList());
 
+        long elapsedTime = System.nanoTime() - startTime;
+        final long numberOfNanosecondsInSecond = 1000000000;
+        Double elapsedTimeInSec = (double) elapsedTime / numberOfNanosecondsInSecond;
+
         Integer count = Integer.min(Integer.parseInt(maxCountPrimes.get()), primesList.size());
-        String ans = "";
+        String answerMessage = "", shortMessage = "";
         if (!primesList.isEmpty()) {
-            ans = "Found " + primesList.size() + " primes in the range from "
-                    + left.toString() + " to " + right.toString() + ".\n";
+            answerMessage = "Found " + primesList.size() + " primes in the range from "
+                    + left.toString() + " to " + right.toString()
+                    + " in " + elapsedTimeInSec.toString() + " seconds.\n";
+            shortMessage = primesList.size() + " primes in ["
+                    + left.toString() + "; " + right.toString() + "]"
+                    + " and printed " + count.toString();
             if (count > 0) {
-                ans += "Here are " + count + " of them:\n";
+                answerMessage += "Here are " + count + " of them:\n";
                 int j = 0;
                 for (int i = 0; i < (count + 1) / 2; i++, j++) {
-                    ans += primesList.get(i).toString();
+                    answerMessage += primesList.get(i).toString();
                     if (j != count - 1) {
-                        ans += ", ";
+                        answerMessage += ", ";
                     }
                 }
                 if (count != primesList.size() && j != count) {
-                    ans += "..., ";
+                    answerMessage += "..., ";
                 }
                 for (int i = 0; i < count / 2; i++, j++) {
-                    ans += primesList.get(primesList.size() - count / 2 + i).toString();
+                    answerMessage += primesList.get(primesList.size() - count / 2 + i).toString();
                     if (j != count - 1) {
-                        ans += ", ";
+                        answerMessage += ", ";
                     }
                 }
-                ans += "\n";
+                answerMessage += "\n";
             }
         } else {
-            ans = "There are no primes in the range from "
-                    + left.toString() + " to " + right.toString() + ".\n";
+            answerMessage = "There are no primes in the range from "
+                    + left.toString() + " to " + right.toString()
+                    + " in " + elapsedTimeInSec.toString() + " seconds.\n";
+            shortMessage = "No primes in ["
+                    + left.toString() + "; " + right.toString() + "]";
         }
-        currentAnswer.set(ans);
+        currentAnswer.set(answerMessage);
         status.set(Status.SUCCESS.toString());
-        answersList.add(ans);
+        answersList.add(new Query(shortMessage, answerMessage));
     }
 
     private Status getInputStatus() {
@@ -119,7 +133,7 @@ public class ViewModel {
     }
 
     public void chooseAnswerById(final Integer id) {
-        currentAnswer.set(answersList.get(id));
+        currentAnswer.set(answersList.get(id).getAnswerMessage());
     }
 
     public String getRangeFrom() {
@@ -166,7 +180,7 @@ public class ViewModel {
     public ObjectProperty<Methods> methodProperty() {
         return method;
     }
-    public ListProperty<String> answersListProperty() {
+    public ListProperty<Query> answersListProperty() {
         return answersList;
     }
 
@@ -180,7 +194,7 @@ public class ViewModel {
     private final ObjectProperty<Methods> method = new SimpleObjectProperty<>();
     private final ObjectProperty<ObservableList<Methods>> methods =
             new SimpleObjectProperty<>(FXCollections.observableArrayList(Methods.values()));
-    private final ListProperty<String> answersList = new SimpleListProperty<>();
+    private final ListProperty<Query> answersList = new SimpleListProperty<>();
 
     private class PropertyChangeListener implements ChangeListener<String> {
         @Override

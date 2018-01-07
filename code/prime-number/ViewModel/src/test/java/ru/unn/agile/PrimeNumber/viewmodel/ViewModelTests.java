@@ -142,6 +142,12 @@ public class ViewModelTests {
         assertEquals(Methods.SIMPLE, viewModel.methodProperty().get());
     }
 
+    private String getAnswerWithoutTime(final String answer) {
+        String beginStr = answer.substring(0, answer.indexOf(" seconds."));
+        return beginStr.substring(0, beginStr.lastIndexOf(" ") + 1)
+                + answer.substring(answer.indexOf(" seconds."));
+    }
+
     @Test
     public void methodSimpleHasCorrectResult() {
         viewModel.rangeFromProperty().set("2");
@@ -151,8 +157,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 4 primes in the range from 2 to 10.\n"
-                + "Here are 3 of them:\n2, 3, ..., 7\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 4 primes in the range from 2 to 10 in  seconds.\n"
+                + "Here are 3 of them:\n2, 3, ..., 7\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -164,8 +171,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 4 primes in the range from 2 to 10.\n"
-                + "Here are 1 of them:\n2\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 4 primes in the range from 2 to 10 in  seconds.\n"
+                + "Here are 1 of them:\n2\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -177,8 +185,8 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 4 primes in the range from 2 to 10.\n",
-                viewModel.currentAnswerProperty().get());
+        assertEquals("Found 4 primes in the range from 2 to 10 in  seconds.\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -190,8 +198,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 1229 primes in the range from 2 to 10000.\n"
-                + "Here are 2 of them:\n2, ..., 9973\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 1229 primes in the range from 2 to 10000 in  seconds.\n"
+                + "Here are 2 of them:\n2, ..., 9973\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -203,8 +212,8 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("There are no primes in the range from 9980 to 10000.\n",
-                viewModel.currentAnswerProperty().get());
+        assertEquals("There are no primes in the range from 9980 to 10000 in  seconds.\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -216,8 +225,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 25 primes in the range from -100 to 100.\n"
-                + "Here are 2 of them:\n2, ..., 97\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 25 primes in the range from -100 to 100 in  seconds.\n"
+                + "Here are 2 of them:\n2, ..., 97\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -229,8 +239,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 4 primes in the range from 10 to 2.\n"
-                + "Here are 2 of them:\n2, ..., 7\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 4 primes in the range from 10 to 2 in  seconds.\n"
+                + "Here are 2 of them:\n2, ..., 7\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
 
@@ -243,8 +254,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 1 primes in the range from 13 to 13.\n"
-                + "Here are 1 of them:\n13\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 1 primes in the range from 13 to 13 in  seconds.\n"
+                + "Here are 1 of them:\n13\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -256,8 +268,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 4 primes in the range from 2 to 10.\n"
-                + "Here are 4 of them:\n2, 3, 5, 7\n", viewModel.currentAnswerProperty().get());
+        assertEquals("Found 4 primes in the range from 2 to 10 in  seconds.\n"
+                + "Here are 4 of them:\n2, 3, 5, 7\n",
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -269,9 +282,9 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals("Found 1229 primes in the range from 2 to 10000.\n"
+        assertEquals("Found 1229 primes in the range from 2 to 10000 in  seconds.\n"
                 + "Here are 9 of them:\n2, 3, 5, 7, 11, ..., 9941, 9949, 9967, 9973\n",
-                viewModel.currentAnswerProperty().get());
+                getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
     @Test
@@ -285,7 +298,7 @@ public class ViewModelTests {
 
     @Test
     public void canGetAnswersLists() {
-        assertEquals(new ArrayList<String>(), viewModel.answersListProperty().get());
+        assertEquals(new ArrayList<Query>(), viewModel.answersListProperty().get());
     }
 
     @Test
@@ -294,18 +307,22 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        assertEquals(new ArrayList<String>() {{
-            add("Found 1 primes in the range from 2 to 2.\n"
-                + "Here are 1 of them:\n2\n"); }}, viewModel.answersListProperty().get());
+        assertEquals(new ArrayList<Query>() {{
+            add(new Query("1 primes in [2; 2] and printed 1",
+                    "Found 1 primes in the range from 2 to 2 in  seconds.\n"
+                       + "Here are 1 of them:\n2\n")); }}, viewModel.answersListProperty().get());
     }
 
     @Test
     public void canSetCurrentAnswer() {
         viewModel.answersListProperty().set(FXCollections.observableArrayList(
-            new ArrayList<String>() {{ add("a"); add("b"); }}
+            new ArrayList<Query>() {{
+                add(new Query("a", "aaa"));
+                add(new Query("b", "bbb"));
+            }}
         ));
         viewModel.chooseAnswerById(0);
-        assertEquals("a", viewModel.getCurrentAnswer());
+        assertEquals("aaa", viewModel.getCurrentAnswer());
     }
 
     private void setCorrectData() {

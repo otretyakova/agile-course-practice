@@ -10,6 +10,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
+import ru.unn.agile.PrimeNumber.viewmodel.Query;
 
 import ru.unn.agile.PrimeNumber.viewmodel.ViewModel;
 
@@ -40,10 +41,10 @@ public class PrimeNumber {
 
         lstQuery.itemsProperty().bindBidirectional(viewModel.answersListProperty());
         lstQuery.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<String>() {
+            new ChangeListener<Query>() {
                 @Override
-                public void changed(final ObservableValue<? extends String> observable,
-                                    final String oldValue, final String newValue) {
+                public void changed(final ObservableValue<? extends Query> observable,
+                                    final Query oldValue, final Query newValue) {
                     viewModel.chooseAnswerById(lstQuery.getSelectionModel().getSelectedIndex());
                 }
             }
