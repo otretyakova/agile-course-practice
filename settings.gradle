@@ -47,8 +47,8 @@
 
 
 // Morozova Julia
-include "code/morozova-yulia-booksale"
-project(":code/morozova-yulia-booksale").name = "morozova-yulia-booksale-Model"
+include "code/booksale"
+project(":code/booksale").name = "booksale-Model"
 
 // Novak Alexander
 include "code/number-system-converter"
