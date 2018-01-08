@@ -10,14 +10,14 @@ import java.awt.event.KeyEvent;
 
 public final class ViewLHeap {
 
-    private ViewModel viewModel;
-    private JTextField fieldAdd;
-    private JButton buttonAdd;
-    private JTextField fieldRemove;
-    private JButton buttonRemove;
-    private JTextArea textResult;
-    private JPanel mainPanel;
+    public static void main(final String[] args) {
+        JFrame frame = new JFrame("Left Heap");
 
+        frame.setContentPane(new ViewLHeap(new ViewModel()).mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
     private ViewLHeap() {
 
@@ -56,15 +56,6 @@ public final class ViewLHeap {
         fieldRemove.addKeyListener(keyListener);
     }
 
-    public static void main(final String[] args) {
-        JFrame frame = new JFrame("Left Heap");
-
-        frame.setContentPane(new ViewLHeap(new ViewModel()).mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
     private void bind() {
         viewModel.setTextAdd(fieldAdd.getText());
         viewModel.setTextRemove(fieldRemove.getText());
@@ -76,4 +67,12 @@ public final class ViewLHeap {
 
         textResult.setText(viewModel.getResult());
     }
+
+    private ViewModel viewModel;
+    private JTextField fieldAdd;
+    private JButton buttonAdd;
+    private JTextField fieldRemove;
+    private JButton buttonRemove;
+    private JTextArea textResult;
+    private JPanel mainPanel;
 }

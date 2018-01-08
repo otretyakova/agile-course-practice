@@ -7,17 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ViewModel {
-    private String textAdd;
-    private String textRemove;
-    private String result;
-    private boolean isButtonAddEnabled;
-    private boolean isButtonRemoveEnabled;
-    private String status;
-
-    private LeftSidedHeap<Double> heap;
-    private Collection<SimpleEntry<Integer, Double>> addCollection;
-    private Collection<Integer> removeCollection;
-    private Collection<SimpleEntry<Integer, Double>> removedCollection;
 
     public ViewModel() {
         textRemove = "";
@@ -208,4 +197,16 @@ public class ViewModel {
 
         return res;
     }
+
+    private String textAdd;
+    private String textRemove;
+    private String result;
+    private boolean isButtonAddEnabled;
+    private boolean isButtonRemoveEnabled;
+    private String status;
+
+    private LeftSidedHeap<Double> heap;
+    private Collection<SimpleEntry<Integer, Double>> addCollection;
+    private Collection<Integer> removeCollection;
+    private Collection<SimpleEntry<Integer, Double>> removedCollection;
 }
