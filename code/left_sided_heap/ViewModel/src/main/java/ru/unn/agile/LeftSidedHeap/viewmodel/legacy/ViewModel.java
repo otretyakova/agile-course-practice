@@ -1,5 +1,6 @@
 package ru.unn.agile.LeftSidedHeap.viewmodel.legacy;
 
+import org.apache.commons.lang.ObjectUtils;
 import ru.unn.agile.LeftSidedHeap.Model.LeftSidedHeap;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -33,7 +34,7 @@ public class ViewModel {
         return isButtonRemoveEnabled;
     }
 
-    public void processKeyInTextField(final int keyCode) {
+    public void processKeyInTextField() {
         parseInput();
     }
 
@@ -91,7 +92,15 @@ public class ViewModel {
 
         for (Integer keyValue : removeCollection) {
             if (heap.size() != 0) {
-                removedCollection.add(heap.remove(keyValue));
+                SimpleEntry<Integer, Double> removedElement = heap.remove(keyValue);
+                while (removedElement != null) {
+                    removedCollection.add(removedElement);
+                    if (heap.size() != 0) {
+                        removedElement = heap.remove(keyValue);
+                    } else {
+                        removedElement = null;
+                    }
+                }
             }
         }
 
@@ -147,9 +156,9 @@ public class ViewModel {
         String[] elements = inputWithoutSpace.split(";");
 
         for (String element: elements) {
-            String[] partsElement = element.split("-");
+            String[] partsElement = element.split("_");
             if (partsElement.length != 2) {
-                throw new IllegalStateException("textAdd contains an element not of 2 partss!");
+                throw new IllegalStateException("textAdd contains an element not of 2 parts!");
             } else {
                 Integer key = Integer.parseInt(partsElement[0]);
                 Double value = Double.parseDouble(partsElement[1]);

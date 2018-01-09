@@ -48,7 +48,7 @@ public final class ViewLHeap {
         KeyAdapter keyListener = new KeyAdapter() {
             public void keyReleased(final KeyEvent e) {
                 bind();
-                ViewLHeap.this.viewModel.processKeyInTextField(e.getKeyCode());
+                ViewLHeap.this.viewModel.processKeyInTextField();
                 backBind();
             }
         };
@@ -66,6 +66,7 @@ public final class ViewLHeap {
         buttonRemove.setEnabled(viewModel.isButtonRemoveEnabled());
 
         textResult.setText(viewModel.getResult());
+        textStatus.setText("Status: " + viewModel.getStatus());
     }
 
     private ViewModel viewModel;
@@ -73,8 +74,8 @@ public final class ViewLHeap {
     private JButton buttonAdd;
     private JTextField fieldRemove;
     private JButton buttonRemove;
-    private JTextField textAdd;
-    private JTextField textRemove;
     private JTextArea textResult;
     private JPanel mainPanel;
+    private JTextField textStatus;
+
 }

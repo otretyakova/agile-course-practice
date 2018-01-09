@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 
 public class ViewModelTests {
     private ViewModel viewModel;
-    private final int randKey = 1;
     @Before
     public void setUp() {
         viewModel = new ViewModel();
@@ -49,9 +48,9 @@ public class ViewModelTests {
 
     @Test
     public void isStatusReadyWhenFieldsAddAreFillSimple() {
-        viewModel.setTextAdd("1-2.0");
+        viewModel.setTextAdd("1_2.0");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
@@ -60,16 +59,25 @@ public class ViewModelTests {
     public void isStatusReadyWhenFieldsRemoveAreFillSimple() {
         viewModel.setTextRemove("1");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
 
     @Test
     public void isStatusReadyWhenFieldsAddAreFillComplicated() {
-        viewModel.setTextAdd("1-2.0;3-4;1-5.8");
+        viewModel.setTextAdd("1_2.0;3_4;1_5.8");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
+
+        assertEquals(Status.READY, viewModel.getStatus());
+    }
+
+    @Test
+    public void isStatusReadyWhenFieldsAddContainsNegativeData() {
+        viewModel.setTextAdd("1_-2.0;");
+
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
@@ -78,24 +86,24 @@ public class ViewModelTests {
     public void isStatusReadyWhenFieldsRemoveAreFillComplicated() {
         viewModel.setTextRemove("1;2;76");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
 
     @Test
     public void isStatusReadyWhenFieldsAddAreFillComplicatedWithSpace() {
-        viewModel.setTextAdd("1-2; 3-4 ; 1-5");
+        viewModel.setTextAdd("1_2; 3_4 ; 1_5");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
     @Test
     public void isStatusReadyWhenFieldsAddAreFillComplicatedWithSpaceWithDouble() {
-        viewModel.setTextAdd("1-2.0; 3-4 ; 1-5.8");
+        viewModel.setTextAdd("1_2.0; 3_4 ; 1_5.8");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
@@ -104,7 +112,7 @@ public class ViewModelTests {
     public void isStatusReadyWhenFieldsRemoveAreFillComplicatedWithSpace() {
         viewModel.setTextRemove("1 ; 2; 76");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
@@ -113,7 +121,7 @@ public class ViewModelTests {
     public void canReportBadFormatInAdd() {
         viewModel.setTextAdd("asdasfadsf");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
     }
@@ -122,7 +130,7 @@ public class ViewModelTests {
     public void canReportBadFormatInRemove() {
         viewModel.setTextRemove("asdasfadsf");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
     }
@@ -131,16 +139,16 @@ public class ViewModelTests {
     public void canReportBadFormatRemoveInAdd() {
         viewModel.setTextAdd("1; 2; 3");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
     }
 
     @Test
     public void canReportBadFormatAddInRemove() {
-        viewModel.setTextRemove("1 - 2; 3-4");
+        viewModel.setTextRemove("1 _ 2; 3_4");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
     }
@@ -148,9 +156,9 @@ public class ViewModelTests {
     @Test
     public void canCleanStatusIfParseAddIsOK() {
         viewModel.setTextAdd("a");
-        viewModel.processKeyInTextField(randKey);
-        viewModel.setTextAdd("1-3");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
+        viewModel.setTextAdd("1_3");
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
@@ -158,9 +166,9 @@ public class ViewModelTests {
     @Test
     public void canCleanStatusIfParseRemoveIsOK() {
         viewModel.setTextRemove("a");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
         viewModel.setTextRemove("1");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(Status.READY, viewModel.getStatus());
     }
@@ -173,12 +181,12 @@ public class ViewModelTests {
 
     @Test
     public void isButtonAddDisabledWhenFormatAddIsBad() {
-        viewModel.setTextAdd("1-3");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.setTextAdd("1_3");
+        viewModel.processKeyInTextField();
         assertEquals(true, viewModel.isButtonAddEnabled());
 
         viewModel.setTextAdd("sadfafasd");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(false, viewModel.isButtonAddEnabled());
     }
@@ -186,11 +194,11 @@ public class ViewModelTests {
     @Test
     public void isButtonRemoveDisabledWhenFormatRemoveIsBad() {
         viewModel.setTextRemove("1");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
         assertEquals(true, viewModel.isButtonRemoveEnabled());
 
         viewModel.setTextRemove("sadfafasd");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(false, viewModel.isButtonRemoveEnabled());
     }
@@ -198,48 +206,48 @@ public class ViewModelTests {
     @Test
     public void isButtonRemoveEnabledWhenFormatAddIsBadFormatRemoveIsGood() {
         viewModel.setTextRemove("1");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
         assertEquals(true, viewModel.isButtonRemoveEnabled());
 
         viewModel.setTextAdd("sadfafasd");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(true, viewModel.isButtonRemoveEnabled());
     }
 
     @Test
     public void isButtonAddEnabledWhenFormatRemoveIsBadFormatAddIsGood() {
-        viewModel.setTextAdd("1-3");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.setTextAdd("1_3");
+        viewModel.processKeyInTextField();
         assertEquals(true, viewModel.isButtonAddEnabled());
 
         viewModel.setTextRemove("sadfafasd");
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(true, viewModel.isButtonAddEnabled());
     }
 
     @Test
     public void isButtonAddDisabledWithIncompleteInput() {
-        viewModel.setTextAdd("1-");
+        viewModel.setTextAdd("1_");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
 
         assertEquals(false, viewModel.isButtonAddEnabled());
     }
     @Test
     public void isButtonsEnabledWithCorrectInput() {
-        viewModel.setTextAdd("122-31233;31-321");
+        viewModel.setTextAdd("122_31233;31_321");
         viewModel.setTextRemove("122;31233");
 
-        viewModel.processKeyInTextField(randKey);
+        viewModel.processKeyInTextField();
         assertEquals(true, viewModel.isButtonAddEnabled());
         assertEquals(true, viewModel.isButtonRemoveEnabled());
     }
 
     @Test
     public void canAddOneElementInEmptyHeap() {
-        viewModel.setTextAdd("1-0");
+        viewModel.setTextAdd("1_0");
 
         viewModel.add();
 
@@ -247,8 +255,26 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canAddOneNegativeElementInEmptyHeap() {
+        viewModel.setTextAdd("1_-10.8");
+
+        viewModel.add();
+
+        assertEquals("size: 1\nmin: 1=-10.8\nremove: -\n", viewModel.getResult());
+    }
+
+    @Test
+    public void canAddOneElementWithNegativeKeyInEmptyHeap() {
+        viewModel.setTextAdd("-11_18");
+
+        viewModel.add();
+
+        assertEquals("size: 1\nmin: -11=18.0\nremove: -\n", viewModel.getResult());
+    }
+
+    @Test
     public void canAddTwoElementInEmptyHeap() {
-        viewModel.setTextAdd("1-0; 2-1");
+        viewModel.setTextAdd("1_0; 2_1");
 
         viewModel.add();
 
@@ -257,10 +283,10 @@ public class ViewModelTests {
 
     @Test
     public void canAddOneElementInNoEmptyHeap() {
-        viewModel.setTextAdd("10-3");
+        viewModel.setTextAdd("10_3");
         viewModel.add();
 
-        viewModel.setTextAdd("1-0");
+        viewModel.setTextAdd("1_0");
 
         viewModel.add();
 
@@ -269,10 +295,10 @@ public class ViewModelTests {
 
     @Test
     public void canAddTwoElementInNoEmptyHeap() {
-        viewModel.setTextAdd("10-3");
+        viewModel.setTextAdd("10_3");
         viewModel.add();
 
-        viewModel.setTextAdd("1-0;2-23");
+        viewModel.setTextAdd("1_0;2_23");
 
         viewModel.add();
 
@@ -281,7 +307,7 @@ public class ViewModelTests {
 
     @Test
     public void canSetSuccessMessageAfterAdd() {
-        viewModel.setTextAdd("21312-23132");
+        viewModel.setTextAdd("21312_23132");
 
         viewModel.add();
 
@@ -308,7 +334,7 @@ public class ViewModelTests {
 
     @Test
     public void canRemoveOneElementFromHeapWithOneElement() {
-        viewModel.setTextAdd("10-3");
+        viewModel.setTextAdd("10_3");
         viewModel.add();
         viewModel.setTextRemove("10");
 
@@ -319,7 +345,7 @@ public class ViewModelTests {
 
     @Test
     public void canRemoveOneElementFromHeapWithMoreElements() {
-        viewModel.setTextAdd("10-3;120-2;1-56");
+        viewModel.setTextAdd("10_3;120_2;1_56");
         viewModel.add();
         viewModel.setTextRemove("10");
 
@@ -330,7 +356,7 @@ public class ViewModelTests {
 
     @Test
     public void canRemoveTwoElementFromHeapWithOneElements() {
-        viewModel.setTextAdd("10-3");
+        viewModel.setTextAdd("10_3");
         viewModel.add();
         viewModel.setTextRemove("10;2");
 
@@ -341,7 +367,7 @@ public class ViewModelTests {
 
     @Test
     public void canRemoveTwoElementFromHeapWithTwoElements() {
-        viewModel.setTextAdd("10-3;2-21");
+        viewModel.setTextAdd("10_3;2_21");
         viewModel.add();
         viewModel.setTextRemove("10;2");
 
@@ -351,8 +377,19 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canRemoveTwoElementWithOneKeyFromHeap() {
+        viewModel.setTextAdd("1_3;1_3435");
+        viewModel.add();
+        viewModel.setTextRemove("1");
+
+        viewModel.remove();
+
+        assertEquals("size: 0\nmin: -\nremove: 1=3.0 1=3435.0\n", viewModel.getResult());
+    }
+
+    @Test
     public void canRemoveTwoElementFromHeapWithMoreElements() {
-        viewModel.setTextAdd("10-3;2-21;32-123");
+        viewModel.setTextAdd("10_3;2_21;32_123");
         viewModel.add();
         viewModel.setTextRemove("10;32");
 
@@ -363,7 +400,7 @@ public class ViewModelTests {
 
     @Test
     public void canSetSuccessMessageAfterRemove() {
-        viewModel.setTextAdd("21312-23132");
+        viewModel.setTextAdd("21312_23132");
         viewModel.add();
 
         viewModel.setTextRemove("21312");
