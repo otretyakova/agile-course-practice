@@ -1,5 +1,5 @@
 apply from:   rootDir.getAbsolutePath() + '/config/scripts/javafx.plugin'
 
 dependencies {
-    compile project(':PrimeNumber-ViewModel')
+    compile project(':prime-number-ViewModel')
 }
