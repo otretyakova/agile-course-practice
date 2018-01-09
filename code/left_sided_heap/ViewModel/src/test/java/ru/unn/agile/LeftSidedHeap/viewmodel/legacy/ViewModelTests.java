@@ -216,6 +216,32 @@ public class ViewModelTests {
     }
 
     @Test
+    public void isButtonRemoveDisabledWhenFormatAddIsBadFormatAndDeleteRemove() {
+        viewModel.setTextRemove("1231");
+        viewModel.processKeyInTextField();
+        assertEquals(true, viewModel.isButtonRemoveEnabled());
+
+        viewModel.setTextAdd("asdagdbd");
+        viewModel.processKeyInTextField();
+        viewModel.setTextRemove("");
+        viewModel.processKeyInTextField();
+        assertEquals(false, viewModel.isButtonRemoveEnabled());
+    }
+
+    @Test
+    public void isButtonAddDisabledWhenFormatRemoveIsBadFormatAndDeleteAdd() {
+        viewModel.setTextAdd("1_1");
+        viewModel.processKeyInTextField();
+        assertEquals(true, viewModel.isButtonAddEnabled());
+
+        viewModel.setTextRemove("safsgbd");
+        viewModel.processKeyInTextField();
+        viewModel.setTextAdd("");
+        viewModel.processKeyInTextField();
+        assertEquals(false, viewModel.isButtonAddEnabled());
+    }
+
+    @Test
     public void isButtonAddEnabledWhenFormatRemoveIsBadFormatAddIsGood() {
         viewModel.setTextAdd("1_3");
         viewModel.processKeyInTextField();

@@ -45,6 +45,7 @@ public class ViewModel {
         } catch (Exception e) {
             status = Status.BAD_FORMAT;
             isButtonAddEnabled = false;
+            isButtonRemoveEnabled = !textRemove.isEmpty();
             return false;
         }
 
@@ -55,6 +56,7 @@ public class ViewModel {
         } catch (Exception e) {
             status = Status.BAD_FORMAT;
             isButtonRemoveEnabled = false;
+            isButtonAddEnabled = !textAdd.isEmpty();
             return false;
         }
 
