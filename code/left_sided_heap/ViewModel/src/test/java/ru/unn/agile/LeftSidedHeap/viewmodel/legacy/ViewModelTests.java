@@ -123,11 +123,21 @@ public class ViewModelTests {
 
         viewModel.processKeyInTextField();
 
-        assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_IN_ADD, viewModel.getStatus());
     }
 
     @Test
     public void canReportBadFormatInRemove() {
+        viewModel.setTextRemove("asdasfadsf");
+
+        viewModel.processKeyInTextField();
+
+        assertEquals(Status.BAD_FORMAT_IN_REMOVE, viewModel.getStatus());
+    }
+
+    @Test
+    public void canReportBadFormatInAllField() {
+        viewModel.setTextAdd("asdasfadsf");
         viewModel.setTextRemove("asdasfadsf");
 
         viewModel.processKeyInTextField();
@@ -141,7 +151,7 @@ public class ViewModelTests {
 
         viewModel.processKeyInTextField();
 
-        assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_IN_ADD, viewModel.getStatus());
     }
 
     @Test
@@ -150,7 +160,7 @@ public class ViewModelTests {
 
         viewModel.processKeyInTextField();
 
-        assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_IN_REMOVE, viewModel.getStatus());
     }
 
     @Test
@@ -346,7 +356,7 @@ public class ViewModelTests {
 
         viewModel.add();
 
-        assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_IN_ADD, viewModel.getStatus());
     }
 
     @Test
@@ -441,7 +451,7 @@ public class ViewModelTests {
 
         viewModel.remove();
 
-        assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_IN_REMOVE, viewModel.getStatus());
     }
 
 }

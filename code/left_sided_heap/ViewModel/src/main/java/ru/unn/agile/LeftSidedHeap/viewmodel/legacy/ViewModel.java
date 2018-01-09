@@ -38,15 +38,18 @@ public class ViewModel {
     }
 
     private boolean parseInput() {
+        boolean exceptionFlag = true;
+        isButtonAddEnabled = !textAdd.isEmpty();
+        isButtonRemoveEnabled = !textRemove.isEmpty();
+
         try {
             if (!textAdd.isEmpty()) {
                 parseTextAdd(textAdd);
             }
         } catch (Exception e) {
-            status = Status.BAD_FORMAT;
+            status = Status.BAD_FORMAT_IN_ADD;
             isButtonAddEnabled = false;
-            isButtonRemoveEnabled = !textRemove.isEmpty();
-            return false;
+            exceptionFlag = false;
         }
 
         try {
@@ -54,21 +57,24 @@ public class ViewModel {
                 parseTextRemove(textRemove);
             }
         } catch (Exception e) {
-            status = Status.BAD_FORMAT;
+            if (status == Status.BAD_FORMAT_IN_ADD) {
+                status = Status.BAD_FORMAT;
+            } else {
+                status = Status.BAD_FORMAT_IN_REMOVE;
+            }
             isButtonRemoveEnabled = false;
-            isButtonAddEnabled = !textAdd.isEmpty();
-            return false;
+            exceptionFlag = false;
         }
 
-        isButtonAddEnabled = !textAdd.isEmpty();
-        isButtonRemoveEnabled = !textRemove.isEmpty();
-        if (isButtonAddEnabled || isButtonRemoveEnabled) {
-            status = Status.READY;
-        } else {
-            status = Status.WAITING;
+        if (exceptionFlag) {
+            if (isButtonAddEnabled || isButtonRemoveEnabled) {
+                status = Status.READY;
+            } else {
+                status = Status.WAITING;
+            }
         }
 
-        return isButtonAddEnabled || isButtonRemoveEnabled;
+        return (isButtonAddEnabled || isButtonRemoveEnabled) && exceptionFlag;
     }
 
     public void add() {
@@ -143,6 +149,8 @@ public class ViewModel {
     public final class Status {
         public static final String WAITING = "Please provide input data";
         public static final String READY = "Press button";
+        public static final String BAD_FORMAT_IN_ADD = "Bad format in field add";
+        public static final String BAD_FORMAT_IN_REMOVE = "Bad format in field remove";
         public static final String BAD_FORMAT = "Bad format";
         public static final String SUCCESS = "Success";
 
