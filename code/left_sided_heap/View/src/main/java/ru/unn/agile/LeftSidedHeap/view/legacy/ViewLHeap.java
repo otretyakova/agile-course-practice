@@ -73,6 +73,8 @@ public final class ViewLHeap {
     private JButton buttonAdd;
     private JTextField fieldRemove;
     private JButton buttonRemove;
+    private JTextField textAdd;
+    private JTextField textRemove;
     private JTextArea textResult;
     private JPanel mainPanel;
 }
