@@ -49,6 +49,7 @@ public class ViewModel {
         } catch (Exception e) {
             status = Status.BAD_FORMAT_IN_ADD;
             isButtonAddEnabled = false;
+            isButtonRemoveEnabled = false;
             exceptionFlag = false;
         }
 
@@ -62,6 +63,7 @@ public class ViewModel {
             } else {
                 status = Status.BAD_FORMAT_IN_REMOVE;
             }
+            isButtonAddEnabled = false;
             isButtonRemoveEnabled = false;
             exceptionFlag = false;
         }
