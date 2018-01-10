@@ -33,7 +33,6 @@ public class ViewModel {
         };
         calculationDisabled.bind(couldCalculate.not());
 
-        // Add listeners to the input text fields
         final List<StringProperty> fields = new ArrayList<StringProperty>() { {
             add(rangeFrom);
             add(rangeTo);
@@ -102,7 +101,10 @@ public class ViewModel {
         }
         currentAnswer.set(answerMessage);
         status.set(Status.SUCCESS.toString());
-        answersList.add(new Query(shortMessage, answerMessage));
+        answersList.add(
+                new Query(Integer.toString(answersList.size() + 1) + ". " + shortMessage,
+                        answerMessage)
+        );
     }
 
     private Status getInputStatus() {

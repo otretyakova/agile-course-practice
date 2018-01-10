@@ -142,12 +142,6 @@ public class ViewModelTests {
         assertEquals(Methods.SIMPLE, viewModel.methodProperty().get());
     }
 
-    private String getAnswerWithoutTime(final String answer) {
-        String beginStr = answer.substring(0, answer.indexOf(" seconds."));
-        return beginStr.substring(0, beginStr.lastIndexOf(" ") + 1)
-                + answer.substring(answer.indexOf(" seconds."));
-    }
-
     @Test
     public void methodSimpleHasCorrectResult() {
         viewModel.rangeFromProperty().set("2");
@@ -244,7 +238,6 @@ public class ViewModelTests {
                 getAnswerWithoutTime(viewModel.currentAnswerProperty().get()));
     }
 
-
     @Test
     public void canFindPrimesWithEqualBounds() {
         viewModel.rangeFromProperty().set("13");
@@ -308,7 +301,7 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals(new ArrayList<Query>() {{
-            add(new Query("1 primes in [2; 2] and printed 1",
+            add(new Query("1. 1 primes in [2; 2] and printed 1",
                     "Found 1 primes in the range from 2 to 2 in  seconds.\n"
                        + "Here are 1 of them:\n2\n")); }}, viewModel.answersListProperty().get());
     }
@@ -347,6 +340,12 @@ public class ViewModelTests {
         viewModel.rangeFromProperty().set("9999999999");
         viewModel.rangeToProperty().set("9999999999");
         viewModel.maxCountPrimesProperty().set("9999999999");
+    }
+
+    private String getAnswerWithoutTime(final String answer) {
+        String beginStr = answer.substring(0, answer.indexOf(" seconds."));
+        return beginStr.substring(0, beginStr.lastIndexOf(" ") + 1)
+                + answer.substring(answer.indexOf(" seconds."));
     }
 
     private ViewModel viewModel;

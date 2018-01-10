@@ -7,9 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private static final Integer MIN_WIDTH = 640;
-    private static final Integer MIN_HEIGHT = 480;
-
     @Override
     public void start(final Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("PrimeNumber.fxml"));
@@ -23,4 +20,7 @@ public class Main extends Application {
     public static void main(final String[] args) {
         launch(args);
     }
+
+    private static final Integer MIN_WIDTH = 640;
+    private static final Integer MIN_HEIGHT = 480;
 }

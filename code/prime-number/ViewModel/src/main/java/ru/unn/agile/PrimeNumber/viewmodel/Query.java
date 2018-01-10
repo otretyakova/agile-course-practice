@@ -16,17 +16,8 @@ public class Query {
     public String getShortMessage() {
         return shortMessage;
     }
-
     public String getAnswerMessage() {
         return answerMessage;
-    }
-
-    public void setShortMessage(final String shortMessage) {
-        this.shortMessage = shortMessage;
-    }
-
-    public void setAnswerMessage(final String answerMessage) {
-        this.answerMessage = answerMessage;
     }
 
     @Override
