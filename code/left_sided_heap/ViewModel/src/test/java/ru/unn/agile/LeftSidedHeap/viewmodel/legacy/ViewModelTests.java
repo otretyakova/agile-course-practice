@@ -271,6 +271,7 @@ public class ViewModelTests {
 
         assertEquals(false, viewModel.isButtonAddEnabled());
     }
+
     @Test
     public void isButtonsEnabledWithCorrectInput() {
         viewModel.setTextAdd("122_31233;31_321");
