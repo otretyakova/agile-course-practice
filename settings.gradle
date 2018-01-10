@@ -114,8 +114,12 @@ project(":code/vectors3d").name = "vectors3d-Model"
 
 
 // Umnikov Eugene
-include "code/triangle"
-project(":code/triangle").name = "triangle"
+include "code/Triangle/Model"
+project(":code/Triangle/Model").name = "Triangle-Model"
+include "code/Triangle/View"
+project(":code/Triangle/View").name = "Triangle-View"
+include "code/Triangle/ViewModel"
+project(":code/Triangle/ViewModel").name = "Triangle-ViewModel"
 
 // Shestakova Svetlana
 
