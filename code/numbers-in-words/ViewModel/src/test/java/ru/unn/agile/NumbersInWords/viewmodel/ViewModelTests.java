@@ -7,12 +7,16 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.util.List;
 
 public class ViewModelTests {
 
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After
@@ -192,6 +196,106 @@ public class ViewModelTests {
         viewModel.translate();
         viewModel.setNumber("2");
         assertEquals("", viewModel.getResultWord());
+    }
+
+    @Test
+    public void canCreateViewModelWithLogger() {
+        FakeLogger logger = new FakeLogger();
+        ViewModel viewModelLogged = new ViewModel(logger);
+        assertNotNull(viewModelLogged);
+    }
+
+    @Test
+    public void viewModelConstructorThrowsExceptionWithNullLogger() {
+        try {
+            new ViewModel(null);
+            fail("Exception wasn't thrown");
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Logger parameter can't be null", ex.getMessage());
+        } catch (Exception ex) {
+            fail("Invalid exception type");
+        }
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterCalculation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.TRANSLATE_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsInputNumberAfterCalculation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getInputNumber() + ".*"));
+    }
+
+    @Test
+    public void logContainsResultAfterTranslation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getResultWord() + ".*"));
+    }
+
+    @Test
+    public void argumentsInfoIsProperlyFormatted() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*Input number: " + viewModel.getInputNumber()
+                + "; Result = " + viewModel.getResultWord() + ".*"));
+    }
+
+    @Test
+    public void canPutSeveralLogMessages() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        viewModel.translate();
+        viewModel.translate();
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void inputNumberIsCorrectlyLogged() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLog().get(0);
+        System.out.print(message);
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
+                + "Input number: " + viewModel.getInputNumber()));
+    }
+
+    @Test
+    public void doNotLogSameParametersTwiceWithPartialInput() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logsAreEmptyByDefault() {
+        assertEquals("", viewModel.getLogs());
+    }
+
+    @Test
+    public void canChangeLogsWhenFocusChanged() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLogs();
+        assertEquals(LogMessages.EDITING_FINISHED + "Input number: 124\n", message);
     }
 
     private ViewModel viewModel;
