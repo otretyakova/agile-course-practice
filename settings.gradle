@@ -3,6 +3,8 @@
 
 
 // Bastrakova Ksenia
+include "code/merge-sort"
+project(":code/merge-sort").name = "merge-sort"
 
 
 
@@ -135,6 +137,9 @@ project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
 project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model"
+
+
+
 
 // Korniakov Kirill, lab2-legacy
 include "code/korniakov-kirill-lab2-legacy/Model"
