@@ -90,6 +90,35 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canSetStatusReadyOnlyIfAllDotsSet() {
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordAxProperty().set("80.43");
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordAyProperty().set("5.11");
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordBxProperty().set("73.12");
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordByProperty().set("56.18");
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordCxProperty().set("36.98");
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordCyProperty().set("2.3");
+        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
+    }
+
+    @Test
+    public void canNotifyWhenTriangleHasTwoEqualsDots() {
+        viewModel.coordAxProperty().set("0.12");
+        viewModel.coordAyProperty().set("5.0");
+        viewModel.coordBxProperty().set("0.12");
+        viewModel.coordByProperty().set("5.0");
+        viewModel.coordCxProperty().set("36.05");
+        viewModel.coordCyProperty().set("102.34");
+        viewModel.calculate();
+        assertEquals(Status.DEGENERATED.toString(), viewModel.statusProperty().get());
+    }
+
+    @Test
     public void canNotifyWhenTriangleIsDegenerate() {
         viewModel.coordAxProperty().set("0.0");
         viewModel.coordAyProperty().set("0.0");
@@ -140,6 +169,27 @@ public class ViewModelTests {
         assertEquals("ABC = 1.11 rad", viewModel.cornerABCProperty().get());
         assertEquals("ACB = 0.46 rad", viewModel.cornerACBProperty().get());
         assertEquals("BAC = 1.57 rad", viewModel.cornerBACProperty().get());
+    }
+
+    @Test
+    public void allStepsVerification() {
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        viewModel.coordAxProperty().set("25.0");
+        viewModel.coordAyProperty().set("-12.6");
+        viewModel.coordBxProperty().set("32.14");
+        viewModel.coordByProperty().set("-2.85");
+        viewModel.coordCxProperty().set("-4.11");
+        viewModel.coordCyProperty().set("2.56");
+        viewModel.calculate();
+        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals("|AB| = 12.08", viewModel.sideABProperty().get());
+        assertEquals("|AC| = 32.82", viewModel.sideACProperty().get());
+        assertEquals("|BC| = 36.65", viewModel.sideBCProperty().get());
+        assertEquals("ABC = 1.09 rad", viewModel.cornerABCProperty().get());
+        assertEquals("ACB = 0.33 rad", viewModel.cornerACBProperty().get());
+        assertEquals("BAC = 1.72 rad", viewModel.cornerBACProperty().get());
+        assertEquals("P = 81.56", viewModel.perimeterProperty().get());
+        assertEquals("S = 196.03", viewModel.surfaceAreaProperty().get());
     }
 
     private void setInputData() {
