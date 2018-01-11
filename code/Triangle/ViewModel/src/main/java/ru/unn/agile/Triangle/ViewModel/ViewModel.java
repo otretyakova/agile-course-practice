@@ -226,16 +226,16 @@ public class ViewModel {
 
     private void updateFields(final Triangle triangle) {
 
-        sideAB.set(String.format("|AB| = %.2f", triangle.getLengthAB()));
-        sideAC.set(String.format("|AC| = %.2f", triangle.getLengthAC()));
-        sideBC.set(String.format("|BC| = %.2f", triangle.getLengthBC()));
+        sideAB.set(String.format("|AB| = %.2f", triangle.getLengthAB()).replace(',', '.'));
+        sideAC.set(String.format("|AC| = %.2f", triangle.getLengthAC()).replace(',', '.'));
+        sideBC.set(String.format("|BC| = %.2f", triangle.getLengthBC()).replace(',', '.'));
 
-        cornerABC.set(String.format("ABC = %.2f rad", triangle.getABCAngle()));
-        cornerACB.set(String.format("ACB = %.2f rad", triangle.getBCAAngle()));
-        cornerBAC.set(String.format("BAC = %.2f rad", triangle.getCABAngle()));
+        cornerABC.set(String.format("ABC = %.2f rad", triangle.getABCAngle()).replace(',', '.'));
+        cornerACB.set(String.format("ACB = %.2f rad", triangle.getBCAAngle()).replace(',', '.'));
+        cornerBAC.set(String.format("BAC = %.2f rad", triangle.getCABAngle()).replace(',', '.'));
 
-        perimeterValue.set(String.format("P = %.2f", triangle.getPerimeter()));
-        surfaceArea.set(String.format("S = %.2f", triangle.getSurfaceArea()));
+        perimeterValue.set(String.format("P = %.2f", triangle.getPerimeter()).replace(',', '.'));
+        surfaceArea.set(String.format("S = %.2f", triangle.getSurfaceArea()).replace(',', '.'));
     }
 
     private void setToEmptyCoordinates() {

@@ -108,7 +108,7 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
-        assertEquals("P = 7,40", viewModel.perimeterProperty().get());
+        assertEquals("P = 7.40", viewModel.perimeterProperty().get());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
-        assertEquals("S = 2,00", viewModel.surfaceAreaProperty().get());
+        assertEquals("S = 2.00", viewModel.surfaceAreaProperty().get());
     }
 
     @Test
@@ -126,9 +126,9 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
-        assertEquals("|AB| = 1,41", viewModel.sideABProperty().get());
-        assertEquals("|AC| = 2,83", viewModel.sideACProperty().get());
-        assertEquals("|BC| = 3,16", viewModel.sideBCProperty().get());
+        assertEquals("|AB| = 1.41", viewModel.sideABProperty().get());
+        assertEquals("|AC| = 2.83", viewModel.sideACProperty().get());
+        assertEquals("|BC| = 3.16", viewModel.sideBCProperty().get());
     }
 
     @Test
@@ -137,9 +137,9 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
-        assertEquals("ABC = 1,11 rad", viewModel.cornerABCProperty().get());
-        assertEquals("ACB = 0,46 rad", viewModel.cornerACBProperty().get());
-        assertEquals("BAC = 1,57 rad", viewModel.cornerBACProperty().get());
+        assertEquals("ABC = 1.11 rad", viewModel.cornerABCProperty().get());
+        assertEquals("ACB = 0.46 rad", viewModel.cornerACBProperty().get());
+        assertEquals("BAC = 1.57 rad", viewModel.cornerBACProperty().get());
     }
 
     private void setInputData() {
