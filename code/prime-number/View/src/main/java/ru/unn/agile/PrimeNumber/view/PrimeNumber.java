@@ -1,5 +1,6 @@
 package ru.unn.agile.PrimeNumber.view;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -7,19 +8,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
+import ru.unn.agile.PrimeNumber.viewmodel.Query;
 import ru.unn.agile.PrimeNumber.viewmodel.ViewModel;
 
 public class PrimeNumber {
     @FXML
     @SuppressWarnings("unchecked")
     void initialize() {
-        txtFrom.textProperty().bindBidirectional(viewModel.rangeFromProperty());
-        txtTo.textProperty().bindBidirectional(viewModel.rangeToProperty());
-        txtNumberOfPrimes.textProperty().bindBidirectional(viewModel.maxCountPrimesProperty());
+        Bindings.bindBidirectional(txtFrom.textProperty(), viewModel.rangeFromProperty());
+        Bindings.bindBidirectional(txtTo.textProperty(), viewModel.rangeToProperty());
+        Bindings.bindBidirectional(txtNumberOfPrimes.textProperty(),
+                viewModel.maxCountPrimesProperty());
 
-        cbMethods.valueProperty().bindBidirectional(viewModel.methodProperty());
+        Bindings.bindBidirectional(cbMethods.valueProperty(), viewModel.methodProperty());
 
-        lstQuery.itemsProperty().bindBidirectional(viewModel.answersListProperty());
+        Bindings.bindBidirectional(lstQuery.itemsProperty(), viewModel.answersListProperty());
         lstQuery.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     viewModel.chooseAnswerById(lstQuery.getSelectionModel().getSelectedIndex());
@@ -44,5 +47,5 @@ public class PrimeNumber {
     @FXML
     private Button buFind;
     @FXML
-    private ListView lstQuery;
+    private ListView<Query> lstQuery;
 }

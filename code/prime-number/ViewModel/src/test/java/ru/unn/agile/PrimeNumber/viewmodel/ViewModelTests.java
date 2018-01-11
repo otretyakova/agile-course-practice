@@ -44,7 +44,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void checkBadFormatStatus() {
+    public void checkBadFormatStatusWithNonIntegerInput() {
         setInvalidData();
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
@@ -56,7 +56,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void checkBadFormatStatusStatusWithBigIntegers() {
+    public void checkBadFormatStatusWithBigIntegers() {
         setBigIntegers();
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
@@ -96,9 +96,19 @@ public class ViewModelTests {
     }
 
     @Test
-    public void checkBadFormatStatusWithBigIntegers() {
-        setBigIntegers();
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+    public void checkReadyStatusWithZeroCount() {
+        viewModel.maxCountPrimesProperty().set("0");
+        viewModel.rangeFromProperty().set("-10");
+        viewModel.rangeToProperty().set("10");
+        assertEquals(Status.READY.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void checkReadyStatusWithReverseRange() {
+        viewModel.maxCountPrimesProperty().set("10");
+        viewModel.rangeFromProperty().set("10");
+        viewModel.rangeToProperty().set("-10");
+        assertEquals(Status.READY.toString(), viewModel.getStatus());
     }
 
     @Test
