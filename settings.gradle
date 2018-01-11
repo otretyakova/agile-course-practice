@@ -38,8 +38,8 @@ include "code/converter-temperature/View"
 project(":code/converter-temperature/View").name = "converter-temperature-View"
 
 // Gorbunova Natalia
-
-
+include "code/mortgage-calculator"
+project (":code/mortgage-calculator").name= "mortgage-calculator-Model"
 
 // Krivonosov Mikhail
 include "code/polynomial-calculator"
