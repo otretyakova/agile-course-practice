@@ -112,8 +112,8 @@ project(":code/vectors3d").name = "vectors3d-Model"
 
 
 // Uvarov Denis
-
-
+include "code/game-of-life"
+project(":code/game-of-life").name = "Game-of-life-Model"
 
 // Umnikov Eugene
 include "code/triangle"
