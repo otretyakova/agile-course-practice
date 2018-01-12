@@ -1,11 +1,12 @@
 package ru.unn.agile.Triangle.ViewModel;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ChangeListener;
 
 import ru.unn.agile.Triangle.Model.Triangle;
 
@@ -71,6 +72,101 @@ public class ViewModel {
 
     }
 
+    // Coordinates
+    public StringProperty coordAxProperty() {
+        return coordAx;
+    }
+
+    public StringProperty coordAyProperty() {
+        return coordAy;
+    }
+
+    public StringProperty coordBxProperty() {
+        return coordBx;
+    }
+
+    public StringProperty coordByProperty() {
+        return coordBy;
+    }
+
+    public StringProperty coordCxProperty() {
+        return coordCx;
+    }
+
+    public StringProperty coordCyProperty() {
+        return coordCy;
+    }
+    //
+
+    // Sides
+    public final String getSideAB() {
+        return sideAB.get();
+    }
+
+    public final String getSideAC() {
+        return sideAC.get();
+    }
+
+    public final String getSideBC() {
+        return sideBC.get();
+    }
+    //
+
+    // Corners
+    public final String getCornerABC() {
+        return cornerABC.get();
+    }
+
+    public final String getCornerBAC() {
+        return cornerBAC.get();
+    }
+
+    public final String getCornerACB() {
+        return cornerACB.get();
+    }
+    //
+
+    // Other
+    public final String getPerimeter() {
+        return perimeterValue.get();
+    }
+
+    public final String getSurfaceArea() {
+        return surfaceArea.get();
+    }
+
+    public final String getStatus() {
+        return status.get();
+    }
+
+    public final boolean isCalculationDisabled() {
+        return calculationDisabled.get();
+    }
+    //
+
+
+    private final StringProperty coordAx = new SimpleStringProperty();
+    private final StringProperty coordAy = new SimpleStringProperty();
+    private final StringProperty coordBx = new SimpleStringProperty();
+    private final StringProperty coordBy = new SimpleStringProperty();
+    private final StringProperty coordCx = new SimpleStringProperty();
+    private final StringProperty coordCy = new SimpleStringProperty();
+
+    // Sides
+    private final StringProperty sideAB = new SimpleStringProperty();
+    private final StringProperty sideBC = new SimpleStringProperty();
+    private final StringProperty sideAC = new SimpleStringProperty();
+
+    // Corners
+    private final StringProperty cornerABC = new SimpleStringProperty();
+    private final StringProperty cornerACB = new SimpleStringProperty();
+    private final StringProperty cornerBAC = new SimpleStringProperty();
+
+    // Other
+    private final StringProperty perimeterValue = new SimpleStringProperty();
+    private final StringProperty surfaceArea = new SimpleStringProperty();
+    private final StringProperty status = new SimpleStringProperty();
+
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
         if (hasEmptyCoordinates()) {
@@ -102,97 +198,6 @@ public class ViewModel {
 
         return inputStatus;
     }
-
-    // Coordinates
-    public StringProperty coordAxProperty() {
-        return coordAx;
-    }
-
-    public StringProperty coordAyProperty() {
-        return coordAy;
-    }
-
-    public StringProperty coordBxProperty() {
-        return coordBx;
-    }
-
-    public StringProperty coordByProperty() {
-        return coordBy;
-    }
-
-    public StringProperty coordCxProperty() {
-        return coordCx;
-    }
-
-    public StringProperty coordCyProperty() {
-        return coordCy;
-    }
-    //
-
-    // Sides
-    public StringProperty sideABProperty() {
-        return sideAB;
-    }
-
-    public StringProperty sideBCProperty() {
-        return sideBC;
-    }
-
-    public StringProperty sideACProperty() {
-        return sideAC;
-    }
-    //
-
-    // Corners
-    public StringProperty cornerABCProperty() {
-        return cornerABC;
-    }
-
-    public StringProperty cornerACBProperty() {
-        return cornerACB;
-    }
-
-    public StringProperty cornerBACProperty() {
-        return cornerBAC;
-    }
-    //
-
-    // Other
-    public StringProperty perimeterProperty() {
-        return perimeterValue;
-    }
-
-    public StringProperty surfaceAreaProperty() {
-        return surfaceArea;
-    }
-
-    public StringProperty statusProperty() {
-        return status;
-    }
-    //
-
-
-    private final StringProperty coordAx = new SimpleStringProperty();
-    private final StringProperty coordAy = new SimpleStringProperty();
-    private final StringProperty coordBx = new SimpleStringProperty();
-    private final StringProperty coordBy = new SimpleStringProperty();
-    private final StringProperty coordCx = new SimpleStringProperty();
-    private final StringProperty coordCy = new SimpleStringProperty();
-
-    // Sides
-    private final StringProperty sideAB = new SimpleStringProperty();
-    private final StringProperty sideBC = new SimpleStringProperty();
-    private final StringProperty sideAC = new SimpleStringProperty();
-
-    // Corners
-    private final StringProperty cornerABC = new SimpleStringProperty();
-    private final StringProperty cornerACB = new SimpleStringProperty();
-    private final StringProperty cornerBAC = new SimpleStringProperty();
-
-    // Other
-    private final StringProperty perimeterValue = new SimpleStringProperty();
-    private final StringProperty surfaceArea = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
 
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 

@@ -75,8 +75,8 @@ public class Triangle {
     }
 
     private boolean isOnOneLine(final Point2D a, final Point2D b, final Point2D c) {
-        return (a.getX() - b.getX()) * (a.getY() - c.getY())
-                == (a.getX() - c.getX()) * (a.getY() - b.getY());
+        return Math.abs((a.getX() - b.getX()) * (a.getY() - c.getY())
+                - (a.getX() - c.getX()) * (a.getY() - b.getY())) < ACCURACY_OF_CALCULATIONS;
     }
 
     private boolean isDegenerated(final Point2D a, final Point2D b, final Point2D c) {
@@ -96,4 +96,6 @@ public class Triangle {
     private final Point2D a;
     private final Point2D b;
     private final Point2D c;
+
+    private static final double ACCURACY_OF_CALCULATIONS = 1e-15;
 }
