@@ -29,16 +29,12 @@ public class Ratio {
     public int hashCode() {
         final int shift = 32;
 
-        long temp = Double.doubleToLongBits(numerator);
-        int result = (int) (temp ^ (temp >>> shift));
-        temp = Double.doubleToLongBits(denominator);
-        result = (shift - 1) * result + (int) (temp ^ (temp >>> shift));
-        return result;
+        return numerator >>> shift + denominator;
     }
 
     @Override
     public boolean equals(final Object otherRatio) {
-        if (otherRatio.getClass() == Ratio.class) {
+        if (otherRatio instanceof Ratio) {
             Ratio other = (Ratio) otherRatio;
             return (numerator == other.numerator)
                     && (denominator == other.denominator);
@@ -61,7 +57,7 @@ public class Ratio {
     }
 
     public Ratio add(final Ratio other) {
-        int commonDenominator = lcm(denominator, other.denominator);
+        int commonDenominator = leastCommonMultiple(denominator, other.denominator);
         long newNumerator = (long) (numerator) * (commonDenominator / denominator)
                 + (long) (other.numerator) * (commonDenominator / other.denominator);
         intOverflowCheck(newNumerator, "The result numerator is too big");
@@ -116,7 +112,7 @@ public class Ratio {
 
     private void init(final int numerator, final int denominator) {
         if (denominator == 0) {
-            throw new ArithmeticException("Divide by zero is restricted!");
+            throw new ArithmeticException("Divide by zero is forbidden!");
         }
         this.numerator = numerator;
         this.denominator = denominator;
@@ -124,7 +120,7 @@ public class Ratio {
     }
 
     private void reduce() {
-        int gcdValue = gcd(numerator, denominator);
+        int gcdValue = greatestCommonDivisor(numerator, denominator);
         numerator = numerator / gcdValue;
         denominator = denominator / gcdValue;
         if (denominator < 0) {
@@ -139,19 +135,19 @@ public class Ratio {
         }
     }
 
-    private int gcd(final int first, final int second) {
-        int u = first;
-        int v = second;
-        while (v != 0) {
-            int r = u % v;
-            u = v;
-            v = r;
+    private int greatestCommonDivisor(final int first, final int second) {
+        int bigNumber = first;
+        int smallNumber = second;
+        while (smallNumber != 0) {
+            int residual = bigNumber % smallNumber;
+            bigNumber = smallNumber;
+            smallNumber = residual;
         }
-        return u;
+        return bigNumber;
     }
 
-    private int lcm(final int first, final int second) {
-        long lcmValue = (long) (first) / gcd(first, second) * second;
+    private int leastCommonMultiple(final int first, final int second) {
+        long lcmValue = (long) (first) / greatestCommonDivisor(first, second) * second;
         intOverflowCheck(lcmValue, "The common denominator is too big");
         return (int) lcmValue;
     }

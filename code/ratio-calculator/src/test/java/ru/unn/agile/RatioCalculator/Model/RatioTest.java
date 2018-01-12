@@ -1,7 +1,9 @@
 package ru.unn.agile.RatioCalculator.Model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RatioTest {
     @Test
@@ -25,42 +27,42 @@ public class RatioTest {
 
     @Test
     public void equalRatiosAreEqual() {
-        Ratio ratio1 = new Ratio(1, 2);
-        Ratio ratio2 = new Ratio(2, 4);
+        Ratio firstRatio = new Ratio(1, 2);
+        Ratio secondRatio = new Ratio(2, 4);
 
-        assertEquals(ratio1, ratio2);
+        assertEquals(firstRatio, secondRatio);
     }
 
     @Test
     public void notEqualRatiosAreNotEqual() {
-        Ratio ratio1 = new Ratio(1, 2);
-        Ratio ratio2 = new Ratio(2, 5);
+        Ratio firstRatio = new Ratio(1, 2);
+        Ratio secondRatio = new Ratio(2, 5);
 
-        assertNotEquals(ratio1, ratio2);
+        assertNotEquals(firstRatio, secondRatio);
     }
 
     @Test
     public void ratiosWithDefferentSignsAreNotEqual() {
-        Ratio ratio1 = new Ratio(1, 2);
-        Ratio ratio2 = new Ratio(-1, 2);
+        Ratio firstRatio = new Ratio(1, 2);
+        Ratio secondRatio = new Ratio(-1, 2);
 
-        assertNotEquals(ratio1, ratio2);
+        assertNotEquals(firstRatio, secondRatio);
     }
 
     @Test
     public void equalNegativeRatiosAreEqual() {
-        Ratio ratio1 = new Ratio(1, -2);
-        Ratio ratio2 = new Ratio(-1, 2);
+        Ratio firstRatio = new Ratio(1, -2);
+        Ratio secondRatio = new Ratio(-1, 2);
 
-        assertEquals(ratio1, ratio2);
+        assertEquals(firstRatio, secondRatio);
     }
 
     @Test
     public void whenZeroRatiosAreCreatedInDifferentWaysTheyAreStillEqual() {
-        Ratio ratio1 = new Ratio(0, -2);
-        Ratio ratio2 = new Ratio(0);
+        Ratio firstRatio = new Ratio(0, -2);
+        Ratio secondRatio = new Ratio(0);
 
-        assertEquals(ratio1, ratio2);
+        assertEquals(firstRatio, secondRatio);
     }
 
     @Test
@@ -86,7 +88,7 @@ public class RatioTest {
     }
 
     @Test
-    public void whenRatioCreatedItMustBeIrreducable() {
+    public void whenRatioCreatedItMustBeIrreducible() {
         Ratio ratio = new Ratio(2, 4);
         Ratio expected = new Ratio(1, 2);
 
@@ -95,50 +97,50 @@ public class RatioTest {
 
     @Test
     public void whenRatioDenominatorsAreEqualTheLessRatioHasTheLessNumerator() {
-        Ratio ratio1 = new Ratio(2, 5);
-        Ratio ratio2 = new Ratio(3, 5);
+        Ratio firstRatio = new Ratio(2, 5);
+        Ratio secondRatio = new Ratio(3, 5);
 
-        assertTrue(ratio1.compareTo(ratio2) < 0);
+        assertTrue(firstRatio.compareTo(secondRatio) < 0);
     }
 
     @Test
     public void whenRatioNumeratorsAreEqualTheLessRatioHasTheBiggerDenominator() {
-        Ratio ratio1 = new Ratio(1, 2);
-        Ratio ratio2 = new Ratio(1, 3);
+        Ratio firstRatio = new Ratio(1, 2);
+        Ratio secondRatio = new Ratio(1, 3);
 
-        assertTrue(ratio1.compareTo(ratio2) > 0);
+        assertTrue(firstRatio.compareTo(secondRatio) > 0);
     }
 
     @Test
     public void canCompareRatiosWithoutEqualsNumeratorsOrDenominators() {
-        Ratio ratio1 = new Ratio(1, 6);
-        Ratio ratio2 = new Ratio(3, 8);
+        Ratio firstRatio = new Ratio(1, 6);
+        Ratio secondRatio = new Ratio(3, 8);
 
-        assertTrue(ratio1.compareTo(ratio2) < 0);
+        assertTrue(firstRatio.compareTo(secondRatio) < 0);
     }
 
     @Test
     public void positiveRatioIsBiggerThenNegative() {
-        Ratio ratio1 = new Ratio(1, 6);
-        Ratio ratio2 = new Ratio(-5, 8);
+        Ratio firstRatio = new Ratio(1, 6);
+        Ratio secondRatio = new Ratio(-5, 8);
 
-        assertTrue(ratio1.compareTo(ratio2) > 0);
+        assertTrue(firstRatio.compareTo(secondRatio) > 0);
     }
 
     @Test
     public void canCompareNegativeRatios() {
-        Ratio ratio1 = new Ratio(-1, -6);
-        Ratio ratio2 = new Ratio(-5, 8);
+        Ratio firstRatio = new Ratio(-1, -6);
+        Ratio secondRatio = new Ratio(-5, 8);
 
-        assertTrue(ratio1.compareTo(ratio2) > 0);
+        assertTrue(firstRatio.compareTo(secondRatio) > 0);
     }
 
     @Test
     public void negativeRatiosHaveOneRepresentation() {
-        Ratio ratio1 = new Ratio(-1, 2);
-        Ratio ratio2 = new Ratio(1, -2);
+        Ratio firstRatio = new Ratio(-1, 2);
+        Ratio secondRatio = new Ratio(1, -2);
 
-        assertEquals(ratio1, ratio2);
+        assertEquals(firstRatio, secondRatio);
     }
 
     @Test
@@ -150,10 +152,10 @@ public class RatioTest {
 
     @Test
     public void ratioWithNegativeNumeratorAndDenominatorIsPositive() {
-        Ratio ratio1 = new Ratio(-1, -2);
-        Ratio ratio2 = new Ratio(1, 2);
+        Ratio firstRatio = new Ratio(-1, -2);
+        Ratio secondRatio = new Ratio(1, 2);
 
-        assertEquals(ratio1, ratio2);
+        assertEquals(firstRatio, secondRatio);
     }
 
     @Test
@@ -164,11 +166,11 @@ public class RatioTest {
     }
 
     @Test
-    public void negativeRatioMustBeIrreducableAfterCreating() {
-        Ratio ratio1 = new Ratio(6, -9);
-        Ratio ratio2 = new Ratio(-2, 3);
+    public void negativeRatioMustBeIrreducibleAfterCreating() {
+        Ratio firstRatio = new Ratio(6, -9);
+        Ratio secondRatio = new Ratio(-2, 3);
 
-        assertEquals(ratio1, ratio2);
+        assertEquals(firstRatio, secondRatio);
     }
 
     @Test
@@ -215,54 +217,54 @@ public class RatioTest {
 
     @Test
     public void canCalcSumOfRatioAndZeroRatio() {
-        Ratio ratio1 = new Ratio(37, 6);
-        Ratio ratio2 = new Ratio(0);
+        Ratio firstRatio = new Ratio(37, 6);
+        Ratio secondRatio = new Ratio(0);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
 
-        assertEquals(got, ratio1);
+        assertEquals(got, firstRatio);
     }
 
     @Test
     public void canCalcSumOfRatiosWithCommonDenominators() {
-        Ratio ratio1 = new Ratio(2, 3);
-        Ratio ratio2 = new Ratio(4, 3);
+        Ratio firstRatio = new Ratio(2, 3);
+        Ratio secondRatio = new Ratio(4, 3);
         Ratio expected = new Ratio(2);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcSumOfRatiosWithoutCommonDenominators() {
-        Ratio ratio1 = new Ratio(1, 6);
-        Ratio ratio2 = new Ratio(3, 4);
+        Ratio firstRatio = new Ratio(1, 6);
+        Ratio secondRatio = new Ratio(3, 4);
         Ratio expected = new Ratio(11, 12);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcSumOfPositiveAndNegativeRatio() {
-        Ratio ratio1 = new Ratio(1, 8);
-        Ratio ratio2 = new Ratio(-1, 4);
+        Ratio firstRatio = new Ratio(1, 8);
+        Ratio secondRatio = new Ratio(-1, 4);
         Ratio expected = new Ratio(-1, 8);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcSumOfNegativesRatios() {
-        Ratio ratio1 = new Ratio(-1, 8);
-        Ratio ratio2 = new Ratio(-1, 4);
+        Ratio firstRatio = new Ratio(-1, 8);
+        Ratio secondRatio = new Ratio(-1, 4);
         Ratio expected = new Ratio(-3, 8);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
 
         assertEquals(got, expected);
     }
@@ -279,87 +281,87 @@ public class RatioTest {
 
     @Test
     public void canCalcSubtractOfRatioAndZeroRatio() {
-        Ratio ratio1 = new Ratio(37, 6);
-        Ratio ratio2 = new Ratio(0);
+        Ratio firstRatio = new Ratio(37, 6);
+        Ratio secondRatio = new Ratio(0);
 
-        Ratio got = ratio1.sub(ratio2);
+        Ratio got = firstRatio.sub(secondRatio);
 
-        assertEquals(got, ratio1);
+        assertEquals(got, firstRatio);
     }
 
     @Test
     public void canCalcSubOfRatiosWithCommonDenominators() {
-        Ratio ratio1 = new Ratio(2, 3);
-        Ratio ratio2 = new Ratio(4, 3);
+        Ratio firstRatio = new Ratio(2, 3);
+        Ratio secondRatio = new Ratio(4, 3);
         Ratio expected = new Ratio(-2, 3);
 
-        Ratio got = ratio1.sub(ratio2);
+        Ratio got = firstRatio.sub(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcSubOfRatiosWithoutCommonDenominators() {
-        Ratio ratio1 = new Ratio(1, 6);
-        Ratio ratio2 = new Ratio(3, 4);
+        Ratio firstRatio = new Ratio(1, 6);
+        Ratio secondRatio = new Ratio(3, 4);
         Ratio expected = new Ratio(-7, 12);
 
-        Ratio got = ratio1.sub(ratio2);
+        Ratio got = firstRatio.sub(secondRatio);
 
         assertEquals(got, expected);
     }
 
    @Test
    public void canCalcMultiplyOfRatioAndZeroRatio() {
-       Ratio ratio1 = new Ratio(5, 6);
-       Ratio ratio2 = new Ratio(0);
+       Ratio firstRatio = new Ratio(5, 6);
+       Ratio secondRatio = new Ratio(0);
        Ratio expected = new Ratio(0);
 
-       Ratio got = ratio1.mult(ratio2);
+       Ratio got = firstRatio.mult(secondRatio);
 
        assertEquals(got, expected);
    }
 
     @Test
     public void canCalcMultiplyOfRatioAndWholeNumberRatio() {
-        Ratio ratio1 = new Ratio(5, 6);
-        Ratio ratio2 = new Ratio(3);
+        Ratio firstRatio = new Ratio(5, 6);
+        Ratio secondRatio = new Ratio(3);
         Ratio expected = new Ratio(15, 6);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcMultiplyOfNormalRatios() {
-        Ratio ratio1 = new Ratio(5, 6);
-        Ratio ratio2 = new Ratio(3, 4);
+        Ratio firstRatio = new Ratio(5, 6);
+        Ratio secondRatio = new Ratio(3, 4);
         Ratio expected = new Ratio(5, 8);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcMultOfPositiveAndNegativeRatio() {
-        Ratio ratio1 = new Ratio(1, 8);
-        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio firstRatio = new Ratio(1, 8);
+        Ratio secondRatio = new Ratio(-5, 4);
         Ratio expected = new Ratio(-5, 32);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcMultOfNegativesRatios() {
-        Ratio ratio1 = new Ratio(-1, 8);
-        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio firstRatio = new Ratio(-1, 8);
+        Ratio secondRatio = new Ratio(-5, 4);
         Ratio expected = new Ratio(5, 32);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
 
         assertEquals(got, expected);
     }
@@ -383,52 +385,52 @@ public class RatioTest {
 
     @Test(expected = ArithmeticException.class)
     public void cantCalcDivisionOfRatioAndZeroRatio() {
-        Ratio ratio1 = new Ratio(5, 6);
-        Ratio ratio2 = new Ratio(0);
+        Ratio firstRatio = new Ratio(5, 6);
+        Ratio secondRatio = new Ratio(0);
 
-        Ratio got = ratio1.div(ratio2);
+        Ratio got = firstRatio.div(secondRatio);
     }
 
     @Test
     public void canCalcDivisionOfRatioAndWholeNumberRatio() {
-        Ratio ratio1 = new Ratio(5, 6);
-        Ratio ratio2 = new Ratio(3);
+        Ratio firstRatio = new Ratio(5, 6);
+        Ratio secondRatio = new Ratio(3);
         Ratio expected = new Ratio(5, 18);
 
-        Ratio got = ratio1.div(ratio2);
+        Ratio got = firstRatio.div(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcDivisionOfNormalRatios() {
-        Ratio ratio1 = new Ratio(5, 6);
-        Ratio ratio2 = new Ratio(3, 4);
+        Ratio firstRatio = new Ratio(5, 6);
+        Ratio secondRatio = new Ratio(3, 4);
         Ratio expected = new Ratio(10, 9);
 
-        Ratio got = ratio1.div(ratio2);
+        Ratio got = firstRatio.div(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcDivisionOfPositiveAndNegativeRatio() {
-        Ratio ratio1 = new Ratio(1, 8);
-        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio firstRatio = new Ratio(1, 8);
+        Ratio secondRatio = new Ratio(-5, 4);
         Ratio expected = new Ratio(-1, 10);
 
-        Ratio got = ratio1.div(ratio2);
+        Ratio got = firstRatio.div(secondRatio);
 
         assertEquals(got, expected);
     }
 
     @Test
     public void canCalcDivisionOfNegativesRatios() {
-        Ratio ratio1 = new Ratio(-1, 8);
-        Ratio ratio2 = new Ratio(-5, 4);
+        Ratio firstRatio = new Ratio(-1, 8);
+        Ratio secondRatio = new Ratio(-5, 4);
         Ratio expected = new Ratio(1, 10);
 
-        Ratio got = ratio1.div(ratio2);
+        Ratio got = firstRatio.div(secondRatio);
 
         assertEquals(got, expected);
     }
@@ -479,66 +481,66 @@ public class RatioTest {
 
     @Test
     public void ratiosWithBigDenominatorsAndNumeratorsComparesCorrectly() {
-        Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
-        Ratio ratio2 = new Ratio(Integer.MAX_VALUE, 1);
+        Ratio firstRatio = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio secondRatio = new Ratio(Integer.MAX_VALUE, 1);
 
-        assertTrue(ratio1.compareTo(ratio2) < 0);
+        assertTrue(firstRatio.compareTo(secondRatio) < 0);
     }
 
     @Test
     public void ratiosWithBigNegativeDenominatorsAndNumeratorsComparesCorrectly() {
-        Ratio ratio1 = new Ratio(Integer.MIN_VALUE, 2);
-        Ratio ratio2 = new Ratio(Integer.MIN_VALUE, 1);
+        Ratio firstRatio = new Ratio(Integer.MIN_VALUE, 2);
+        Ratio secondRatio = new Ratio(Integer.MIN_VALUE, 1);
 
-        assertTrue(ratio1.compareTo(ratio2) > 0);
+        assertTrue(firstRatio.compareTo(secondRatio) > 0);
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenSumOfRatiosHasTooBigNumeratorExceptionThrows() {
-        Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
-        Ratio ratio2 = new Ratio(Integer.MAX_VALUE / 2 + 1, 1);
+        Ratio firstRatio = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio secondRatio = new Ratio(Integer.MAX_VALUE / 2 + 1, 1);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenSumOfRatiosHasTooBigNegativeNumeratorExceptionThrows() {
-        Ratio ratio1 = new Ratio(Integer.MIN_VALUE, 2);
-        Ratio ratio2 = new Ratio(Integer.MIN_VALUE / 2 - 1, 1);
+        Ratio firstRatio = new Ratio(Integer.MIN_VALUE, 2);
+        Ratio secondRatio = new Ratio(Integer.MIN_VALUE / 2 - 1, 1);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenMultOfRatiosHasTooBigNumeratorExceptionThrows() {
-        Ratio ratio1 = new Ratio(Integer.MAX_VALUE, 2);
-        Ratio ratio2 = new Ratio(2, 5);
+        Ratio firstRatio = new Ratio(Integer.MAX_VALUE, 2);
+        Ratio secondRatio = new Ratio(2, 5);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenMultOfRatiosHasTooBigNegativeNumeratorExceptionThrows() {
-        Ratio ratio1 = new Ratio(Integer.MIN_VALUE, 3);
-        Ratio ratio2 = new Ratio(2, 5);
+        Ratio firstRatio = new Ratio(Integer.MIN_VALUE, 3);
+        Ratio secondRatio = new Ratio(2, 5);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void whenMultOfRatiosHasTooBigDenominatorExceptionThrows() {
-        Ratio ratio1 = new Ratio(1, Integer.MAX_VALUE);
-        Ratio ratio2 = new Ratio(2, 5);
+        Ratio firstRatio = new Ratio(1, Integer.MAX_VALUE);
+        Ratio secondRatio = new Ratio(2, 5);
 
-        Ratio got = ratio1.mult(ratio2);
+        Ratio got = firstRatio.mult(secondRatio);
     }
 
     @Test(expected = Ratio.IntegerOverflowException.class)
     public void cantFindSumOfRatiosWithTooBigCommonDenominator() {
-        Ratio ratio1 = new Ratio(1, Integer.MAX_VALUE);
-        Ratio ratio2 = new Ratio(2, 3);
+        Ratio firstRatio = new Ratio(1, Integer.MAX_VALUE);
+        Ratio secondRatio = new Ratio(2, 3);
 
-        Ratio got = ratio1.add(ratio2);
+        Ratio got = firstRatio.add(secondRatio);
     }
 
 }
