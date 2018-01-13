@@ -27,9 +27,9 @@ public class Ratio {
 
     @Override
     public int hashCode() {
-        final int shift = 32;
+        final int shift = 8;
 
-        return numerator >>> shift + denominator;
+        return (int) ((long) (numerator) >>> shift + denominator);
     }
 
     @Override
