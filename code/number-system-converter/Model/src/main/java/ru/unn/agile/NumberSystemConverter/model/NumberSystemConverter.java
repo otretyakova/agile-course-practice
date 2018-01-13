@@ -54,7 +54,7 @@ public final class NumberSystemConverter {
         for (int pos = 0; pos < input.length(); pos++) {
             int curElem = Character.getNumericValue((input.charAt(pos)));
             if ((curElem < 0) || (systemBase <= curElem)) {
-                throw new IllegalArgumentException("Input string contains incorrect symbols");
+                throw new InvalidInputException("Input string contains incorrect symbols");
             }
         }
     }

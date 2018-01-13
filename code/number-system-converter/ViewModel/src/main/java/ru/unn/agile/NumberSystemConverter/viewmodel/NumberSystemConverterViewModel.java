@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import ru.unn.agile.NumberSystemConverter.model.InvalidInputException;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemConverter;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
 
@@ -39,7 +40,6 @@ public class NumberSystemConverterViewModel {
     public final ObservableList<NumberSystemBase> getAvailableNumberSystems() {
         return this.availableNumberSystems.get();
     }
-
     public BooleanProperty conversionEnabledProperty() {
         return this.conversionEnabled;
     }
@@ -56,14 +56,9 @@ public class NumberSystemConverterViewModel {
         return this.errorMessageIsShown.get();
     }
 
-    public StringProperty errorMessageProperty() {
-        return this.errorMessage;
-    }
-
     public final String getErrorMessage() {
         return this.errorMessage.get();
     }
-
 
     public NumberSystemConverterViewModel() {
         this.numberInBaseNumberSystem.set("");
@@ -82,8 +77,8 @@ public class NumberSystemConverterViewModel {
                 String result = NumberSystemConverter.convert(this.numberInBaseNumberSystem.get(),
                         this.baseNumberSystem.get(), this.targetNumberSystem.get());
                 this.numberInTargetNumberSystem.set(result);
-            } catch (IllegalArgumentException illegalArgumentException) {
-                this.errorMessage.set(illegalArgumentException.getMessage());
+            } catch (InvalidInputException invalidInputException) {
+                this.errorMessage.set("Input contains invalid symbols for this number system");
                 this.errorMessageIsShown.set(true);
             }
         }
@@ -104,7 +99,7 @@ public class NumberSystemConverterViewModel {
 
             @Override
             protected boolean computeValue() {
-                return numberInBaseNumberSystem.get().length() > 0;
+                    return numberInBaseNumberSystem.get().length() > 0;
             }
         };
         this.conversionEnabled.bind(couldConvert);

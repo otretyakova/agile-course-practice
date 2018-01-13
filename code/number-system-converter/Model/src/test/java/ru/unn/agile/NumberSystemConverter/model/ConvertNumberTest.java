@@ -330,14 +330,14 @@ public class ConvertNumberTest {
         NumberSystemConverter.convert(input, NumberSystemBase.BIN, NumberSystemBase.HEX);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void conversionBIN2HEXThrowsIllegalArgumentExceptionWhenInputIsTrash() {
+    @Test(expected = InvalidInputException.class)
+    public void conversionBIN2HEXThrowsInvalidInputExceptionWhenInputIsTrash() {
         String input = "$@&-*€£";
         NumberSystemConverter.convert(input, NumberSystemBase.BIN, NumberSystemBase.HEX);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void conversionDEC2HEXThrowsIllegalArgumentExceptionWhenInputIsTrash() {
+    @Test(expected = InvalidInputException.class)
+    public void conversionDEC2HEXThrowsInvalidInputExceptionWhenInputIsTrash() {
         String input = "$@&-*€£";
         NumberSystemConverter.convert(input, NumberSystemBase.DEC, NumberSystemBase.HEX);
     }
