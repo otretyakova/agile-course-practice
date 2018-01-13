@@ -50,7 +50,8 @@ public class LeftSidedHeap<T> {
         return new SimpleEntry<>(root.getKey(), root.getValue());
     }
 
-    public void remove(final int key, Collection<SimpleEntry<Integer, T>> retVal) throws IllegalStateException {
+    public void remove(final int key, final Collection<SimpleEntry<Integer, T>> retVal)
+            throws IllegalStateException {
         if (size() == 0) {
             throw new IllegalStateException("Attempt to remove elements from empty heap!");
         } else {
