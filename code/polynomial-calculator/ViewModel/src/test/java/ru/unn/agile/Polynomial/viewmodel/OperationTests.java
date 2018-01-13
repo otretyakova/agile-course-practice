@@ -28,7 +28,7 @@ public class OperationTests {
     @Test
     public void canGetListOfOperations() {
         Operation[] operations = Operation.values();
-        Operation[] currentOperations = new Operation[]{
+        Operation[] currentOperations = new Operation[] {
                 Operation.ADD,
                 Operation.SUB,
                 Operation.MULTIPLY};

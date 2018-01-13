@@ -13,7 +13,7 @@ public final class Parser {
             for (int i = 0; i < coefficientsAndDegrees.length; i += 2) {
                 if (coefficientsAndDegrees[i].charAt(0) != '+'
                         && coefficientsAndDegrees[i].charAt(0) != '-') {
-                    throw new Exception("Invalid sign between monomials!");
+                    throw new IllegalArgumentException("Invalid sign between monomials!");
                 }
                 Double coefficient = Double.parseDouble(coefficientsAndDegrees[i]);
                 Integer degree = Integer.parseInt(coefficientsAndDegrees[i + 1]);
@@ -32,14 +32,19 @@ public final class Parser {
     }
 
     private static boolean isValidText(final String txt) {
-        boolean result = false;
-        if (!txt.isEmpty()) {
-            String changedText = txt.replaceAll("\\)\\d", "");
+        String changedText;
+        boolean result = !txt.isEmpty();
+        if (result) {
+            changedText = txt.replaceAll("\\)\\d", "");
             result = (txt.length() == changedText.length());
+        }
+        if (result) {
             changedText = removeWhitespacesAroundSign(txt);
-            result &= (changedText.replaceAll("[0-9.x\\+\\-\\^\\(\\)]", "").isEmpty());
+            result = (changedText.replaceAll("[0-9.x\\+\\-\\^\\(\\)]", "").isEmpty());
+        }
+        if (result) {
             changedText = txt.replaceAll("x\\^\\(", "a");
-            result &= (changedText.replaceAll("a", "aa").length()
+            result = (changedText.replaceAll("a", "aa").length()
                     == changedText.replaceAll("\\)", "aa").length());
         }
         return result;

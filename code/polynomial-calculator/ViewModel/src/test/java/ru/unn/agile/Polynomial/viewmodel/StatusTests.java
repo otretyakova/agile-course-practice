@@ -28,7 +28,7 @@ public class StatusTests {
     @Test
     public void canGetListOfStatuses() {
         Status[] statuses = Status.values();
-        Status[] currentStatuses = new Status[]{
+        Status[] currentStatuses = new Status[] {
                 Status.WAITING,
                 Status.READY,
                 Status.BAD_FORMAT,
