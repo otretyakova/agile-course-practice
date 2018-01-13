@@ -37,48 +37,6 @@ public class ViewModel {
         parseInput();
     }
 
-    private boolean parseInput() {
-        boolean exceptionFlag = true;
-        isButtonAddEnabled = !textAdd.isEmpty();
-        isButtonRemoveEnabled = !textRemove.isEmpty();
-
-        try {
-            if (!textAdd.isEmpty()) {
-                parseTextAdd(textAdd);
-            }
-        } catch (Exception e) {
-            status = Status.BAD_FORMAT_IN_ADD;
-            isButtonAddEnabled = false;
-            isButtonRemoveEnabled = false;
-            exceptionFlag = false;
-        }
-
-        try {
-            if (!textRemove.isEmpty()) {
-                parseTextRemove(textRemove);
-            }
-        } catch (Exception e) {
-            if (status == Status.BAD_FORMAT_IN_ADD) {
-                status = Status.BAD_FORMAT;
-            } else {
-                status = Status.BAD_FORMAT_IN_REMOVE;
-            }
-            isButtonAddEnabled = false;
-            isButtonRemoveEnabled = false;
-            exceptionFlag = false;
-        }
-
-        if (exceptionFlag) {
-            if (isButtonAddEnabled || isButtonRemoveEnabled) {
-                status = Status.READY;
-            } else {
-                status = Status.WAITING;
-            }
-        }
-
-        return (isButtonAddEnabled || isButtonRemoveEnabled) && exceptionFlag;
-    }
-
     public void add() {
         if (!parseInput()) {
             return;
@@ -101,15 +59,7 @@ public class ViewModel {
 
         for (Integer keyValue : removeCollection) {
             if (heap.size() != 0) {
-                SimpleEntry<Integer, Double> removedElement = heap.remove(keyValue);
-                while (removedElement != null) {
-                    removedCollection.add(removedElement);
-                    if (heap.size() != 0) {
-                        removedElement = heap.remove(keyValue);
-                    } else {
-                        removedElement = null;
-                    }
-                }
+                heap.remove(keyValue, removedCollection);
             }
         }
 
@@ -159,6 +109,57 @@ public class ViewModel {
         private Status() { }
     }
 
+    private boolean correctAdd() {
+        try {
+            if (!textAdd.isEmpty()) {
+                parseTextAdd(textAdd);
+            }
+        } catch (Exception e) {
+            if  (status.equals(Status.BAD_FORMAT_IN_REMOVE)) {
+                status = Status.BAD_FORMAT;
+            } else {
+                status = Status.BAD_FORMAT_IN_ADD;
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean correctRemove() {
+        try {
+            if (!textRemove.isEmpty()) {
+                parseTextRemove(textRemove);
+            }
+        } catch (Exception e) {
+            if (status.equals(Status.BAD_FORMAT_IN_ADD)) {
+                status = Status.BAD_FORMAT;
+            } else {
+                status = Status.BAD_FORMAT_IN_REMOVE;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean parseInput() {
+        boolean noExceptionFlag = correctAdd();
+        noExceptionFlag = correctRemove() && noExceptionFlag;
+
+        isButtonAddEnabled = !textAdd.isEmpty() && noExceptionFlag;
+        isButtonRemoveEnabled = !textRemove.isEmpty() && noExceptionFlag;
+
+        if (noExceptionFlag) {
+            if (isButtonAddEnabled || isButtonRemoveEnabled) {
+                status = Status.READY;
+            } else {
+                status = Status.WAITING;
+            }
+        }
+
+        return (isButtonAddEnabled || isButtonRemoveEnabled);
+    }
+
     private void parseTextAdd(final String input) throws IllegalStateException {
         addCollection.clear();
 
@@ -192,11 +193,9 @@ public class ViewModel {
     }
 
     private String formatResult() {
-        String res = new String();
-
         Integer size = heap.size();
 
-        res = "size: " + size.toString() + "\n";
+        String res = "size: " + size.toString() + "\n";
         if (size == 0) {
             res += "min: -\n";
         } else {

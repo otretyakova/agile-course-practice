@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import java.util.AbstractMap.SimpleEntry;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 import static org.junit.Assert.assertFalse;
@@ -102,22 +103,39 @@ public class LeftSidedHeapTests {
     @Test
     public void cantRemoveElementFromEmptyHeap() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
+        Collection<SimpleEntry<Integer, Integer>> removedCollection = new ArrayList<SimpleEntry<Integer, Integer>>();
         exception.expect(IllegalStateException.class);
-        heap.remove(0);
+        heap.remove(0, removedCollection);
     }
 
     @Test
     public void cantRemoveUnexistedElement() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
-        assertTrue(heap.remove(-1) == null && heap.size() == 10);
+        Collection<SimpleEntry<Integer, Integer>> removedCollection = new ArrayList<SimpleEntry<Integer, Integer>>();
+        heap.remove(-1, removedCollection);
+        assertTrue(removedCollection.isEmpty() && heap.size() == 10);
     }
 
     @Test
     public void cantRemoveUniqueElementTwice() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
+        Collection<SimpleEntry<Integer, Integer>> removedCollectionFirst = new ArrayList<SimpleEntry<Integer, Integer>>();
+        Collection<SimpleEntry<Integer, Integer>> removedCollectionSecond = new ArrayList<SimpleEntry<Integer, Integer>>();
         heap.add(new SimpleEntry<>(-1, 4));
-        heap.remove(-1);
-        assertTrue(heap.remove(-1) == null);
+        heap.remove(-1, removedCollectionFirst);
+        heap.remove(-1, removedCollectionSecond);
+        assertTrue(removedCollectionSecond.isEmpty());
+    }
+
+
+    @Test
+    public void canRemoveUniqueElementTwice() {
+        LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
+        Collection<SimpleEntry<Integer, Integer>> removedCollection = new ArrayList<SimpleEntry<Integer, Integer>>();
+        heap.add(new SimpleEntry<>(-1, 4));
+        heap.add(new SimpleEntry<>(-1, 5));
+        heap.remove(-1, removedCollection);
+        assertTrue(heap.size() == 10);
     }
 
     @Test
@@ -140,9 +158,10 @@ public class LeftSidedHeapTests {
     public void cantAdd5ElementsAndRemove6Elements() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 5);
+        Collection<SimpleEntry<Integer, Integer>> removedCollection = new ArrayList<SimpleEntry<Integer, Integer>>();
         removeRandomElements(heap, addedElements, 5);
         exception.expect(IllegalStateException.class);
-        heap.remove(0);
+        heap.remove(0, removedCollection);
     }
 
     @Test
@@ -161,9 +180,10 @@ public class LeftSidedHeapTests {
     @Test
     public void canGetNewMinAfterDeletePreviousMin() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
+        Collection<SimpleEntry<Integer, Integer>> removedCollection = new ArrayList<SimpleEntry<Integer, Integer>>();
         heap.add(new SimpleEntry<>(-2, 1));
         heap.add(new SimpleEntry<>(-1, 5));
-        heap.remove(-2);
+        heap.remove(-2, removedCollection);
         assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, 5)));
     }
 
@@ -288,7 +308,7 @@ public class LeftSidedHeapTests {
             SimpleEntry<Integer, Integer> shouldBeRemovedElement =
                     addedElements.remove(indexToRemove);
             SimpleEntry<Integer, Integer> wasRemovedElement =
-                    heap.remove(shouldBeRemovedElement.getKey());
+                    heap.removeOneElement(shouldBeRemovedElement.getKey());
             assertTrue(wasRemovedElement.equals(shouldBeRemovedElement));
         }
     }

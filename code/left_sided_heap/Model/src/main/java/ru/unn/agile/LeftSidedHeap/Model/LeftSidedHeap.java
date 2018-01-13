@@ -21,6 +21,10 @@ public class LeftSidedHeap<T> {
         return size;
     }
 
+    public final boolean isEmpty() {
+        return size != 0;
+    }
+
     public final void add(final SimpleEntry<Integer, T> keyValuePair) {
         if (size() == 0) {
             root = new Node<T>(keyValuePair, 1, null, null, null);
@@ -46,7 +50,52 @@ public class LeftSidedHeap<T> {
         return new SimpleEntry<>(root.getKey(), root.getValue());
     }
 
-    public SimpleEntry<Integer, T> remove(final int key) throws IllegalStateException {
+    public void remove(final int key, Collection<SimpleEntry<Integer, T>> retVal) throws IllegalStateException {
+        if (size() == 0) {
+            throw new IllegalStateException("Attempt to remove elements from empty heap!");
+        } else {
+            SimpleEntry<Integer, T> removeVal = removeOneElement(key);
+            while (removeVal != null) {
+                retVal.add(removeVal);
+                if (size() != 0) {
+                    removeVal = removeOneElement(key);
+                } else {
+                    removeVal = null;
+                }
+            }
+        }
+    }
+
+    public boolean contains(final Collection<SimpleEntry<Integer, T>> collection) {
+        boolean result = true;
+        for (SimpleEntry<Integer, T> keyValuePair : collection) {
+            SimpleEntry<Integer, T> foundElement = search(keyValuePair.getKey());
+            result = false;
+            if (foundElement != null) {
+                result = search(keyValuePair.getKey()).equals(keyValuePair);
+            }
+            if (!result) {
+                break;
+            }
+        }
+        return result;
+    }
+
+    public boolean merge(final LeftSidedHeap<T> heap) {
+        boolean bResult = true;
+        if (heap == null) {
+            bResult = false;
+        } else if (size() == 0) {
+            root = heap.root;
+            size = heap.size;
+        } else if (heap.root != null) {
+            root = merge(root, heap.root);
+            size += heap.size;
+        }
+        return bResult;
+    }
+
+    public SimpleEntry<Integer, T> removeOneElement(final int key) throws IllegalStateException {
         SimpleEntry<Integer, T> retVal = null;
         if (size() == 0) {
             throw new IllegalStateException("Attempt to remove element from empty heap!");
@@ -77,35 +126,6 @@ public class LeftSidedHeap<T> {
             }
         }
         return retVal;
-    }
-
-    public boolean contains(final Collection<SimpleEntry<Integer, T>> collection) {
-        boolean result = true;
-        for (SimpleEntry<Integer, T> keyValuePair : collection) {
-            SimpleEntry<Integer, T> foundElement = search(keyValuePair.getKey());
-            result = false;
-            if (foundElement != null) {
-                result = search(keyValuePair.getKey()).equals(keyValuePair);
-            }
-            if (!result) {
-                break;
-            }
-        }
-        return result;
-    }
-
-    public boolean merge(final LeftSidedHeap<T> heap) {
-        boolean bResult = true;
-        if (heap == null) {
-            bResult = false;
-        } else if (size() == 0) {
-            root = heap.root;
-            size = heap.size;
-        } else if (heap.root != null) {
-            root = merge(root, heap.root);
-            size += heap.size;
-        }
-        return bResult;
     }
 
     private static final class Node<T> extends SimpleEntry<Integer, T> {
