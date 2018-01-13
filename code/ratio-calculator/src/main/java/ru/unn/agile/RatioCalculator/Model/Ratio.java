@@ -58,9 +58,8 @@ public class Ratio {
 
     public Ratio add(final Ratio other) {
         int commonDenominator = leastCommonMultiple(denominator, other.denominator);
-        long newNumerator = (long) (numerator) * (commonDenominator / denominator)
-                + (long) (other.numerator) * (commonDenominator / other.denominator);
-        intOverflowCheck(newNumerator, "The result numerator is too big");
+        long newNumerator = numerator * (commonDenominator / denominator)
+                + other.numerator * (commonDenominator / other.denominator);
         return new Ratio((int) newNumerator, commonDenominator);
     }
 
@@ -81,11 +80,9 @@ public class Ratio {
     }
 
     public Ratio mult(final Ratio other) {
-        long newNumerator = (long) (numerator) * other.numerator;
-        intOverflowCheck(newNumerator, "The result numerator is too big");
-        long newDenominator = (long) (denominator) * other.denominator;
-        intOverflowCheck(newDenominator, "The result denominator is too big");
-        return new Ratio((int) newNumerator, (int) newDenominator);
+        int newNumerator = numerator * other.numerator;
+        int newDenominator = denominator * other.denominator;
+        return new Ratio(newNumerator, newDenominator);
     }
 
     public Ratio mult(final int number) {
@@ -102,12 +99,6 @@ public class Ratio {
 
     public Ratio div(final int number) {
         return div(new Ratio(number));
-    }
-
-    public class IntegerOverflowException extends RuntimeException {
-        IntegerOverflowException(final String msg) {
-            super(msg);
-        }
     }
 
     private void init(final int numerator, final int denominator) {
@@ -129,12 +120,6 @@ public class Ratio {
         }
     }
 
-    private void intOverflowCheck(final long number, final String errorMsg) {
-        if ((number < Integer.MIN_VALUE) || (number > Integer.MAX_VALUE)) {
-            throw new IntegerOverflowException(errorMsg);
-        }
-    }
-
     private int greatestCommonDivisor(final int first, final int second) {
         int bigNumber = first;
         int smallNumber = second;
@@ -147,9 +132,7 @@ public class Ratio {
     }
 
     private int leastCommonMultiple(final int first, final int second) {
-        long lcmValue = (long) (first) / greatestCommonDivisor(first, second) * second;
-        intOverflowCheck(lcmValue, "The common denominator is too big");
-        return (int) lcmValue;
+        return first / greatestCommonDivisor(first, second) * second;
     }
 
     private int numerator;
