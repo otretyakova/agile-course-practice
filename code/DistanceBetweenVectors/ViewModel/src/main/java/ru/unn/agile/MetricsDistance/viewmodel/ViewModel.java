@@ -73,12 +73,12 @@ public class ViewModel {
         for (ValueCachingChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
                 StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
-                message.append("Input arguments are: [")
-                        .append(getVec1X()).append("; ")
-                        .append(getVec1Y()).append("; ")
-                        .append(getVec2X()).append("; ")
-                        .append(getVec2Y()).append("; ")
-                        .append(getDim()).append("]");
+                message.append("Input arguments are: Vec1 = [")
+                        .append(getVec1X()).append(",")
+                        .append(getVec1Y()).append("]; Vec2 = [")
+                        .append(getVec2X()).append(",")
+                        .append(getVec2Y()).append("]; Dim = ")
+                        .append(getDim());
                 logger.log(message.toString());
 
                 listener.cache();
@@ -297,11 +297,9 @@ public class ViewModel {
 
     private String createMessageAfterCalculation() {
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
-        message.append("Arguments: Vec1X = ").append(getVec1X())
-                .append("; Vec1Y = ").append(getVec1Y())
-                .append("; Vec2X = ").append(getVec2X())
-                .append("; Vec2Y = ").append(getVec2Y())
-                .append("; Metric = ").append(getMetric().toString());
+        message.append("Arguments: Vec1 = [").append(getVec1X()).append(", ").append(getVec1Y())
+                .append("]; Vec2 = [").append(getVec2X()).append(", ").append(getVec2Y())
+                .append("]; Metric = ").append(getMetric().toString());
         if (getMetric() == Metric.Minkowski) {
             message.append("; Dim = ").append(getDim());
         }

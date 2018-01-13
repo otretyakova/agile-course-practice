@@ -269,6 +269,16 @@ public class ViewModelTests {
     }
 
     @Test
+    public void twoLogMessagesAfterChangingFocusAndCalculation() {
+        setInputData("3", "3", "1", "3", "1");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.calculate();
+
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
     public void logContainsProperMessageAfterChangingMetric() {
         setInputData("3", "3", "1", "3", "1");
 
@@ -295,12 +305,12 @@ public class ViewModelTests {
         String message = viewModel.getLog().get(0);
 
         assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
-                + "Input arguments are: \\["
-                + viewModel.getVec1X() + "; "
-                + viewModel.getVec1Y() + "; "
-                + viewModel.getVec2X() + "; "
-                + viewModel.getVec2Y() + "; "
-                + viewModel.getDim() + "\\]"));
+                + "Input arguments are: Vec1 = \\["
+                + viewModel.getVec1X() + ","
+                + viewModel.getVec1Y() + "\\]; Vec2 = \\["
+                + viewModel.getVec2X() + ","
+                + viewModel.getVec2Y() + "\\]; Dim = "
+                + viewModel.getDim()));
     }
 
     @Test
@@ -334,7 +344,7 @@ public class ViewModelTests {
         String message = viewModel.getLogs();
 
         assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
-                + "Input arguments are: \\[1; ; ; ; \\]\n"));
+                + "Input arguments are: Vec1 = \\[1,\\]; Vec2 = \\[,\\]; Dim = \n"));
     }
 
     @Test
@@ -351,10 +361,8 @@ public class ViewModelTests {
 
     private String getProperlyFormattedArgumentsInfo() {
         String argumentsInfo = ".*Arguments"
-                + ": Vec1X = " + viewModel.getVec1X()
-                + "; Vec1Y = " + viewModel.getVec1Y()
-                + "; Vec2X = " + viewModel.getVec2X()
-                + "; Vec2Y = " + viewModel.getVec2Y()
+                + ": Vec1 = \\[" + viewModel.getVec1X() + ", " + viewModel.getVec1Y() + "\\]"
+                + "; Vec2 = \\[" + viewModel.getVec2X() + ", " + viewModel.getVec2Y() + "\\]"
                 + "; Metric = " + viewModel.getMetric();
         if (viewModel.getMetric() == Metric.Minkowski) {
             argumentsInfo += "; Dim = " + viewModel.getDim();

@@ -66,5 +66,4 @@ public class TxtLoggerTests {
 
     private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
     private TxtLogger txtLogger;
-
 }
