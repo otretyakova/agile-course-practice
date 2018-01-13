@@ -1,13 +1,25 @@
 package ru.unn.agile.PrimeNumber.viewmodel;
 
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
@@ -57,81 +69,24 @@ public class ViewModel {
 
         PrimeNumber primes = new PrimeNumber(left, right);
         primes.findPrimeNumberFromRange(method.get());
-        ArrayList<Integer> primesList = new ArrayList<Integer>(primes.getPrimeList());
+        List<Integer> primesList = primes.getPrimeList();
 
         long elapsedTime = System.nanoTime() - startTime;
         final long numberOfNanosecondsInSecond = 1000000000;
         Double elapsedTimeInSec = (double) elapsedTime / numberOfNanosecondsInSecond;
 
-        Integer count = Integer.min(Integer.parseInt(maxCountPrimes.get()), primesList.size());
-        String answerMessage = "", shortMessage = "";
-        if (!primesList.isEmpty()) {
-            answerMessage = "Found " + primesList.size() + " primes in the range from "
-                    + left.toString() + " to " + right.toString()
-                    + " in " + elapsedTimeInSec.toString() + " seconds.\n";
-            shortMessage = primesList.size() + " primes in ["
-                    + left.toString() + "; " + right.toString() + "]"
-                    + " and printed " + count.toString();
-            if (count > 0) {
-                answerMessage += "Here are " + count + " of them:\n";
-                int j = 0;
-                for (int i = 0; i < (count + 1) / 2; i++, j++) {
-                    answerMessage += primesList.get(i).toString();
-                    if (j != count - 1) {
-                        answerMessage += ", ";
-                    }
-                }
-                if (count != primesList.size() && j != count) {
-                    answerMessage += "..., ";
-                }
-                for (int i = 0; i < count / 2; i++, j++) {
-                    answerMessage += primesList.get(primesList.size() - count / 2 + i).toString();
-                    if (j != count - 1) {
-                        answerMessage += ", ";
-                    }
-                }
-                answerMessage += "\n";
-            }
-        } else {
-            answerMessage = "There are no primes in the range from "
-                    + left.toString() + " to " + right.toString()
-                    + " in " + elapsedTimeInSec.toString() + " seconds.\n";
-            shortMessage = "No primes in ["
-                    + left.toString() + "; " + right.toString() + "]";
-        }
-        currentAnswer.set(answerMessage);
-        status.set(Status.SUCCESS.toString());
-        answersList.add(
-                new Query(Integer.toString(answersList.size() + 1) + ". " + shortMessage,
-                        answerMessage)
+        Integer numberOfOutputPrimes = Integer.min(
+                Integer.parseInt(maxCountPrimes.get()), primesList.size()
         );
-    }
+        CalculationMessages messages = getCalculationMessages(left, right, elapsedTimeInSec,
+                numberOfOutputPrimes, primesList);
 
-    private Status getInputStatus() {
-        Status inputStatus = Status.READY;
-        if (rangeFrom.get().isEmpty()
-            || rangeTo.get().isEmpty()
-            || maxCountPrimes.get().isEmpty()) {
-            inputStatus = Status.WAITING;
-        }
-        try {
-            if (!maxCountPrimes.get().isEmpty()) {
-                Integer maxCount = Integer.parseInt(maxCountPrimes.get());
-                if (maxCount < 0) {
-                    throw new NumberFormatException("Negative max count");
-                }
-            }
-            if (!rangeFrom.get().isEmpty()) {
-                Integer.parseInt(rangeFrom.get());
-            }
-            if (!rangeTo.get().isEmpty()) {
-                Integer.parseInt(rangeTo.get());
-            }
-        } catch (NumberFormatException nfe) {
-            inputStatus = Status.BAD_FORMAT;
-        }
-
-        return inputStatus;
+        currentAnswer.set(messages.getAnswerMessage());
+        status.set(Status.SUCCESS.toString());
+        answersList.add(new Query(
+                Integer.toString(answersList.size() + 1) + ". " + messages.getShortMessage(),
+                messages.getAnswerMessage())
+        );
     }
 
     public void chooseAnswerById(final Integer id) {
@@ -185,6 +140,96 @@ public class ViewModel {
     public ListProperty<Query> answersListProperty() {
         return answersList;
     }
+
+    private final class CalculationMessages {
+        CalculationMessages(final String shortMessage, final String answerMessage) {
+            this.shortMessage = shortMessage;
+            this.answerMessage = answerMessage;
+        }
+        public String getAnswerMessage() {
+            return answerMessage;
+        }
+        public String getShortMessage() {
+            return shortMessage;
+        }
+        private final String shortMessage, answerMessage;
+    }
+
+    private CalculationMessages getCalculationMessages(final Integer left, final Integer right,
+                                                       final Double elapsedTimeInSec,
+                                                       final Integer numberOfOutputPrimes,
+                                                       final List<Integer> primesList) {
+        String answerMessage, shortMessage;
+        if (!primesList.isEmpty()) {
+            answerMessage = "Found " + primesList.size() + " primes ";
+            shortMessage = primesList.size() + " primes ";
+        } else {
+            answerMessage = "There are no primes ";
+            shortMessage = "No primes ";
+        }
+
+        answerMessage += "in the range from " + left.toString() + " to " + right.toString()
+                + " in " + elapsedTimeInSec.toString() + " seconds.\n";
+        shortMessage += "in [" + left.toString() + "; " + right.toString() + "]"
+                + " and printed " + numberOfOutputPrimes.toString();
+
+        if (numberOfOutputPrimes > 0) {
+            answerMessage += "Here are " + numberOfOutputPrimes + " of them:\n";
+            answerMessage += listOfPrimesToString(primesList, numberOfOutputPrimes);
+        }
+        return new CalculationMessages(shortMessage, answerMessage);
+    }
+
+    private String listOfPrimesToString(final List<Integer> primesList,
+                                        final Integer numberOfOutputPrimes) {
+        String result = "";
+        result += listToString(primesList.subList(0, (numberOfOutputPrimes + 1) / 2), DELIMITER);
+        if (numberOfOutputPrimes > 1) {
+            result += DELIMITER;
+            if (numberOfOutputPrimes != primesList.size()) {
+                result += "..." + DELIMITER;
+            }
+        }
+        result += listToString(
+                primesList.subList(primesList.size() - numberOfOutputPrimes / 2, primesList.size()),
+                DELIMITER
+        );
+        result += "\n";
+        return result;
+    }
+
+    private static String listToString(final List<Integer> collection, final String delimiter) {
+        return collection.stream().map(Object::toString).collect(Collectors.joining(delimiter));
+    }
+
+    private Status getInputStatus() {
+        Status inputStatus = Status.READY;
+        if (rangeFrom.get().isEmpty()
+                || rangeTo.get().isEmpty()
+                || maxCountPrimes.get().isEmpty()) {
+            inputStatus = Status.WAITING;
+        }
+        try {
+            if (!maxCountPrimes.get().isEmpty()) {
+                Integer maxCount = Integer.parseInt(maxCountPrimes.get());
+                if (maxCount < 0) {
+                    throw new NumberFormatException("Negative max count");
+                }
+            }
+            if (!rangeFrom.get().isEmpty()) {
+                Integer.parseInt(rangeFrom.get());
+            }
+            if (!rangeTo.get().isEmpty()) {
+                Integer.parseInt(rangeTo.get());
+            }
+        } catch (NumberFormatException nfe) {
+            inputStatus = Status.BAD_FORMAT;
+        }
+
+        return inputStatus;
+    }
+
+    private static final String DELIMITER = ", ";
 
     private final StringProperty rangeFrom = new SimpleStringProperty();
     private final StringProperty rangeTo = new SimpleStringProperty();

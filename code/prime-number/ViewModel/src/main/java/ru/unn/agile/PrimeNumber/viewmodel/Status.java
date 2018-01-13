@@ -6,12 +6,12 @@ public enum Status {
     BAD_FORMAT("Bad format"),
     SUCCESS("Success");
 
-    private final String name;
     Status(final String name) {
         this.name = name;
     }
     public String toString() {
         return name;
     }
+    private final String name;
 }
 
