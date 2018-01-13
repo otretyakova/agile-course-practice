@@ -9,14 +9,14 @@ import static org.junit.Assert.assertFalse;
 
 public class BoundaryTest {
     @Test
-    public void canCreateBoundWithInitValues() {
+    public void boundaryCanCreated() {
         Boundary bound = new Boundary(1, true);
 
         assertNotNull(bound);
     }
 
     @Test
-    public void canCreateCopyBoundaryWithInitValues() {
+    public void boundaryCopyCanCreated() {
         Boundary bound = new Boundary(1, true);
         Boundary copyBound = new Boundary(bound);
 
@@ -25,21 +25,21 @@ public class BoundaryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void isEqualsWithInvalidInput() {
+    public void boundaryIsNotEqualsToIncorrectInput() {
         Boundary bound = new Boundary(1, true);
         Object o = new Object();
         bound.equals(o);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void isEqualsWithNullInput() {
+    public void boundaryIsNotEqualsToNullInput() {
         Boundary bound = new Boundary(10, false);
 
         bound.equals(null);
     }
 
     @Test
-    public void isSameBoundaryEquals() {
+    public void sameBoundariesAreEquals() {
         Boundary bound1 = new Boundary(1, true);
         Boundary bound2 = new Boundary(1, true);
 
@@ -47,7 +47,7 @@ public class BoundaryTest {
     }
 
     @Test
-    public void notEqualsDifferentBoundary() {
+    public void differentBoundariesAreNotEquals() {
         Boundary bound1 = new Boundary(1, true);
         Boundary bound2 = new Boundary(2, true);
 
@@ -55,56 +55,56 @@ public class BoundaryTest {
     }
 
     @Test
-    public void isLessValue() {
+    public void boundaryIsLessValue() {
         Boundary bound = new Boundary(1, true);
 
         assertTrue(bound.less(2));
     }
 
     @Test
-    public void isNoLessValue() {
+    public void boundaryIsNotLessValue() {
         Boundary bound = new Boundary(3, true);
 
         assertFalse(bound.less(2));
     }
 
     @Test
-    public void isMoreValue() {
+    public void boundaryIsMoreValue() {
         Boundary bound = new Boundary(3, true);
 
         assertTrue(bound.more(2));
     }
 
     @Test
-    public void isNoMoreValue() {
+    public void boundaryIsNotMoreValue() {
         Boundary bound = new Boundary(1, true);
 
         assertFalse(bound.more(2));
     }
 
     @Test
-    public void isMoreValueWithIncludedValue() {
+    public void boundaryWithIncludedValueIsMoreValue() {
         Boundary bound = new Boundary(2, true);
 
         assertTrue(bound.more(2));
     }
 
     @Test
-    public void isMoreValueWithoutIncludedValue() {
+    public void boundaryWithoutIncludedValueIsNotMoreValue() {
         Boundary bound = new Boundary(2, false);
 
         assertFalse(bound.more(2));
     }
 
     @Test
-    public void isLessValueWithIncludedValue() {
+    public void boundaryWithIncludedValueIsLessValue() {
         Boundary bound = new Boundary(5, true);
 
         assertTrue(bound.less(5));
     }
 
     @Test
-    public void isNoLessValueWithoutIncludedValue() {
+    public void boundaryWithoutIncludedValueIsNotLessValue() {
         Boundary bound = new Boundary(3, false);
 
         assertFalse(bound.less(3));
