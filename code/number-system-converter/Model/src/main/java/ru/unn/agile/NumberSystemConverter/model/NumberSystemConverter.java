@@ -5,13 +5,16 @@ public final class NumberSystemConverter {
 
     public static String convert(final String input, final NumberSystemBase src,
                           final NumberSystemBase dst) throws IllegalArgumentException {
-        String outputDEC = convertANY2DEC(input, src);
-        return convertDEC2ANY(outputDEC, dst);
+        validateInput(input, src.getBaseSystem());
+        if (input.isEmpty()) {
+            return "";
+        } else {
+            String outputDEC = convertANY2DEC(input, src);
+            return convertDEC2ANY(outputDEC, dst);
+        }
     }
 
-    private static String convertANY2DEC(final String input, final NumberSystemBase src)
-                                                            throws IllegalArgumentException {
-        validateInput(input, src.getBaseSystem());
+    private static String convertANY2DEC(final String input, final NumberSystemBase src) {
         long decResult = 0L;
         int numberLength = input.length();
         for (int pos = 0; pos < numberLength; pos++) {
@@ -21,12 +24,13 @@ public final class NumberSystemConverter {
         return Long.toString(decResult);
     }
 
-    private static String convertDEC2ANY(final String input, final NumberSystemBase dst)
-                                                            throws IllegalArgumentException {
+    private static String convertDEC2ANY(final String input, final NumberSystemBase dst) {
         StringBuffer reverseOutput = new StringBuffer("");
         String[] hexLetters = {"A", "B", "C", "D", "E", "F"};
-        long inputNum = 0L;
-        inputNum = Long.parseLong(input);
+        long inputNum = Long.parseLong(input);
+        if (inputNum == 0) {
+            return "0";
+        }
         String output = "";
         long residue = 0L;
         while (inputNum != 0) {
