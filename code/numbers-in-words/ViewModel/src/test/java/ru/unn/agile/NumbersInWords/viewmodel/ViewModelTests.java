@@ -14,6 +14,10 @@ import java.util.List;
 
 public class ViewModelTests {
 
+    public void setExternalViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setUp() {
         viewModel = new ViewModel(new FakeLogger());
@@ -271,7 +275,6 @@ public class ViewModelTests {
         viewModel.setNumber("124");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
         String message = viewModel.getLog().get(0);
-        System.out.print(message);
         assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
                 + "Input number: " + viewModel.getInputNumber()));
     }
@@ -295,7 +298,8 @@ public class ViewModelTests {
         viewModel.setNumber("124");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
         String message = viewModel.getLogs();
-        assertEquals(LogMessages.EDITING_FINISHED + "Input number: 124\n", message);
+//        assertEquals(LogMessages.EDITING_FINISHED + "Input number: 124\n", message);
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED + "Input number: 124\n"));
     }
 
     private ViewModel viewModel;
