@@ -16,15 +16,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public final class Calculator {
-    private ViewModel viewModel;
-    private JPanel mainPanel;
-    private JLabel lbStatus;
-    private JTextField txtResult;
-    private JTextField txtFirstPolynomial;
-    private JTextField txtSecondPolynomial;
-    private JButton btnCalc;
-    private JComboBox<Operation> cbOperation;
-
     private Calculator(final ViewModel viewModel) {
         this.viewModel = viewModel;
         backBind();
@@ -85,4 +76,13 @@ public final class Calculator {
         Status status = viewModel.getStatus();
         lbStatus.setText(status.toString());
     }
+
+    private ViewModel viewModel;
+    private JPanel mainPanel;
+    private JLabel lbStatus;
+    private JTextField txtResult;
+    private JTextField txtFirstPolynomial;
+    private JTextField txtSecondPolynomial;
+    private JButton btnCalc;
+    private JComboBox<Operation> cbOperation;
 }
