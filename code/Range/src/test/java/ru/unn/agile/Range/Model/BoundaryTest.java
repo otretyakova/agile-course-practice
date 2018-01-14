@@ -25,21 +25,21 @@ public class BoundaryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void boundaryIsNotEqualsToIncorrectInput() {
+    public void exceptionInEqualsWhenArgumentIsIncorrect() {
         Boundary bound = new Boundary(1, true);
         Object o = new Object();
         bound.equals(o);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void boundaryIsNotEqualsToNullInput() {
+    public void exceptionInEqualsWhenArgumentIsNull() {
         Boundary bound = new Boundary(10, false);
 
         bound.equals(null);
     }
 
     @Test
-    public void sameBoundariesAreEquals() {
+    public void sameBoundariesAreEqual() {
         Boundary bound1 = new Boundary(1, true);
         Boundary bound2 = new Boundary(1, true);
 
@@ -47,7 +47,7 @@ public class BoundaryTest {
     }
 
     @Test
-    public void differentBoundariesAreNotEquals() {
+    public void differentBoundariesAreNotEqual() {
         Boundary bound1 = new Boundary(1, true);
         Boundary bound2 = new Boundary(2, true);
 
