@@ -1,18 +1,26 @@
 package ru.unn.agile.BookSale.Model;
 
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.UUID;
+
 import java.security.InvalidParameterException;
-import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 public class OrderTest {
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUpBooks() {
         book1 = new Book("Harry Potter and the Philosopher's Stone", 8.0, UUID.randomUUID());
         book2 = new Book("Harry Potter and the Half-Blood Prince", 8.0, UUID.randomUUID());
         book3 = new Book("Harry Potter and the prisoner of Azkaban", 8.0, UUID.randomUUID());
@@ -26,11 +34,24 @@ public class OrderTest {
         books.add(book4);
         books.add(book5);
         booksTable = new BooksTable(books);
+    }
 
+    @AfterClass
+    public static void cleanAll() {
+        System.gc();
+    }
+
+    @Before
+    public void setUpBooksList() {
         booksList = new HashMap<UUID, Integer>();
         booksList.put(book1.getId(), 1);
         booksList.put(book2.getId(), 2);
         booksList.put(book3.getId(), 3);
+    }
+
+    @After
+    public void cleanBooksList() {
+        System.gc();
     }
 
     @Test
@@ -181,12 +202,12 @@ public class OrderTest {
     }
 
     private final double delta = 1e-6;
-    private Book book1;
-    private Book book2;
-    private Book book3;
-    private Book book4;
-    private Book book5;
-    private Set<Book> books;
+    private static Book book1;
+    private static Book book2;
+    private static Book book3;
+    private static Book book4;
+    private static Book book5;
+    private static Set<Book> books;
+    private static BooksTable booksTable;
     private Map<UUID, Integer> booksList;
-    private BooksTable booksTable;
 }
