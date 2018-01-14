@@ -26,7 +26,7 @@ import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 public class ViewModel {
-    public ViewModel() {
+    ViewModel() {
         rangeFrom.set("");
         rangeTo.set("");
         maxCountPrimes.set("");
@@ -64,6 +64,7 @@ public class ViewModel {
         }
         Integer left = Integer.parseInt(rangeFrom.get());
         Integer right = Integer.parseInt(rangeTo.get());
+        Integer countPrimes = Integer.parseInt(maxCountPrimes.get());
 
         long startTime = System.nanoTime();
 
@@ -75,9 +76,7 @@ public class ViewModel {
         final long numberOfNanosecondsInSecond = 1000000000;
         Double elapsedTimeInSec = (double) elapsedTime / numberOfNanosecondsInSecond;
 
-        Integer numberOfOutputPrimes = Integer.min(
-                Integer.parseInt(maxCountPrimes.get()), primesList.size()
-        );
+        Integer numberOfOutputPrimes = Integer.min(countPrimes, primesList.size());
         setCalculationMessages(left, right, elapsedTimeInSec, numberOfOutputPrimes, primesList);
 
         status.set(Status.SUCCESS.toString());
@@ -136,16 +135,16 @@ public class ViewModel {
     }
 
     private void setCalculationMessages(final Integer left, final Integer right,
-                                                       final Double elapsedTimeInSec,
-                                                       final Integer numberOfOutputPrimes,
-                                                       final List<Integer> primesList) {
-        String answerMessage, shortMessage;
+                                        final Double elapsedTimeInSec,
+                                        final Integer numberOfOutputPrimes,
+                                        final List<Integer> primesList) {
+        String answerMessage, shortMessage = Integer.toString(answersList.size() + 1) + ". ";
         if (!primesList.isEmpty()) {
             answerMessage = "Found " + primesList.size() + " primes ";
-            shortMessage = primesList.size() + " primes ";
+            shortMessage += primesList.size() + " primes ";
         } else {
             answerMessage = "There are no primes ";
-            shortMessage = "No primes ";
+            shortMessage += "No primes ";
         }
 
         answerMessage += "in the range from " + left.toString() + " to " + right.toString()
@@ -155,20 +154,16 @@ public class ViewModel {
 
         if (numberOfOutputPrimes > 0) {
             answerMessage += "Here are " + numberOfOutputPrimes + " of them:\n";
-            answerMessage += listOfPrimesToString(primesList, numberOfOutputPrimes);
+            answerMessage += listOfPrimesToString(primesList, numberOfOutputPrimes) + "\n";
         }
 
         currentAnswer.set(answerMessage);
-        answersList.add(new Query(
-                Integer.toString(answersList.size() + 1) + ". " + shortMessage,
-                answerMessage)
-        );
+        answersList.add(new Query(shortMessage, answerMessage));
     }
 
     private String listOfPrimesToString(final List<Integer> primesList,
                                         final Integer numberOfOutputPrimes) {
-        String result = "";
-        result += listToString(primesList.subList(0, (numberOfOutputPrimes + 1) / 2), DELIMITER);
+        String result = listToString(primesList.subList(0, (numberOfOutputPrimes + 1) / 2));
         if (numberOfOutputPrimes > 1) {
             result += DELIMITER;
             if (numberOfOutputPrimes != primesList.size()) {
@@ -176,15 +171,13 @@ public class ViewModel {
             }
         }
         result += listToString(
-                primesList.subList(primesList.size() - numberOfOutputPrimes / 2, primesList.size()),
-                DELIMITER
+                primesList.subList(primesList.size() - numberOfOutputPrimes / 2, primesList.size())
         );
-        result += "\n";
         return result;
     }
 
-    private static String listToString(final List<Integer> collection, final String delimiter) {
-        return collection.stream().map(Object::toString).collect(Collectors.joining(delimiter));
+    private static String listToString(final List<Integer> collection) {
+        return collection.stream().map(Object::toString).collect(Collectors.joining(DELIMITER));
     }
 
     private Status getInputStatus() {
