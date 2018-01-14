@@ -78,15 +78,9 @@ public class ViewModel {
         Integer numberOfOutputPrimes = Integer.min(
                 Integer.parseInt(maxCountPrimes.get()), primesList.size()
         );
-        CalculationMessages messages = getCalculationMessages(left, right, elapsedTimeInSec,
-                numberOfOutputPrimes, primesList);
+        setCalculationMessages(left, right, elapsedTimeInSec, numberOfOutputPrimes, primesList);
 
-        currentAnswer.set(messages.getAnswerMessage());
         status.set(Status.SUCCESS.toString());
-        answersList.add(new Query(
-                Integer.toString(answersList.size() + 1) + ". " + messages.getShortMessage(),
-                messages.getAnswerMessage())
-        );
     }
 
     public void chooseAnswerById(final Integer id) {
@@ -141,21 +135,7 @@ public class ViewModel {
         return answersList;
     }
 
-    private final class CalculationMessages {
-        CalculationMessages(final String shortMessage, final String answerMessage) {
-            this.shortMessage = shortMessage;
-            this.answerMessage = answerMessage;
-        }
-        public String getAnswerMessage() {
-            return answerMessage;
-        }
-        public String getShortMessage() {
-            return shortMessage;
-        }
-        private final String shortMessage, answerMessage;
-    }
-
-    private CalculationMessages getCalculationMessages(final Integer left, final Integer right,
+    private void setCalculationMessages(final Integer left, final Integer right,
                                                        final Double elapsedTimeInSec,
                                                        final Integer numberOfOutputPrimes,
                                                        final List<Integer> primesList) {
@@ -177,7 +157,12 @@ public class ViewModel {
             answerMessage += "Here are " + numberOfOutputPrimes + " of them:\n";
             answerMessage += listOfPrimesToString(primesList, numberOfOutputPrimes);
         }
-        return new CalculationMessages(shortMessage, answerMessage);
+
+        currentAnswer.set(answerMessage);
+        answersList.add(new Query(
+                Integer.toString(answersList.size() + 1) + ". " + shortMessage,
+                answerMessage)
+        );
     }
 
     private String listOfPrimesToString(final List<Integer> primesList,
