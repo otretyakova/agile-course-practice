@@ -13,7 +13,6 @@ import ru.unn.agile.PrimeNumber.viewmodel.ViewModel;
 
 public class PrimeNumber {
     @FXML
-    @SuppressWarnings("unchecked")
     void initialize() {
         Bindings.bindBidirectional(txtFrom.textProperty(), viewModel.rangeFromProperty());
         Bindings.bindBidirectional(txtTo.textProperty(), viewModel.rangeToProperty());

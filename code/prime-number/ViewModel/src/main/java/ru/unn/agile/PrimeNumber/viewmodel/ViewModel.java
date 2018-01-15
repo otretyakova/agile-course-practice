@@ -26,7 +26,7 @@ import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 public class ViewModel {
-    ViewModel() {
+    public ViewModel() {
         rangeFrom.set("");
         rangeTo.set("");
         maxCountPrimes.set("");
@@ -138,22 +138,22 @@ public class ViewModel {
                                         final Double elapsedTimeInSec,
                                         final Integer numberOfOutputPrimes,
                                         final List<Integer> primesList) {
-        String answerMessage, shortMessage = Integer.toString(answersList.size() + 1) + ". ";
+        String answerMessage, shortMessage = String.format("%d. ", answersList.size() + 1);
         if (!primesList.isEmpty()) {
-            answerMessage = "Found " + primesList.size() + " primes ";
-            shortMessage += primesList.size() + " primes ";
+            answerMessage = String.format("Found %d primes ", primesList.size());
+            shortMessage += String.format("%d primes ", primesList.size());
         } else {
             answerMessage = "There are no primes ";
             shortMessage += "No primes ";
         }
 
-        answerMessage += "in the range from " + left.toString() + " to " + right.toString()
-                + " in " + elapsedTimeInSec.toString() + " seconds.\n";
-        shortMessage += "in [" + left.toString() + "; " + right.toString() + "]"
-                + " and printed " + numberOfOutputPrimes.toString();
+        answerMessage += String.format("in the range from %d to %d in %f seconds.\n",
+                left, right, elapsedTimeInSec);
+        shortMessage += String.format("in [%d; %d] and printed %d",
+                left, right, numberOfOutputPrimes);
 
         if (numberOfOutputPrimes > 0) {
-            answerMessage += "Here are " + numberOfOutputPrimes + " of them:\n";
+            answerMessage += String.format("Here are %d of them:\n", numberOfOutputPrimes);
             answerMessage += listOfPrimesToString(primesList, numberOfOutputPrimes) + "\n";
         }
 
