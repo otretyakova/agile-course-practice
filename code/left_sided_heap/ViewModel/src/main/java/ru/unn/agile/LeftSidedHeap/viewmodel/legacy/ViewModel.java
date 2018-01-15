@@ -122,7 +122,6 @@ public class ViewModel {
             }
             return false;
         }
-
         return true;
     }
 
@@ -156,7 +155,6 @@ public class ViewModel {
                 status = Status.WAITING;
             }
         }
-
         return (isButtonAddEnabled || isButtonRemoveEnabled);
     }
 
@@ -213,7 +211,6 @@ public class ViewModel {
 
             removedCollection.clear();
         }
-
         return res;
     }
 
