@@ -357,6 +357,44 @@ public class ViewModelTests {
         assertTrue(message.matches(".*" + LogMessages.CALCULATE_WAS_PRESSED + ".*\n"));
     }
 
+    @Test
+    public void canCreateViewModelWithoutLogger() {
+        ViewModel viewModel = new ViewModel();
+        assertNotNull(viewModel);
+    }
+
+    @Test
+    public void logIsEmptyIfFocusIsNotChanged() {
+        viewModel.setVec1X("1");
+
+        viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
+        String message = viewModel.getLogs();
+
+        assertTrue(message.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperlyFirstMessageAfterSeveralCalculations() {
+        setInputData("1", "1", "1", "1", "1");
+        viewModel.calculate();
+        String expectedMessage = getProperlyFormattedArgumentsInfo();
+        setInputData("2", "2", "2", "2", "2");
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(expectedMessage));
+    }
+
+    @Test
+    public void logContainsProperlySecondMessageAfterSeveralCalculations() {
+        setInputData("1", "1", "1", "1", "1");
+        viewModel.calculate();
+        setInputData("2", "2", "2", "2", "2");
+        viewModel.calculate();
+        String expectedMessage = getProperlyFormattedArgumentsInfo();
+        String message = viewModel.getLog().get(1);
+        assertTrue(message.matches(expectedMessage));
+    }
+
     private ViewModel viewModel;
 
     private String getProperlyFormattedArgumentsInfo() {
