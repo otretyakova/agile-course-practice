@@ -20,7 +20,7 @@ public class RangeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void rangeCanNotBeCreatedWhenLeftBoundMoreRight() {
+    public void rangeCanNotBeCreatedWhenLeftBoundBiggerThanRight() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(-1, true);
 
