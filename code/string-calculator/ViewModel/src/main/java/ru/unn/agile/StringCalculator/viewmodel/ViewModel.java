@@ -34,11 +34,13 @@ public class ViewModel {
         }
 
         String inputString = getInputString();
-        result.set(Integer.toString(StringCalculator.add(getCorrectString(inputString))));
+        String correctInputString = getCorrectString(inputString);
+        String summa = Integer.toString(StringCalculator.add(correctInputString));
+        result.set(summa);
         status.set(Status.SUCCESS.toString());
 
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
-        message.append("Input string = ").append(getInputString())
+        message.append("Input string = ").append(inputString)
                 .append("; Result = ").append(getResult());
         logger.log(message.toString());
         updateLogs();
@@ -125,6 +127,7 @@ public class ViewModel {
         inputString.set("");
         result.set("");
         status.set(Status.WAITING.toString());
+        logs.set("");
 
         BooleanBinding couldCalculate = new BooleanBinding() {
             {

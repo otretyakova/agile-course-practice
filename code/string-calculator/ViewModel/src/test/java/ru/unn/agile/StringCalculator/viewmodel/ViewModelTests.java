@@ -250,6 +250,11 @@ public class ViewModelTests {
     }
 
     @Test
+    public void logsAreEmptyByDefault() {
+        assertEquals("", viewModel.getLogs());
+    }
+
+    @Test
     public void logIsEmptyIfOffFocusChanged() {
         viewModel.setInputString("2,5");
         List<String> log = viewModel.getLog();
@@ -261,6 +266,14 @@ public class ViewModelTests {
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
         List<String> log = viewModel.getLog();
         assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logsEmptyIfNothingChanged() {
+        viewModel.setInputString("2,5");
+        viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
+        String message = viewModel.getLogs();
+        assertEquals("", message);
     }
 
     @Test

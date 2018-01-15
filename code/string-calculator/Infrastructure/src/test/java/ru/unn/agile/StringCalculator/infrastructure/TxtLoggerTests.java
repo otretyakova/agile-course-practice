@@ -53,7 +53,7 @@ public class TxtLoggerTests {
     }
 
     @Test
-    public void canWriteSeveralLogMessage() {
+    public void doesLogContainProperMessages() {
         String[] messages = {"Test message 1", "Test message 2"};
 
         txtLogger.log(messages[0]);

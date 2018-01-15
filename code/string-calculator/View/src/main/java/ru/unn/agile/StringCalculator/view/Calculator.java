@@ -1,7 +1,6 @@
 package ru.unn.agile.StringCalculator.view;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -13,13 +12,8 @@ public class Calculator {
     void initialize() {
         viewModel.setLogger(new TxtLogger("./TxtLogger.log"));
 
-        final ChangeListener<Boolean> focusChangeListener = new ChangeListener<Boolean>() {
-            @Override
-            public void changed(final ObservableValue<? extends Boolean> observable,
-                                final Boolean oldValue, final Boolean newValue) {
-                viewModel.onFocusChanged(oldValue, newValue);
-            }
-        };
+        final ChangeListener<Boolean> focusChangeListener = (observable, oldValue, newValue)
+                -> viewModel.onFocusChanged(oldValue, newValue);
 
         txtInputString.textProperty().bindBidirectional(viewModel.inputStringProperty());
         txtInputString.focusedProperty().addListener(focusChangeListener);
