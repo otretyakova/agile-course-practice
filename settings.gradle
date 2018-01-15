@@ -3,8 +3,6 @@ include "code/MatrixClass"
 project(":code/MatrixClass").name = "ClassMatrix"
 
 // Bastrakova Ksenia
-include "code/merge-sort"
-project(":code/merge-sort").name = "merge-sort"
 
 
 
