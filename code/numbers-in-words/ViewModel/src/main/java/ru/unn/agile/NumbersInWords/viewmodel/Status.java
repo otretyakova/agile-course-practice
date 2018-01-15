@@ -6,8 +6,6 @@ enum Status {
     BAD_FORMAT("Error in input number"),
     SUCCESS("Success");
 
-    private final String name;
-
     Status(final String name) {
         this.name = name;
     }
@@ -15,4 +13,6 @@ enum Status {
     public String toString() {
         return name;
     }
+
+    private final String name;
 }

@@ -75,6 +75,12 @@ public class ViewModelTests {
 
     @Test
     public void statusIsBadFormatWhenInputTooBigNumber() {
+        viewModel.setNumber("1000000000000");
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void statusIsBadFormatWhenInputTooBigNumberThrowNumberProperty() {
         viewModel.numberProperty().set("1000000000000");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
@@ -234,7 +240,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void logContainsProperMessageAfterCalculation() {
+    public void logContainsProperMessageAfterTranslation() {
         viewModel.setNumber("124");
         viewModel.translate();
         String message = viewModel.getLog().get(0);
@@ -242,7 +248,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void logContainsInputNumberAfterCalculation() {
+    public void logContainsInputNumberAfterTranslation() {
         viewModel.setNumber("124");
         viewModel.translate();
         String message = viewModel.getLog().get(0);
@@ -284,6 +290,14 @@ public class ViewModelTests {
     }
 
     @Test
+    public void twoLogMessagesAfterTranslationAndChangingFocus() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
     public void inputNumberIsCorrectlyLogged() {
         viewModel.setNumber("124");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
@@ -315,7 +329,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canChangeLogsAfterCalculation() {
+    public void canChangeLogsAfterTranslation() {
         viewModel.setNumber("124");
         viewModel.translate();
         String message = viewModel.getLogs();
