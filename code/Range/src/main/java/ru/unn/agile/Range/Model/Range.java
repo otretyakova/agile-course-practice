@@ -53,7 +53,7 @@ public class Range {
         return result;
     }
 
-    public boolean isContainsValues(final int[] values) throws IllegalArgumentException {
+    public boolean containsValues(final int[] values) throws IllegalArgumentException {
         checkNull(values);
 
         if (values.length == 0) {
@@ -61,30 +61,30 @@ public class Range {
         }
 
         for (int value : values) {
-            if (!isContainsPoint(value)) {
+            if (!containsPoint(value)) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isContainsRange(final Range range) throws IllegalArgumentException {
+    public boolean containsRange(final Range range) throws IllegalArgumentException {
         checkNull(range);
 
-        boolean leftLessOrEqualInputLeft = leftBound.less(range.leftBound.value())
+        boolean leftLessOrEqualInputLeft = leftBound.isLessThan(range.leftBound.value())
                 || leftBound.equals(range.leftBound);
-        boolean rightMoreOrEqualInputRight = rightBound.more(range.rightBound.value())
+        boolean rightMoreOrEqualInputRight = rightBound.isMoreThan(range.rightBound.value())
                 || rightBound.equals(range.rightBound);
 
         return leftLessOrEqualInputLeft && rightMoreOrEqualInputRight;
     }
 
-    public boolean isOverlapsRange(final Range range) throws IllegalArgumentException {
+    public boolean overlapsRange(final Range range) throws IllegalArgumentException {
         checkNull(range);
-        return this.isOverlapsOnRightBound(range.leftBound)
-                || this.isOverlapsOnLeftBound(range.rightBound)
-                || range.isOverlapsOnRightBound(this.leftBound)
-                || range.isOverlapsOnLeftBound(this.rightBound);
+        return this.overlapsOnRightBound(range.leftBound)
+                || this.overlapsOnLeftBound(range.rightBound)
+                || range.overlapsOnRightBound(this.leftBound)
+                || range.overlapsOnLeftBound(this.rightBound);
     }
 
     private void calculateNumberOfIntPoints() {
@@ -98,12 +98,12 @@ public class Range {
         this.numberOfIntPoints = numberOfIntPoints < 0 ? 0 : this.numberOfIntPoints;
     }
 
-    private boolean isContainsPoint(final int value) {
-        return leftBound.less(value) && rightBound.more(value);
+    private boolean containsPoint(final int value) {
+        return leftBound.isLessThan(value) && rightBound.isMoreThan(value);
     }
 
-    private boolean isOverlapsOnRightBound(final Boundary boundary) {
-        if (this.isContainsPoint(boundary.value())) {
+    private boolean overlapsOnRightBound(final Boundary boundary) {
+        if (this.containsPoint(boundary.value())) {
             if (rightBound.value() == boundary.value()) {
                 return boundary.isIncluded();
             }
@@ -112,8 +112,8 @@ public class Range {
         return false;
     }
 
-    private boolean isOverlapsOnLeftBound(final Boundary boundary) {
-        if (this.isContainsPoint(boundary.value())) {
+    private boolean overlapsOnLeftBound(final Boundary boundary) {
+        if (this.containsPoint(boundary.value())) {
             if (leftBound.value() == boundary.value()) {
                 return boundary.isIncluded();
             }

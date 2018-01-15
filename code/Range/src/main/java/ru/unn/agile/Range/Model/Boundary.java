@@ -35,14 +35,14 @@ public class Boundary {
         return this.isIncluded;
     }
 
-    public boolean less(final int value) {
+    public boolean isLessThan(final int value) {
         if (isIncluded) {
             return this.value <= value;
         }
         return this.value < value;
     }
 
-    public boolean more(final int value) {
+    public boolean isMoreThan(final int value) {
         if (isIncluded) {
             return this.value >= value;
         }

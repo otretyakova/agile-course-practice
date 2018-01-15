@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNull;
 
 public class RangeTest {
     @Test
-    public void rangeCanCreated() {
+    public void rangeCanBeCreated() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, false);
 
@@ -20,7 +20,7 @@ public class RangeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void rangeCanNotCreatedWhenLeftBoundMoreRight() {
+    public void rangeCanNotBeCreatedWhenLeftBoundMoreRight() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(-1, true);
 
@@ -28,7 +28,7 @@ public class RangeTest {
     }
 
     @Test
-    public void rangeCanCreatedWhenLeftEqualRightAndBothIncluded() {
+    public void rangeCanBeCreatedWhenLeftEqualsRightAndBothAreIncluded() {
         Boundary leftBound = new Boundary(0, true);
         Boundary rightBound = new Boundary(0, true);
 
@@ -38,7 +38,7 @@ public class RangeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void rangeCanNotCreatedWhenLeftEqualRightAndOnlyOneIncluded() {
+    public void rangeCanNotBeCreatedWhenLeftEqualsRightAndOnlyOneIsIncluded() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(1, false);
 
@@ -46,28 +46,19 @@ public class RangeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void rangeCanNotCreatedWhenLeftBoundIsNull() {
+    public void rangeCanNotBeCreatedWhenLeftBoundIsNull() {
         Boundary rightBound = new Boundary(-1, true);
 
         Range range = new Range(null, rightBound);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void rangeCanNotCreatedWhenRightBoundIsNull() {
+    public void rangeCanNotBeCreatedWhenRightBoundIsNull() {
 
         Boundary leftBound = new Boundary(1, true);
 
         Range range = new Range(leftBound, null);
 
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void exceptionInEqualsWhenArgumentIsIncorrect() {
-        Boundary leftBound = new Boundary(0, true);
-        Boundary rightBound = new Boundary(2, true);
-        Range range = new Range(leftBound, rightBound);
-
-        range.equals(leftBound);
     }
 
     @Test
@@ -93,53 +84,53 @@ public class RangeTest {
     }
 
     @Test
-    public void rangeIsContainValuesInsideRange() {
+    public void rangeContainsValuesInsideRange() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, true);
         Range range = new Range(leftBound, rightBound);
         int[] values = {1, 2, 3};
 
-        assertTrue(range.isContainsValues(values));
+        assertTrue(range.containsValues(values));
     }
 
     @Test
-    public void rangeIsNotContainValuesOutsideRange() {
+    public void rangeDoesNotContainValuesOutsideRange() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, true);
         Range range = new Range(leftBound, rightBound);
         int[] values = {-11, 9};
 
-        assertFalse(range.isContainsValues(values));
+        assertFalse(range.containsValues(values));
     }
 
     @Test
-    public void rangeIsContainValuesOnlyOneOfWhichOutsideRange() {
+    public void rangeContainsValuesOnlyOneOfWhichOutsideRange() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, false);
         Range range = new Range(leftBound, rightBound);
         int[] values = {1, 2, 3};
 
-        assertFalse(range.isContainsValues(values));
+        assertFalse(range.containsValues(values));
     }
 
     @Test
-    public void rangeIsNotContainValuesWithEmptyInput() {
+    public void rangeDoesNotContainValuesWithEmptyInput() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, false);
         Range range = new Range(leftBound, rightBound);
         int[] values = {};
 
-        assertFalse(range.isContainsValues(values));
+        assertFalse(range.containsValues(values));
     }
 
     @Test
-    public void singlePointRangeIsContainRequiredValues() {
+    public void singlePointRangeContainsRequiredValues() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(1, true);
         Range range = new Range(leftBound, rightBound);
         int[] values = {1};
 
-        assertTrue(range.isContainsValues(values));
+        assertTrue(range.containsValues(values));
     }
 
     @Test
@@ -153,7 +144,7 @@ public class RangeTest {
     }
 
     @Test
-    public void gettingAllPointsOfRangeWithoutLeftIncludedBoundary() {
+    public void gettingAllPointsOfRangeWithoutLeftInclusion() {
         Boundary leftBound = new Boundary(-2, false);
         Boundary rightBound = new Boundary(4, true);
         Range range = new Range(leftBound, rightBound);
@@ -163,7 +154,7 @@ public class RangeTest {
     }
 
     @Test
-    public void gettingAllPointsOfRangeWithoutIncludedBoundary() {
+    public void gettingAllPointsOfRangeWithoutInclusions() {
         Boundary leftBound = new Boundary(-2, false);
         Boundary rightBound = new Boundary(4, false);
         Range range = new Range(leftBound, rightBound);
@@ -173,7 +164,7 @@ public class RangeTest {
     }
 
     @Test
-    public void gettingEndPointsOfRangeWithoutIncludedBoundary() {
+    public void gettingEndPointsOfRangeWithoutInclusions() {
         Boundary leftBound = new Boundary(-2, false);
         Boundary rightBound = new Boundary(2, false);
         Range range = new Range(leftBound, rightBound);
@@ -193,7 +184,7 @@ public class RangeTest {
     }
 
     @Test
-    public void gettingEndPointsOfSinglePointRangeWithoutIncludingLeftBound() {
+    public void gettingEndPointsOfSinglePointRangeWithoutLeftInclusion() {
         Boundary leftBound = new Boundary(2, false);
         Boundary rightBound = new Boundary(3, true);
         Range range = new Range(leftBound, rightBound);
@@ -203,47 +194,47 @@ public class RangeTest {
     }
 
     @Test
-    public void rangeWithoutInclusionsIsContainSameRange() {
+    public void rangeWithoutInclusionsContainsSameRange() {
         Boundary leftBound = new Boundary(-2, false);
         Boundary rightBound = new Boundary(5, false);
         Range range1 = new Range(leftBound, rightBound);
         Range range2 = new Range(leftBound, rightBound);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithIncludedLeftBoundaryIsContainSameRange() {
+    public void rangeWithIncludedLeftBoundaryContainsSameRange() {
         Boundary leftBound = new Boundary(-2, true);
         Boundary rightBound = new Boundary(5, false);
         Range range1 = new Range(leftBound, rightBound);
         Range range2 = new Range(leftBound, rightBound);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithIncludedRightBoundaryIsContainSameRange() {
+    public void rangeWithIncludedRightBoundaryContainsSameRange() {
         Boundary leftBound = new Boundary(-2, false);
         Boundary rightBound = new Boundary(5, true);
         Range range1 = new Range(leftBound, rightBound);
         Range range2 = new Range(leftBound, rightBound);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithBothIncludedBoundaryIsContainSameRange() {
+    public void rangeWithBothIncludedBoundaryContainsSameRange() {
         Boundary leftBound = new Boundary(-2, true);
         Boundary rightBound = new Boundary(5, true);
         Range range1 = new Range(leftBound, rightBound);
         Range range2 = new Range(leftBound, rightBound);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeIsNotContainsExtendedRange() {
+    public void rangeDoesNotContainExtendedRange() {
         Boundary leftBound1 = new Boundary(0, false);
         Boundary rightBound1 = new Boundary(3, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -251,11 +242,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(10, true);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isContainsRange(range2));
+        assertFalse(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeIsContainContainedRange() {
+    public void rangeContainsContainedRange() {
         Boundary leftBound1 = new Boundary(-1, false);
         Boundary rightBound1 = new Boundary(3, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -263,11 +254,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(2, true);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeIsNotContainsOnlyOverlappingRange() {
+    public void rangeDoesNotContainOnlyOverlappingRange() {
         Boundary leftBound1 = new Boundary(-1, false);
         Boundary rightBound1 = new Boundary(3, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -275,11 +266,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(2, true);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isContainsRange(range2));
+        assertFalse(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithoutInclusionsIsNotContainsRangeWithLeftInclusion() {
+    public void rangeWithoutInclusionsDoesNotContainRangeWithLeftInclusion() {
         Boundary leftBound1 = new Boundary(-1, false);
         Boundary rightBound1 = new Boundary(3, false);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -287,11 +278,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(3, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isContainsRange(range2));
+        assertFalse(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithRightInclusionIsContainRangeWithoutInclusions() {
+    public void rangeWithRightInclusionContainsRangeWithoutInclusions() {
         Boundary leftBound1 = new Boundary(-5, false);
         Boundary rightBound1 = new Boundary(3, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -299,11 +290,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(3, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithBothInclusionsIsContainRangeWithoutInclusions() {
+    public void rangeWithBothInclusionsContainsRangeWithoutInclusions() {
         Boundary leftBound1 = new Boundary(-1, true);
         Boundary rightBound1 = new Boundary(3, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -311,21 +302,21 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(3, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeWithoutIntPointsIsContainSameRange() {
+    public void rangeWithoutIntPointsContainsSameRange() {
         Boundary leftBound = new Boundary(1, false);
         Boundary rightBound = new Boundary(2, false);
         Range range1 = new Range(leftBound, rightBound);
         Range range2 = new Range(leftBound, rightBound);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeIsContainContainedRangeWithoutIntPoints() {
+    public void rangeContainsContainedRangeWithoutIntPoints() {
         Boundary leftBound1 = new Boundary(-1, true);
         Boundary rightBound1 = new Boundary(16, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -333,11 +324,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(11, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isContainsRange(range2));
+        assertTrue(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeIsNotContainNotContainedRange() {
+    public void rangeDoesNotContainNotContainedRange() {
         Boundary leftBound1 = new Boundary(-1, true);
         Boundary rightBound1 = new Boundary(6, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -345,11 +336,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(11, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isContainsRange(range2));
+        assertFalse(range1.containsRange(range2));
     }
 
     @Test
-    public void rangeIsOverlapsSameRange() {
+    public void rangeOverlapsSameRange() {
         Boundary leftBound1 = new Boundary(0, true);
         Boundary rightBound1 = new Boundary(4, false);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -357,11 +348,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(4, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isOverlapsRange(range2));
+        assertTrue(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeIsNotOverlapsAnotherNoOverlappedRange() {
+    public void rangeDoesNotOverlapAnotherNoOverlappedRange() {
         Boundary leftBound1 = new Boundary(0, true);
         Boundary rightBound1 = new Boundary(4, false);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -369,11 +360,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(6, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isOverlapsRange(range2));
+        assertFalse(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeIsOverlapsAnotherOverlappedRange() {
+    public void rangeOverlapsAnotherOverlappedRange() {
         Boundary leftBound1 = new Boundary(0, true);
         Boundary rightBound1 = new Boundary(4, false);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -381,11 +372,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(6, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isOverlapsRange(range2));
+        assertTrue(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeIsOverlapsSameRangeButWithoutInclusions() {
+    public void rangeOverlapsSameRangeButWithoutInclusions() {
         Boundary leftBound1 = new Boundary(-1, true);
         Boundary rightBound1 = new Boundary(3, false);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -393,11 +384,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(3, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isOverlapsRange(range2));
+        assertTrue(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeIsOverlapsRangeContainOriginRange() {
+    public void rangeOverlapsRangeContainOriginRange() {
         Boundary leftBound1 = new Boundary(-1, true);
         Boundary rightBound1 = new Boundary(2, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -405,11 +396,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(9, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isOverlapsRange(range2));
+        assertTrue(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeIsNotOverlapsRangeWithLeftValueEqualRightOriginAndNoIncluded() {
+    public void rangeDoesNotOverlapRangeWithLeftValueEqualsRightOriginAndIsNotIncluded() {
         Boundary leftBound1 = new Boundary(-1, false);
         Boundary rightBound1 = new Boundary(0, false);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -417,11 +408,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(5, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isOverlapsRange(range2));
+        assertFalse(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeIsOverlapsRangeWithLeftValueEqualRightOriginAndIsIncluded() {
+    public void rangeOverlapsRangeWithLeftValueEqualsRightOriginAndIsIncluded() {
         Boundary leftBound1 = new Boundary(-1, false);
         Boundary rightBound1 = new Boundary(0, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -429,11 +420,11 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(5, false);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertTrue(range1.isOverlapsRange(range2));
+        assertTrue(range1.overlapsRange(range2));
     }
 
     @Test
-    public void rangeWithInclusionsIsNotOverlapsRangeWithLeftEqualRightOriginAndIsNotIncluded() {
+    public void rangeWithInclusionsDoesNotOverlapRangeWithLeftEqualsRightOriginAndIsNotIncluded() {
         Boundary leftBound1 = new Boundary(-10, true);
         Boundary rightBound1 = new Boundary(0, true);
         Range range1 = new Range(leftBound1, rightBound1);
@@ -441,7 +432,16 @@ public class RangeTest {
         Boundary rightBound2 = new Boundary(6, true);
         Range range2 = new Range(leftBound2, rightBound2);
 
-        assertFalse(range1.isOverlapsRange(range2));
+        assertFalse(range1.overlapsRange(range2));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void exceptionInEqualsWhenArgumentIsIncorrect() {
+        Boundary leftBound = new Boundary(0, true);
+        Boundary rightBound = new Boundary(2, true);
+        Range range = new Range(leftBound, rightBound);
+
+        range.equals(leftBound);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -454,30 +454,30 @@ public class RangeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void exceptionInIsContainValuesWhenArgumentIsNull() {
+    public void exceptionInContainsValuesWhenArgumentIsNull() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, false);
         Range range = new Range(leftBound, rightBound);
 
-        range.isContainsValues(null);
+        range.containsValues(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void exceptionInIsContainRangeWhenArgumentIsNull() {
+    public void exceptionInContainsRangeWhenArgumentIsNull() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, false);
         Range range = new Range(leftBound, rightBound);
 
-        range.isContainsRange(null);
+        range.containsRange(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void exceptionInIsOverlapsRangeWhenArgumentIsNull() {
+    public void exceptionInOverlapsRangeWhenArgumentIsNull() {
         Boundary leftBound = new Boundary(1, true);
         Boundary rightBound = new Boundary(3, false);
         Range range = new Range(leftBound, rightBound);
 
-        range.isOverlapsRange(null);
+        range.overlapsRange(null);
     }
 
     @Test
