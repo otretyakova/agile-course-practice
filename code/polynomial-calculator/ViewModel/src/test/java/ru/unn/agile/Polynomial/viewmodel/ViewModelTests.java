@@ -35,23 +35,23 @@ public class ViewModelTests {
     @Test
     public void isStatusReadyWhenFieldsAreFilledCorrectly() {
         fillInputFieldsWithCorrectData();
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(Status.READY, viewModel.getStatus());
     }
 
     @Test
     public void canReportBadFormat() {
         fillInputFieldsWithInvalidData();
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
     }
 
     @Test
     public void canGetReadyStatusAfterBadFormat() {
         fillInputFieldsWithInvalidData();
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         fillInputFieldsWithCorrectData();
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(Status.READY, viewModel.getStatus());
     }
 
@@ -63,21 +63,21 @@ public class ViewModelTests {
     @Test
     public void isCalculateButtonEnabledWhenInputCorrect() {
         fillInputFieldsWithCorrectData();
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(true, viewModel.isButtonCalculateEnabled());
     }
 
     @Test
     public void isCalculateButtonDisabledWhenFormatIsBad() {
         fillInputFieldsWithInvalidData();
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(false, viewModel.isButtonCalculateEnabled());
     }
 
     @Test
     public void isCalculateButtonDisabledWithIncompleteInput() {
         viewModel.setSecondPolynomial("1x^2-14.3x^4");
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(false, viewModel.isButtonCalculateEnabled());
     }
 
@@ -129,7 +129,7 @@ public class ViewModelTests {
         viewModel.calculate();
         assertEquals(Status.SUCCESS, viewModel.getStatus());
         viewModel.setSecondPolynomial("");
-        viewModel.processKeyInTextField();
+        viewModel.processTextChanged();
         assertEquals(Status.WAITING, viewModel.getStatus());
     }
 

@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public final class Calculator {
     private Calculator(final ViewModel viewModel) {
@@ -38,15 +38,27 @@ public final class Calculator {
             }
         });
 
-        KeyAdapter keyListener = new KeyAdapter() {
-            public void keyReleased(final KeyEvent e) {
+        final DocumentListener documentListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent documentEvent) {
                 bind();
-                viewModel.processKeyInTextField();
+                viewModel.processTextChanged();
                 backBind();
             }
+
+            @Override
+            public void removeUpdate(final DocumentEvent documentEvent) {
+                bind();
+                viewModel.processTextChanged();
+                backBind();
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent documentEvent) { }
         };
-        txtFirstPolynomial.addKeyListener(keyListener);
-        txtSecondPolynomial.addKeyListener(keyListener);
+
+        txtFirstPolynomial.getDocument().addDocumentListener(documentListener);
+        txtSecondPolynomial.getDocument().addDocumentListener(documentListener);
     }
 
     public static void main(final String[] args) {

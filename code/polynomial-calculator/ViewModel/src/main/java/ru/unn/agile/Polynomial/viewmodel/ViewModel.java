@@ -48,7 +48,7 @@ public class ViewModel {
         secondPolynomial = txt;
     }
 
-    public void processKeyInTextField() {
+    public void processTextChanged() {
         parseInput();
     }
 
