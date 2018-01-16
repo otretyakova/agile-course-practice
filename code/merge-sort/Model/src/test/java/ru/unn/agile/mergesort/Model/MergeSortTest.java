@@ -1,4 +1,4 @@
-package ru.unn.agile.mergesort.Model;
+package ru.unn.agile.mergesort.model;
 
 import org.junit.Test;
 import java.util.ArrayList;

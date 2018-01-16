@@ -1,4 +1,4 @@
-package ru.unn.agile.mergesort.Model;
+package ru.unn.agile.mergesort.model;
 
 class Car implements Comparable<Car> {
 

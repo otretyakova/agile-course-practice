@@ -5,6 +5,10 @@ project(":code/MatrixClass").name = "ClassMatrix"
 // Bastrakova Ksenia
 include "code/merge-sort/Model"
 project(":code/merge-sort/Model").name = "merge-sort-Model"
+include "code/merge-sort/View"
+project(":code/merge-sort/View").name = "merge-sort-View"
+include "code/merge-sort/ViewModel"
+project(":code/merge-sort/ViewModel").name = "merge-sort-ViewModel"
 
 
 // Bespalov Max

@@ -1,4 +1,4 @@
-package ru.unn.agile.mergesort.Model;
+package ru.unn.agile.mergesort.model;
 
 import java.util.Collection;
 import java.util.Comparator;
