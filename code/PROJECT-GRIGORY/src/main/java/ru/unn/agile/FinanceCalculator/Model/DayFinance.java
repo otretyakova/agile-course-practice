@@ -1,90 +1,81 @@
 package ru.unn.agile.FinanceCalculator.Model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DayFinance {
     public DayFinance() {
-        myEatingOutCost = 0.;
-        myProductsCost = 0.;
-        myBuyCost = 0.;
-        myTransportCost = 0.;
-        myServicesCost = 0.;
-        myEntertainmentCost = 0.;
-    }
-    public void addEatingOutCost(final double cost) throws Exception {
-        checkInputCost(cost, myEatingOutCost);
-        myEatingOutCost += cost;
+        finances = new HashMap<FinanceType, Double>();
+        for (FinanceType type : FinanceType.values()) {
+            finances.put(type, 0.);
+        }
     }
 
-    public double getEatingCost() {
-        return myEatingOutCost;
+    public DayFinance(final double eatingOut, final double products,
+                      final double unreasonableWaste, final double transport,
+                      final double services, final double entertainment) {
+        finances = new HashMap<FinanceType, Double>();
+        finances.put(FinanceType.EatingOut, eatingOut);
+        finances.put(FinanceType.Products, products);
+        finances.put(FinanceType.UnreasonableWaste, unreasonableWaste);
+        finances.put(FinanceType.Transport, transport);
+        finances.put(FinanceType.Services, services);
+        finances.put(FinanceType.Entertainment, entertainment);
     }
 
-    public void addProductsCost(final double cost) throws Exception {
-        checkInputCost(cost, myProductsCost);
-        myProductsCost += cost;
+    public void add(final FinanceType type, final double amount) throws Exception {
+        checkPrecondition(amount);
+        double newAmount = amount + finances.get(type);
+        checkPostcondition(newAmount);
+        finances.put(type, newAmount);
+
     }
 
-    public double getProductsCost() {
-        return myProductsCost;
-    }
-
-    public void addBuyCost(final double cost) throws Exception {
-        checkInputCost(cost, myBuyCost);
-        myBuyCost += cost;
-    }
-
-    public double getBuyCost() {
-        return myBuyCost;
-    }
-
-    public void addTransportCost(final double cost) throws Exception {
-        checkInputCost(cost, myTransportCost);
-        myTransportCost += cost;
-    }
-
-    public double getTransportCost() {
-        return myTransportCost;
-    }
-
-    public void addServicesCost(final double cost) throws Exception {
-        checkInputCost(cost, myServicesCost);
-        myServicesCost += cost;
-    }
-
-    double getServicesCost() {
-        return myServicesCost;
-    }
-
-    void addEntertainmentCost(final double cost) throws Exception {
-        checkInputCost(cost, myEntertainmentCost);
-        myEntertainmentCost += cost;
-    }
-
-    public double getEntertainmentCost() {
-        return myEntertainmentCost;
+    public double get(final FinanceType type) {
+        return finances.get(type);
     }
 
     private void throwInlegalArgumentExeption(final String message) throws Exception {
         throw new IllegalArgumentException(message);
     }
 
-    private void checkInputCost(final double cost, final double currentInput) throws Exception {
-        if (cost < 0) {
-            throwInlegalArgumentExeption("Cost must be positive!");
+    private void checkPrecondition(final double amount) throws Exception {
+        if (Double.isNaN(amount)) {
+            throwInlegalArgumentExeption("Amount can not be NaN!");
         }
-        if (cost == Double.POSITIVE_INFINITY || cost == Double.NEGATIVE_INFINITY) {
-            throwInlegalArgumentExeption("Cost can not be infinity!");
+        if (amount < 0) {
+            throwInlegalArgumentExeption("Amount must be non-negative!");
         }
-        if (Double.isNaN(cost)) {
-            throwInlegalArgumentExeption("Cost can not be NAN!");
-        }
-        if (Double.MAX_VALUE - cost - currentInput < 0) {
-            throwInlegalArgumentExeption("Cost can not be infinity!");
+        if (amount == Double.POSITIVE_INFINITY) {
+            throwInlegalArgumentExeption("Amount must be finite");
         }
     }
-    private double myEatingOutCost;
-    private double myProductsCost;
-    private double myBuyCost;
-    private double myTransportCost;
-    private double myServicesCost;
-    private double myEntertainmentCost;
+
+    private void checkPostcondition(final double newAmount) throws Exception {
+        if (newAmount == Double.POSITIVE_INFINITY) {
+            throwInlegalArgumentExeption("Overflow");
+        }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DayFinance finance = (DayFinance) o;
+
+        return finances.equals(finance.finances);
+    }
+
+    @Override
+    public int hashCode() {
+        return finances.hashCode();
+    }
+
+    private Map<FinanceType, Double> finances;
 }
+

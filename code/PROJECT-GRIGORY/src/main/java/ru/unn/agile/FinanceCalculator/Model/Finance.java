@@ -1,110 +1,34 @@
 package ru.unn.agile.FinanceCalculator.Model;
 
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Calendar;
+import java.util.Date;
 
 public final class Finance {
     public Finance() {
-        myDaysFinances = new HashMap<GregorianCalendar, DayFinance>();
-    }
-    public void addEatingOutCostForDate(final double cost,
-                                        final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        myDaysFinances.get(date).addEatingOutCost(cost);
+        storage = new FinanceStorage();
     }
 
-    public double getEatingCostForDate(final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        return myDaysFinances.get(date).getEatingCost();
+    public double get(final Calendar date, final FinanceType type) throws Exception {
+        DayFinance finance = storage.get(date);
+        return finance.get(type);
     }
 
-    public void addProductsCostForDate(final double cost,
-                                       final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        myDaysFinances.get(date).addProductsCost(cost);
+    public void add(final double cost,
+                    final Calendar date,
+                    final FinanceType type) throws Exception {
+        checkDate(date);
+        DayFinance finance = storage.get(date);
+        finance.add(type, cost);
+        storage.put(date, finance);
     }
-
-    public double getProductsCostForDate(final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        return myDaysFinances.get(date).getProductsCost();
-    }
-
-    public void addBuyCostForDate(final double cost,
-                                  final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        myDaysFinances.get(date).addBuyCost(cost);
-    }
-
-    public double getBuyCostForDate(final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        return myDaysFinances.get(date).getBuyCost();
-
-    }
-
-    public void addTransportCost(final double cost, final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        myDaysFinances.get(date).addTransportCost(cost);
-    }
-
-    public double getTransportCost(final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        return myDaysFinances.get(date).getTransportCost();
-    }
-
-    public void addServicesCost(final double cost, final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        myDaysFinances.get(date).addServicesCost(cost);
-    }
-
-    double getServicesCost(final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        return myDaysFinances.get(date).getServicesCost();
-    }
-
-    void addEntertainmentCost(final double cost, final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        myDaysFinances.get(date).addEntertainmentCost(cost);
-    }
-
-    public double getEntertainmentCost(final GregorianCalendar date) throws Exception {
-        checkInputDate(date);
-        isExist(date);
-        return myDaysFinances.get(date).getServicesCost();
-    }
-
-    private void checkInputDate(final GregorianCalendar inputDate) throws  NumberFormatException {
-   /* Calendar calendar = new GregorianCalendar();
-        calendar.set(inputDate.get(Calendar.YEAR),
-                inputDate.get(Calendar.MONTH), inputDate.get(Calendar.DATE));
-
-        int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int mounth = calendar.getActualMaximum(Calendar.MONTH);
-        if (days < inputDate.get(Calendar.DATE) && mounth < inputDate.get(Calendar.MONTH)) {
-            throw new NumberFormatException("invalid data");
-        }*/
-        inputDate.setLenient(false);
-        inputDate.getTime();
-    }
-
-    private void isExist(final GregorianCalendar inputDate) {
-        if (myDaysFinances.get(inputDate) == null) {
-            DayFinance finance = new DayFinance();
-            myDaysFinances.put(inputDate, finance);
+    public void checkDate(final Calendar date) throws Exception {
+        Calendar currentDate = Calendar.getInstance();
+        Date today = currentDate.getTime();
+        Date inputDate = date.getTime();
+        if (inputDate.after(today)) {
+           throw new IllegalArgumentException("date can't be after today");
         }
     }
-
-
-    private Map<GregorianCalendar, DayFinance> myDaysFinances;
-
+    private FinanceStorage storage;
 }
+

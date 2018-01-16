@@ -1,80 +1,75 @@
 package ru.unn.agile.FinanceCalculator.Model;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import static org.junit.Assert.assertEquals;
 
-
+@RunWith(Parameterized.class)
 public class FinanceTest {
 
-    @Test
-    public void canAddEatingOutCostForDate() throws Exception {
-        Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(2007, 1, 2);
-        finance.addEatingOutCostForDate(10.0, date);
-        assertEquals(finance.getEatingCostForDate(date), 10.0, tolerance);
+    @Parameterized.Parameters
+    public static Collection<FinanceType> data() {
+        return Arrays.asList(
+            FinanceType.EatingOut, FinanceType.Products,
+            FinanceType.UnreasonableWaste, FinanceType.Services,
+            FinanceType.Transport, FinanceType.Entertainment);
+    }
+
+    public FinanceTest(final FinanceType type) {
+        myType = type;
     }
 
     @Test
-    public void canAddProductCostForDate() throws Exception {
+    public void canAddCostsForValidDate() throws Exception {
         Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(2014, 10, 24);
-        finance.addProductsCostForDate(999.0, date);
-        assertEquals(finance.getProductsCostForDate(date), 999.0, tolerance);
+        Calendar date = new GregorianCalendar(2001, 1, 9);
+        finance.add(45325.0, date, myType);
+        assertEquals(finance.get(date, myType), 45325.0, tolerance);
     }
 
     @Test
-    public void canAddBuysCostForDate() throws Exception {
+    public void canAddCostsMultipleTimesForOneValidDate() throws Exception {
         Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(2099, 11, 9);
-        finance.addBuyCostForDate(77.0, date);
-        assertEquals(finance.getBuyCostForDate(date), 77.0, tolerance);
-    }
-
-    @Test
-    public void canAddTransportCostForDate() throws Exception {
-        Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(2001, 10, 9);
-        finance.addTransportCost(645.0, date);
-        assertEquals(finance.getTransportCost(date), 645.0, tolerance);
-    }
-
-    @Test
-    public void canAddServicesCostForDate() throws Exception {
-        Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(2031, 1, 9);
-        finance.addServicesCost(45325.0, date);
-        assertEquals(finance.getServicesCost(date), 45325.0, tolerance);
+        Calendar date = new GregorianCalendar(2005, 2, 9);
+        finance.add(10.9, date, myType);
+        date.setTimeInMillis(date.getTimeInMillis() + 6000);
+        finance.add(10.0, date, myType);
+        assertEquals(finance.get(date, myType), 20.9, tolerance);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canNotAddServicesCostForInvalidDate() throws Exception {
+    public void canNotAddCostForNextMonth() throws Exception {
         Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(2031, 1666, 9999);
-        finance.addServicesCost(1.0, date);
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void canNotAddEatingOutForInvalidDate() throws Exception {
-        Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(1945, 999, 90);
-        finance.addEatingOutCostForDate(888.0, date);
+        Calendar date = getFutureDate(31);
+        finance.add(999.0, date, myType);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canNotAddByusForInvalidDate() throws Exception {
+    public void canNotAddCostForNextWeek() throws Exception {
         Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(19999, 966699, 110);
-        finance.addBuyCostForDate(555.0, date);
+        Calendar date = getFutureDate(7);
+        finance.add(9889.99, date, myType);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void canNotAddTransportCostForInvalidDate() throws Exception {
+    public void canNotAddCostForTomorrowDate() throws Exception {
         Finance finance = new Finance();
-        GregorianCalendar date = new GregorianCalendar(11, 55, 50);
-        finance.addTransportCost(1.0, date);
+        Calendar date = getFutureDate(1);
+        finance.add(10.0, date, myType);
     }
-    private double tolerance = 0.001;
+
+    private Calendar getFutureDate(final int numDaysFromToday) {
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.HOUR, numDaysFromToday * 24);
+        return date;
+    }
+    private FinanceType myType;
+    private double tolerance = 0.005;
 
 }
+
