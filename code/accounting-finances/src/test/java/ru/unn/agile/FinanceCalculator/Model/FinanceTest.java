@@ -3,7 +3,6 @@ package ru.unn.agile.FinanceCalculator.Model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -15,6 +14,7 @@ public class FinanceTest {
    public static Collection<Object[]> data() {
        return FinanceType.arrayOfTypes();
    }
+
     public FinanceTest(final FinanceType type) {
         myType = type;
     }
@@ -66,5 +66,4 @@ public class FinanceTest {
 
     private FinanceType myType;
     private double tolerance = 0.005;
-
 }

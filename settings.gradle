@@ -72,6 +72,8 @@ project(":code/number-system-converter").name = "number-system-converter"
 
 
 // Pichugin Gregory
+include "code/accounting-finances"
+project(":code/accounting-finances").name = "accounting-finances"
 
 
 
