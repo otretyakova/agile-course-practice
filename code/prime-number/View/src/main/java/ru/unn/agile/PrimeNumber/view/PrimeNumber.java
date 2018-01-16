@@ -6,7 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextFormatter;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
+
+import java.util.regex.Pattern;
 
 import ru.unn.agile.PrimeNumber.viewmodel.Query;
 import ru.unn.agile.PrimeNumber.viewmodel.ViewModel;
@@ -30,6 +33,17 @@ public class PrimeNumber {
 
         buFind.setOnAction(
                 (event) -> viewModel.calculate()
+        );
+
+        txtTo.setTextFormatter(nonNegativeIntegerFormatter());
+        txtFrom.setTextFormatter(nonNegativeIntegerFormatter());
+        txtNumberOfPrimes.setTextFormatter(nonNegativeIntegerFormatter());
+    }
+
+    private TextFormatter<String> nonNegativeIntegerFormatter() {
+        Pattern pattern = Pattern.compile("\\d*");
+        return new TextFormatter<>(
+                change -> pattern.matcher(change.getControlNewText()).matches() ? change : null
         );
     }
 
