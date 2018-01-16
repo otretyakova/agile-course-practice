@@ -383,7 +383,6 @@ public class ViewModelTests {
                 + "Input number: " + "124" + ".*"));
     }
 
-
     @Test
     public void logContainsProperlySecondMessageAfterSeveralTranslations() {
         viewModel.setNumber("124");
