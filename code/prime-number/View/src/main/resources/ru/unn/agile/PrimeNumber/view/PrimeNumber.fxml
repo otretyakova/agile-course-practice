@@ -40,7 +40,6 @@
                                                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="313.0" layoutY="14.0" prefHeight="17.0" prefWidth="36.0" text="and" />
                                                         <TextField fx:id="txtTo" alignment="CENTER_RIGHT" layoutX="349.0" layoutY="10.0" prefHeight="25.0" prefWidth="81.0" promptText="100" />
                                                         <Label alignment="CENTER" layoutX="84.0" layoutY="42.0" prefHeight="17.0" prefWidth="50.0" text="using" />
-                                                        <!---->
                                                         <ChoiceBox fx:id="cbMethods" items="${viewModel.methods}" layoutX="134.0" layoutY="38.0" prefHeight="25.0" prefWidth="100.0" />
                                                         <Button fx:id="buFind" disable="${viewModel.calculationDisabled}" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Find" />
                                                         <Label alignment="CENTER" layoutX="233.0" layoutY="42.0" prefHeight="17.0" prefWidth="81.0" text="algorithm." />
