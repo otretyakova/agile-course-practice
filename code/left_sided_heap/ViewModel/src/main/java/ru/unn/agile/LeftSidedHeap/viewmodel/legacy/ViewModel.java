@@ -193,25 +193,25 @@ public class ViewModel {
     private String formatResult() {
         Integer size = heap.size();
 
-        String res = "size: " + size.toString() + "\n";
+        String format = "size: " + size.toString() + "\n";
         if (size == 0) {
-            res += "min: -\n";
+            format += "min: -\n";
         } else {
             SimpleEntry<Integer, Double> min = heap.getMin();
-            res += "min: " + min.toString() + "\n";
+            format += "min: " + min.toString() + "\n";
         }
         if (removedCollection.isEmpty()) {
-            res += "remove: -\n";
+            format += "remove: -\n";
         } else {
-            res += "remove:";
+            format += "remove:";
             for (SimpleEntry<Integer, Double> pairKeyValue: removedCollection) {
-                res += " " + pairKeyValue.toString();
+                format += " " + pairKeyValue.toString();
             }
-            res += "\n";
+            format += "\n";
 
             removedCollection.clear();
         }
-        return res;
+        return format;
     }
 
     private String textAdd;
