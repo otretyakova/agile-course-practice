@@ -2,8 +2,6 @@ package ru.unn.agile.BookSale.Model;
 
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
 
 import java.util.Set;
@@ -34,24 +32,23 @@ public class OrderTest {
         books.add(book4);
         books.add(book5);
         booksTable = new BooksTable(books);
-    }
 
-    @AfterClass
-    public static void cleanAll() {
-        System.gc();
-    }
-
-    @Before
-    public void setUpBooksList() {
         booksList = new HashMap<UUID, Integer>();
         booksList.put(book1.getId(), 1);
         booksList.put(book2.getId(), 2);
         booksList.put(book3.getId(), 3);
     }
 
-    @After
-    public void cleanBooksList() {
-        System.gc();
+    @AfterClass
+    public static void cleanAll() {
+        book1 = null;
+        book2 = null;
+        book3 = null;
+        book4 = null;
+        book5 = null;
+        books = null;
+        booksTable = null;
+        booksList = null;
     }
 
     @Test
@@ -103,7 +100,7 @@ public class OrderTest {
 
     @Test
     public void canAddNewBookToNotEmptyOrder() {
-        Order order = new Order(booksList, booksTable);
+        Order order = new Order(new HashMap<UUID, Integer>(booksList), booksTable);
 
         order.addBook(book4.getId());
 
@@ -112,7 +109,7 @@ public class OrderTest {
 
     @Test
     public void canAddExistingBookToNotEmptyOrder() {
-        Order order = new Order(booksList, booksTable);
+        Order order = new Order(new HashMap<UUID, Integer>(booksList), booksTable);
 
         order.addBook(book1.getId());
 
@@ -121,7 +118,7 @@ public class OrderTest {
 
     @Test
     public void isCountOfBookCorrectWhenAddExistingBookToNotEmptyOrder() {
-        Order order = new Order(booksList, booksTable);
+        Order order = new Order(new HashMap<UUID, Integer>(booksList), booksTable);
 
         order.addBook(book1.getId());
 
@@ -130,7 +127,7 @@ public class OrderTest {
 
     @Test
     public void canDeleteBookFromNotEmptyOrder() {
-        Order order = new Order(booksList, booksTable);
+        Order order = new Order(new HashMap<UUID, Integer>(booksList), booksTable);
 
         order.deleteBook(book1.getId());
 
@@ -209,5 +206,5 @@ public class OrderTest {
     private static Book book5;
     private static Set<Book> books;
     private static BooksTable booksTable;
-    private Map<UUID, Integer> booksList;
+    private static Map<UUID, Integer> booksList;
 }

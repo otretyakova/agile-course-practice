@@ -24,7 +24,7 @@ public class BooksTableTest {
 
     @AfterClass
     public static void cleanAll() {
-        System.gc();
+        books = null;
     }
 
     @Test
