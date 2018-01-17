@@ -108,8 +108,8 @@ project(":code/vectors3d").name = "vectors3d-Model"
 
 
 // Semerenko Alexander
-
-
+include "code/Range"
+project(":code/Range").name = "Range-Model"
 
 // Semichev Uriy
 include "code/ratio-calculator"
