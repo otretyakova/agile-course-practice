@@ -210,7 +210,7 @@ public class ViewModel {
     }
 
     private String formatTextMinInHeap() {
-        if(heap.isEmpty()) {
+        if (heap.isEmpty()) {
             return String.format("min: -");
         } else {
             SimpleEntry<Integer, Double> min = heap.getMin();
