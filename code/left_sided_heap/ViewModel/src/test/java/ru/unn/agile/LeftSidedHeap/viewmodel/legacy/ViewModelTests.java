@@ -396,7 +396,7 @@ public class ViewModelTests {
 
         viewModel.remove();
 
-        assertFields("size: 0","min: -", "remove: 10=3.0");
+        assertFields("size: 0", "min: -", "remove: 10=3.0");
     }
 
     @Test
@@ -474,7 +474,8 @@ public class ViewModelTests {
         assertEquals(Status.BAD_FORMAT_IN_REMOVE, viewModel.getStatus());
     }
 
-    private void assertFields(String sizeField, String minField, String removeField) {
+    private void assertFields(final String sizeField, final String minField,
+                              final String removeField) {
         assertEquals(sizeField, viewModel.getTextSizeHeap());
         assertEquals(minField, viewModel.getTextMinInHeap());
         assertEquals(removeField, viewModel.getTextRemoveFromHeap());
