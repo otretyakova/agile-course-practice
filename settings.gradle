@@ -41,3 +41,7 @@ include "code/korniakov-kirill-lab3/View"
 project(":code/korniakov-kirill-lab3/View").name = "korniakov-kirill-lab3-View"
 include "code/korniakov-kirill-lab3/Infrastructure"
 project(":code/korniakov-kirill-lab3/Infrastructure").name = "korniakov-kirill-lab3-Infrastructure"
+
+// Tretyakova Olga
+include "code/convertnumeral"
+project(":code/convertnumeral").name = "convertnumeral-Model"
