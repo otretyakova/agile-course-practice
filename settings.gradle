@@ -108,8 +108,8 @@ project(":code/vectors3d").name = "vectors3d-Model"
 
 
 // Semichev Uriy
-
-
+include "code/ratio-calculator"
+project(":code/ratio-calculator").name = "ratio-calculator"
 
 // Tretiyakiva Olga
 
