@@ -180,4 +180,5 @@ project(":code/korniakov-kirill-lab3/ViewModel").name = "korniakov-kirill-lab3-V
 include "code/korniakov-kirill-lab3/View"
 project(":code/korniakov-kirill-lab3/View").name = "korniakov-kirill-lab3-View"
 include "code/korniakov-kirill-lab3/Infrastructure"
+project(":code/korniakov-kirill-lab3/Infrastructure").name = "korniakov-kirill-lab3-Infrastructure"
 
