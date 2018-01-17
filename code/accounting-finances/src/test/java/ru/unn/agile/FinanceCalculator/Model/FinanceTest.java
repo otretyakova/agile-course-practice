@@ -65,5 +65,5 @@ public class FinanceTest {
     }
 
     private FinanceType myType;
-    private double tolerance = 0.005;
+    private final double tolerance = 0.005;
 }

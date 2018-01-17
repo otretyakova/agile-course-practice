@@ -33,7 +33,7 @@ public class DayFinanceTest {
             }
 
             @Test
-            public void canAddMultiplePositiveAmount() throws Exception {
+            public void canAddMultiplePositiveAmount() {
                 DayFinance input = new DayFinance();
                 input.add(myType, 6.1);
                 input.add(myType, 1.99);
@@ -42,29 +42,29 @@ public class DayFinanceTest {
             }
 
             @Test(expected = IllegalArgumentException.class)
-            public void canNotAddNegativeAmount() throws Exception {
+            public void canNotAddNegativeAmount() throws IllegalArgumentException {
                 DayFinance input = new DayFinance();
                 input.add(myType, -77.0);
             }
 
             @Test(expected = IllegalArgumentException.class)
-            public void canNotAddNanAmount() throws Exception {
+            public void canNotAddNanAmount() throws IllegalArgumentException {
                 DayFinance input = new DayFinance();
                 input.add(myType, Double.NaN);
             }
 
             @Test(expected = IllegalArgumentException.class)
-            public void canNotAddInfiniteAmount() throws Exception {
+            public void canNotAddInfiniteAmount() throws IllegalArgumentException {
                 DayFinance input = new DayFinance();
                 input.add(myType, Double.POSITIVE_INFINITY);
             }
 
             private FinanceType myType;
-            private double tolerance = 0.005;
+            private final double tolerance = 0.005;
         }
 
         @Test
-        public void canAddMultipleTypesPositiveAmounts() throws Exception {
+        public void canAddMultipleTypesPositiveAmounts() {
             DayFinance input = new DayFinance();
             input.add(FinanceType.UnreasonableWaste, 777.1);
             input.add(FinanceType.EatingOut, 1.99);
