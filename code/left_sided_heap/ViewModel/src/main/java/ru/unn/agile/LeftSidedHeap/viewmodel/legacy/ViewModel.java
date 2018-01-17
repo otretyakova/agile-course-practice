@@ -11,7 +11,6 @@ public class ViewModel {
     public ViewModel() {
         textRemove = "";
         textAdd = "";
-        result = "";
         heap = new LeftSidedHeap<Double>();
 
         addCollection = new ArrayList<SimpleEntry<Integer, Double>>();
@@ -22,7 +21,9 @@ public class ViewModel {
         isButtonAddEnabled = false;
         status = Status.WAITING;
 
-        result = formatResult();
+        textSizeHeap = formatTextSizeHeap();
+        textMinInHeap = formatTextMinInHeap();
+        textRemoveFromHeap = formatTextRemoveFromHeap();
     }
 
     public boolean isButtonAddEnabled() {
@@ -46,7 +47,9 @@ public class ViewModel {
 
         heap.merge(secondHeap);
 
-        result = formatResult();
+        textSizeHeap = formatTextSizeHeap();
+        textMinInHeap = formatTextMinInHeap();
+        textRemoveFromHeap = formatTextRemoveFromHeap();
         status = Status.SUCCESS;
     }
 
@@ -58,17 +61,27 @@ public class ViewModel {
         removedCollection.clear();
 
         for (Integer keyValue : removeCollection) {
-            if (heap.isEmpty()) {
+            if (!heap.isEmpty()) {
                 heap.remove(keyValue, removedCollection);
             }
         }
 
-        result = formatResult();
+        textSizeHeap = formatTextSizeHeap();
+        textMinInHeap = formatTextMinInHeap();
+        textRemoveFromHeap = formatTextRemoveFromHeap();
         status = Status.SUCCESS;
     }
 
-    public String getResult() {
-        return result;
+    public String getTextSizeHeap() {
+        return this.textSizeHeap;
+    }
+
+    public String getTextMinInHeap() {
+        return this.textMinInHeap;
+    }
+
+    public String getTextRemoveFromHeap() {
+        return this.textRemoveFromHeap;
     }
 
     public String getStatus() {
@@ -190,36 +203,43 @@ public class ViewModel {
         }
     }
 
-    private String formatResult() {
+    private String formatTextSizeHeap() {
         Integer size = heap.size();
 
-        String format = "size: " + size.toString() + "\n";
-        if (size == 0) {
-            format += "min: -\n";
+        return String.format("size: %d", size);
+    }
+
+    private String formatTextMinInHeap() {
+        if(heap.isEmpty()) {
+            return String.format("min: -");
         } else {
             SimpleEntry<Integer, Double> min = heap.getMin();
-            format += "min: " + min.toString() + "\n";
+            return String.format("min: %s", min.toString());
         }
+    }
+
+    private String formatTextRemoveFromHeap() {
         if (removedCollection.isEmpty()) {
-            format += "remove: -\n";
+            return "remove: -";
         } else {
-            format += "remove:";
+            String formatRes = "remove:";
             for (SimpleEntry<Integer, Double> pairKeyValue: removedCollection) {
-                format += " " + pairKeyValue.toString();
+                formatRes += String.format(" %s", pairKeyValue.toString());
             }
-            format += "\n";
 
             removedCollection.clear();
+            return formatRes;
         }
-        return format;
     }
 
     private String textAdd;
     private String textRemove;
-    private String result;
     private boolean isButtonAddEnabled;
     private boolean isButtonRemoveEnabled;
     private String status;
+    private String textSizeHeap;
+    private String textMinInHeap;
+    private String textRemoveFromHeap;
 
     private LeftSidedHeap<Double> heap;
     private Collection<SimpleEntry<Integer, Double>> addCollection;

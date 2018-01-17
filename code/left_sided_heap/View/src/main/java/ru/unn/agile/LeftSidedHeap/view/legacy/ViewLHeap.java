@@ -65,7 +65,9 @@ public final class ViewLHeap {
         buttonAdd.setEnabled(viewModel.isButtonAddEnabled());
         buttonRemove.setEnabled(viewModel.isButtonRemoveEnabled());
 
-        textResult.setText(viewModel.getResult());
+        textSizeHeap.setText(viewModel.getTextSizeHeap());
+        textMinInHeap.setText(viewModel.getTextMinInHeap());
+        textRemoveFromHeap.setText(viewModel.getTextRemoveFromHeap());
         textStatus.setText("Status: " + viewModel.getStatus());
     }
 
@@ -74,8 +76,10 @@ public final class ViewLHeap {
     private JButton buttonAdd;
     private JTextField fieldRemove;
     private JButton buttonRemove;
-    private JTextArea textResult;
     private JPanel mainPanel;
     private JTextField textStatus;
+    private JTextField textSizeHeap;
+    private JTextField textMinInHeap;
+    private JTextField textRemoveFromHeap;
 
 }

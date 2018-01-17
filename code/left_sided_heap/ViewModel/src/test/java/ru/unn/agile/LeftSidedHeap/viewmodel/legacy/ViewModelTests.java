@@ -24,7 +24,7 @@ public class ViewModelTests {
     public void canSetDefaultValues() {
         assertEquals("", viewModel.getTextAdd());
         assertEquals("", viewModel.getTextRemove());
-        assertEquals("size: 0\nmin: -\nremove: -\n", viewModel.getResult());
+        assertFields("size: 0", "min: -", "remove: -");
         assertEquals(Status.WAITING, viewModel.getStatus());
     }
 
@@ -302,43 +302,43 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canAddOneElementInEmptyHeap() {
+    public void canChangeFieldsWhenAddOneElementInEmptyHeap() {
         viewModel.setTextAdd("1_0");
 
         viewModel.add();
 
-        assertEquals("size: 1\nmin: 1=0.0\nremove: -\n", viewModel.getResult());
+        assertFields("size: 1", "min: 1=0.0", "remove: -");
     }
 
     @Test
-    public void canAddOneNegativeElementInEmptyHeap() {
+    public void canChangeFieldsWhenAddOneNegativeElementInEmptyHeap() {
         viewModel.setTextAdd("1_-10.8");
 
         viewModel.add();
 
-        assertEquals("size: 1\nmin: 1=-10.8\nremove: -\n", viewModel.getResult());
+        assertFields("size: 1", "min: 1=-10.8", "remove: -");
     }
 
     @Test
-    public void canAddOneElementWithNegativeKeyInEmptyHeap() {
+    public void canChangeFieldsAddOneElementWithNegativeKeyInEmptyHeap() {
         viewModel.setTextAdd("-11_18");
 
         viewModel.add();
 
-        assertEquals("size: 1\nmin: -11=18.0\nremove: -\n", viewModel.getResult());
+        assertFields("size: 1", "min: -11=18.0", "remove: -");
     }
 
     @Test
-    public void canAddTwoElementInEmptyHeap() {
+    public void canChangeFieldsWhenAddTwoElementInEmptyHeap() {
         viewModel.setTextAdd("1_0; 2_1");
 
         viewModel.add();
 
-        assertEquals("size: 2\nmin: 1=0.0\nremove: -\n", viewModel.getResult());
+        assertFields("size: 2", "min: 1=0.0", "remove: -");
     }
 
     @Test
-    public void canAddOneElementInNoEmptyHeap() {
+    public void canChangeFieldsWhenAddOneElementInNoEmptyHeap() {
         viewModel.setTextAdd("10_3");
         viewModel.add();
 
@@ -346,11 +346,11 @@ public class ViewModelTests {
 
         viewModel.add();
 
-        assertEquals("size: 2\nmin: 1=0.0\nremove: -\n", viewModel.getResult());
+        assertFields("size: 2", "min: 1=0.0", "remove: -");
     }
 
     @Test
-    public void canAddTwoElementInNoEmptyHeap() {
+    public void canChangeFieldsWhenAddTwoElementInNoEmptyHeap() {
         viewModel.setTextAdd("10_3");
         viewModel.add();
 
@@ -358,7 +358,7 @@ public class ViewModelTests {
 
         viewModel.add();
 
-        assertEquals("size: 3\nmin: 1=0.0\nremove: -\n", viewModel.getResult());
+        assertFields("size: 3", "min: 1=0.0", "remove: -");
     }
 
     @Test
@@ -380,67 +380,67 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canRemoveFromEmptyHeap() {
+    public void cantChangeFieldsWhenRemoveFromEmptyHeap() {
         viewModel.setTextRemove("21");
 
         viewModel.remove();
 
-        assertEquals("size: 0\nmin: -\nremove: -\n", viewModel.getResult());
+        assertFields("size: 0", "min: -", "remove: -");
     }
 
     @Test
-    public void canRemoveOneElementFromHeapWithOneElement() {
+    public void canChangeFieldsWhenRemoveOneElementFromHeapWithOneElement() {
         viewModel.setTextAdd("10_3");
         viewModel.add();
         viewModel.setTextRemove("10");
 
         viewModel.remove();
 
-        assertEquals("size: 0\nmin: -\nremove: 10=3.0\n", viewModel.getResult());
+        assertFields("size: 0","min: -", "remove: 10=3.0");
     }
 
     @Test
-    public void canRemoveOneElementFromHeapWithMoreElements() {
+    public void canChangeFieldsRemoveOneElementFromHeapWithMoreElements() {
         viewModel.setTextAdd("10_3;120_2;1_56");
         viewModel.add();
         viewModel.setTextRemove("10");
 
         viewModel.remove();
 
-        assertEquals("size: 2\nmin: 1=56.0\nremove: 10=3.0\n", viewModel.getResult());
+        assertFields("size: 2", "min: 1=56.0", "remove: 10=3.0");
     }
 
     @Test
-    public void canRemoveTwoElementFromHeapWithOneElements() {
+    public void canChangeFieldsRemoveTwoElementFromHeapWithOneElements() {
         viewModel.setTextAdd("10_3");
         viewModel.add();
         viewModel.setTextRemove("10;2");
 
         viewModel.remove();
 
-        assertEquals("size: 0\nmin: -\nremove: 10=3.0\n", viewModel.getResult());
+        assertFields("size: 0", "min: -", "remove: 10=3.0");
     }
 
     @Test
-    public void canRemoveTwoElementFromHeapWithTwoElements() {
+    public void canChangeFieldsRemoveTwoElementFromHeapWithTwoElements() {
         viewModel.setTextAdd("10_3;2_21");
         viewModel.add();
         viewModel.setTextRemove("10;2");
 
         viewModel.remove();
 
-        assertEquals("size: 0\nmin: -\nremove: 10=3.0 2=21.0\n", viewModel.getResult());
+        assertFields("size: 0", "min: -", "remove: 10=3.0 2=21.0");
     }
 
     @Test
-    public void canRemoveTwoElementWithOneKeyFromHeap() {
+    public void canChangeFieldsRemoveTwoElementWithOneKeyFromHeap() {
         viewModel.setTextAdd("1_3;1_3435");
         viewModel.add();
         viewModel.setTextRemove("1");
 
         viewModel.remove();
 
-        assertEquals("size: 0\nmin: -\nremove: 1=3.0 1=3435.0\n", viewModel.getResult());
+        assertFields("size: 0", "min: -", "remove: 1=3.0 1=3435.0");
     }
 
     @Test
@@ -451,7 +451,7 @@ public class ViewModelTests {
 
         viewModel.remove();
 
-        assertEquals("size: 1\nmin: 2=21.0\nremove: 10=3.0 32=123.0\n", viewModel.getResult());
+        assertFields("size: 1", "min: 2=21.0", "remove: 10=3.0 32=123.0");
     }
 
     @Test
@@ -474,4 +474,9 @@ public class ViewModelTests {
         assertEquals(Status.BAD_FORMAT_IN_REMOVE, viewModel.getStatus());
     }
 
+    private void assertFields(String sizeField, String minField, String removeField) {
+        assertEquals(sizeField, viewModel.getTextSizeHeap());
+        assertEquals(minField, viewModel.getTextMinInHeap());
+        assertEquals(removeField, viewModel.getTextRemoveFromHeap());
+    }
 }

@@ -22,7 +22,7 @@ public class LeftSidedHeap<T> {
     }
 
     public final boolean isEmpty() {
-        return size != 0;
+        return size == 0;
     }
 
     public final void add(final SimpleEntry<Integer, T> keyValuePair) {
