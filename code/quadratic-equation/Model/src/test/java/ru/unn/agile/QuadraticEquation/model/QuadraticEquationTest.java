@@ -132,7 +132,7 @@ public class QuadraticEquationTest {
     }
 
     @Test
-    public void canFindFirstRootOfQuadraticEquationWithOneRealRoot() {
+    public void canFindFirstRootOfQuadraticEquationWithZeroComplexPart() {
         List<String> result = new ArrayList<String>();
         equation.setABC(1, 4, 4);
         result = equation.solveQuadraticEquation();

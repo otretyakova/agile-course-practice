@@ -29,7 +29,7 @@ public class Solution {
         second.textProperty().bindBidirectional(viewModel.bProperty());
         third.textProperty().bindBidirectional(viewModel.cProperty());
 
-        Pattern p = Pattern.compile("[-+]?[0-9]{0,7}(\\.[0-9]{0,7})?([0-9]{0,3})?");
+        Pattern p = Pattern.compile(LEGAL_INPUT);
         for (TextField textField : textFields) {
             TextFormatter<String> formatter = new TextFormatter<>(
                     (UnaryOperator<TextFormatter.Change>) change -> {
@@ -45,6 +45,7 @@ public class Solution {
         });
     }
 
+    private static final String LEGAL_INPUT = "[-+]?[0-9]{0,7}(\\.[0-9]{0,7})?([0-9]{0,3})?";
     @FXML
     private ViewModel viewModel;
     @FXML

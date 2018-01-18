@@ -38,7 +38,7 @@ public class QuadraticEquation {
     }
 
     public QuadraticEquation(final double a, final double b, final double c) {
-        if ((Math.abs(a) < DELTA) && (Math.abs(b) < DELTA)) {
+        if (isNumberZero(Math.abs(a)) && isNumberZero(Math.abs(b))) {
             throw new IllegalArgumentException("QuadraticEquation is degenerated.");
         } else {
             this.a = a;
@@ -51,7 +51,7 @@ public class QuadraticEquation {
         double newA = Double.parseDouble(a);
         double newB = Double.parseDouble(b);
         double newC = Double.parseDouble(c);
-        if ((Math.abs(newA) < DELTA) && (Math.abs(newB) < DELTA)) {
+        if (isNumberZero(Math.abs(newA)) && isNumberZero(Math.abs(newB))) {
             throw new IllegalArgumentException("QuadraticEquation is degenerated.");
         } else {
             this.a = newA;
@@ -91,7 +91,7 @@ public class QuadraticEquation {
         if (this.getDiscriminant() < DELTA) {
             return new Pair<Double, Double>(null, null);
         }
-        if ((this.getDiscriminant() > -DELTA) && (this.getDiscriminant() < DELTA)) {
+        if (isNumberZero(this.getDiscriminant())) {
             return new Pair<Double, Double>(-b / 2 / a, null);
         }
         return new Pair<Double, Double>(this.realFirst(), this.realSecond());
@@ -111,7 +111,7 @@ public class QuadraticEquation {
             result.add(first.toString());
             return result;
         }
-        if ((this.getDiscriminant() > -DELTA) && (this.getDiscriminant() < DELTA)) {
+        if (isNumberZero(this.getDiscriminant())) {
             Complex first = new Complex((-1) * this.getB() / 2 / this.getA(), 0.);
             result.add(first.toString());
             return result;

@@ -7,9 +7,9 @@ public final class Formatter {
 
     public static String formatPositiveDouble(final double value) {
         if (value < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Use this function only for positive value!");
         }
-        DecimalFormat df = new DecimalFormat("#.#####");
+        DecimalFormat df = new DecimalFormat(FORMAT);
         df.setRoundingMode(RoundingMode.CEILING);
         return df.format(value);
     }
@@ -28,6 +28,8 @@ public final class Formatter {
 
     private Formatter() {
     }
+
+    private static final String FORMAT = "#.#####";
 }
 
 
