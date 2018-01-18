@@ -8,8 +8,6 @@ import java.util.Collection;
 
 public class ViewModel {
 
-    private String input;
-
     public ViewModel() {
         textRemove = "";
         textAdd = "";
@@ -186,7 +184,6 @@ public class ViewModel {
     }
 
     private void parseTextRemove(final String input) throws IllegalStateException {
-        this.input = input;
         removeCollection.clear();
 
         String inputWithoutSpace = input.replaceAll("\\s+", "");
