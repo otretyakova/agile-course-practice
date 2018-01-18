@@ -1,172 +1,127 @@
 package ru.unn.agile.ConvertNumeral.Model;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConvertNumeral {
-    private List<Pair<Integer, String>> number;
-
-    public ConvertNumeral() {
-
-        number = new ArrayList<>();
-        for (int i = 0; i < ARABIC_NUMBER.length; i++) {
-            number.add(new Pair<>(ARABIC_NUMBER[i], ROMAN_NUMBER[i]));
-        }
-    }
-
-    private static final Integer[] ARABIC_NUMBER = {1000, 500, 100, 50, 10, 5, 1};
-    private static final String[] ROMAN_NUMBER = {"M", "D", "C", "L", "X", "V", "I"};
-    private static final Integer BOUNDARY_VALUE = 3999;
-
-
-    public String convert(final int arabicNumber) {
-        return getRomanNumber(arabicNumber);
-    }
 
     public Integer convert(final String romanNumber) {
         return getArabicNumber(romanNumber);
     }
 
+    public String convert(final int arabicNumber) {
+        return getRomanNumber(arabicNumber);
+    }
+
     private Integer getArabicNumber(final String romanNumber) {
-        int currentSymbol = 0;
-        int sum = 0;
-        for (int i = 0; i < romanNumber.length(); i++) {
-            for (Pair<Integer, String> item : number) {
-                if (romanNumber.substring(i, i + 1).equals(item.getValue())) {
-                    if (item.getKey() < currentSymbol) {
+        Integer returnArabicNumber = 0;
+        String cutRomanNumber = romanNumber;
+        String previousRoman = "";
+        String currentRoman = "";
+        int countOfRepeatedSymbols = 0;
+        int index = 0;
 
-                        sum += currentSymbol;
-                        currentSymbol = item.getKey();
+        while (cutRomanNumber.length() > 0) {
+            countOfRepeatedSymbols = 0;
+            currentRoman = ROMAN_NUMBERS[index];
 
-                    } else if (item.getKey() > currentSymbol) {
-
-                        if (currentSymbol == 0) {
-                            currentSymbol = item.getKey();
-                        } else {
-                            sum += item.getKey() - currentSymbol;
-                            currentSymbol = 0;
-                        }
-                    } else if (item.getKey().equals(currentSymbol)) {
-
-                        sum += currentSymbol + item.getKey();
-                        currentSymbol = 0;
-                    }
+            while (isCurrentRomanEqualFirstOfString(currentRoman, cutRomanNumber)) {
+                countOfRepeatedSymbols++;
+                if (isCurrentValueNotAcceptable(previousRoman,
+                        currentRoman,
+                        countOfRepeatedSymbols)) {
+                    throw new InvalidParameterException("Incorrectly entered number!");
                 }
+
+                previousRoman = currentRoman;
+                cutRomanNumber = cutRomanNumber.substring(currentRoman.length());
+                returnArabicNumber += ARABIC_NUMBERS[index];
+            }
+
+            index++;
+
+            if (index >= ROMAN_NUMBERS.length && cutRomanNumber.length() != 0) {
+                throw new InvalidParameterException("Incorrectly entered number!");
             }
         }
-        sum += currentSymbol;
-        return sum;
+        return returnArabicNumber;
+    }
+
+    private boolean isCurrentRomanEqualFirstOfString(final String currentNumber,
+                                                     final String cutRomanNumber) {
+        return cutRomanNumber.length() >= currentNumber.length()
+                && currentNumber.equals(cutRomanNumber.substring(0, currentNumber.length()));
+    }
+
+    private boolean isCurrentValueNotAcceptable(final String previous,
+                                                final String current,
+                                                final int countOfRepeatedSymbols) {
+        if (countOfRepeatedSymbols > MAX_COUNT_OF_REPEATED_SYMBOLS) {
+            return true;
+        }
+        if (ROMAN_NUMBERS_CONTAINS_ONE.contains(previous) || previous.length() == 0) {
+            return false;
+        }
+        if (ROMAN_NUMBERS_CONTAINS_FIVE.contains(previous)) {
+            return (getDigitNumber(previous) == getDigitNumber(current)
+                    && !(ROMAN_NUMBERS_CONTAINS_ONE.contains(current)));
+        }
+        return getDigitNumber(previous) == getDigitNumber(current);
+    }
+
+    private int getDigitNumber(final String roman) {
+        int digitNumber = 0;
+        for (int j = 0; j < ROMAN_NUMBERS.length; j++) {
+            if (ROMAN_NUMBERS[j].equals(roman)) {
+                digitNumber++;
+                if (j > MAX_INDEX_TEN) {
+                    return digitNumber;
+                }
+                digitNumber++;
+                if (j > MAX_INDEX_HUNDRED && j <= MAX_INDEX_TEN) {
+                    return digitNumber;
+                }
+                digitNumber++;
+                if (j > MAX_INDEX_THOUSAND && j <= MAX_INDEX_HUNDRED) {
+                    return digitNumber;
+                }
+                digitNumber++;
+                return digitNumber;
+            }
+        }
+        return -1;
     }
 
     private String getRomanNumber(final int arabicNumber) {
-
-        String romanNumber = "";
-        boolean isCorrectSequence = false;
-        if (arabicNumber > BOUNDARY_VALUE || arabicNumber < 0) {
-            return "Выход за пределы";
+        if (arabicNumber > MAX_VALUE || arabicNumber < 0) {
+            throw new InvalidParameterException("Incorrectly entered number."
+                    + " Exceeding the allowed values!");
         }
+        int index = 0;
         int arabicNumberUse = arabicNumber;
-        for (Pair<Integer, String> item : number) {
-
-            while (arabicNumberUse >= item.getKey()) {
-                romanNumber += item.getValue();
-                arabicNumberUse -= item.getKey();
+        String returnRomanNumber = new String();
+        while (arabicNumberUse > 0) {
+            while (ARABIC_NUMBERS[index] <= arabicNumberUse) {
+                returnRomanNumber += ROMAN_NUMBERS[index];
+                arabicNumberUse -= ARABIC_NUMBERS[index];
             }
-        }
-
-        while (!isCorrectSequence) {
-            String repeatFourSymbol = new String();
-            String repeatTwoSymbol = new String();
-            String changeRomanNumber = new String();
-
-            repeatFourSymbol = searchRepeatingFourSymbol(romanNumber);
-            if (!"".equals(repeatFourSymbol)) {
-                romanNumber = changeRepeatFourSymbol(repeatFourSymbol, romanNumber);
-            } else {
-                repeatTwoSymbol = searchRepeatingTwoSymbols(romanNumber);
-                if (!"".equals(repeatTwoSymbol)) {
-
-                    changeRomanNumber = changeRepeatTwoSymbols(repeatTwoSymbol, romanNumber);
-                    if (romanNumber.equals(changeRomanNumber)) {
-                        isCorrectSequence = true;
-                    } else {
-                        romanNumber = changeRomanNumber;
-                    }
-
-                } else {
-                    isCorrectSequence = true;
-                }
-            }
-        }
-        return romanNumber;
-    }
-
-    private static final Integer START_SEARCH = 3;
-
-    private String searchRepeatingFourSymbol(final String romanNumber) {
-        String result = new String();
-
-        for (int i = START_SEARCH; i < romanNumber.length(); i++) {
-            if (romanNumber.charAt(i - START_SEARCH) == romanNumber.charAt(i - 2)
-                    && romanNumber.charAt(i - 1) == romanNumber.charAt(i - 2)
-                    && romanNumber.charAt(i - 1) == romanNumber.charAt(i)) {
-                result = romanNumber.substring(i - START_SEARCH, i + 1);
-            }
-        }
-        return result;
-    }
-
-    private String searchRepeatingTwoSymbols(final String romanNumber) {
-        String result = new String();
-        for (int i = 2; i < romanNumber.length(); i++) {
-            if (romanNumber.charAt(i - 2) == romanNumber.charAt(i)
-                    && romanNumber.charAt(i - 1) != romanNumber.charAt(i - 2)) {
-                result = romanNumber.substring(i - 2, i + 1);
-
-
-            }
-
-        }
-        return result;
-    }
-
-    private String changeRepeatFourSymbol(final String repeatNumber, final String romanNumber) {
-
-        String newPart = new String();
-        String romanNumberReturn = romanNumber;
-        int lengthPartRomanNumber = repeatNumber.length();
-        for (int j = 0; j < number.size(); j++) {
-            if (repeatNumber.substring(lengthPartRomanNumber - 1)
-                    .equals(number.get(j).getValue())) {
-
-                newPart = repeatNumber.substring(lengthPartRomanNumber - 1)
-                        + number.get(j - 1).getValue();
-                romanNumberReturn = romanNumberReturn.replaceAll(repeatNumber, newPart);
-            }
-
-        }
-        return romanNumberReturn;
-    }
-
-    private String changeRepeatTwoSymbols(final String partRomanNumber, final String romanNumber) {
-
-        String returnRomanNumber = romanNumber;
-        String newPartRomanNumber = new String();
-        int lengthFoundPart = partRomanNumber.length();
-        for (int j = 0; j < number.size(); j++) {
-            if (partRomanNumber.substring(lengthFoundPart - 1).equals(number.get(j).getValue())
-                    && partRomanNumber.substring(1, 2).equals(number.get(j + 1).getValue())) {
-
-                newPartRomanNumber = partRomanNumber.substring(1, lengthFoundPart - 1)
-                        + number.get(j - 1).getValue();
-                returnRomanNumber = returnRomanNumber
-                        .replaceAll(partRomanNumber, newPartRomanNumber);
-            }
-
+            index++;
         }
         return returnRomanNumber;
     }
-}
 
+    private static final Integer[] ARABIC_NUMBERS
+            = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    private static final String[] ROMAN_NUMBERS
+            = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    private static final List<String> ROMAN_NUMBERS_CONTAINS_FIVE
+            = Arrays.asList("V", "L", "D");
+    private static final List<String> ROMAN_NUMBERS_CONTAINS_ONE
+            = Arrays.asList("M", "C", "X", "I");
+    private static final Integer MAX_VALUE = 3999;
+    private static final Integer MAX_COUNT_OF_REPEATED_SYMBOLS = 3;
+    private static final int MAX_INDEX_THOUSAND = 0;
+    private static final int MAX_INDEX_HUNDRED = 4;
+    private static final int MAX_INDEX_TEN = 8;
+}

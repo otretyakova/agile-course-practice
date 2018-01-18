@@ -1,8 +1,8 @@
 package ru.unn.agile.ConvertNumeral.Model;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import java.security.InvalidParameterException;
+import static org.junit.Assert.assertEquals;
 
 public class ConvertNumeralTest {
 
@@ -11,7 +11,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(1);
         assertEquals("I", romanNumber);
-
     }
 
     @Test
@@ -19,7 +18,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(2);
         assertEquals("II", romanNumber);
-
     }
 
     @Test
@@ -27,7 +25,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(5);
         assertEquals("V", romanNumber);
-
     }
 
     @Test
@@ -35,7 +32,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(10);
         assertEquals("X", romanNumber);
-
     }
 
     @Test
@@ -43,7 +39,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(50);
         assertEquals("L", romanNumber);
-
     }
 
     @Test
@@ -51,7 +46,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(6);
         assertEquals("VI", romanNumber);
-
     }
 
     @Test
@@ -59,7 +53,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(7);
         assertEquals("VII", romanNumber);
-
     }
 
     @Test
@@ -67,7 +60,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(4);
         assertEquals("IV", romanNumber);
-
     }
 
     @Test
@@ -75,7 +67,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(9);
         assertEquals("IX", romanNumber);
-
     }
 
     @Test
@@ -83,7 +74,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(14);
         assertEquals("XIV", romanNumber);
-
     }
 
     @Test
@@ -91,7 +81,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(44);
         assertEquals("XLIV", romanNumber);
-
     }
 
     @Test
@@ -99,7 +88,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(40);
         assertEquals("XL", romanNumber);
-
     }
 
     @Test
@@ -107,7 +95,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(139);
         assertEquals("CXXXIX", romanNumber);
-
     }
 
     @Test
@@ -115,7 +102,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(458);
         assertEquals("CDLVIII", romanNumber);
-
     }
 
     @Test
@@ -123,7 +109,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(3999);
         assertEquals("MMMCMXCIX", romanNumber);
-
     }
 
     @Test
@@ -133,11 +118,10 @@ public class ConvertNumeralTest {
         assertEquals("", romanNumber);
     }
 
-    @Test
-    public void convert4000() {
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvert4000() {
         ConvertNumeral converter = new ConvertNumeral();
         String romanNumber = converter.convert(4000);
-        assertEquals("Выход за пределы", romanNumber);
     }
 
     @Test
@@ -145,7 +129,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("I");
         assertEquals(1, arabicNumber);
-
     }
 
     @Test
@@ -153,7 +136,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("IV");
         assertEquals(4, arabicNumber);
-
     }
 
     @Test
@@ -161,7 +143,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("II");
         assertEquals(2, arabicNumber);
-
     }
 
     @Test
@@ -169,7 +150,6 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("III");
         assertEquals(3, arabicNumber);
-
     }
 
     @Test
@@ -177,9 +157,13 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("XIV");
         assertEquals(14, arabicNumber);
-
     }
-
+    @Test
+    public void convertVIIIto8() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("VIII");
+        assertEquals(8, arabicNumber);
+    }
     @Test
     public void convertIXto9() {
         ConvertNumeral converter = new ConvertNumeral();
@@ -213,14 +197,70 @@ public class ConvertNumeralTest {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("MMMCMXCIX");
         assertEquals(3999, arabicNumber);
-
     }
 
     @Test
-    public void convertEmptyStringto0() {
+    public void convertEmptyStringTo0() {
         ConvertNumeral converter = new ConvertNumeral();
         int arabicNumber = converter.convert("");
         assertEquals(0, arabicNumber);
+    }
 
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertVXI() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("VXI");
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertVCI() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("VCI");
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertXXXX() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("XXXX");
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertXMI() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("XMI");
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertCCXMCC() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("CCXMCC");
+    }
+
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertLL() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("LL");
+    }
+
+    @Test
+    public void convertMCMto1900() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("MCM");
+        assertEquals(1900, arabicNumber);
+    }
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertXCX() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("XCX");
+    }
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertIVI() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("IVI");
+    }
+    @Test (expected = InvalidParameterException.class)
+    public void canNotConvertMCDC() {
+        ConvertNumeral converter = new ConvertNumeral();
+        int arabicNumber = converter.convert("MCDC");
     }
 }
