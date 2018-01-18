@@ -2,85 +2,101 @@ package ru.unn.agile.ClassMatrix.Model;
 
 public class Matrix {
 
-    private int[][]newMatrix;
-    private int n;
-    private int m;
-
-    public Matrix(final int[][]dataMassive) {
-        this.n = dataMassive.length;
-        this.m = dataMassive[0].length;
-        newMatrix = new int[n][m];
-        newMatrix = dataMassive.clone();
-    }
-
-    public int[][] getMatrix() {
-        return newMatrix;
-    }
-
-    public boolean matrixIsQuadric() {
-        return n == m;
-    }
-
-   private void getMatrixWithoutRowAndCol(final int[][]matrix,
-                                          final int size,
-                                          final int row,
-                                          final int col,
-                                          final int[][]newMatrix) {
-       int offsetRow = 0;
-       int offsetCol = 0;
-       for (int i = 0; i < size - 1; i++) {
-           if (i == row) {
-               offsetRow = 1;
-           }
-           offsetCol = 0;
-           for (int j = 0; j < size - 1; j++) {
-               if (j == col) {
-                   offsetCol = 1;
-               }
-               newMatrix[i][j] = matrix[i + offsetRow][j + offsetCol];
-           }
-       }
-   }
-
-    public int determinant(final int[][]forDeterminantMatrix, final int size) {
-        int  result, degree;
-        result = 0;
-        degree = 1;
-            if (matrixIsQuadric()) {
-                if (size == 1) {
-                    result = forDeterminantMatrix[0][0];
-                    return result;
-                }
-
-                if (size == 2) {
-                    int a1 = forDeterminantMatrix[0][0] * forDeterminantMatrix[1][1];
-                    int a2 = forDeterminantMatrix[0][1] * forDeterminantMatrix[1][0];
-                    result =  a1 - a2;
-                    return result;
-                }
-
-                if (n > 2) {
-                    int[][] p = new int[n - 1][n - 1];
-                    for (int j = 0; j < size; j++) {
-                        getMatrixWithoutRowAndCol(forDeterminantMatrix, size, 0, j, p);
-                        int a1j = forDeterminantMatrix[0][j];
-                        int resultEndPart = degree * a1j * determinant(p, size - 1);
-                        result = result + (resultEndPart);
-                        degree = -degree;
-                    }
-                }
-
-            } else {
-                return 0;
+    public Matrix(final int[][] array) throws IllegalArgumentException {
+        if (array == null) {
+            throw new IllegalArgumentException("Can't create matrix from null!");
+        }
+        sizeOfRows = array.length;
+        sizeOfColumns = array[0].length;
+        for (int i = 1; i < sizeOfRows; i++) {
+            if (array[i].length != sizeOfColumns) {
+                throw new IllegalArgumentException("Column has different number!");
             }
-        return result;
+        }
+
+        matrixData = array.clone();
     }
 
-    public int getColumns() {
-        return n;
+    public int[][] toArray() {
+        return matrixData;
     }
 
-    public int getRows() {
-        return m;
+    public boolean isQuadric() {
+        return sizeOfRows == sizeOfColumns;
     }
+
+    public int calculateDeterminant() {
+        int determinant = 0;
+        if (isQuadric()) {
+            determinant = computeDeterminant(matrixData, sizeOfRows);
+        }
+        return determinant;
+    }
+
+    public int getNumberOfRows() {
+        return sizeOfRows;
+    }
+
+    public int getNumberOfColumns() {
+        return sizeOfColumns;
+    }
+
+    private Matrix getSubMatrix(final int excludedRow, final int excludedColumn) {
+
+        int row = 0;
+        int col = 0;
+        int size = sizeOfRows;
+        int[][] calculateArray = new int[size - 1][size - 1];
+
+        for (int i = 0; i < size - 1; i++) {
+            if (i == excludedRow) {
+                row = 1;
+            }
+            col = 0;
+            for (int j = 0; j < size - 1; j++) {
+                if (j == excludedColumn) {
+                    col = 1;
+                }
+                calculateArray[i][j] = matrixData[i + row][j + col];
+            }
+        }
+
+        return new Matrix(calculateArray);
+    }
+
+    private int computeDeterminant(final int[][] array, final int size) {
+        int determinant = 0;
+        int signMinor = 1;
+
+        if (size == 1) {
+            return array[0][0];
+        }
+
+        if (size == 2) {
+            int mainDiagonal = array[0][0] * array[1][1];
+            int sideDiagonal = array[0][1] * array[1][0];
+            return mainDiagonal - sideDiagonal;
+        }
+
+        if (size > 2) {
+
+            Matrix subMatrix;
+            for (int j = 0; j < size; j++) {
+                subMatrix = getSubMatrix(0, j);
+                int ratio = array[0][j];
+                int resultEndPart = 0;
+                resultEndPart = signMinor * ratio * computeDeterminant(subMatrix.toArray(),
+                        size - 1);
+                determinant = determinant + resultEndPart;
+                signMinor = -signMinor;
+            }
+
+        }
+
+        return determinant;
+    }
+
+    private int[][] matrixData;
+    private int sizeOfRows;
+    private int sizeOfColumns;
 }

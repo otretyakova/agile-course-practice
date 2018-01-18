@@ -1,8 +1,10 @@
 // Averin Andrey
-
-
+include "code/MatrixClass"
+project(":code/MatrixClass").name = "ClassMatrix"
 
 // Bastrakova Ksenia
+include "code/merge-sort"
+project(":code/merge-sort").name = "merge-sort"
 
 
 
@@ -76,7 +78,8 @@ project(":code/number-system-converter").name = "number-system-converter"
 
 
 // Reshetova Anastasya
-
+include "code/Quadratic-equation"
+project(":code/Quadratic-equation").name = "Quadratic-equation"
 
 
 // Rozanov Anatoliy
@@ -109,8 +112,8 @@ project(":code/vectors3d").name = "vectors3d-Model"
 
 
 // Uvarov Denis
-
-
+include "code/game-of-life"
+project(":code/game-of-life").name = "Game-of-life-Model"
 
 // Umnikov Eugene
 include "code/triangle"
@@ -131,13 +134,16 @@ project(":code/string-calculator/ViewModel").name = "string-calculator-ViewModel
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
 
+// Gorbunova Natalya
+include "code/mortgage-calculator"
+project(":code/mortgage-calculator").name = "mortgage-calculator-Model"
+
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
 project(":code/korniakov-kirill-lab1").name = "korniakov-kirill-lab1-Model"
 
-// Averin Andrey, lab1
-include "code/MatrixClass"
-project(":code/MatrixClass").name = "ClassMatrix"
+
+
 
 // Korniakov Kirill, lab2-legacy
 include "code/korniakov-kirill-lab2-legacy/Model"

@@ -15,7 +15,7 @@ public class MatrixTest {
         try {
             Matrix testMatrix = new Matrix(null);
             Assert.fail();
-        } catch (IllegalStateException ex) {
+        } catch (IllegalArgumentException ex) {
         }
     }
 
@@ -26,8 +26,8 @@ public class MatrixTest {
         };
 
         Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertTrue(testMatrix.getNumberColumn() == 2);
-        assertTrue(testMatrix.getNumberRow() == 2);
+        assertTrue(testMatrix.getNumberOfColumns() == 2);
+        assertTrue(testMatrix.getNumberOfRows() == 2);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class MatrixTest {
         try {
             Matrix testMatrix = new Matrix(array);
             Assert.fail();
-        } catch (IllegalStateException ex) {
+        } catch (IllegalArgumentException ex) {
         }
     }
 
