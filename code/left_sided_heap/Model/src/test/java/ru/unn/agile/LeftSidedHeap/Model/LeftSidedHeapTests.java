@@ -106,7 +106,7 @@ public class LeftSidedHeapTests {
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
                 new ArrayList<SimpleEntry<Integer, Integer>>();
         exception.expect(IllegalStateException.class);
-        heap.remove(0, removedCollection);
+        removedCollection.addAll(heap.removeAll(0));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LeftSidedHeapTests {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
                 new ArrayList<SimpleEntry<Integer, Integer>>();
-        heap.remove(-1, removedCollection);
+        removedCollection.addAll(heap.removeAll(-1));
         assertTrue(removedCollection.isEmpty() && heap.size() == 10);
     }
 
@@ -126,8 +126,8 @@ public class LeftSidedHeapTests {
         Collection<SimpleEntry<Integer, Integer>> removedCollectionSecond =
                 new ArrayList<SimpleEntry<Integer, Integer>>();
         heap.add(new SimpleEntry<>(-1, 4));
-        heap.remove(-1, removedCollectionFirst);
-        heap.remove(-1, removedCollectionSecond);
+        removedCollectionFirst.addAll(heap.removeAll(-1));
+        removedCollectionSecond.addAll(heap.removeAll(-1));
         assertTrue(removedCollectionSecond.isEmpty());
     }
 
@@ -139,7 +139,7 @@ public class LeftSidedHeapTests {
                 new ArrayList<SimpleEntry<Integer, Integer>>();
         heap.add(new SimpleEntry<>(-1, 4));
         heap.add(new SimpleEntry<>(-1, 5));
-        heap.remove(-1, removedCollection);
+        removedCollection.addAll(heap.removeAll(-1));
         assertTrue(heap.size() == 10);
     }
 
@@ -167,7 +167,7 @@ public class LeftSidedHeapTests {
                 new ArrayList<SimpleEntry<Integer, Integer>>();
         removeRandomElements(heap, addedElements, 5);
         exception.expect(IllegalStateException.class);
-        heap.remove(0, removedCollection);
+        removedCollection.addAll(heap.removeAll(0));
     }
 
     @Test
@@ -190,7 +190,7 @@ public class LeftSidedHeapTests {
                 new ArrayList<SimpleEntry<Integer, Integer>>();
         heap.add(new SimpleEntry<>(-2, 1));
         heap.add(new SimpleEntry<>(-1, 5));
-        heap.remove(-2, removedCollection);
+        removedCollection.addAll(heap.removeAll(-2));
         assertTrue(heap.getMin().equals(new SimpleEntry<>(-1, 5)));
     }
 
@@ -315,7 +315,7 @@ public class LeftSidedHeapTests {
             SimpleEntry<Integer, Integer> shouldBeRemovedElement =
                     addedElements.remove(indexToRemove);
             SimpleEntry<Integer, Integer> wasRemovedElement =
-                    heap.removeOneElement(shouldBeRemovedElement.getKey());
+                    heap.remove(shouldBeRemovedElement.getKey());
             assertTrue(wasRemovedElement.equals(shouldBeRemovedElement));
         }
     }

@@ -2,6 +2,7 @@ package ru.unn.agile.LeftSidedHeap.Model;
 
 import java.util.Collection;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.LinkedList;
 
 public class LeftSidedHeap<T> {
 
@@ -50,21 +51,24 @@ public class LeftSidedHeap<T> {
         return new SimpleEntry<>(root.getKey(), root.getValue());
     }
 
-    public void remove(final int key, final Collection<SimpleEntry<Integer, T>> retVal)
+    public Collection<SimpleEntry<Integer, T>> removeAll(final int key)
             throws IllegalStateException {
+        Collection<SimpleEntry<Integer, T>> retVal = null;
         if (size() == 0) {
             throw new IllegalStateException("Attempt to remove elements from empty heap!");
         } else {
-            SimpleEntry<Integer, T> removeVal = removeOneElement(key);
+            retVal = new LinkedList<SimpleEntry<Integer, T>>();
+            SimpleEntry<Integer, T> removeVal = remove(key);
             while (removeVal != null) {
                 retVal.add(removeVal);
                 if (size() != 0) {
-                    removeVal = removeOneElement(key);
+                    removeVal = remove(key);
                 } else {
                     removeVal = null;
                 }
             }
         }
+        return retVal;
     }
 
     public boolean contains(final Collection<SimpleEntry<Integer, T>> collection) {
@@ -96,7 +100,7 @@ public class LeftSidedHeap<T> {
         return bResult;
     }
 
-    public SimpleEntry<Integer, T> removeOneElement(final int key) throws IllegalStateException {
+    public SimpleEntry<Integer, T> remove(final int key) throws IllegalStateException {
         SimpleEntry<Integer, T> retVal = null;
         if (size() == 0) {
             throw new IllegalStateException("Attempt to remove element from empty heap!");

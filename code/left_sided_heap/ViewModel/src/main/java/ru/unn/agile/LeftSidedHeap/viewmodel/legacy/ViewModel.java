@@ -64,7 +64,7 @@ public class ViewModel {
 
         for (Integer keyValue : removeCollection) {
             if (!heap.isEmpty()) {
-                heap.remove(keyValue, removedCollection);
+                removedCollection.addAll(heap.remove(keyValue));
             }
         }
 
