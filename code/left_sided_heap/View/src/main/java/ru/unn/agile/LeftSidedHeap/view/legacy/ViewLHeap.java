@@ -2,7 +2,10 @@ package ru.unn.agile.LeftSidedHeap.view.legacy;
 
 import ru.unn.agile.LeftSidedHeap.viewmodel.legacy.ViewModel;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,6 +18,7 @@ public final class ViewLHeap {
 
         frame.setContentPane(new ViewLHeap(new ViewModel()).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
     }
@@ -62,6 +66,8 @@ public final class ViewLHeap {
     }
 
     private void backBind() {
+        fieldAdd.setText(viewModel.getTextAdd());
+        fieldRemove.setText(viewModel.getTextRemove());
         buttonAdd.setEnabled(viewModel.isButtonAddEnabled());
         buttonRemove.setEnabled(viewModel.isButtonRemoveEnabled());
 

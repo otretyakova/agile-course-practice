@@ -3,7 +3,7 @@ package ru.unn.agile.LeftSidedHeap.viewmodel.legacy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.unn.agile.LeftSidedHeap.viewmodel.legacy.ViewModel.Status;
+import ru.unn.agile.LeftSidedHeap.viewmodel.legacy.Status;
 
 import static org.junit.Assert.assertEquals;
 

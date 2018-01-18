@@ -8,6 +8,8 @@ import java.util.Collection;
 
 public class ViewModel {
 
+    private String input;
+
     public ViewModel() {
         textRemove = "";
         textAdd = "";
@@ -50,6 +52,8 @@ public class ViewModel {
         textSizeHeap = formatTextSizeHeap();
         textMinInHeap = formatTextMinInHeap();
         textRemoveFromHeap = formatTextRemoveFromHeap();
+        isButtonAddEnabled = false;
+        textAdd = "";
         status = Status.SUCCESS;
     }
 
@@ -69,6 +73,8 @@ public class ViewModel {
         textSizeHeap = formatTextSizeHeap();
         textMinInHeap = formatTextMinInHeap();
         textRemoveFromHeap = formatTextRemoveFromHeap();
+        isButtonRemoveEnabled = false;
+        textRemove = "";
         status = Status.SUCCESS;
     }
 
@@ -109,17 +115,6 @@ public class ViewModel {
         }
 
         this.textRemove = textRemove;
-    }
-
-    public final class Status {
-        public static final String WAITING = "Please provide input data";
-        public static final String READY = "Press button";
-        public static final String BAD_FORMAT_IN_ADD = "Bad format in field add";
-        public static final String BAD_FORMAT_IN_REMOVE = "Bad format in field remove";
-        public static final String BAD_FORMAT = "Bad format";
-        public static final String SUCCESS = "Success";
-
-        private Status() { }
     }
 
     private boolean correctAdd() {
@@ -190,7 +185,8 @@ public class ViewModel {
         }
     }
 
-    private void parseTextRemove(final String input) {
+    private void parseTextRemove(final String input) throws IllegalStateException {
+        this.input = input;
         removeCollection.clear();
 
         String inputWithoutSpace = input.replaceAll("\\s+", "");
