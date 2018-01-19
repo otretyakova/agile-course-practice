@@ -213,8 +213,8 @@ public class ViewModelTests {
         viewModel.focusLost();
         viewModel.setSecondPolynomial("");
         viewModel.focusLost();
-        String message = viewModel.getLog().get(0);
-        assertTrue(message.equals(LogMessages.EDITING_HAPPENED + "Second polynomial: []."));
+        List<String> log = viewModel.getLog();
+        assertEquals(2, viewModel.getLog().size());
     }
 
     @Test

@@ -69,9 +69,16 @@ public class TxtLoggerTests {
     }
     @Test
     public void notFailConstructTxtLoggerWithBadFileName() {
-        TxtLogger txtLogger = new TxtLogger("&$^%@^&*%");
+         TxtLogger txtLogger = new TxtLogger(FILENAME_ACCESS_DENIED);
     }
 
+    @Test
+    public void notFailLoggingWithNullPointerWriter() {
+        TxtLogger badLogger = new TxtLogger(FILENAME_ACCESS_DENIED);
+        badLogger.addInfo("");
+    }
+
+    private static final String FILENAME_ACCESS_DENIED = "";
     private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
     private TxtLogger txtLogger;
 }
