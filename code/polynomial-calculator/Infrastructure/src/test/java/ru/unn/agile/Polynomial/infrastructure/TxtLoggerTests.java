@@ -67,6 +67,10 @@ public class TxtLoggerTests {
         String timeRegex = "(0?[0-9]|(1?[0-9]|2[0-3])):([0-5][0-9]):([0-5][0-9])";
         assertTrue(message.matches(dateRegex + " " + timeRegex + " > .*"));
     }
+    @Test
+    public void notFailConstructTxtLoggerWithBadFileName() {
+        TxtLogger txtLogger = new TxtLogger("&$^%@^&*%");
+    }
 
     private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
     private TxtLogger txtLogger;
