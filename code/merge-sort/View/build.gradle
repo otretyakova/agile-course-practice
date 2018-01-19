@@ -1,5 +1,5 @@
 apply from:   rootDir.getAbsolutePath() + '/config/scripts/javafx.plugin'
 
 dependencies {
-    compile project(':korniakov-kirill-lab2-ViewModel')
+    compile project(':merge-sort-ViewModel')
 }

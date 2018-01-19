@@ -9,8 +9,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
-    private ViewModel viewModel;
-
     @Before
     public void setUp() {
         viewModel = new ViewModel();
@@ -112,4 +110,6 @@ public class ViewModelTests {
 
         assertEquals("4 8 15 16 23 42", viewModel.outputProperty().get());
     }
+
+    private ViewModel viewModel;
 }
