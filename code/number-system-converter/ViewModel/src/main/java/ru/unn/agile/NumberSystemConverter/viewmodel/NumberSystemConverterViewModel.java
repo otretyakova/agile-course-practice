@@ -11,7 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import ru.unn.agile.NumberSystemConverter.model.InvalidInputException;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemConverter;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
 
@@ -77,7 +76,7 @@ public class NumberSystemConverterViewModel {
                 String result = NumberSystemConverter.convert(this.numberInBaseNumberSystem.get(),
                         this.baseNumberSystem.get(), this.targetNumberSystem.get());
                 this.numberInTargetNumberSystem.set(result);
-            } catch (InvalidInputException invalidInputException) {
+            } catch (NumberFormatException numberFormatException) {
                 this.errorMessage.set("Input contains invalid symbols for this number system");
                 this.errorMessageIsShown.set(true);
             }
