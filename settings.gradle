@@ -70,8 +70,12 @@ include "code/statistical-values/ViewModel"
 project(":code/statistical-values/ViewModel").name = "statistical-values-ViewModel"
 
 // Morozova Julia
-include "code/booksale"
-project(":code/booksale").name = "booksale-Model"
+include "code/booksale/Model"
+project(":code/booksale/Model").name = "booksale-Model-legacy"
+include "code/booksale/View"
+project(":code/booksale/View").name = "booksale-View-legacy"
+include "code/booksale/ViewModel"
+project(":code/booksale/ViewModel").name = "booksale-ViewModel-legacy"
 
 // Novak Alexander
 include "code/number-system-converter"
