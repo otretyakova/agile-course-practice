@@ -1,11 +1,22 @@
 package ru.unn.agile.NumberSystemConverter.model;
 
-import org.junit.Test;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class ConvertNumberTest {
+
+    @Test
+    public void utilClassWillBeCreatedButItsConstructorIsPrivate() throws Exception {
+        Constructor constructor = NumberSystemConverter.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        assertNotNull(constructor.newInstance());
+    }
 
     @Test
     public void canConvertZeroInDEC2BIN() {
