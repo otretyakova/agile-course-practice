@@ -3,17 +3,14 @@ package ru.unn.agile.Polynomial.view;
 import ru.unn.agile.Polynomial.viewmodel.Operation;
 import ru.unn.agile.Polynomial.viewmodel.Status;
 import ru.unn.agile.Polynomial.viewmodel.ViewModel;
+import ru.unn.agile.Polynomial.infrastructure.TxtLogger;
 
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public final class Calculator {
     private Calculator(final ViewModel viewModel) {
@@ -64,7 +61,8 @@ public final class Calculator {
     public static void main(final String[] args) {
         JFrame frame = new JFrame("Calculator");
 
-        frame.setContentPane(new Calculator(new ViewModel()).mainPanel);
+        TxtLogger logger = new TxtLogger("./ViewPolynomial.log");
+        frame.setContentPane(new Calculator(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -87,6 +85,10 @@ public final class Calculator {
         txtResult.setText(viewModel.getResult());
         Status status = viewModel.getStatus();
         lbStatus.setText(status.toString());
+        List<String> logText = viewModel.getLog();
+        String[] items = logText.toArray(new String[logText.size()]);
+        listLog.setListData(items);
+
     }
 
     private ViewModel viewModel;
@@ -97,4 +99,5 @@ public final class Calculator {
     private JTextField txtSecondPolynomial;
     private JButton btnCalc;
     private JComboBox<Operation> cbOperation;
+    private JList<String> listLog;
 }
