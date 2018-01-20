@@ -4,7 +4,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import ru.unn.agile.mergesort.model.MergeSort;
+import ru.unn.agile.mergesort.Model.MergeSort;
 
 import java.util.*;
 
@@ -34,7 +34,9 @@ public class ViewModel {
             return;
         }
 
-        String[] words = input.get().split(" ");
+        String inputStr = input.get();
+        inputStr = inputStr.trim();
+        String[] words = inputStr.split("[ ]+");
         List<Integer> numbers = new LinkedList<Integer>();
         for (String word : words) {
             numbers.add(Integer.parseInt(word));
@@ -75,11 +77,12 @@ public class ViewModel {
 
     private Status getInputStatus() {
         String inputStr = input.get();
+        inputStr = inputStr.trim();
         if (inputStr.isEmpty()) {
             return Status.WAITING;
         }
 
-        String[] words = inputStr.split(" ");
+        String[] words = inputStr.split("[ ]+");
         if (words.length > MAX_NUMBERS_COUNT_IN_INPUT) {
             return Status.BAD_FORMAT;
         }
