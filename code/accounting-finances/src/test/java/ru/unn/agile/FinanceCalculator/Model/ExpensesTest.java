@@ -1,5 +1,6 @@
 package ru.unn.agile.FinanceCalculator.Model;
 
+import ru.unn.agile.FinanceCalculator.Model.Expenses.FinanceType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -9,53 +10,59 @@ import java.util.GregorianCalendar;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class FinanceTest {
+public class ExpensesTest {
     @Parameterized.Parameters
    public static Collection<Object[]> data() {
        return FinanceType.arrayOfTypes();
    }
-
-    public FinanceTest(final FinanceType type) {
+    public ExpensesTest(final FinanceType type) {
         myType = type;
     }
 
     @Test
     public void canAddCostsForValidDate() {
-        Finance finance = new Finance();
+        Expenses expenses = new Expenses();
         Calendar date = new GregorianCalendar(2001, 1, 9);
-        finance.addCost(45325.0, date, myType);
-        assertEquals(finance.getCost(date, myType), 45325.0, tolerance);
+        Currency cost = new Currency(45325, 55);
+        expenses.addCost(cost, date, myType);
+        assertEquals(expenses.getCost(date, myType), cost);
     }
 
     @Test
     public void canAddCostsMultipleTimesForOneValidDate() {
-        Finance finance = new Finance();
+        Expenses expenses = new Expenses();
         Calendar date = new GregorianCalendar(2005, 2, 9);
-        finance.addCost(10.9, date, myType);
+        Currency firstCost = new Currency(45325, 55);
+        expenses.addCost(firstCost, date, myType);
         date.setTimeInMillis(date.getTimeInMillis() + 6000);
-        finance.addCost(10.0, date, myType);
-        assertEquals(finance.getCost(date, myType), 20.9, tolerance);
+        Currency secondCost = new Currency(20, 10);
+        expenses.addCost(secondCost, date, myType);
+        Currency resultCost = new Currency(45345, 65);
+        assertEquals(expenses.getCost(date, myType), resultCost);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void canNotAddCostForNextMonth() throws IllegalArgumentException {
-        Finance finance = new Finance();
+        Expenses expenses = new Expenses();
         Calendar date = getFutureDate(31);
-        finance.addCost(999.0, date, myType);
+        Currency cost = new Currency(999, 99);
+        expenses.addCost(cost, date, myType);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void canNotAddCostForNextWeek() throws IllegalArgumentException {
-        Finance finance = new Finance();
+        Expenses expenses = new Expenses();
         Calendar date = getFutureDate(7);
-        finance.addCost(9889.99, date, myType);
+        Currency cost = new Currency(888, 99);
+        expenses.addCost(cost, date, myType);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void canNotAddCostForTomorrowDate() throws IllegalArgumentException {
-        Finance finance = new Finance();
+        Expenses expenses = new Expenses();
         Calendar date = getFutureDate(1);
-        finance.addCost(10.0, date, myType);
+        Currency cost = new Currency(87788, 99);
+        expenses.addCost(cost, date, myType);
     }
 
     private Calendar getFutureDate(final int numDaysFromToday) {
@@ -65,5 +72,4 @@ public class FinanceTest {
     }
 
     private FinanceType myType;
-    private final double tolerance = 0.005;
 }
