@@ -13,7 +13,7 @@
    </fx:define>
    <children>
       <TextField fx:id="txtInput" layoutX="20.0" layoutY="88.0" prefHeight="25.0" prefWidth="586.0" text="" />
-      <Label layoutX="105.0" layoutY="56.0" text="Введите не более 10 чисел через пробел">
+      <Label layoutX="20.0" prefWidth="586.0" layoutY="56.0" text="Введите целые числа через пробел" alignment="CENTER">
          <font>
             <Font size="22.0" />
          </font>
@@ -23,7 +23,7 @@
             <Font size="27.0" />
          </font>
       </Button>
-      <TextField fx:id="txtOutput" editable="false" layoutX="20.0" layoutY="238.0" prefHeight="25.0" prefWidth="586.0" text="${viewModel.output}" />
+      <TextField editable="false" layoutX="20.0" layoutY="238.0" prefHeight="25.0" prefWidth="586.0" text="${viewModel.output}" />
       <Label layoutX="20.0" layoutY="113.0" prefHeight="17.0" prefWidth="586.0" text="${viewModel.status}" alignment="center">
          <font>
             <Font size="18.0" />

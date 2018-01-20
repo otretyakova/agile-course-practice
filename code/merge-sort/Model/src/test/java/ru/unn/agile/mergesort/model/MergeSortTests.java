@@ -7,12 +7,11 @@ import java.util.Collection;
 import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 
-
-public class MergeSortTest {
+public class MergeSortTests {
     @Test
     public void canSortEmptyCollection() {
-        Collection<Integer> input = new ArrayList<Integer>();
-        Collection<Integer> expected = new ArrayList<Integer>();
+        Collection<Integer> input = new ArrayList<>();
+        Collection<Integer> expected = new ArrayList<>();
         Collection<Integer> actual = MergeSort.sort(input);
         assertEquals(expected, actual);
     }
@@ -20,9 +19,8 @@ public class MergeSortTest {
     @Test
     public void canSortSingleValue() {
         Collection<Integer> input = Collections.singletonList(1);
-        Collection<Integer> expected = input;
         Collection<Integer> actual = MergeSort.sort(input);
-        assertEquals(expected, actual);
+        assertEquals(input, actual);
     }
 
     @Test
@@ -62,7 +60,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void canSortcustomTypeTwoValuesComparator() {
+    public void canSortCustomTypeTwoValuesComparator() {
         Collection<Car> input = Arrays.asList(new Car(400), new Car(30));
         Collection<Car> expected = Arrays.asList(new Car(30), new Car(400));
         Collection<Car> sortValues = MergeSort.sort(input);
@@ -70,7 +68,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void canSortcustomTypeMultipleValues() {
+    public void canSortCustomTypeMultipleValues() {
         Collection<Car> input = Arrays.asList(new Car(50), new Car(1),
                 new Car(400), new Car(30),
                 new Car(13), new Car(777));
@@ -101,8 +99,8 @@ public class MergeSortTest {
 
     @Test
     public void canSortEmptyCollectionWithComparator() {
-        Collection<Integer> input = new ArrayList<Integer>();
-        Collection<Integer> expected = new ArrayList<Integer>();
+        Collection<Integer> input = new ArrayList<>();
+        Collection<Integer> expected = new ArrayList<>();
         Collection<Integer> actual = MergeSort.sort(input, Collections.reverseOrder());
         assertEquals(expected, actual);
     }
@@ -110,9 +108,8 @@ public class MergeSortTest {
     @Test
     public void canSortSingleValueCollectionWithComparator() {
         Collection<Integer> input = Collections.singletonList(7);
-        Collection<Integer> expected = input;
         Collection<Integer> actual = MergeSort.sort(input, Collections.reverseOrder());
-        assertEquals(expected, actual);
+        assertEquals(input, actual);
     }
 
     @Test
@@ -132,7 +129,7 @@ public class MergeSortTest {
     }
 
     @Test
-    public void canSortMultipleValuesTwoDegreeSizeCollectionWithComprator() {
+    public void canSortMultipleValuesTwoDegreeSizeCollectionWithComparator() {
         Collection<Integer> input = Arrays.asList(1, 44, 56, 999, -2, 110, 20,
                 3, 4, 8, 24, 87, 13, -400, 77, 1200);
         Collection<Integer> expected = Arrays.asList(1200, 999, 110, 87, 77,

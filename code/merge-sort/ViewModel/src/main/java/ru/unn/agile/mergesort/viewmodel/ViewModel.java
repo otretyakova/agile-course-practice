@@ -1,12 +1,17 @@
 package ru.unn.agile.mergesort.viewmodel;
 
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.*;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import ru.unn.agile.mergesort.Model.MergeSort;
+import ru.unn.agile.mergesort.model.MergeSort;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.LinkedList;
 
 public class ViewModel {
     public ViewModel() {
@@ -30,23 +35,19 @@ public class ViewModel {
     }
 
     public void calculate() {
-        if (sortDisabled.get()) {
+        if (isSortDisabled()) {
             return;
         }
 
         String inputStr = input.get();
         inputStr = inputStr.trim();
         String[] words = inputStr.split("[ ]+");
-        List<Integer> numbers = new LinkedList<Integer>();
+        List<Integer> numbers = new LinkedList<>();
         for (String word : words) {
             numbers.add(Integer.parseInt(word));
         }
         Collection<Integer> sortNumbers = MergeSort.sort(numbers);
-        String result = "";
-        for (Integer number : sortNumbers) {
-            result += number.toString() + " ";
-        }
-        output.set(result.substring(0, result.length() - 1));
+        setOutput(sortNumbers);
 
         status.set(Status.SUCCESS.toString());
     }
@@ -83,18 +84,23 @@ public class ViewModel {
         }
 
         String[] words = inputStr.split("[ ]+");
-        if (words.length > MAX_NUMBERS_COUNT_IN_INPUT) {
-            return Status.BAD_FORMAT;
-        }
         for (String word : words) {
             try {
                 Integer.parseInt(word);
-            } catch (NumberFormatException nfe) {
+            } catch (NumberFormatException exception) {
                 return Status.BAD_FORMAT;
             }
         }
 
         return Status.READY;
+    }
+
+    private void setOutput(final Collection<Integer> outputNumbers) {
+        String result = "";
+        for (Integer number : outputNumbers) {
+            result += number.toString() + " ";
+        }
+        output.set(result.substring(0, result.length() - 1));
     }
 
     private final StringProperty input = new SimpleStringProperty();
@@ -104,29 +110,12 @@ public class ViewModel {
     private final StringProperty output = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
 
-    private static final int MAX_NUMBERS_COUNT_IN_INPUT = 10;
-
     private class InputChangeListener implements ChangeListener<String> {
         @Override
-        public void changed(final ObservableValue<? extends String> observ,
+        public void changed(final ObservableValue<? extends String> observable,
                             final String oldVal, final String newVal) {
             status.set(getInputStatus().toString());
         }
     }
 
-}
-
-enum Status {
-    WAITING("Ожидаю ввода"),
-    READY("Ввод корректен"),
-    BAD_FORMAT("Ввод некорректен"),
-    SUCCESS("Готово!");
-
-    Status(final String name) {
-        this.name = name;
-    }
-    private final String name;
-    public String toString() {
-        return name;
-    }
 }

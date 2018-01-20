@@ -14,17 +14,17 @@ public final class MergeSort {
 
     public static <T extends Comparable<T>> Collection<T> sort(final Collection<T> values) {
 
-        class Precede<T extends Comparable<T>> implements Comparator<T> {
-           public int compare(final T a, final T b) {
+        class Precede<C extends Comparable<C>> implements Comparator<C> {
+           public int compare(final C a, final C b) {
                 return a.compareTo(b);
             }
         }
-        return mergeSort(values, new Precede<T>());
+        return mergeSort(values, new Precede<>());
     }
 
     private static <T> Collection<T> mergeSort(final Collection<T> input,
                                                final Comparator<T> comparator) {
-        List<T> inputList = new LinkedList<T>(input);
+        List<T> inputList = new LinkedList<>(input);
         return mergeSortList(inputList, comparator);
     }
 
@@ -34,8 +34,8 @@ public final class MergeSort {
             return input;
         }
         int middleIndex = input.size() / 2;
-        List<T> firstHalf = new LinkedList<T>(input.subList(0, middleIndex));
-        List<T> secondHalf = new LinkedList<T>(input.subList(middleIndex, input.size()));
+        List<T> firstHalf = new LinkedList<>(input.subList(0, middleIndex));
+        List<T> secondHalf = new LinkedList<>(input.subList(middleIndex, input.size()));
         List<T> sortedFirstHalf = mergeSortList(firstHalf, comparator);
         List<T> sortedSecondHalf = mergeSortList(secondHalf, comparator);
         return merge(sortedFirstHalf, sortedSecondHalf, comparator);
@@ -45,7 +45,7 @@ public final class MergeSort {
                                      final Comparator<T> comparator) {
         int firstIndex = 0;
         int secondIndex = 0;
-        List<T> result = new LinkedList<T>();
+        List<T> result = new LinkedList<>();
         while (firstIndex < first.size() && secondIndex < second.size()) {
             if (comparator.compare(second.get(secondIndex), first.get(firstIndex)) < 0) {
                 result.add(second.get(secondIndex++));

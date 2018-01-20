@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-public class CarTest {
+public class CarTests {
     @Test
     public void canCompareCarsWithSameMaxSpeed() {
         Car car = new Car(1, 1);
