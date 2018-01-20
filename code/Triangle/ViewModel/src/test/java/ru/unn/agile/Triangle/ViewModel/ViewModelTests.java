@@ -43,6 +43,12 @@ public class ViewModelTests {
         assertEquals("S = N/A", viewModel.getSurfaceArea());
         assertEquals(Status.WAITING.toString(), viewModel.getStatus());
     }
+
+    @Test
+    public void canNotCalculateWithDefaultSettings() {
+        viewModel.calculate();
+        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+    }
     //
 
 

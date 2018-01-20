@@ -145,28 +145,6 @@ public class ViewModel {
     //
 
 
-    private final StringProperty coordAx = new SimpleStringProperty();
-    private final StringProperty coordAy = new SimpleStringProperty();
-    private final StringProperty coordBx = new SimpleStringProperty();
-    private final StringProperty coordBy = new SimpleStringProperty();
-    private final StringProperty coordCx = new SimpleStringProperty();
-    private final StringProperty coordCy = new SimpleStringProperty();
-
-    // Sides
-    private final StringProperty sideAB = new SimpleStringProperty();
-    private final StringProperty sideBC = new SimpleStringProperty();
-    private final StringProperty sideAC = new SimpleStringProperty();
-
-    // Corners
-    private final StringProperty cornerABC = new SimpleStringProperty();
-    private final StringProperty cornerACB = new SimpleStringProperty();
-    private final StringProperty cornerBAC = new SimpleStringProperty();
-
-    // Other
-    private final StringProperty perimeterValue = new SimpleStringProperty();
-    private final StringProperty surfaceArea = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
-
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
         if (hasEmptyCoordinates()) {
@@ -198,6 +176,29 @@ public class ViewModel {
 
         return inputStatus;
     }
+
+    // Coordinates (PRIVATE)
+    private final StringProperty coordAx = new SimpleStringProperty();
+    private final StringProperty coordAy = new SimpleStringProperty();
+    private final StringProperty coordBx = new SimpleStringProperty();
+    private final StringProperty coordBy = new SimpleStringProperty();
+    private final StringProperty coordCx = new SimpleStringProperty();
+    private final StringProperty coordCy = new SimpleStringProperty();
+
+    // Sides
+    private final StringProperty sideAB = new SimpleStringProperty();
+    private final StringProperty sideBC = new SimpleStringProperty();
+    private final StringProperty sideAC = new SimpleStringProperty();
+
+    // Corners
+    private final StringProperty cornerABC = new SimpleStringProperty();
+    private final StringProperty cornerACB = new SimpleStringProperty();
+    private final StringProperty cornerBAC = new SimpleStringProperty();
+
+    // Other
+    private final StringProperty perimeterValue = new SimpleStringProperty();
+    private final StringProperty surfaceArea = new SimpleStringProperty();
+    private final StringProperty status = new SimpleStringProperty();
 
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 
@@ -271,8 +272,6 @@ enum Status {
     DEGENERATED("Incorrect data: degenerated triangle!"),
     SUCCESS("Success! Look at results.");
 
-    private final String name;
-
     Status(final String name) {
         this.name = name;
     }
@@ -280,4 +279,6 @@ enum Status {
     public String toString() {
         return name;
     }
+
+    private final String name;
 }
