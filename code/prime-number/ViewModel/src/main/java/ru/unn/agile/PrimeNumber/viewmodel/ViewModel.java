@@ -26,7 +26,174 @@ import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 public class ViewModel {
+    final class LogMessages {
+        public static final String CALCULATE_WAS_PRESSED = "Calculate was pressed with ";
+        public static final String OPERATION_CHANGED = "Operation was changed to ";
+        public static final String RANGE_CHANGED = "Range changed to ";
+        public static final String NUM_PRIMES_CHANGED = "Maximum counts of primes changed to ";
+
+        private LogMessages() { }
+    }
+
     public ViewModel() {
+        init();
+    }
+
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+
+    public final void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
+    }
+
+    public void onMethodChanged(final Methods oldValue, final Methods newValue) {
+        if (oldValue.equals(newValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.OPERATION_CHANGED);
+        message.append(newValue.toString()).append(".");
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void onRangeFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        for (PropertyChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                StringBuilder message = new StringBuilder(LogMessages.RANGE_CHANGED);
+                message.append("[").append(rangeFrom.get()).append(", ")
+                        .append(rangeTo.get()).append("].");
+                logger.log(message.toString());
+                updateLogs();
+
+                listener.cache();
+                break;
+            }
+        }
+    }
+
+    public void onMaxCountPrimesFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        for (PropertyChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                StringBuilder message = new StringBuilder(LogMessages.NUM_PRIMES_CHANGED);
+                message.append(maxCountPrimesProperty().get()).append(".");
+                logger.log(message.toString());
+                updateLogs();
+
+                listener.cache();
+                break;
+            }
+        }
+    }
+
+    public void calculate() {
+        if (calculationDisabled.get()) {
+            return;
+        }
+        Integer left = Integer.parseInt(rangeFrom.get());
+        Integer right = Integer.parseInt(rangeTo.get());
+        Integer countPrimes = Integer.parseInt(maxCountPrimes.get());
+
+        long startTime = System.nanoTime();
+
+        PrimeNumber primes = new PrimeNumber(left, right);
+        primes.findPrimeNumberFromRange(method.get());
+        List<Integer> primesList = primes.getPrimeList();
+
+        long elapsedTime = System.nanoTime() - startTime;
+        final long numberOfNanosecondsInSecond = 1000000000;
+        Double elapsedTimeInSec = (double) elapsedTime / numberOfNanosecondsInSecond;
+
+        Integer numberOfOutputPrimes = Integer.min(countPrimes, primesList.size());
+        setCalculationMessages(left, right, elapsedTimeInSec, numberOfOutputPrimes, primesList);
+
+        status.set(Status.SUCCESS.toString());
+
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
+        message.append("method ").append(method.get().toString())
+                .append(" for range [").append(rangeFrom.get())
+                .append(", ").append(rangeTo.get()).append("]")
+                .append(" where maximum count of primes was = ").append(maxCountPrimes.get())
+                .append(".");
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void chooseAnswerById(final Integer id) {
+        currentAnswer.set(answersList.get(id).getAnswerMessage());
+    }
+
+    public String getLogs() {
+        return logs.get();
+    }
+    public String getRangeFrom() {
+        return rangeFrom.get();
+    }
+    public String getRangeTo() {
+        return rangeTo.get();
+    }
+    public String getMaxCountPrimes() {
+        return maxCountPrimes.get();
+    }
+    public String getCurrentAnswer() {
+        return currentAnswer.get();
+    }
+    public final String getStatus() {
+        return status.get();
+    }
+
+    public final boolean isCalculationDisabled() {
+        return calculationDisabled.get();
+    }
+    public final ObservableList<Methods> getMethods() {
+        return methods.get();
+    }
+
+    public StringProperty logsProperty() {
+        return logs;
+    }
+    public StringProperty rangeFromProperty() {
+        return rangeFrom;
+    }
+    public StringProperty rangeToProperty() {
+        return rangeTo;
+    }
+    public StringProperty maxCountPrimesProperty() {
+        return maxCountPrimes;
+    }
+    public StringProperty currentAnswerProperty() {
+        return currentAnswer;
+    }
+    public StringProperty statusProperty() {
+        return status;
+    }
+    public BooleanProperty calculationDisabledProperty() {
+        return calculationDisabled;
+    }
+    public ObjectProperty<Methods> methodProperty() {
+        return method;
+    }
+    public ListProperty<Query> answersListProperty() {
+        return answersList;
+    }
+
+    private void init() {
         rangeFrom.set("");
         rangeTo.set("");
         maxCountPrimes.set("");
@@ -58,80 +225,13 @@ public class ViewModel {
         }
     }
 
-    public void calculate() {
-        if (calculationDisabled.get()) {
-            return;
+    private void updateLogs() {
+        List<String> fullLog = logger.getLog();
+        String record = new String("");
+        for (String log : fullLog) {
+            record += log + "\n";
         }
-        Integer left = Integer.parseInt(rangeFrom.get());
-        Integer right = Integer.parseInt(rangeTo.get());
-        Integer countPrimes = Integer.parseInt(maxCountPrimes.get());
-
-        long startTime = System.nanoTime();
-
-        PrimeNumber primes = new PrimeNumber(left, right);
-        primes.findPrimeNumberFromRange(method.get());
-        List<Integer> primesList = primes.getPrimeList();
-
-        long elapsedTime = System.nanoTime() - startTime;
-        final long numberOfNanosecondsInSecond = 1000000000;
-        Double elapsedTimeInSec = (double) elapsedTime / numberOfNanosecondsInSecond;
-
-        Integer numberOfOutputPrimes = Integer.min(countPrimes, primesList.size());
-        setCalculationMessages(left, right, elapsedTimeInSec, numberOfOutputPrimes, primesList);
-
-        status.set(Status.SUCCESS.toString());
-    }
-
-    public void chooseAnswerById(final Integer id) {
-        currentAnswer.set(answersList.get(id).getAnswerMessage());
-    }
-
-    public String getRangeFrom() {
-        return rangeFrom.get();
-    }
-    public String getRangeTo() {
-        return rangeTo.get();
-    }
-    public String getMaxCountPrimes() {
-        return maxCountPrimes.get();
-    }
-    public String getCurrentAnswer() {
-        return currentAnswer.get();
-    }
-    public final String getStatus() {
-        return status.get();
-    }
-
-    public final boolean isCalculationDisabled() {
-        return calculationDisabled.get();
-    }
-    public final ObservableList<Methods> getMethods() {
-        return methods.get();
-    }
-
-    public StringProperty rangeFromProperty() {
-        return rangeFrom;
-    }
-    public StringProperty rangeToProperty() {
-        return rangeTo;
-    }
-    public StringProperty maxCountPrimesProperty() {
-        return maxCountPrimes;
-    }
-    public StringProperty currentAnswerProperty() {
-        return currentAnswer;
-    }
-    public StringProperty statusProperty() {
-        return status;
-    }
-    public BooleanProperty calculationDisabledProperty() {
-        return calculationDisabled;
-    }
-    public ObjectProperty<Methods> methodProperty() {
-        return method;
-    }
-    public ListProperty<Query> answersListProperty() {
-        return answersList;
+        logs.set(record);
     }
 
     private void setCalculationMessages(final Integer left, final Integer right,
@@ -209,6 +309,8 @@ public class ViewModel {
 
     private static final String DELIMITER = ", ";
 
+    private ILogger logger;
+    private final StringProperty logs = new SimpleStringProperty();
     private final StringProperty rangeFrom = new SimpleStringProperty();
     private final StringProperty rangeTo = new SimpleStringProperty();
     private final StringProperty maxCountPrimes = new SimpleStringProperty();
@@ -222,10 +324,22 @@ public class ViewModel {
     private final ListProperty<Query> answersList = new SimpleListProperty<>();
 
     private class PropertyChangeListener implements ChangeListener<String> {
+        private String prevValue = new String("");
+        private String curValue = new String("");
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
+            if (oldValue.equals(newValue)) {
+                return;
+            }
             status.set(getInputStatus().toString());
+            curValue = newValue;
+        }
+        public boolean isChanged() {
+            return !prevValue.equals(curValue);
+        }
+        public void cache() {
+            prevValue = curValue;
         }
     }
 }
