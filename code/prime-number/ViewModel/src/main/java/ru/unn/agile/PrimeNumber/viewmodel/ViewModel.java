@@ -128,9 +128,8 @@ public class ViewModel {
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
         message.append("method ").append(method.get().toString())
                 .append(" for range [").append(rangeFrom.get())
-                .append(", ").append(rangeTo.get()).append("]")
-                .append(" where maximum count of primes was = ").append(maxCountPrimes.get())
-                .append(".");
+                .append(", ").append(rangeTo.get()).append("] where maximum count of primes was = ")
+                .append(maxCountPrimes.get()).append(".");
         logger.log(message.toString());
         updateLogs();
     }
