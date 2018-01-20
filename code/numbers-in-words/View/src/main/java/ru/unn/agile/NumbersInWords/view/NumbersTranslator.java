@@ -7,10 +7,12 @@ import javafx.beans.value.ChangeListener;
 import ru.unn.agile.NumbersInWords.viewmodel.ViewModel;
 import ru.unn.agile.NumbersInWords.infrastructure.TxtLogger;
 
+import java.time.LocalDate;
+
 public class NumbersTranslator {
     @FXML
     void initialize() {
-        viewModel.setLogger(new TxtLogger("./TxtLogger-lab3.log"));
+        viewModel.setLogger(new TxtLogger("./TxtLogger-lab3_" + LocalDate.now() + ".log"));
 
         final ChangeListener<Boolean> focusChangeListener = (observable, oldValue, newValue)
                 -> viewModel.onFocusChanged(oldValue, newValue);

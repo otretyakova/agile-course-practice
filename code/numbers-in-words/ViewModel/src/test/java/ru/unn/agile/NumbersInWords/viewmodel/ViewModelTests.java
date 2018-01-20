@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -221,16 +220,9 @@ public class ViewModelTests {
         assertNotNull(viewModelLogged);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void viewModelConstructorThrowsExceptionWithNullLogger() {
-        try {
             new ViewModel(null);
-            fail("Exception wasn't thrown");
-        } catch (IllegalArgumentException ex) {
-            assertEquals("Logger parameter can't be null", ex.getMessage());
-        } catch (Exception ex) {
-            fail("Invalid exception type");
-        }
     }
 
     @Test
