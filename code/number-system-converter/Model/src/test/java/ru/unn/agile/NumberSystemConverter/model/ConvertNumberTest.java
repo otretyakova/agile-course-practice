@@ -352,4 +352,29 @@ public class ConvertNumberTest {
         String input = "$@&-*€£";
         NumberSystemConverter.convert(input, NumberSystemBase.DEC, NumberSystemBase.HEX);
     }
+
+    @Test
+    public void canConvertNumberGreaterThenMaxLongFromDecToHex() {
+        String input = String.valueOf(Long.MAX_VALUE);
+        input = input.concat("1");
+        String result = NumberSystemConverter.convert(input, NumberSystemBase.DEC,
+                NumberSystemBase.HEX);
+        assertEquals("4FFFFFFFFFFFFFFF7", result);
+    }
+
+    @Test
+    public void canConvertNumberGreaterThenMaxLongFromHexToBin() {
+        String result = NumberSystemConverter.convert("4FFFFFFFFFFFFFFF7", NumberSystemBase.HEX,
+                NumberSystemBase.BIN);
+        assertEquals("1001111111111111111111111111111111111111111111111111111111111110111",
+                result);
+    }
+
+    @Test
+    public void canConvertNumberGreaterThenMaxLongFromBinToOct() {
+        String input = "1001111111111111111111111111111111111111111111111111111111111110111";
+        String result = NumberSystemConverter.convert(input, NumberSystemBase.BIN,
+                NumberSystemBase.OCT);
+        assertEquals("11777777777777777777767", result);
+    }
 }
