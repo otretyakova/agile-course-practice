@@ -26,15 +26,6 @@ import ru.unn.agile.PrimeNumber.Model.PrimeNumber;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 public class ViewModel {
-    final class LogMessages {
-        public static final String CALCULATE_WAS_PRESSED = "Calculate was pressed with ";
-        public static final String OPERATION_CHANGED = "Operation was changed to ";
-        public static final String RANGE_CHANGED = "Range changed to ";
-        public static final String NUM_PRIMES_CHANGED = "Maximum counts of primes changed to ";
-
-        private LogMessages() { }
-    }
-
     public ViewModel() {
         init();
     }
@@ -59,7 +50,7 @@ public class ViewModel {
         if (oldValue.equals(newValue)) {
             return;
         }
-        StringBuilder message = new StringBuilder(LogMessages.OPERATION_CHANGED);
+        StringBuilder message = new StringBuilder(LogMessages.OPERATION_CHANGED.toString());
         message.append(newValue.toString()).append(".");
         logger.log(message.toString());
         updateLogs();
@@ -72,7 +63,7 @@ public class ViewModel {
 
         for (PropertyChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
-                StringBuilder message = new StringBuilder(LogMessages.RANGE_CHANGED);
+                StringBuilder message = new StringBuilder(LogMessages.RANGE_CHANGED.toString());
                 message.append("[").append(rangeFrom.get()).append(", ")
                         .append(rangeTo.get()).append("].");
                 logger.log(message.toString());
@@ -91,7 +82,8 @@ public class ViewModel {
 
         for (PropertyChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
-                StringBuilder message = new StringBuilder(LogMessages.NUM_PRIMES_CHANGED);
+                StringBuilder message = new StringBuilder(
+                    LogMessages.NUM_PRIMES_CHANGED.toString());
                 message.append(maxCountPrimesProperty().get()).append(".");
                 logger.log(message.toString());
                 updateLogs();
@@ -125,7 +117,7 @@ public class ViewModel {
 
         status.set(Status.SUCCESS.toString());
 
-        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED.toString());
         message.append("method ").append(method.get().toString())
                 .append(" for range [").append(rangeFrom.get())
                 .append(", ").append(rangeTo.get()).append("] where maximum count of primes was = ")
@@ -157,9 +149,6 @@ public class ViewModel {
         return status.get();
     }
 
-    public final boolean isCalculationDisabled() {
-        return calculationDisabled.get();
-    }
     public final ObservableList<Methods> getMethods() {
         return methods.get();
     }
@@ -328,9 +317,6 @@ public class ViewModel {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
-            if (oldValue.equals(newValue)) {
-                return;
-            }
             status.set(getInputStatus().toString());
             curValue = newValue;
         }

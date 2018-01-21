@@ -10,7 +10,6 @@ import org.junit.rules.ExpectedException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.unn.agile.PrimeNumber.viewmodel.ViewModel.LogMessages;
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 import static org.junit.Assert.*;
@@ -345,6 +344,12 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canLoggerBeSetWhenObjectIsCreated() {
+        ViewModel viewModel = new ViewModel();
+        viewModel.setLogger(new FakeLogger());
+    }
+
+    @Test
     public void logIsEmptyInTheBeginning() {
         List<String> log = viewModel.getLog();
         assertTrue(log.isEmpty());
@@ -496,7 +501,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void doNotLogRangeFocusChaningForSameParamsWithPartialInput() {
+    public void doNotLogRangeFocusChangingForSameParamsWhenPartialInput() {
         viewModel.rangeFromProperty().set("3");
         viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
         viewModel.rangeFromProperty().set("3");
@@ -506,7 +511,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void logRangeFocusChangingForDifferentParamsWithPartialInput() {
+    public void logRangeFocusChangingForDifferentParamsWhenPartialInput() {
         viewModel.rangeFromProperty().set("2");
         viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
         viewModel.rangeFromProperty().set("3");
@@ -525,6 +530,15 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals(4, viewModel.getLog().size());
+    }
+
+    @Test
+    public void canGetLogsAsText() {
+        setCorrectData();
+
+        viewModel.calculate();
+
+        assertTrue(!viewModel.getLogs().isEmpty());
     }
 
     private void setCorrectData() {
