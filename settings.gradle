@@ -67,6 +67,7 @@ include "code/salary"
 project(":code/salary").name = "kuldaev-aleksandr-lab1"
 
 
+
 // Levin Vadim
 include "code/statistical-values/Model"
 project(":code/statistical-values/Model").name = "statistical-values-Model"
