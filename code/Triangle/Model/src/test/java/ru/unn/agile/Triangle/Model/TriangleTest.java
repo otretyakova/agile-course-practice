@@ -6,7 +6,6 @@ import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class TriangleTest {
     @Test
@@ -60,40 +59,28 @@ public class TriangleTest {
         assertNotNull(triangle);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void throwingExceptionAfterCreatingDegeneratedTriangle() {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(0, 1);
-        try {
-            new Triangle(a, b, c);
-            fail("Object can't be created");
-        } catch (IllegalArgumentException error) {
-        }
+        new Triangle(a, b, c);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void throwingExceptionAfterCreatingTriangleWithPointsOnOneLine() {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(1, 1);
-        try {
-            new Triangle(a, b, c);
-            fail("Object can't be created");
-        } catch (IllegalArgumentException error) {
-        }
+        new Triangle(a, b, c);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void throwingExceptionAfterCreatingTriangleWithPointsOnOneLineVer2() {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(0, 1);
         Point2D c = new Point2D.Double(0, 2);
-        try {
-            new Triangle(a, b, c);
-            fail("Object can't be created");
-        } catch (IllegalArgumentException error) {
-        }
+        new Triangle(a, b, c);
     }
 
     @Test

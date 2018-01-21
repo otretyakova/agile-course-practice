@@ -21,7 +21,6 @@ public class ViewModelTests {
         viewModel = null;
     }
 
-    // Default settings
     @Test
     public void canSetDefaultValues() {
         assertEquals("", viewModel.coordAxProperty().get());
@@ -30,77 +29,73 @@ public class ViewModelTests {
         assertEquals("", viewModel.coordByProperty().get());
         assertEquals("", viewModel.coordCxProperty().get());
         assertEquals("", viewModel.coordCyProperty().get());
-        // Sides
-        assertEquals("|AB| = N/A", viewModel.getSideAB());
-        assertEquals("|AC| = N/A", viewModel.getSideAC());
-        assertEquals("|BC| = N/A", viewModel.getSideBC());
-        // Corners
-        assertEquals("ABC = N/A", viewModel.getCornerABC());
-        assertEquals("ACB = N/A", viewModel.getCornerACB());
-        assertEquals("BAC = N/A", viewModel.getCornerBAC());
-        // Other
-        assertEquals("P = N/A", viewModel.getPerimeter());
-        assertEquals("S = N/A", viewModel.getSurfaceArea());
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+
+        assertEquals("|AB| = N/A", viewModel.sideABProperty().get());
+        assertEquals("|AC| = N/A", viewModel.sideACProperty().get());
+        assertEquals("|BC| = N/A", viewModel.sideBCProperty().get());
+
+        assertEquals("ABC = N/A", viewModel.cornerABCProperty().get());
+        assertEquals("ACB = N/A", viewModel.cornerACBProperty().get());
+        assertEquals("BAC = N/A", viewModel.cornerBACProperty().get());
+
+        assertEquals("P = N/A", viewModel.perimeterProperty().get());
+        assertEquals("S = N/A", viewModel.surfaceAreaProperty().get());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canNotCalculateWithDefaultSettings() {
         viewModel.calculate();
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
-    //
 
-
-
-    // Status tests
     @Test
     public void statusIsReadyWhenFieldsAreFill() {
         setInputData();
-        assertEquals(Status.READY.toString(), viewModel.getStatus());
+        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageCoordAx() {
         viewModel.coordAxProperty().set("A1");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageCoordAy() {
         viewModel.coordAyProperty().set("A2");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageCoordBx() {
         viewModel.coordBxProperty().set("B1");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageCoordBy() {
         viewModel.coordByProperty().set("B2");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageCoordCx() {
         viewModel.coordCxProperty().set("C1");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageCoordCy() {
         viewModel.coordCyProperty().set("C2");
-        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.statusProperty().get());
     }
 
     @Test
     public void statusIsWaitingIfNotEnoughCorrectData1from6() {
         viewModel.coordAxProperty().set("1");
 
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -108,7 +103,7 @@ public class ViewModelTests {
         viewModel.coordAxProperty().set("1");
         viewModel.coordAyProperty().set("2");
 
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -117,7 +112,7 @@ public class ViewModelTests {
         viewModel.coordAyProperty().set("2");
         viewModel.coordBxProperty().set("3");
 
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -127,7 +122,7 @@ public class ViewModelTests {
         viewModel.coordBxProperty().set("3");
         viewModel.coordByProperty().set("4");
 
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -138,7 +133,7 @@ public class ViewModelTests {
         viewModel.coordByProperty().set("4");
         viewModel.coordCxProperty().set("5");
 
-        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -167,7 +162,7 @@ public class ViewModelTests {
         viewModel.coordCxProperty().set("36.05");
         viewModel.coordCyProperty().set("102.34");
         viewModel.calculate();
-        assertEquals(Status.DEGENERATED.toString(), viewModel.getStatus());
+        assertEquals(Status.DEGENERATED.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -179,7 +174,7 @@ public class ViewModelTests {
         viewModel.coordCxProperty().set("12.74");
         viewModel.coordCyProperty().set("5.54");
         viewModel.calculate();
-        assertEquals(Status.DEGENERATED.toString(), viewModel.getStatus());
+        assertEquals(Status.DEGENERATED.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -191,7 +186,7 @@ public class ViewModelTests {
         viewModel.coordCxProperty().set("14.12");
         viewModel.coordCyProperty().set("3.14");
         viewModel.calculate();
-        assertEquals(Status.DEGENERATED.toString(), viewModel.getStatus());
+        assertEquals(Status.DEGENERATED.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -202,15 +197,11 @@ public class ViewModelTests {
         viewModel.coordByProperty().set("1.0");
         viewModel.coordCxProperty().set("0.0");
         viewModel.coordCyProperty().set("2.0");
-        assertEquals(Status.READY.toString(), viewModel.getStatus());
+        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
         viewModel.calculate();
-        assertEquals(Status.DEGENERATED.toString(), viewModel.getStatus());
+        assertEquals(Status.DEGENERATED.toString(), viewModel.statusProperty().get());
     }
-    //
 
-
-
-    // Disabled/Enabled Button
     @Test
     public void calculateButtonIsDisabledInitially() {
         assertTrue(viewModel.isCalculationDisabled());
@@ -309,18 +300,14 @@ public class ViewModelTests {
 
         assertFalse(viewModel.isCalculationDisabled());
     }
-    //
 
-
-
-    // All steps verification
     @Test
     public void perimeterIsCorrectlyCalculatedWhenFillingFields() {
         setInputData();
         viewModel.calculate();
 
-        assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
-        assertEquals("P = 7.40", viewModel.getPerimeter());
+        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals("P = 7.40", viewModel.perimeterProperty().get());
     }
 
     @Test
@@ -328,8 +315,8 @@ public class ViewModelTests {
         setInputData();
         viewModel.calculate();
 
-        assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
-        assertEquals("S = 2.00", viewModel.getSurfaceArea());
+        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals("S = 2.00", viewModel.surfaceAreaProperty().get());
     }
 
     @Test
@@ -337,10 +324,10 @@ public class ViewModelTests {
         setInputData();
         viewModel.calculate();
 
-        assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
-        assertEquals("|AB| = 1.41", viewModel.getSideAB());
-        assertEquals("|AC| = 2.83", viewModel.getSideAC());
-        assertEquals("|BC| = 3.16", viewModel.getSideBC());
+        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals("|AB| = 1.41", viewModel.sideABProperty().get());
+        assertEquals("|AC| = 2.83", viewModel.sideACProperty().get());
+        assertEquals("|BC| = 3.16", viewModel.sideBCProperty().get());
     }
 
     @Test
@@ -348,10 +335,10 @@ public class ViewModelTests {
         setInputData();
         viewModel.calculate();
 
-        assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
-        assertEquals("ABC = 1.11 rad", viewModel.getCornerABC());
-        assertEquals("ACB = 0.46 rad", viewModel.getCornerACB());
-        assertEquals("BAC = 1.57 rad", viewModel.getCornerBAC());
+        assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+        assertEquals("ABC = 1.11 rad", viewModel.cornerABCProperty().get());
+        assertEquals("ACB = 0.46 rad", viewModel.cornerACBProperty().get());
+        assertEquals("BAC = 1.57 rad", viewModel.cornerBACProperty().get());
     }
 
     @Test
@@ -374,8 +361,6 @@ public class ViewModelTests {
         assertEquals("P = 81.56", viewModel.getPerimeter());
         assertEquals("S = 196.03", viewModel.getSurfaceArea());
     }
-    //
-
 
     private void setInputData() {
         viewModel.coordAxProperty().set("1.0");
