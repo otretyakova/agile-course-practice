@@ -94,21 +94,21 @@ public class ViewModelTests {
 
     @Test
     public void sortButtonIsDisabledInitially() {
-        assertTrue(sortIsDisable());
+        assertTrue(viewModel.isSortDisabled());
     }
 
     @Test
     public void sortButtonIsDisabledWhenFormatIsBad() {
         viewModel.setInput("15 4 42 Oops 8 16 23");
 
-        assertTrue(sortIsDisable());
+        assertTrue(viewModel.isSortDisabled());
     }
 
     @Test
     public void sortButtonIsEnabledWithCorrectInput() {
         viewModel.setInput("15 4 42 8 16 23");
 
-        assertFalse(sortIsDisable());
+        assertFalse(viewModel.isSortDisabled());
     }
 
     @Test
@@ -142,11 +142,6 @@ public class ViewModelTests {
 
         assertEquals("4 8 15 16 23 42", viewModel.getOutput());
     }
-
-
-    private boolean sortIsDisable() {
-        return viewModel.sortDisabledProperty().get();
-    }
-
+    
     private ViewModel viewModel;
 }
