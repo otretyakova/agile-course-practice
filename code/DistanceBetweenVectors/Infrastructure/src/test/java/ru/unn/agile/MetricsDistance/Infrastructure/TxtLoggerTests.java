@@ -1,4 +1,4 @@
-package ru.unn.agile.MetricsDistance.infrastructure;
+package ru.unn.agile.MetricsDistance.Infrastructure;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -20,6 +20,11 @@ public class TxtLoggerTests {
     @Test
     public void canCreateLoggerWithFileName() {
         assertNotNull(txtLogger);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void canNotCreateLoggerWithEmptyFileName() {
+        new TxtLogger("");
     }
 
     @Test
@@ -61,7 +66,31 @@ public class TxtLoggerTests {
         txtLogger.log(testMessage);
 
         String message = txtLogger.getLog().get(0);
-        assertTrue(message.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*"));
+        String regexWithDateAndTime = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*";
+        assertTrue(message.matches(regexWithDateAndTime));
+    }
+
+    @Test
+    public void canLogWithTag() {
+        String testMessage = "Test message";
+        String logTag = "Test";
+
+        txtLogger.log(testMessage, logTag);
+
+        String message = txtLogger.getLog().get(0);
+        assertTrue(message.matches(logTag + ".*" + testMessage));
+    }
+
+    @Test
+    public void canLogWithEmptyTag() {
+        String testMessage = "Test message";
+        String logTag = "";
+
+        txtLogger.log(testMessage, logTag);
+
+        String message = txtLogger.getLog().get(0);
+        String regexWithDateAndTime = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > " + testMessage;
+        assertTrue(message.matches(regexWithDateAndTime));
     }
 
     private static final String FILENAME = "./TxtLogger_Tests-lab3.log";

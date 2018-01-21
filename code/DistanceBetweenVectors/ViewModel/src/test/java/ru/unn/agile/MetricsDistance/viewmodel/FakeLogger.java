@@ -10,6 +10,11 @@ public class FakeLogger implements ILogger {
     }
 
     @Override
+    public void log(final String s, final String logTag) {
+        log.add(logTag + ": " + s);
+    }
+
+    @Override
     public List<String> getLog() {
         return log;
     }

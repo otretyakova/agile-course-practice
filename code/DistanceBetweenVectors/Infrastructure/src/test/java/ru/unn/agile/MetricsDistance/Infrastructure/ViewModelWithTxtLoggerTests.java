@@ -1,4 +1,4 @@
-package ru.unn.agile.MetricsDistance.infrastructure;
+package ru.unn.agile.MetricsDistance.Infrastructure;
 
 import ru.unn.agile.MetricsDistance.viewmodel.ViewModel;
 import ru.unn.agile.MetricsDistance.viewmodel.ViewModelTests;

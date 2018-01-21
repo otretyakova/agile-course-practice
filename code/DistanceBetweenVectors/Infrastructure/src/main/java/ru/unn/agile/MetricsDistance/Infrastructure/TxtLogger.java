@@ -1,16 +1,14 @@
-package ru.unn.agile.MetricsDistance.infrastructure;
+package ru.unn.agile.MetricsDistance.Infrastructure;
 
-import ru.unn.agile.MetricsDistance.viewmodel.ILogger;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+
 import java.util.List;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import ru.unn.agile.MetricsDistance.viewmodel.ILogger;
 
 public class TxtLogger implements ILogger {
 
@@ -18,6 +16,11 @@ public class TxtLogger implements ILogger {
         this.filename = filename;
 
         BufferedWriter logWriter = null;
+
+        if (filename.isEmpty()) {
+            throw new IllegalArgumentException("Filename can not be empty");
+        }
+
         try {
             logWriter = new BufferedWriter(new FileWriter(filename));
         } catch (Exception e) {
@@ -27,14 +30,19 @@ public class TxtLogger implements ILogger {
     }
 
     @Override
-    public void log(final String s) {
+    public void log(final String s, final String logTag) {
         try {
-            writer.write(now() + " > " + s);
-            writer.newLine();
+            String message = AbstractLogger.prepareMassageForLog(s, logTag);
+            writer.write(message);
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void log(final String s) {
+        this.log(s, "");
     }
 
     @Override
@@ -56,13 +64,6 @@ public class TxtLogger implements ILogger {
         return log;
     }
 
-    private static String now() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
-        return sdf.format(cal.getTime());
-    }
-
-    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
     private final BufferedWriter writer;
     private final String filename;
 }

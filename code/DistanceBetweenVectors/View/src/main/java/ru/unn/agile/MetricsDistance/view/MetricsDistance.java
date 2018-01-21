@@ -5,14 +5,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.beans.value.ChangeListener;
+
 import ru.unn.agile.MetricsDistance.Model.Metric;
 import ru.unn.agile.MetricsDistance.viewmodel.ViewModel;
-import ru.unn.agile.MetricsDistance.infrastructure.TxtLogger;
+import ru.unn.agile.MetricsDistance.Infrastructure.TxtLogger;
+import ru.unn.agile.MetricsDistance.Infrastructure.CurrentDate;
 
 public class MetricsDistance {
     @FXML
     void initialize() {
-        viewModel.setLogger(new TxtLogger("./TxtLogger-lab3.log"));
+        final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
+        String currentDate = CurrentDate.getCurrentDate(dateFormat);
+        viewModel.setLogger(new TxtLogger("./TxtLogger-lab3-" + currentDate + ".log"));
 
         final ChangeListener<Boolean> focusChangeListener = (observable, oldValue, newValue)
                 -> viewModel.onFocusChanged(oldValue, newValue);

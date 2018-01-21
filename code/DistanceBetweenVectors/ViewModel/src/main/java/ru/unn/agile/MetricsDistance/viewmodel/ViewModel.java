@@ -1,21 +1,23 @@
 package ru.unn.agile.MetricsDistance.viewmodel;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
-import javafx.beans.binding.BooleanBinding;
-import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
-import ru.unn.agile.MetricsDistance.Model.Metric;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import ru.unn.agile.MetricsDistance.Model.Metric;
+import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
 
 public class ViewModel {
 
