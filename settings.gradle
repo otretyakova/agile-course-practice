@@ -8,7 +8,11 @@
 
 // Bespalov Max
 include "code/AssessmentsAccounting/Model"
-project(":code/AssessmentsAccounting/Model").name = "assessments-accounting-Model"
+project(":code/AssessmentsAccounting/Model").name = "AssessmentsAccounting-Model"
+include "code/AssessmentsAccounting/View"
+project(":code/AssessmentsAccounting/View").name = "AssessmentsAccounting-View"
+include "code/AssessmentsAccounting/ViewModel"
+project(":code/AssessmentsAccounting/ViewModel").name = "AssessmentsAccounting-ViewModel"
 
 // Vershinina Olga
 include "code/DistanceBetweenVectors"
@@ -98,10 +102,6 @@ project(":code/numbers-in-words").name = "numbers-in-words-Model"
 // Umnikov Eugene
 include "code/triangle"
 project(":code/triangle").name = "triangle"
-include "code/AssessmentsAccounting/View"
-project(":code/AssessmentsAccounting/View").name = "assessments-accounting-View"
-include "code/AssessmentsAccounting/ViewModel"
-project(":code/AssessmentsAccounting/ViewModel").name = "assessments-accounting-ViewModel"
 
 // Shestakova Svetlana
 

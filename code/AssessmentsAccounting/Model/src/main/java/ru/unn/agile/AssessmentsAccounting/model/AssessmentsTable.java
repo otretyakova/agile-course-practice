@@ -61,7 +61,7 @@ public class AssessmentsTable {
     }
 
     public void renameStudent(final String oldName, final String newName) {
-        if (isStringInvalid(newName) || students.contains(newName)) {
+        if (isStringInvalid(newName) || students.contains(new Student(newName))) {
             throw new InvalidParameterException("Invalid renameStudent arguments oldName "
                     + oldName + " newName - " + newName);
         }
