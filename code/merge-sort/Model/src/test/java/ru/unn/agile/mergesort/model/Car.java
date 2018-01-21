@@ -10,7 +10,7 @@ class Car implements Comparable<Car> {
         init(theMaxSpeed, theSerialNumber);
     }
 
-    void init(final int theMaxSpeed, final int theSerialNumber) {
+    private void init(final int theMaxSpeed, final int theSerialNumber) {
         maxSpeed = theMaxSpeed;
         serialNumber = theSerialNumber;
     }
