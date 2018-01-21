@@ -32,31 +32,18 @@ public class TxtLoggerTests {
         try {
             new BufferedReader(new FileReader(FILENAME));
         } catch (FileNotFoundException e) {
-            fail("File " + FILENAME + " wasn't found!");
+            fail("File wasn't found!");
         }
     }
 
     @Test
     public void canWriteLogMessage() {
-        String testMessage = "Test message";
+        String testMessage = "Message";
 
         txtLogger.log(testMessage);
 
         String message = txtLogger.getLog().get(0);
-        assertTrue(message.matches(".*" + testMessage + "$"));
-    }
-
-    @Test
-    public void canWriteSeveralLogMessage() {
-        String[] messages = {"Test message 1", "Test message 2"};
-
-        txtLogger.log(messages[0]);
-        txtLogger.log(messages[1]);
-
-        List<String> actualMessages = txtLogger.getLog();
-        for (int i = 0; i < actualMessages.size(); i++) {
-            assertTrue(actualMessages.get(i).matches(".*" + messages[i] + "$"));
-        }
+        assertTrue(message.matches(".*" + testMessage));
     }
 
     @Test
@@ -68,6 +55,19 @@ public class TxtLoggerTests {
         String message = txtLogger.getLog().get(0);
         String regexWithDateAndTime = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*";
         assertTrue(message.matches(regexWithDateAndTime));
+    }
+
+    @Test
+    public void canWriteSeveralLogMessage() {
+        String message1 = "Message 1";
+        String message2 = "Message 2";
+
+        txtLogger.log(message1);
+        txtLogger.log(message2);
+
+        List<String> actualMessages = txtLogger.getLog();
+        assertTrue(actualMessages.get(0).matches(".*" + message1 + "$"));
+        assertTrue(actualMessages.get(1).matches(".*" + message2 + "$"));
     }
 
     @Test

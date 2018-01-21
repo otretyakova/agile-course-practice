@@ -94,7 +94,7 @@ public class ViewModelTests {
     @Test
     public void canSetChebyshevMetric() {
         viewModel.setMetric(Metric.Chebyshev);
-        assertEquals(Metric.Chebyshev, viewModel.getMetric());
+        assertEquals(Metric.Chebyshev, viewModel.metricProperty().get());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class ViewModelTests {
     @Test
     public void statusIsReadyWhenSetProperData() {
         setInputData("1", "2", "3", "4", "");
-        assertEquals(Status.READY.toString(), viewModel.getStatus());
+        assertEquals(Status.READY.toString(), viewModel.statusProperty().get());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class ViewModelTests {
             new ViewModel(null);
             fail("Exception wasn't thrown");
         } catch (IllegalArgumentException ex) {
-            assertEquals("Logger parameter can't be null", ex.getMessage());
+            assertEquals("Logger can't be null", ex.getMessage());
         } catch (Exception ex) {
             fail("Invalid exception type");
         }
@@ -326,7 +326,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void logsAreEmptyByDefault() {
+    public void stringPropertyLogsAreEmptyByDefault() {
         assertEquals("", viewModel.getLogs());
     }
 
@@ -354,7 +354,7 @@ public class ViewModelTests {
         setInputData("3", "3", "1", "3", "1");
 
         viewModel.calculate();
-        String message = viewModel.getLogs();
+        String message = viewModel.logsProperty().get();
 
         assertTrue(message.matches(".*" + LogMessages.CALCULATE_WAS_PRESSED + ".*\n"));
     }

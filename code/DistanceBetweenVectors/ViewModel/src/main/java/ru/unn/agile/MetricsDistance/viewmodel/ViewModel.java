@@ -92,13 +92,9 @@ public class ViewModel {
 
     public final void setLogger(final ILogger logger) {
         if (logger == null) {
-            throw new IllegalArgumentException("Logger parameter can't be null");
+            throw new IllegalArgumentException("Logger can't be null");
         }
         this.logger = logger;
-    }
-
-    public final List<String> getLog() {
-        return logger.getLog();
     }
 
     public StringProperty vec1XProperty() {
@@ -115,6 +111,10 @@ public class ViewModel {
 
     public StringProperty vec2YProperty() {
         return vec2Y;
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     public StringProperty dimProperty() {
@@ -316,7 +316,9 @@ public class ViewModel {
             if (oldValue.equals(newValue)) {
                 return;
             }
-            status.set(getInputStatus().toString());
+
+            String inputStatus = getInputStatus().toString();
+            status.set(inputStatus);
             curValue = newValue;
         }
 

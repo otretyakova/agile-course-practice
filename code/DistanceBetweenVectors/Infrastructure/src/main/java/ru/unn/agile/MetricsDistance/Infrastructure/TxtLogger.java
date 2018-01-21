@@ -47,15 +47,15 @@ public class TxtLogger implements ILogger {
 
     @Override
     public List<String> getLog() {
-        BufferedReader reader;
         ArrayList<String> log = new ArrayList<String>();
         try {
-            reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
+            FileReader fileReader = new FileReader(filename);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
 
             while (line != null) {
                 log.add(line);
-                line = reader.readLine();
+                line = bufferedReader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
