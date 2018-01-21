@@ -385,27 +385,30 @@ public class AssessmentTableTests {
         assertTrue(assessments.contains(secondAssessment));
     }
 
-    @Test(expected = InvalidParameterException.class)
-    public void canNotGetAssessmentsForStudentThatDoesNotHaveAnyForThisSubject() {
+    @Test
+    public void returnEmptyListAssessmentsForStudentThatDoesNotHaveAnyForThisSubject() {
         String subject = "Agile course";
         String student = "Max Bespalov";
         table.addSubject(subject);
         table.addStudent(student);
-        table.getAssessmentsForStudent(subject, student);
+        List<Assessment> assessments = table.getAssessmentsForStudent(subject, student);
+        assertEquals(assessments.size(), 0);
     }
 
-    @Test(expected = InvalidParameterException.class)
-    public void canNotGetAssessmentsOfNotExistingStudent() {
+    @Test
+    public void returnEmptyListAssessmentsOfNotExistingStudent() {
         String subject = "Theory of relativity";
         table.addSubject(subject);
-        table.getAssessmentsForStudent(subject, "Albert Einstein");
+        List<Assessment> assessments = table.getAssessmentsForStudent(subject, "Albert Einstein");
+        assertEquals(assessments.size(), 0);
     }
 
-    @Test(expected = InvalidParameterException.class)
-    public void canNotGetStudentAssessmentsForNotExistingSubject() {
+    @Test
+    public void returnEmptyListStudentAssessmentsForNotExistingSubject() {
         String student = "Max Bespalov";
         table.addStudent(student);
-        table.getAssessmentsForStudent("Game development", student);
+        List<Assessment> assessments = table.getAssessmentsForStudent("Game development", student);
+        assertEquals(assessments.size(), 0);
     }
 
     @Test

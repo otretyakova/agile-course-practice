@@ -1,4 +1,4 @@
-package ru.unn.agile.AssessmentsAccouunting.view;
+package ru.unn.agile.AssessmentsAccounting.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(final Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Accounting.fxml"));
-        primaryStage.setTitle("AssessmentsAccouunting");
+        primaryStage.setTitle("AssessmentsAccounting");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

@@ -122,9 +122,13 @@ public class AssessmentsTable {
 
     public List<Assessment> getAssessmentsForStudent(final String subject,
                                                           final String studentName) {
-        UUID uuid = getSubjectUUID(subject);
-        Student student = findStudent(studentName);
-        return student.getAssessments(uuid);
+        try {
+            UUID uuid = getSubjectUUID(subject);
+            Student student = findStudent(studentName);
+            return student.getAssessments(uuid);
+        } catch (InvalidParameterException e) {
+            return new LinkedList<Assessment>();
+        }
     }
 
     public double getAverageAssessmentForSubject(final String subject) {
