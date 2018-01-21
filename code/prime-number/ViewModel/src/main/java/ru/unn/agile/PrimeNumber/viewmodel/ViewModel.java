@@ -312,8 +312,6 @@ public class ViewModel {
     private final ListProperty<Query> answersList = new SimpleListProperty<>();
 
     private class PropertyChangeListener implements ChangeListener<String> {
-        private String prevValue = new String("");
-        private String curValue = new String("");
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
@@ -326,5 +324,8 @@ public class ViewModel {
         public void cache() {
             prevValue = curValue;
         }
+
+        private String prevValue = new String("");
+        private String curValue = new String("");
     }
 }

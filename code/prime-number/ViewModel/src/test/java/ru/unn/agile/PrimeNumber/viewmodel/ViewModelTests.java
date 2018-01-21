@@ -20,10 +20,6 @@ public class ViewModelTests {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    public void setExternalViewModel(final ViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
-
     @Before
     public void setUp() {
         viewModel = new ViewModel(new FakeLogger());
@@ -32,6 +28,10 @@ public class ViewModelTests {
     @After
     public void tearDown() {
         viewModel = null;
+    }
+
+    public void setViewModel(final ViewModel externalViewModel) {
+        viewModel = externalViewModel;
     }
 
     @Test

@@ -1,72 +1,79 @@
 package ru.unn.agile.PrimeNumber.infrastructure;
 
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.File;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertNotNull;
 import static ru.unn.agile.PrimeNumber.infrastructure.RegexMatcher.matchesPattern;
 
 public class TxtLoggerTests {
-    @Before
-    public void setUp() {
-        txtLogger = new TxtLogger(FILENAME);
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void canLoggerBeCreated() {
+        assertNotNull(new TxtLogger(LOGFILE_NAME));
     }
 
     @Test
-    public void canCreateLoggerWithFileName() {
-        assertNotNull(txtLogger);
+    public void cantLoggerBeCreatedWithEmptyFileName() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Name of file can't be empty!");
+        assertNull(new TxtLogger(""));
     }
 
     @Test
-    public void canCreateLogFileOnDisk() {
-        try {
-            new BufferedReader(new FileReader(FILENAME));
-        } catch (FileNotFoundException e) {
-            fail("File " + FILENAME + " wasn't found!");
+    public void canLogFileBeCreatedOnDisk() {
+        File logFile = new File(LOGFILE_NAME);
+        assertTrue(logFile.exists());
+    }
+
+    @Test
+    public void canAddMessageToLog() {
+        String addedMessage = "Test log";
+
+        TxtLogger txtLogger = new TxtLogger(LOGFILE_NAME);
+        txtLogger.log(addedMessage);
+
+        String actualMessage = txtLogger.getLog().get(0);
+        assertThat(actualMessage, matchesPattern(".*" + addedMessage + "$"));
+    }
+
+    @Test
+    public void canAddSeveralMessagesToLog() {
+        String[] addedMessages = {"Test log 1", "Test log 2"};
+
+        TxtLogger txtLogger = new TxtLogger(LOGFILE_NAME);
+        txtLogger.log(addedMessages[0]);
+        txtLogger.log(addedMessages[1]);
+
+        List<String> log = txtLogger.getLog();
+        for (int i = 0; i < log.size(); i++) {
+            String actualMessage = log.get(i);
+            assertThat(actualMessage, matchesPattern(".*" + addedMessages[i] + "$"));
         }
     }
 
     @Test
-    public void canWriteLogMessage() {
-        String testMessage = "Test message";
+    public void doesLogContainDateAndTimeInTheBeginning() {
+        String addedMessage = "Test log";
 
-        txtLogger.log(testMessage);
+        TxtLogger txtLogger = new TxtLogger(LOGFILE_NAME);
+        txtLogger.log(addedMessage);
 
-        String message = txtLogger.getLog().get(0);
-        assertThat(message, matchesPattern(".*" + testMessage + "$"));
+        String actualMessage = txtLogger.getLog().get(0);
+        assertThat(actualMessage,
+                matchesPattern("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.*"));
     }
 
-    @Test
-    public void canWriteSeveralLogMessage() {
-        String[] messages = {"Test message 1", "Test message 2"};
-
-        txtLogger.log(messages[0]);
-        txtLogger.log(messages[1]);
-
-        List<String> actualMessages = txtLogger.getLog();
-        for (int i = 0; i < actualMessages.size(); i++) {
-            assertThat(actualMessages.get(i), matchesPattern(".*" + messages[i] + "$"));
-        }
-    }
-
-    @Test
-    public void doesLogContainDateAndTime() {
-        String testMessage = "Test message";
-
-        txtLogger.log(testMessage);
-
-        String message = txtLogger.getLog().get(0);
-        assertThat(message, matchesPattern("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*"));
-    }
-
-    private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
+    private static final String LOGFILE_NAME = "./TestingTxtLogger.log";
     private TxtLogger txtLogger;
 }

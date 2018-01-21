@@ -7,61 +7,65 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 import java.util.Locale;
 
 public class TxtLogger implements ILogger {
-    public TxtLogger(final String filename) {
-        this.filename = filename;
+    public TxtLogger(final String nameOfFile) {
+        this.logfileName = nameOfFile;
+        if (nameOfFile.isEmpty()) {
+            throw new IllegalArgumentException("Name of file can't be empty!");
+        }
 
-        BufferedWriter logWriter = null;
+        BufferedWriter writer = null;
         try {
-            logWriter = new BufferedWriter(new FileWriter(filename));
+            FileWriter fileWriter = new FileWriter(nameOfFile);
+            writer = new BufferedWriter(fileWriter);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        writer = logWriter;
+        this.logWriter = writer;
     }
 
     @Override
-    public void log(final String s) {
+    public void log(final String message) {
         try {
-            writer.write(getCurrentDateAndTime() + " > " + s);
-            writer.newLine();
-            writer.flush();
+            logWriter.write(getCurrentDateAndTime() + " >>> " + message + "\r\n");
+            logWriter.flush();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @Override
     public List<String> getLog() {
         BufferedReader reader;
-        ArrayList<String> log = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         try {
-            reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
-
-            while (line != null) {
-                log.add(line);
-                line = reader.readLine();
+            FileReader fileReader = new FileReader(logfileName);
+            reader = new BufferedReader(fileReader);
+            String readLine = reader.readLine();
+            while (readLine != null) {
+                result.add(readLine);
+                readLine = reader.readLine();
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-
-        return log;
+        return result;
     }
 
     private static String getCurrentDateAndTime() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
-        return sdf.format(cal.getTime());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
+        Date currentDate = calendar.getTime();
+        return simpleDateFormat.format(currentDate);
     }
 
-    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-    private final BufferedWriter writer;
-    private final String filename;
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private final BufferedWriter logWriter;
+    private final String logfileName;
 }

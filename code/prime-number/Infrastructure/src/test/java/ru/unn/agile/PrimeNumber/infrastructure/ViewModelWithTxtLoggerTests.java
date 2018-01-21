@@ -7,7 +7,8 @@ public class ViewModelWithTxtLoggerTests extends ViewModelTests {
     @Override
     public void setUp() {
         TxtLogger realLogger =
-            new TxtLogger("./ViewModel_with_TxtLogger_Tests-lab3.log");
-        super.setExternalViewModel(new ViewModel(realLogger));
+            new TxtLogger("./TestingViewModelWithTxtLogger.log");
+        ViewModel viewModel = new ViewModel(realLogger);
+        super.setViewModel(viewModel);
     }
 }
