@@ -55,6 +55,12 @@ public class ViewModel {
     public StringProperty inputProperty() {
         return input;
     }
+    public void setInput(final String inputStr) {
+        inputProperty().set(inputStr);
+    }
+    public String getInput() {
+        return input.get();
+    }
 
     public BooleanProperty sortDisabledProperty() {
         return sortDisabled;
