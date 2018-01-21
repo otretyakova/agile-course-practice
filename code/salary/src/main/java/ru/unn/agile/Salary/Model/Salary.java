@@ -44,9 +44,6 @@ public class Salary {
         if (additionalAdministrativeLeaveHours < 0) {
             throw new IllegalArgumentException("Hour argument must be positive or zero");
         }
-        if (additionalAdministrativeLeaveHours > hoursWorked) {
-            throw new IllegalArgumentException("Parameter is greater than the HourInMonth");
-        }
         if ((additionalAdministrativeLeaveHours + administrativeLeaveHours) > hoursWorked) {
             throw new IllegalArgumentException("AdministrativeLeave is greater than HourInMonth");
         } else {
@@ -57,9 +54,6 @@ public class Salary {
     public void addOvertimes(final int additionalOvertimeHours) {
         if (overtimeHours + additionalOvertimeHours < 0) {
             throw new IllegalArgumentException("Hour argument must be positive");
-        }
-        if (additionalOvertimeHours > MAX_OVERTIME_IN_MONTH) {
-            throw new IllegalArgumentException("Parameter is more than free hours in month 5048");
         }
         if ((additionalOvertimeHours + overtimeHours) > MAX_OVERTIME_IN_MONTH) {
             throw new IllegalArgumentException("Overtimes is more than free hours in month 5048");
