@@ -38,6 +38,10 @@ public class ViewModelTests {
         assertEquals("Students", viewModel.getCurrentStudent().get());
         assertEquals("Subjects", viewModel.getCurrentSubject().get());
 
+        assertEquals(0, viewModel.getStudents().size());
+        assertEquals(0, viewModel.getSubjects().size());
+        assertEquals(0, viewModel.getAssessmentsOfStudent().size());
+
         assertEquals(Assessment.Perfect, viewModel.getNewAssessment().get());
     }
 
