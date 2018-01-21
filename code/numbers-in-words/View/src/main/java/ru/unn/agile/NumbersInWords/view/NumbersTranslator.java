@@ -1,22 +1,25 @@
 package ru.unn.agile.NumbersInWords.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.beans.value.ChangeListener;
 import ru.unn.agile.NumbersInWords.viewmodel.ViewModel;
+import ru.unn.agile.NumbersInWords.infrastructure.TxtLogger;
+
+import java.time.LocalDate;
 
 public class NumbersTranslator {
     @FXML
     void initialize() {
+        viewModel.setLogger(new TxtLogger("./TxtLogger-lab3_" + LocalDate.now() + ".log"));
+
+        final ChangeListener<Boolean> focusChangeListener = (observable, oldValue, newValue)
+                -> viewModel.onFocusChanged(oldValue, newValue);
+
         txtNumber.textProperty().bindBidirectional(viewModel.numberProperty());
-        btnTranslate.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(final ActionEvent event) {
-                viewModel.translate();
-            }
-        });
+        txtNumber.focusedProperty().addListener(focusChangeListener);
+        btnTranslate.setOnAction(event -> viewModel.translate());
     }
 
     @FXML

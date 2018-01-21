@@ -7,12 +7,19 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
 
 public class ViewModelTests {
 
+    public void setExternalViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After
@@ -68,6 +75,12 @@ public class ViewModelTests {
     @Test
     public void statusIsBadFormatWhenInputTooBigNumber() {
         viewModel.setNumber("1000000000000");
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void statusIsBadFormatWhenInputTooBigNumberThrowNumberProperty() {
+        viewModel.numberProperty().set("1000000000000");
         assertEquals(Status.BAD_FORMAT.toString(), viewModel.getStatus());
     }
 
@@ -192,6 +205,185 @@ public class ViewModelTests {
         viewModel.translate();
         viewModel.setNumber("2");
         assertEquals("", viewModel.getResultWord());
+    }
+
+    @Test
+    public void canCreateViewModelWithoutLogger() {
+        ViewModel viewModel = new ViewModel();
+        assertNotNull(viewModel);
+    }
+
+    @Test
+    public void canCreateViewModelWithLogger() {
+        FakeLogger logger = new FakeLogger();
+        ViewModel viewModelLogged = new ViewModel(logger);
+        assertNotNull(viewModelLogged);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void viewModelConstructorThrowsExceptionWithNullLogger() {
+            new ViewModel(null);
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        List<String> log = viewModel.getLog();
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterTranslation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.TRANSLATE_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsInputNumberAfterTranslation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getInputNumber() + ".*"));
+    }
+
+    @Test
+    public void logContainsResultAfterTranslation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getResultWord() + ".*"));
+    }
+
+    @Test
+    public void argumentsInfoIsProperlyFormatted() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*Input number: " + viewModel.getInputNumber()
+                + "; Result = " + viewModel.getResultWord() + ".*"));
+    }
+
+    @Test
+    public void canPutSeveralLogMessages() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        viewModel.translate();
+        viewModel.translate();
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void twoLogMessagesAfterChangingFocusAndTranslation() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.translate();
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void twoLogMessagesAfterTranslationAndChangingFocus() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void inputNumberIsCorrectlyLogged() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
+                + "Input number: " + viewModel.getInputNumber()));
+    }
+
+    @Test
+    public void doNotLogSameParametersTwiceWithPartialInput() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logsAreEmptyByDefault() {
+        assertEquals("", viewModel.getLogs());
+    }
+
+    @Test
+    public void canChangeLogsWhenFocusChanged() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLogs();
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED + "Input number: 124\n"));
+    }
+
+    @Test
+    public void canChangeLogsAfterTranslation() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        String message = viewModel.getLogs();
+        assertTrue(message.matches(".*" + LogMessages.TRANSLATE_WAS_PRESSED + ".*\n"));
+    }
+
+    @Test
+    public void logEmptyIfNothingChanged() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
+        String message = viewModel.getLogs();
+        assertEquals("", message);
+    }
+
+    @Test
+    public void logIsEmptyIfOnFocusChangedWithoutInput() {
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        List<String> log = viewModel.getLog();
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logIsNotEmptyIfOnFocusChanged() {
+        viewModel.setNumber("124");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLogs();
+        assertFalse(message.isEmpty());
+    }
+
+    @Test
+    public void canNotTranslateIfTranslateButtonDisabled() {
+        viewModel.translate();
+        assertEquals("", viewModel.getResultWord());
+    }
+
+    @Test
+    public void logIsEmptyWhenTranslateCallAndTranslateButtonDisabled() {
+        viewModel.translate();
+        String message = viewModel.getLogs();
+        assertEquals("", message);
+    }
+
+    @Test
+    public void logContainsProperlyFirstMessageAfterSeveralTranslations() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        viewModel.setNumber("125");
+        viewModel.translate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.TRANSLATE_WAS_PRESSED
+                + "Input number: " + "124" + ".*"));
+    }
+
+    @Test
+    public void logContainsProperlySecondMessageAfterSeveralTranslations() {
+        viewModel.setNumber("124");
+        viewModel.translate();
+        viewModel.setNumber("125");
+        viewModel.translate();
+        String message = viewModel.getLog().get(1);
+        assertTrue(message.matches(".*" + LogMessages.TRANSLATE_WAS_PRESSED
+                + "Input number: " + "125" + ".*"));
     }
 
     private ViewModel viewModel;
