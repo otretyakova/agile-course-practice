@@ -298,7 +298,7 @@ public class ViewModel {
     private static final String DELIMITER = ", ";
 
     private ILogger logger;
-    private final StringProperty logs = new SimpleStringProperty();
+    private final StringProperty logs = new SimpleStringProperty("");
     private final StringProperty rangeFrom = new SimpleStringProperty();
     private final StringProperty rangeTo = new SimpleStringProperty();
     private final StringProperty maxCountPrimes = new SimpleStringProperty();

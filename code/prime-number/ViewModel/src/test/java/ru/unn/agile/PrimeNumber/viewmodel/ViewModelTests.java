@@ -12,7 +12,9 @@ import java.util.List;
 
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
     @Rule
@@ -344,7 +346,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canLoggerBeSetWhenObjectIsCreated() {
+    public void canLoggerBeSetAfterObjectIsCreated() {
         ViewModel viewModel = new ViewModel();
         viewModel.setLogger(new FakeLogger());
     }
@@ -533,12 +535,33 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canGetLogsAsText() {
+    public void isLogTextEmptyInTheBeginning() {
+        assertEquals("", viewModel.getLogs());
+    }
+
+    @Test
+    public void canLogTextContainSeveralLogMessages() {
         setCorrectData();
 
         viewModel.calculate();
+        viewModel.onMethodChanged(Methods.SIMPLE, Methods.ERATOSTHENES);
+        viewModel.calculate();
 
-        assertTrue(!viewModel.getLogs().isEmpty());
+        String logText = viewModel.getLogs();
+        int numberOfEventsHappened = logText.split("\n").length;
+        assertEquals(3, numberOfEventsHappened);
+    }
+
+    @Test
+    public void doesLogTextContainEntriesFromOriginalLog() {
+        setCorrectData();
+
+        viewModel.calculate();
+        viewModel.onMaxCountPrimesFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String[] splitLogText = viewModel.getLogs().split("\n");
+        assertEquals(viewModel.getLog().get(0), splitLogText[0]);
+        assertEquals(viewModel.getLog().get(1), splitLogText[1]);
     }
 
     private void setCorrectData() {
