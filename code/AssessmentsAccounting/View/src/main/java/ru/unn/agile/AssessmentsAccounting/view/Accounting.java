@@ -10,34 +10,8 @@ import ru.unn.agile.AssessmentsAccounting.model.Assessment;
 import ru.unn.agile.AssessmentsAccounting.viewmodel.ViewModel;
 
 public class Accounting {
-    @FXML
-    private ViewModel viewModel;
-    @FXML
-    private TextField txtStudentName;
-    @FXML
-    private TextField txtSubjectName;
-    @FXML
-    private ComboBox<Assessment> cbAssessments;
-    @FXML
-    private Button btnAddStudent;
-    @FXML
-    private Button btnAddSubject;
-    @FXML
-    private Button btnAddMark;
-    @FXML
-    private Button btnEditStudent;
-    @FXML
-    private Button btnEditSubject;
-    @FXML
-    private Button btnEditMark;
-    @FXML
-    private ComboBox<Assessment> cbAssessmentOfStudent;
-    @FXML
-    private ComboBox<String> cbStudents;
-    @FXML
-    private ComboBox<String> cbSubjects;
-    @FXML
 
+    @FXML
     void initialize() {
 
         txtSubjectName.textProperty().bindBidirectional(viewModel.getNewSubject());
@@ -111,6 +85,32 @@ public class Accounting {
                         cbAssessmentOfStudent.getSelectionModel().getSelectedIndex());
             }
         });
-
     }
+
+    @FXML
+    private ViewModel viewModel;
+    @FXML
+    private TextField txtStudentName;
+    @FXML
+    private TextField txtSubjectName;
+    @FXML
+    private ComboBox<Assessment> cbAssessments;
+    @FXML
+    private Button btnAddStudent;
+    @FXML
+    private Button btnAddSubject;
+    @FXML
+    private Button btnAddMark;
+    @FXML
+    private Button btnEditStudent;
+    @FXML
+    private Button btnEditSubject;
+    @FXML
+    private Button btnEditMark;
+    @FXML
+    private ComboBox<Assessment> cbAssessmentOfStudent;
+    @FXML
+    private ComboBox<String> cbStudents;
+    @FXML
+    private ComboBox<String> cbSubjects;
 }
