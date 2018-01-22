@@ -38,7 +38,7 @@ public final class StringCalculator {
         String delimiter = ",\n";
         String firstSymbol = input.substring(0, 1);
         if (firstSymbol.matches("[,.:;]")) {
-            delimiter += firstSymbol;
+            delimiter = firstSymbol + "\n";
         }
         return delimiter;
     }

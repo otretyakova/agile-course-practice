@@ -152,6 +152,8 @@ include "code/string-calculator/View"
 project(":code/string-calculator/View").name = "string-calculator-View"
 include "code/string-calculator/ViewModel"
 project(":code/string-calculator/ViewModel").name = "string-calculator-ViewModel"
+include "code/string-calculator/Infrastructure"
+project(":code/string-calculator/Infrastructure").name = "string-calculator-Infrastructure"
 
 // Bevzuk Anton
 include "code/bevzuk-anton"

@@ -1,6 +1,7 @@
 package ru.unn.agile.StringCalculator.Model;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -110,6 +111,11 @@ public class StringCalculatorTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
+    public void canAddStringWithDelimiterWithoutNewLine() {
+        StringCalculator.add(";1;2;3");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
     public void canAddStringWithBigNumbers() {
         StringCalculator.add("2147483647, 2147483647");
     }
@@ -132,5 +138,20 @@ public class StringCalculatorTest {
     @Test
     public void isBadFormatReturnsFalseWhenCorrectData() {
         assertFalse(StringCalculator.isBadFormat("2,2"));
+    }
+
+    @Test
+    public void isBadFormatReturnsFalseWhenCorrectDelimiter() {
+        assertFalse(StringCalculator.isBadFormat(";\n2;2"));
+    }
+
+    @Test
+    public void isBadFormatReturnsTrueWhenIncorrectDelimiter() {
+        assertTrue(StringCalculator.isBadFormat("2.4"));
+    }
+
+    @Test
+    public void isBadFormatReturnsTrueWhenDelimiterWithoutNewLine() {
+        assertTrue(StringCalculator.isBadFormat(".2.4"));
     }
 }
