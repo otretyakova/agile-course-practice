@@ -1,6 +1,10 @@
 package ru.unn.agile.BookSale.Model.legacy;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.UUID;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BooksTable {
 
