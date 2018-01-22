@@ -4,17 +4,25 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
 public class NumberSystemConverterViewModelTests {
+    public void setExternalViewModel(final NumberSystemConverterViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setViewModel() {
-        this.viewModel = new NumberSystemConverterViewModel();
+        if (this.viewModel == null) {
+            this.viewModel = new NumberSystemConverterViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -273,6 +281,154 @@ public class NumberSystemConverterViewModelTests {
         this.viewModel.convert();
 
         assertTrue(this.viewModel.getErrorMessage().length() > 0);
+    }
+
+    @Test
+    public void viewModelConstructorThrowsExceptionWithNullLogger() {
+        try {
+            new NumberSystemConverterViewModel(null);
+            fail("Exception wasn't thrown");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            assertEquals("Logger parameter can not be null", illegalArgumentException.getMessage());
+        } catch (Exception exception) {
+            fail("Invalid exception type");
+        }
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        final List<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterCalculation() {
+        setInputData();
+
+        this.viewModel.convert();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsInputArgumentsAfterCalculation() {
+        setInputData();
+
+        viewModel.convert();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.numberInBaseNumberSystemProperty().get()
+                + ".*" + viewModel.baseNumberSystemProperty().get()
+                + ".*" + viewModel.targetNumberSystemProperty().get()
+                + ".*"
+        ));
+    }
+
+    @Test
+    public void argumentsInfoIsProperlyFormatted() {
+        setInputData();
+
+        viewModel.convert();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*Arguments"
+                + ": NumberInBaseSystem = " + viewModel.numberInBaseNumberSystemProperty().get()
+                + "; BaseNumberSystem = " + viewModel.baseNumberSystemProperty().get()
+                + "; TargetNumberSystem = " + viewModel.targetNumberSystemProperty().get()
+                + ".*"
+        ));
+    }
+
+    @Test
+    public void canPutSeveralLogMessages() {
+        setInputData();
+
+        viewModel.convert();
+        viewModel.convert();
+        viewModel.convert();
+
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void canSeeBaseNumberSystemChangeInLog() {
+        setInputData();
+
+        viewModel.onBaseNumberSystemChanged(NumberSystemBase.DEC, NumberSystemBase.HEX);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(
+                ".*" + LogMessages.BASE_SYSTEM_WAS_CHANGED + NumberSystemBase.HEX + ".*"
+        ));
+    }
+
+    @Test
+    public void canSeeTargetNumberSystemChangeInLog() {
+        setInputData();
+
+        viewModel.onTargetNumberSystemChanged(NumberSystemBase.DEC, NumberSystemBase.HEX);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(
+                ".*" + LogMessages.TARGET_SYSTEM_WAS_CHANGED + NumberSystemBase.HEX + ".*"
+        ));
+    }
+
+    @Test
+    public void baseNumberSystemIsNotLoggedIfNotChanged() {
+        viewModel.onBaseNumberSystemChanged(NumberSystemBase.DEC, NumberSystemBase.HEX);
+
+        viewModel.onBaseNumberSystemChanged(NumberSystemBase.HEX, NumberSystemBase.HEX);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void targetNumberSystemIsNotLoggedIfNotChanged() {
+        viewModel.onTargetNumberSystemChanged(NumberSystemBase.DEC, NumberSystemBase.HEX);
+
+        viewModel.onTargetNumberSystemChanged(NumberSystemBase.HEX, NumberSystemBase.HEX);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLogged() {
+        setInputData();
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
+                + "Input arguments are: \\["
+                + viewModel.numberInBaseNumberSystemProperty().get() + "; "
+                + viewModel.baseNumberSystemProperty().get() + "; "
+                + viewModel.targetNumberSystemProperty().get() + "]"));
+    }
+
+    @Test
+    public void convertIsNotCalledWhenButtonIsDisabled() {
+        viewModel.convert();
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doNotLogSameParametersTwiceWithPartialInput() {
+        viewModel.numberInBaseNumberSystemProperty().set("26");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.numberInBaseNumberSystemProperty().set("26");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    private void setInputData() {
+        this.viewModel.baseNumberSystemProperty().set(NumberSystemBase.DEC);
+        this.viewModel.targetNumberSystemProperty().set(NumberSystemBase.HEX);
+        this.viewModel.numberInBaseNumberSystemProperty().set("26");
     }
 
     private NumberSystemConverterViewModel viewModel;
