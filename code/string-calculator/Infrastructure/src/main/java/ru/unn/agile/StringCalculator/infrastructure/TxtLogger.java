@@ -8,10 +8,11 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.unn.agile.StringCalculator.viewmodel.ILogger;
+import ru.unn.agile.StringCalculator.viewmodel.AbstractLogger;
 
-public class TxtLogger implements ILogger {
+public class TxtLogger extends AbstractLogger {
     public TxtLogger(final String fileName) {
+        super();
         this.fileName = fileName;
 
         BufferedWriter logWriter = null;
@@ -26,7 +27,7 @@ public class TxtLogger implements ILogger {
     @Override
     public void log(final String logTag, final String s) {
         try {
-            String message = AbstractLogger.prepareLogMessage(logTag, s);
+            String message = prepareLogMessage(logTag, s);
             writer.write(message);
             writer.flush();
         } catch (Exception excp) {

@@ -3,7 +3,7 @@ package ru.unn.agile.StringCalculator.viewmodel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakeLogger implements ILogger {
+public class FakeLogger extends AbstractLogger {
     @Override
     public void log(final String logTag, final String s) {
         log.add(logTag + ": " + s);
