@@ -5,7 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.unn.agile.AssessmentsAccounting.model.Assessment;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ViewModelTests {
     private ViewModel viewModel;
@@ -125,7 +126,7 @@ public class ViewModelTests {
         assertEquals("1.5", viewModel.averageAssessmentProperty().get());
     }
     @Test
-    public void canGetAverageAssessmentOfStudents() {
+    public void canGetAverageAssessmentOfStudentsForOneStudent() {
         viewModel.getNewStudent().set("Maximilyan");
         viewModel.addStudent();
         viewModel.getNewSubject().set("Software engineering");

@@ -11,6 +11,7 @@ public class Main extends Application {
     @Override
     public void start(final Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Accounting.fxml"));
+        primaryStage.setResizable(false);
         primaryStage.setTitle("AssessmentsAccounting");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

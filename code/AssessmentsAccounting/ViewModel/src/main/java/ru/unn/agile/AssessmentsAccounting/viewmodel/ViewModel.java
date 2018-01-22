@@ -1,6 +1,9 @@
 package ru.unn.agile.AssessmentsAccounting.viewmodel;
 
-import javafx.beans.property.*;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import ru.unn.agile.AssessmentsAccounting.model.AssessmentsTable;
 import ru.unn.agile.AssessmentsAccounting.model.Student;
