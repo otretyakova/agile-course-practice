@@ -76,6 +76,8 @@ include "code/statistical-values/View"
 project(":code/statistical-values/View").name = "statistical-values-View"
 include "code/statistical-values/ViewModel"
 project(":code/statistical-values/ViewModel").name = "statistical-values-ViewModel"
+include "code/statistical-values/Insfrastructure"
+project(":code/statistical-values/Insfrastructure").name = "statistical-values-Insfrastructure"
 
 // Morozova Julia
 include "code/booksale"

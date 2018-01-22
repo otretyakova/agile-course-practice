@@ -1,5 +1,7 @@
 package ru.unn.agile.StatisticalValues.view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -8,18 +10,38 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Button;
 import ru.unn.agile.StatisticalValues.viewmodel.Statistic;
 import ru.unn.agile.StatisticalValues.viewmodel.ViewModel;
+import ru.unn.agile.StatisticalValues.infrastructure.StatisticalLogger;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class StatisticalValues {
     @FXML
     void initialize() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH", Locale.ENGLISH);
+        String currentDate = sdf.format(cal.getTime());
+        viewModel.setLogger(new StatisticalLogger("./TxtLogger-lab3_" + currentDate + ".log"));
+
+        final ChangeListener<Boolean> focusChangeListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(final ObservableValue<? extends Boolean> observable,
+                                final Boolean oldValue, final Boolean newValue) {
+                viewModel.onFocusChanged(oldValue, newValue);
+            }
+        };
+
         cbStatistic.valueProperty().bindBidirectional(viewModel.statisticProperty());
 
         tfOrder.textProperty().bindBidirectional(viewModel.orderProperty());
         tfOrder.visibleProperty().bindBidirectional(viewModel.orderVisibilityProperty());
         lbOrder.visibleProperty().bindBidirectional(viewModel.orderVisibilityProperty());
+        tfOrder.focusedProperty().addListener(focusChangeListener);
 
         cbIsBiased.selectedProperty().bindBidirectional(viewModel.isBiasedProperty());
         cbIsBiased.visibleProperty().bindBidirectional(viewModel.isBiasedVisibilityProperty());
+        cbIsBiased.focusedProperty().addListener(focusChangeListener);
 
         tfValues.textProperty().bindBidirectional(viewModel.valuesProperty());
         tfValues.visibleProperty().bindBidirectional(viewModel.valuesVisibilityProperty());
@@ -27,12 +49,31 @@ public class StatisticalValues {
 
         lbResultValue.textProperty().bindBidirectional(viewModel.resultProperty());
         lbResultValue.visibleProperty().bindBidirectional(viewModel.resultVisibilityProperty());
+        lbResultValue.focusedProperty().addListener(focusChangeListener);
+
         lbResult.visibleProperty().bindBidirectional(viewModel.resultVisibilityProperty());
 
         lbStatusValue.textProperty().bindBidirectional(viewModel.statusProperty());
 
         btCalculate.setOnAction(actionEvent -> viewModel.calculate());
         btCalculate.visibleProperty().bindBidirectional(viewModel.calculateVisibilityProperty());
+
+        cbStatistic.valueProperty().addListener(new ChangeListener<Statistic>() {
+            @Override
+            public void changed(final ObservableValue<? extends Statistic> observable,
+                                final Statistic oldValue,
+                                final Statistic newValue) {
+                viewModel.onStatisticChanged(oldValue, newValue);
+            }
+        });
+
+        cbIsBiased.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(final ObservableValue<? extends Boolean> observable,
+                                final Boolean oldValue,
+                                final Boolean newValue) {
+                viewModel.onBiasChanged(oldValue, newValue);
+            }
+        });
     }
 
     @FXML

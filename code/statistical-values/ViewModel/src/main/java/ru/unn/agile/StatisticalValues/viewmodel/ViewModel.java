@@ -10,6 +10,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.property.Property;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewModel {
     public ObjectProperty<Statistic> statisticProperty() {
@@ -80,11 +84,36 @@ public class ViewModel {
         return status;
     }
 
+    public String getValues() {
+        return valuesProperty().get();
+    }
+
+    public String getOrder() {
+        return orderProperty().get();
+    }
+
+    public Boolean getBias() {
+        return isBiasedProperty().get();
+    }
+
+    public Statistic getStatistic() {
+        return statisticProperty().get();
+    }
+
+    public StringProperty logsProperty() {
+        return logs;
+    }
+
+    public final String getLogTexts() {
+        return logs.get();
+    }
+
     public void calculate() {
-        if (!statusProperty().get().equals(Status.READY.toString())) {
+        if (!isCalculateVisible())  {
             return;
         }
 
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
         Printable value;
         try {
             value = evaluator.compute();
@@ -93,11 +122,83 @@ public class ViewModel {
             return;
         }
 
+        message.append(getInputsArguments())
+               .append(" Operation: ")
+               .append(getStatistic().toString())
+               .append(".");
+        logger.addLogText(message.toString());
+        updateLogs();
         printResult(value.print());
         status.set(Status.SUCCESS.toString());
     }
 
+    public final void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+        this.logger = logger;
+    }
+
     public ViewModel() {
+        init();
+    }
+
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+
+    public final List<String> getLogText() {
+        return logger.getLogText();
+    }
+
+    public void onStatisticChanged(final Statistic oldValue, final Statistic newValue) {
+        if (newValue.equals(oldValue)) {
+            return;
+        }
+
+        String message = LogMessages.OPERATION_WAS_CHANGED + newValue.toString();
+        logger.addLogText(message);
+        updateLogs();
+    }
+
+    public void onBiasChanged(final Boolean oldValue, final Boolean newValue) {
+        if (newValue.equals(oldValue)) {
+            return;
+        }
+
+        StringBuilder message = new StringBuilder(LogMessages.OPERATION_WAS_CHANGED);
+        message.append(statistic.get().toString());
+
+        if (newValue) {
+            message.append(" Bias ");
+        }
+
+        logger.addLogText(message.toString());
+        updateLogs();
+    }
+
+    public void onFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        PropertyChangeListener changed = valueChangedListeners.stream()
+                                       .filter(PropertyChangeListener::isChanged)
+                                       .findFirst().orElse(null);
+        if (changed == null) {
+            return;
+        }
+
+        String message = LogMessages.EDITING_FINISHED + getInputsArguments();
+
+        logger.addLogText(message);
+        updateLogs();
+
+        changed.cache();
+    }
+
+    private void init() {
         order.set("0");
         orderVisibility.set(false);
 
@@ -114,10 +215,40 @@ public class ViewModel {
 
         status.set(Status.WAIT.toString());
 
-        statistic.addListener(new PropertyChangeListener<>());
-        order.addListener(new PropertyChangeListener<>());
-        isBiased.addListener(new PropertyChangeListener<>());
-        values.addListener(new PropertyChangeListener<>());
+        valueChangedListeners = new ArrayList<>();
+        final List<Property> vv = new ArrayList<Property>() {{
+            add(values);
+            add(order);
+            add(isBiased);
+            add(statistic);
+        }};
+
+        for (Property property : vv) {
+            addListener(property);
+        }
+    }
+
+    @SuppressWarnings (value = "unchecked")
+    private <T extends Property> void addListener(final T property) {
+        PropertyChangeListener listener = new PropertyChangeListener<>();
+        property.addListener(listener);
+        valueChangedListeners.add(listener);
+    }
+
+    private String getInputsArguments() {
+        StringBuilder message = new StringBuilder("Input arguments are: [");
+        message.append(values.get()).append("; ]");
+        if (isOrderVisible()) {
+            message.append(" Order argument is: [");
+            message.append(order.get());
+            message.append("]");
+        }
+        if (isBiasVisible()) {
+            message.append(" Bias argument is: [");
+            message.append(String.valueOf(isBiased.get()));
+            message.append("]");
+        }
+        return message.toString();
     }
 
     private boolean isOrderEmpty() {
@@ -171,6 +302,22 @@ public class ViewModel {
 
     private Computable evaluator;
 
+    private ILogger logger;
+
+    private List<PropertyChangeListener> valueChangedListeners;
+
+    private final StringProperty logs = new SimpleStringProperty();
+
+    private void updateLogs() {
+        List<String> fullLog = logger.getLogText();
+        StringBuilder record = new StringBuilder("");
+        for (String log : fullLog) {
+            record.append(log)
+                  .append("\n");
+        }
+        logs.set(record.toString());
+    }
+
     private class PropertyChangeListener<T> implements ChangeListener<T> {
         @Override
         public void changed(final ObservableValue<? extends T> observable,
@@ -185,6 +332,7 @@ public class ViewModel {
 
             try {
                 evaluator = EvaluatorsFabric.create(ViewModel.this);
+                curValue = String.valueOf(newValue);
             } catch (Exception exception) {
                 status.set(Status.BAD + ": " + exception.getMessage());
                 disableCalculation();
@@ -193,6 +341,16 @@ public class ViewModel {
 
             enableCalculation();
         }
+
+        private boolean isChanged() {
+            return !prevValue.equals(curValue);
+        }
+        private void cache() {
+            prevValue = curValue;
+        }
+
+        private String prevValue = "";
+        private String curValue = "";
     }
 }
 
@@ -211,3 +369,10 @@ enum Status {
     private final String name;
 }
 
+final class LogMessages {
+    public static final String CALCULATE_WAS_PRESSED = "Calculate. ";
+    public static final String OPERATION_WAS_CHANGED = "Operation was changed to ";
+    public static final String EDITING_FINISHED = "Updated input. ";
+
+    private LogMessages() { }
+}
