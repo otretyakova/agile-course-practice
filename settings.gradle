@@ -87,6 +87,8 @@ include "code/number-system-converter/ViewModel"
 project(":code/number-system-converter/ViewModel").name = "number-system-converter-ViewModel"
 include "code/number-system-converter/View"
 project(":code/number-system-converter/View").name = "number-system-converter-View"
+include "code/number-system-converter/Infrastructure"
+project(":code/number-system-converter/Infrastructure").name = "number-system-converter-Infrastructure"
 
 // Ovsuhno Anton
 
