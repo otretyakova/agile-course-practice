@@ -183,6 +183,15 @@ public class AssessmentTableTests {
         table.renameStudent(name, "");
     }
 
+    @Test(expected = InvalidParameterException.class)
+    public void canNotRenameStudentToExistName() {
+        String name = "Max Bespalov";
+        table.addStudent(name);
+        String nameOfTheSecondStudent = "Eugene";
+        table.addStudent(nameOfTheSecondStudent);
+        table.renameStudent(nameOfTheSecondStudent, name);
+    }
+
     @Test
     public void canAddAssessmentToStudent() {
         String subject = "Agile course";
