@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(final Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Calculator.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("TriangleModel.fxml"));
         primaryStage.setResizable(false);
         primaryStage.setTitle("Triangle");
         primaryStage.setScene(new Scene(root));
@@ -21,3 +21,4 @@ public class Main extends Application {
         launch(args);
     }
 }
+

@@ -13,14 +13,22 @@ import ru.unn.agile.Triangle.Model.Triangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.geom.Point2D;
-
 public class ViewModel {
+
     public ViewModel() {
+        init();
+    }
+
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+
+    private void init() {
         setToEmptyCoordinates();
         setToDefault();
         status.set(Status.WAITING.toString());
-
+        logs.set("");
         BooleanBinding couldCalculate = new BooleanBinding() {
             {
                 super.bind(coordAx, coordAy, coordBx, coordBy, coordCx, coordCy);
@@ -55,38 +63,58 @@ public class ViewModel {
         if (calculationDisabled.get()) {
             return;
         }
-        Point2D dotA = makePoint(coordAx, coordAy);
-        Point2D dotB = makePoint(coordBx, coordBy);
-        Point2D dotC = makePoint(coordCx, coordCy);
-
         try {
-            Triangle triangle = new Triangle(dotA, dotB, dotC);
+            Triangle triangle = new Triangle(Double.parseDouble(coordAx.get()),
+                    Double.parseDouble(coordAy.get()),
+                    Double.parseDouble(coordBx.get()),
+                    Double.parseDouble(coordBy.get()),
+                    Double.parseDouble(coordCx.get()),
+                    Double.parseDouble(coordCy.get()));
             updateFields(triangle);
             status.set(Status.SUCCESS.toString());
+            String message = calculateLogMessage();
+            logger.log(message);
+            updateLogs();
         } catch (IllegalArgumentException illeg) {
             setToDefault();
             status.set(Status.DEGENERATED.toString());
         }
-
     }
 
-    public StringProperty coordAxProperty() {
-        return coordAx;
+    public final String getSideAB() {
+        return sideAB.get();
     }
-    public StringProperty coordAyProperty() {
-        return coordAy;
+
+    public final String getSideAC() {
+        return sideAC.get();
     }
-    public StringProperty coordBxProperty() {
-        return coordBx;
+
+    public final String getSideBC() {
+        return sideBC.get();
     }
-    public StringProperty coordByProperty() {
-        return coordBy;
+
+    public final String getCornerABC() {
+        return cornerABC.get();
     }
-    public StringProperty coordCxProperty() {
-        return coordCx;
+
+    public final String getCornerBAC() {
+        return cornerBAC.get();
     }
-    public StringProperty coordCyProperty() {
-        return coordCy;
+
+    public final String getCornerACB() {
+        return cornerACB.get();
+    }
+
+    public final String getPerimeter() {
+        return perimeterValue.get();
+    }
+
+    public final String getSurfaceArea() {
+        return surfaceArea.get();
+    }
+
+    public String getStatus() {
+        return status.get();
     }
 
     public final boolean isCalculationDisabled() {
@@ -97,60 +125,131 @@ public class ViewModel {
         return calculationDisabled;
     }
 
-    public String getStatus() {
-        return statusProperty().get();
+    public StringProperty coordAxProperty() {
+        return coordAx;
     }
-    public String getSideAB() {
-        return sideABProperty().get();
+
+    public StringProperty coordAyProperty() {
+        return coordAy;
     }
-    public String getSideBC() {
-        return sideBCProperty().get();
+
+    public StringProperty coordBxProperty() {
+        return coordBx;
     }
-    public String getSideAC() {
-        return sideACProperty().get();
+
+    public StringProperty coordByProperty() {
+        return coordBy;
     }
-    public String getCornerABC() {
-        return cornerABCProperty().get();
+
+    public StringProperty coordCxProperty() {
+        return coordCx;
     }
-    public String getCornerACB() {
-        return cornerACBProperty().get();
-    }
-    public String getCornerBAC() {
-        return cornerBACProperty().get();
-    }
-    public final String getPerimeter() {
-        return perimeterProperty().get();
-    }
-    public final String getSurfaceArea() {
-        return surfaceAreaProperty().get();
+
+    public StringProperty coordCyProperty() {
+        return coordCy;
     }
 
     public StringProperty statusProperty() {
         return status;
     }
+
     public final StringProperty sideABProperty() {
         return sideAB;
     }
+
     public final StringProperty sideACProperty() {
         return sideAC;
     }
+
     public final StringProperty sideBCProperty() {
         return sideBC;
     }
+
     public final StringProperty cornerABCProperty() {
         return cornerABC;
     }
+
     public final StringProperty cornerBACProperty() {
         return cornerBAC;
     }
+
     public final StringProperty cornerACBProperty() {
         return cornerACB;
     }
+
     public final StringProperty perimeterProperty() {
         return perimeterValue;
     }
+
     public final StringProperty surfaceAreaProperty() {
         return surfaceArea;
+    }
+
+    public StringProperty logsProperty() {
+        return logs;
+    }
+
+    public final String getLogs() {
+        return logs.get();
+    }
+
+    public boolean isCalculateButtonEnabled() {
+        return isCalculateButtonEnabled;
+    }
+
+
+    public final void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+        this.logger = logger;
+    }
+
+    private final StringProperty logs = new SimpleStringProperty();
+    private final StringProperty coordAx = new SimpleStringProperty();
+    private final StringProperty coordAy = new SimpleStringProperty();
+    private final StringProperty coordBx = new SimpleStringProperty();
+    private final StringProperty coordBy = new SimpleStringProperty();
+    private final StringProperty coordCx = new SimpleStringProperty();
+    private final StringProperty coordCy = new SimpleStringProperty();
+
+    private final StringProperty sideAB = new SimpleStringProperty();
+    private final StringProperty sideBC = new SimpleStringProperty();
+    private final StringProperty sideAC = new SimpleStringProperty();
+
+    private final StringProperty cornerABC = new SimpleStringProperty();
+    private final StringProperty cornerACB = new SimpleStringProperty();
+    private final StringProperty cornerBAC = new SimpleStringProperty();
+
+    private final StringProperty perimeterValue = new SimpleStringProperty();
+    private final StringProperty surfaceArea = new SimpleStringProperty();
+    private final List<TriangleChangesListener> changesListeners = new ArrayList<>();
+    private final StringProperty status = new SimpleStringProperty();
+    private boolean isCalculateButtonEnabled;
+    private boolean isInputChanged;
+    private ILogger logger;
+
+    private class TriangleChangesListener implements ChangeListener<String> {
+        @Override
+        public void changed(final ObservableValue<? extends String> observable,
+                            final String oldNum, final String newNum) {
+            if (oldNum.equals(newNum)) {
+                return;
+            }
+            status.set(getInputStatus().toString());
+            newInput = newNum;
+        }
+
+        public boolean isChanged() {
+            return !prevInput.equals(newInput);
+        }
+
+        public void cache() {
+            prevInput = newInput;
+        }
+
+        private String prevInput = new String("");
+        private String newInput = new String("");
     }
 
     private Status getInputStatus() {
@@ -181,61 +280,63 @@ public class ViewModel {
             setToDefault();
             inputStatus = Status.BAD_FORMAT;
         }
-
         return inputStatus;
     }
 
-    private final StringProperty coordAx = new SimpleStringProperty();
-    private final StringProperty coordAy = new SimpleStringProperty();
-    private final StringProperty coordBx = new SimpleStringProperty();
-    private final StringProperty coordBy = new SimpleStringProperty();
-    private final StringProperty coordCx = new SimpleStringProperty();
-    private final StringProperty coordCy = new SimpleStringProperty();
+    private void logInputParams() {
+        if (!isInputChanged) {
+            return;
+        }
 
-    private final StringProperty sideAB = new SimpleStringProperty();
-    private final StringProperty sideBC = new SimpleStringProperty();
-    private final StringProperty sideAC = new SimpleStringProperty();
+        logger.log(editingFinishedLogMessage());
+        isInputChanged = false;
+    }
 
-    private final StringProperty cornerABC = new SimpleStringProperty();
-    private final StringProperty cornerACB = new SimpleStringProperty();
-    private final StringProperty cornerBAC = new SimpleStringProperty();
+    private String editingFinishedLogMessage() {
+        return LogMessages.EDITING_FINISHED
+                + "Input arguments are: "
+                + allInputCoordinates();
+    }
 
-    private final StringProperty perimeterValue = new SimpleStringProperty();
-    private final StringProperty surfaceArea = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
+    public void onFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+        for (TriangleChangesListener listener : changesListeners) {
+            if (listener.isChanged()) {
+                StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+                message.append("Input arguments are: A = (")
+                        .append(coordAx.get()).append(",")
+                        .append(coordAy.get()).append("); B = (")
+                        .append(coordBx.get()).append(",")
+                        .append(coordBy.get()).append("); C = (")
+                        .append(coordCx.get()).append(",")
+                        .append(coordCy.get()).append(").");
+                logger.log(message.toString());
+
+                listener.cache();
+                break;
+            }
+        }
+        updateLogs();
+    }
+
+    private void updateLogs() {
+        List<String> fullLog = logger.getLog();
+        String record = new String("");
+        for (String log : fullLog) {
+            record += log + "\n";
+        }
+        logs.set(record);
+    }
 
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
-
-    private final List<TriangleChangesListener> changesListeners = new ArrayList<>();
 
     private double parseToDouble(final StringProperty property) {
         return Double.parseDouble(property.get());
     }
 
-    private Point2D makePoint(final StringProperty propertyCoordX,
-                              final StringProperty propertyCoordy) {
-        return new Point2D.Double(parseToDouble(propertyCoordX), parseToDouble(propertyCoordy));
-    }
-
-    private boolean hasEmptyCoordinates() {
-        return coordAx.get().isEmpty()
-                || coordAy.get().isEmpty()
-                || coordBx.get().isEmpty()
-                || coordBy.get().isEmpty()
-                || coordCx.get().isEmpty()
-                || coordCy.get().isEmpty();
-    }
-
-    private class TriangleChangesListener implements ChangeListener<String> {
-        @Override
-        public void changed(final ObservableValue<? extends String> observable,
-                            final String prevValue, final String newValue) {
-            status.set(getInputStatus().toString());
-        }
-    }
-
     private void updateFields(final Triangle triangle) {
-
         sideAB.set(String.format("|AB| = %.2f", triangle.getLengthAB()).replace(',', '.'));
         sideAC.set(String.format("|AC| = %.2f", triangle.getLengthAC()).replace(',', '.'));
         sideBC.set(String.format("|BC| = %.2f", triangle.getLengthBC()).replace(',', '.'));
@@ -246,6 +347,15 @@ public class ViewModel {
 
         perimeterValue.set(String.format("P = %.2f", triangle.getPerimeter()).replace(',', '.'));
         surfaceArea.set(String.format("S = %.2f", triangle.getSurfaceArea()).replace(',', '.'));
+    }
+
+    private boolean hasEmptyCoordinates() {
+        return coordAx.get().isEmpty()
+                || coordAy.get().isEmpty()
+                || coordBx.get().isEmpty()
+                || coordBy.get().isEmpty()
+                || coordCx.get().isEmpty()
+                || coordCy.get().isEmpty();
     }
 
     private void setToEmptyCoordinates() {
@@ -266,6 +376,29 @@ public class ViewModel {
         cornerACB.set("ACB = N/A");
         cornerBAC.set("BAC = N/A");
         surfaceArea.set("S = N/A");
+    }
+
+    public List<String> getLog() {
+        return logger.getLog();
+    }
+
+    private String calculateLogMessage() {
+        return LogMessages.CALCULATE_WAS_PRESSED + "Arguments: "
+                + allInputCoordinates();
+    }
+
+    public final class LogMessages {
+        public static final String CALCULATE_WAS_PRESSED = "Calculate. ";
+        public static final String EDITING_FINISHED = "Updated input. ";
+
+        private LogMessages() {
+        }
+    }
+
+    private String allInputCoordinates() {
+        return "A = (" + coordAx.get() + ", " + coordAy.get() + "); "
+                + "B = (" + coordBx.get() + ", " + coordBy.get() + "); "
+                + "C = (" + coordCx.get() + ", " + coordCy.get() + ").";
     }
 }
 

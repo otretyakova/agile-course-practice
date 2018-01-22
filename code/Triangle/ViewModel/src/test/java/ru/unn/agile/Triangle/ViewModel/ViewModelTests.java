@@ -4,16 +4,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 public class ViewModelTests {
     private ViewModel viewModel;
 
+    public void setTheOtherViewModel(final ViewModel theOtherViewModel) {
+        this.viewModel = theOtherViewModel;
+    }
+
     @Before
-    public void setUp() {
-        viewModel = new ViewModel();
+    public void setViewModel() {
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -360,6 +370,79 @@ public class ViewModelTests {
         assertEquals("BAC = 1.72 rad", viewModel.getCornerBAC());
         assertEquals("P = 81.56", viewModel.getPerimeter());
         assertEquals("S = 196.03", viewModel.getSurfaceArea());
+    }
+
+    @Test
+    public void canCreateLogger() {
+        FakeLogger logger = new FakeLogger();
+        ViewModel viewModel = new ViewModel(logger);
+        assertNotNull(viewModel);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void viewModelWithNullLogger() {
+        new ViewModel(null);
+    }
+
+    @Test
+    public void logIsEmptyFirstly() {
+        List<String> log = viewModel.getLog();
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsMessageAfterUsualCalculation() {
+        setInputData();
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.CALCULATE_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void ifFocusIsNotChangedLogIsEmpty() {
+        viewModel.coordAxProperty().set("1");
+        viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
+        String message = viewModel.getLogs();
+        assertTrue(message.isEmpty());
+    }
+
+    @Test
+    public void canChangeLogsAfterFirstInput() {
+        viewModel.coordAxProperty().set("1");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.EDITING_FINISHED
+                + "Input arguments are: A = \\(1,\\); B = \\(,\\); C = \\(,\\)."));
+    }
+
+    @Test
+    public void afterOneInputNumberOfLogsStringsIsOne() {
+        viewModel.coordAxProperty().set("1");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void ifPutTwiceTheSameInput() {
+        viewModel.coordAxProperty().set("1");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.coordAxProperty().set("1");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void canChangeLogsAfterALLInput() {
+        setInputData();
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.EDITING_FINISHED
+                + "Input arguments are: A = \\(1.0,0.0\\); "
+                + "B = \\(0.0,1.0\\); C = \\(-1.0,-2.0\\)."));
     }
 
     private void setInputData() {
