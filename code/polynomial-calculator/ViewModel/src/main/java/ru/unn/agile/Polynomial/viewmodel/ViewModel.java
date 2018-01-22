@@ -140,7 +140,7 @@ public class ViewModel {
     }
 
     private String calculateLogMessage() {
-        return LogMessages.CALCULATE_WAS_PRESSED + "Arguments: "
+        return LogMessages.CALCULATE_WAS_PRESSED + "Arguments: ["
                 + firstPolynomial
                 + " | "
                 + secondPolynomial
