@@ -18,8 +18,8 @@ public class Matrix {
     }
 
     public Matrix(final int numberOfRows, final int numberOfColumns) {
-        if (numberOfRows == 0 || numberOfColumns == 0) {
-            throw new IllegalArgumentException("The number of rows or columns is zero!");
+        if (numberOfRows <= 0 || numberOfColumns <= 0) {
+            throw new IllegalArgumentException("Invalid number of rows or/and number of columns!");
         }
 
         this.numberOfRows = numberOfRows;
@@ -27,20 +27,25 @@ public class Matrix {
         data = new float[numberOfRows][numberOfColumns];
     }
 
-    public float get(final int indexOfRow, final int indexOfColumn) {
-        if (indexOfRow >= this.numberOfRows || indexOfColumn >= this.numberOfColumns) {
-            throw new IllegalArgumentException("Invalid index!");
-        }
-
-        return this.data[indexOfRow][indexOfColumn];
+    private boolean checkIndex(final int indexOfRow, final int indexOfColumn) {
+        return (indexOfRow >= 0) && (indexOfRow < numberOfRows)
+                && (indexOfColumn >= 0) && (indexOfColumn < numberOfColumns);
     }
 
-    public void set(final int indexOfRow, final int indexOfColumn, final float data) {
-        if (indexOfRow >= this.numberOfRows || indexOfColumn >= this.numberOfColumns) {
-            throw new IllegalArgumentException("Invalid index!");
+    public float get(final int indexOfRow, final int indexOfColumn) {
+        if (!checkIndex(indexOfRow, indexOfColumn)) {
+            throw new IllegalArgumentException("Can't get an element with such index!");
         }
 
-        this.data[indexOfRow][indexOfColumn] = data;
+        return data[indexOfRow][indexOfColumn];
+    }
+
+    public void set(final int indexOfRow, final int indexOfColumn, final float value) {
+        if (!checkIndex(indexOfRow, indexOfColumn)) {
+            throw new IllegalArgumentException("Can't set an element with such index!");
+        }
+
+        data[indexOfRow][indexOfColumn] = value;
     }
 
     public float[][] toArray() {
@@ -48,7 +53,7 @@ public class Matrix {
     }
 
     public boolean isSquareMatrix() {
-        return numberOfRows == numberOfColumns;
+        return (numberOfRows == numberOfColumns);
     }
 
     public float calculateDeterminant() {
@@ -90,18 +95,18 @@ public class Matrix {
     private float computeDeterminant() {
         int determinant = 0;
         if (numberOfRows == 1) {
-            return data[0][0];
+            return get(0, 0);
         }
 
         if (numberOfRows == 2) {
-            final float mainDiagonal = data[0][0] * data[1][1];
-            final float sideDiagonal = data[0][1] * data[1][0];
+            final float mainDiagonal = get(0, 0) * get(1, 1);
+            final float sideDiagonal = get(0, 1) * get(1, 0);
             return mainDiagonal - sideDiagonal;
         }
 
         if (numberOfRows > 2) {
             for (int j = 0; j < numberOfRows; j++) {
-                float coefficient = data[0][j];
+                float coefficient = get(0, j);
                 int minorSign = (j % 2 == 0) ? 1 : -1;
                 determinant += coefficient * minorSign * getMinor(0, j);
             }
