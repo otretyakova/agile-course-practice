@@ -1,59 +1,33 @@
 package ru.unn.agile.MetricsDistance.viewmodel;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
-import javafx.beans.binding.BooleanBinding;
-import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
-import ru.unn.agile.MetricsDistance.Model.Metric;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import ru.unn.agile.MetricsDistance.Model.Metric;
+import ru.unn.agile.MetricsDistance.Model.MetricsDistance;
 
 public class ViewModel {
 
     public ViewModel() {
-        vec1X.set("");
-        vec1Y.set("");
-        vec2X.set("");
-        vec2Y.set("");
-        dim.set("");
-        metric.set(Metric.Chebyshev);
+        init();
+    }
 
-        result.set("");
-        status.set(Status.WAITING.toString());
-
-        BooleanBinding couldCalculate = new BooleanBinding() {
-            {
-                super.bind(vec1X, vec1Y, vec2X, vec2Y, dim);
-            }
-            @Override
-            protected boolean computeValue() {
-                return getInputStatus() == Status.READY;
-            }
-        };
-        calculationDisabled.bind(couldCalculate.not());
-
-        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
-            add(vec1X);
-            add(vec1Y);
-            add(vec2X);
-            add(vec2Y);
-            add(dim);
-        } };
-
-        for (StringProperty field : fields) {
-            final ObserverChangedValues listener = new ObserverChangedValues();
-            field.addListener(listener);
-            valueChangedListeners.add(listener);
-        }
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
     }
 
     public void calculate() {
@@ -77,6 +51,50 @@ public class ViewModel {
         }
         result.set(Float.toString(floatResult));
         status.set(Status.SUCCESS.toString());
+
+        String message = createMessageAfterCalculation();
+        logger.log(message);
+        updateLogs();
+    }
+
+    public void onMetricChanged(final Metric oldValue, final Metric newValue) {
+        if (oldValue.equals(newValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.METRIC_WAS_CHANGED);
+        message.append(newValue.toString());
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void onFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        for (ValueCachingChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+                message.append("Input arguments are: Vec1 = [")
+                        .append(getVec1X()).append(",")
+                        .append(getVec1Y()).append("]; Vec2 = [")
+                        .append(getVec2X()).append(",")
+                        .append(getVec2Y()).append("]; Dim = ")
+                        .append(getDim());
+                logger.log(message.toString());
+
+                listener.cache();
+                break;
+            }
+        }
+        updateLogs();
+    }
+
+    public final void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
     }
 
     public StringProperty vec1XProperty() {
@@ -93,6 +111,10 @@ public class ViewModel {
 
     public StringProperty vec2YProperty() {
         return vec2Y;
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     public StringProperty dimProperty() {
@@ -187,18 +209,60 @@ public class ViewModel {
         return status.get();
     }
 
-    private final StringProperty vec1X = new SimpleStringProperty();
-    private final StringProperty vec1Y = new SimpleStringProperty();
-    private final StringProperty vec2X = new SimpleStringProperty();
-    private final StringProperty vec2Y = new SimpleStringProperty();
-    private final StringProperty dim = new SimpleStringProperty();
-    private final StringProperty result = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
-    private final List<ObserverChangedValues> valueChangedListeners = new ArrayList<>();
-    private final ObjectProperty<ObservableList<Metric>> metrics =
-            new SimpleObjectProperty<>(FXCollections.observableArrayList(Metric.values()));
-    private final ObjectProperty<Metric> metric = new SimpleObjectProperty<>();
-    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
+    public StringProperty logsProperty() {
+        return logs;
+    }
+
+    public final String getLogs() {
+        return logs.get();
+    }
+
+    private void init() {
+        vec1X.set("");
+        vec1Y.set("");
+        vec2X.set("");
+        vec2Y.set("");
+        dim.set("");
+        logs.set("");
+        metric.set(Metric.Chebyshev);
+
+        result.set("");
+        status.set(Status.WAITING.toString());
+
+        BooleanBinding couldCalculate = new BooleanBinding() {
+            {
+                super.bind(vec1X, vec1Y, vec2X, vec2Y, dim);
+            }
+            @Override
+            protected boolean computeValue() {
+                return getInputStatus() == Status.READY;
+            }
+        };
+        calculationDisabled.bind(couldCalculate.not());
+
+        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
+            add(vec1X);
+            add(vec1Y);
+            add(vec2X);
+            add(vec2Y);
+            add(dim);
+        } };
+
+        for (StringProperty field : fields) {
+            final ValueCachingChangeListener listener = new ValueCachingChangeListener();
+            field.addListener(listener);
+            valueChangedListeners.add(listener);
+        }
+    }
+
+    private void updateLogs() {
+        List<String> fullLog = logger.getLog();
+        String record = new String("");
+        for (String log : fullLog) {
+            record += log + "\n";
+        }
+        logs.set(record);
+    }
 
     private boolean isParamsEmpty() {
         return getVec1X().isEmpty() || getVec1Y().isEmpty()
@@ -233,12 +297,63 @@ public class ViewModel {
         return inputStatus;
     }
 
-    private class ObserverChangedValues implements ChangeListener<String> {
+    private String createMessageAfterCalculation() {
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
+        message.append("Arguments: Vec1 = [").append(getVec1X()).append(", ").append(getVec1Y())
+                .append("]; Vec2 = [").append(getVec2X()).append(", ").append(getVec2Y())
+                .append("]; Metric = ").append(getMetric().toString());
+        if (getMetric() == Metric.Minkowski) {
+            message.append("; Dim = ").append(getDim());
+        }
+        message.append("; Result = ").append(getResult()).append(".");
+        return message.toString();
+    }
+
+    private class ValueCachingChangeListener implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
-                            final String oldVal, final String newVal) {
-            status.set(getInputStatus().toString());
+                            final String oldValue, final String newValue) {
+            if (oldValue.equals(newValue)) {
+                return;
+            }
+
+            String inputStatus = getInputStatus().toString();
+            status.set(inputStatus);
+            curValue = newValue;
         }
+
+        public boolean isChanged() {
+            return !prevValue.equals(curValue);
+        }
+
+        public void cache() {
+            prevValue = curValue;
+        }
+
+        private String prevValue = new String("");
+        private String curValue = new String("");
     }
+
+    private ILogger logger;
+    private final StringProperty logs = new SimpleStringProperty();
+    private final StringProperty vec1X = new SimpleStringProperty();
+    private final StringProperty vec1Y = new SimpleStringProperty();
+    private final StringProperty vec2X = new SimpleStringProperty();
+    private final StringProperty vec2Y = new SimpleStringProperty();
+    private final StringProperty dim = new SimpleStringProperty();
+    private final StringProperty result = new SimpleStringProperty();
+    private final StringProperty status = new SimpleStringProperty();
+    private final List<ValueCachingChangeListener> valueChangedListeners = new ArrayList<>();
+    private final ObjectProperty<ObservableList<Metric>> metrics =
+            new SimpleObjectProperty<>(FXCollections.observableArrayList(Metric.values()));
+    private final ObjectProperty<Metric> metric = new SimpleObjectProperty<>();
+    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
 }
 
+final class LogMessages {
+    public static final String CALCULATE_WAS_PRESSED = "Calculate. ";
+    public static final String METRIC_WAS_CHANGED = "Metric was changed to ";
+    public static final String EDITING_FINISHED = "Updated input. ";
+
+    private LogMessages() { }
+}
