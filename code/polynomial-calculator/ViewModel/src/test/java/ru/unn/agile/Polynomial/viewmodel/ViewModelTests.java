@@ -6,7 +6,10 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
     public void setViewModel(final ViewModel viewModel) {
@@ -192,28 +195,29 @@ public class ViewModelTests {
     }
 
     @Test
-    public void logContainsInputArgumentsAfterEditFirstPolynom() {
+    public void logContainsInputArgumentsAfterEditFirstPolynomial() {
         viewModel.setFirstPolynomial("8x^(5)-0.1x^(4)");
         viewModel.focusLost();
         String message = viewModel.getLog().get(0);
-        assertTrue(message.matches(".*[" + viewModel.getFirstPolynomial() + "]*"));
+        String correctMessage = messageFirstPolinomial();
+        assertTrue(message.contains(correctMessage));
     }
 
     @Test
-    public void logContainsInputArgumentsAfterEditSecondPolynom() {
+    public void logContainsInputArgumentsAfterEditSecondPolynomial() {
         viewModel.setSecondPolynomial("8x^(5)-0.1x^(4)");
         viewModel.focusLost();
         String message = viewModel.getLog().get(0);
-        assertTrue(message.matches(".*[" + viewModel.getSecondPolynomial() + "]*"));
+        String correctMessage = messageSecondPolinomial();
+        assertTrue(message.contains(correctMessage));
     }
 
     @Test
-    public void logContainsInputArgumentsAfterResetSecondPolynom() {
+    public void logContainsInputArgumentsAfterResetSecondPolynomial() {
         viewModel.setSecondPolynomial("8x^(5)-0.1x^(4)");
         viewModel.focusLost();
         viewModel.setSecondPolynomial("");
         viewModel.focusLost();
-        List<String> log = viewModel.getLog();
         assertEquals(2, viewModel.getLog().size());
     }
 
@@ -247,7 +251,6 @@ public class ViewModelTests {
         viewModel.focusLost();
         viewModel.setFirstPolynomial("7x^(55)-0.1x^(-14)");
         viewModel.focusLost();
-        String message = viewModel.getLog().get(0);
         assertEquals(1, viewModel.getLog().size());
     }
 
@@ -275,6 +278,16 @@ public class ViewModelTests {
     private void fillInputFieldsWithInvalidData() {
         viewModel.setFirstPolynomial("ax^2+by+z");
         viewModel.setSecondPolynomial("2p");
+    }
+
+    private String messageFirstPolinomial() {
+        return LogMessages.EDITING_HAPPENED + "First polynomial: ["
+                + viewModel.getFirstPolynomial() + "].";
+    }
+
+    private String messageSecondPolinomial() {
+        return LogMessages.EDITING_HAPPENED + "Second polynomial: ["
+                + viewModel.getSecondPolynomial() + "].";
     }
 
     private ViewModel viewModel;

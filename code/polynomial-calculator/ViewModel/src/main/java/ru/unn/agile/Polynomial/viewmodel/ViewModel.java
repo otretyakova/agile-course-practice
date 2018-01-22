@@ -160,7 +160,7 @@ public class ViewModel {
 
     private String editingSecondPolynomialLogMessage() {
         return LogMessages.EDITING_HAPPENED + "Second polynomial: ["
-                + firstPolynomial
+                + secondPolynomial
                 + "]" + ".";
     }
 

@@ -5,7 +5,13 @@ import ru.unn.agile.Polynomial.viewmodel.Status;
 import ru.unn.agile.Polynomial.viewmodel.ViewModel;
 import ru.unn.agile.Polynomial.infrastructure.TxtLogger;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
@@ -88,7 +94,6 @@ public final class Calculator {
         List<String> logText = viewModel.getLog();
         String[] items = logText.toArray(new String[logText.size()]);
         listLog.setListData(items);
-
     }
 
     private ViewModel viewModel;

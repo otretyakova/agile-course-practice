@@ -39,7 +39,7 @@ public class TxtLogger implements ILogger {
     @Override
     public List<String> getLog() {
         BufferedReader reader;
-        ArrayList<String> log = new ArrayList<String>();
+        ArrayList<String> log = new ArrayList<>();
         try {
             reader = new BufferedReader(new FileReader(filename));
             String line = reader.readLine();
@@ -51,7 +51,6 @@ public class TxtLogger implements ILogger {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         return log;
     }
 
