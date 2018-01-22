@@ -8,8 +8,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.unn.agile.StringCalculator.viewmodel.AbstractLogger;
-
 public class TxtLogger extends AbstractLogger {
     public TxtLogger(final String fileName) {
         super();
