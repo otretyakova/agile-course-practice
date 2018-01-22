@@ -162,7 +162,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("2");
         viewModel.cProperty().set("1");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("-1 + 0i"));
+        assertTrue(viewModel.getSolution().contains("-1"));
     }
 
     @Test
@@ -171,7 +171,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("");
         viewModel.cProperty().set("");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("0 + 0i"));
+        assertTrue(viewModel.getSolution().contains("0"));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("5");
         viewModel.cProperty().set("");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("0 + 0i"));
+        assertTrue(viewModel.getSolution().contains("0"));
     }
 
     @Test
@@ -236,7 +236,7 @@ public class ViewModelTests {
         viewModel.bProperty().set("5");
         viewModel.cProperty().set("-10");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("2 + 0i"));
+        assertTrue(viewModel.getSolution().contains("2"));
     }
 
     @Test
@@ -245,8 +245,8 @@ public class ViewModelTests {
         viewModel.bProperty().set("-1.00005");
         viewModel.cProperty().set("0.00005");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("1 + 0i"));
-        assertTrue(viewModel.getSolution().contains("0.00005 + 0i"));
+        assertTrue(viewModel.getSolution().contains("1"));
+        assertTrue(viewModel.getSolution().contains("0.00005"));
     }
 
     @Test
@@ -255,8 +255,8 @@ public class ViewModelTests {
         viewModel.bProperty().set("-1");
         viewModel.cProperty().set("");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("0 + 0i"));
-        assertTrue(viewModel.getSolution().contains("0 + 0i"));
+        assertTrue(viewModel.getSolution().contains("0"));
+        assertTrue(viewModel.getSolution().contains("0"));
     }
 
     @Test
@@ -265,8 +265,8 @@ public class ViewModelTests {
         viewModel.bProperty().set("5");
         viewModel.cProperty().set("6");
         viewModel.solve();
-        assertTrue(viewModel.getSolution().contains("-2 + 0i"));
-        assertTrue(viewModel.getSolution().contains("-3 + 0i"));
+        assertTrue(viewModel.getSolution().contains("-2"));
+        assertTrue(viewModel.getSolution().contains("-3"));
     }
 
     @Test

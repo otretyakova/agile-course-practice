@@ -1,23 +1,24 @@
 package ru.unn.agile.QuadraticEquation.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import ru.unn.agile.QuadraticEquation.viewmodel.ViewModel;
-
 import java.util.regex.Pattern;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
+import javafx.fxml.FXML;
+import ru.unn.agile.QuadraticEquation.viewmodel.ViewModel;
+
 public class Solution {
 
     @FXML
     void initialize() {
-
         final List<TextField> textFields = new ArrayList<TextField>() {
             {
                 add(first);
@@ -37,6 +38,7 @@ public class Solution {
                     });
             textField.setTextFormatter(formatter);
         }
+
         btnSolve.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {

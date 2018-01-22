@@ -1,15 +1,15 @@
 package ru.unn.agile.QuadraticEquation.viewmodel;
 
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.BooleanBinding;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import ru.unn.agile.QuadraticEquation.model.QuadraticEquation;
 

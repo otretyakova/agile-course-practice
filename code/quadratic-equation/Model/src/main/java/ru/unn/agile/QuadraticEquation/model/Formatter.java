@@ -26,9 +26,27 @@ public final class Formatter {
         return buffer.toString();
     }
 
+    public static String doubleToString(final double n) {
+        StringBuffer buffer = new StringBuffer();
+        if (n > -DELTA && n < DELTA) {
+            buffer.append("0");
+            return buffer.toString();
+        }
+        String formattedValue;
+        buffer.append(n < -DELTA ? "-" : "");
+        if (n < 0) {
+            formattedValue = formatPositiveDouble(-n);
+        } else {
+            formattedValue = formatPositiveDouble(n);
+        }
+        buffer.append(formattedValue);
+        return buffer.toString();
+    }
+
     private Formatter() {
     }
 
+    private static final double DELTA = 1e-15;
     private static final String FORMAT = "#.#####";
 }
 

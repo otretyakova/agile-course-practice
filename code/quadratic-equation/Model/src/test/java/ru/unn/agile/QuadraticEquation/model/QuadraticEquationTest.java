@@ -1,7 +1,5 @@
 package ru.unn.agile.QuadraticEquation.model;
 
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class QuadraticEquationTest {
 
@@ -114,21 +113,23 @@ public class QuadraticEquationTest {
         List<String> result = new ArrayList<String>();
         equation.setABC(4, 0, 0);
         result = equation.solveQuadraticEquation();
-        assertEquals("0 + 0i", result.get(0));
+        assertEquals("0", result.get(0));
     }
 
     @Test
     public void canFindSecondRootOfSimpleQuadraticEquation() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(4, 0, 0);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(null, solve.getValue());
+        result = equation.solveQuadraticEquation();
+        assertTrue(result.contains("0"));
     }
 
     @Test
     public void canFindSolutionOfSimpleQuadraticEquationWithZeroDiscr() {
         equation.setABC(1, 2, 1);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(null, solve.getValue());
+        List<String> result = new ArrayList<String>();
+        result = equation.solveQuadraticEquation();
+        assertTrue(result.contains("-1"));
     }
 
     @Test
@@ -136,98 +137,61 @@ public class QuadraticEquationTest {
         List<String> result = new ArrayList<String>();
         equation.setABC(1, 4, 4);
         result = equation.solveQuadraticEquation();
-        assertEquals("-2 + 0i", result.get(0));
+        assertEquals("-2", result.get(0));
     }
 
     @Test
     public void canFindFirstRootOfLinearEquation() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(0, 6, -2);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(1.0 / 3, solve.getKey(), 1e-15);
-    }
-
-    @Test
-    public void canFindFirstRootOfQuadraticEquationWithNoRealRoots() {
-        equation.setABC(6, -4, 3.3);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(null, solve.getKey());
-    }
-
-    @Test
-    public void canFindSecondRootOfQuadraticEquationWithNoRealRoots() {
-        equation.setABC(6, -4, 3.3);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(null, solve.getKey());
+        result = equation.solveQuadraticEquation();
+        String root = Formatter.doubleToString(1.0 / 3);
+        assertTrue(result.contains(root));
     }
 
     @Test
     public void canFindFirstRootOfQuadraticEquationWithTwoRealRoots() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(-2, 3, 1);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(0.75 - Math.sqrt(17) / 4, solve.getKey(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        String root = Formatter.doubleToString(0.75 - Math.sqrt(17) / 4);
+        assertTrue(result.contains(root));
     }
 
     @Test
     public void canFindSecondRootOfQuadraticEquationWithTwoRealRoots() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(-2, 3, 1);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals(0.75 + Math.sqrt(17) / 4, solve.getValue(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        String root = Formatter.doubleToString(0.75 + Math.sqrt(17) / 4);
+        assertTrue(result.contains(root));
     }
 
     @Test
     public void canFindFirstRootOfQuadraticEquationWithDoubleCoefficients() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(-0.4, 0.3, 0.2);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals((-0.3 + Math.sqrt(0.41)) / (-0.8), solve.getKey(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        String root = Formatter.doubleToString((-0.3 + Math.sqrt(0.41)) / (-0.8));
+        assertTrue(result.contains(root));
     }
 
     @Test
     public void canFindSecondRootOfQuadraticEquationWithDoubleCoefficients() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(-0.4, 0.3, 0.2);
-        Pair<Double, Double> solve = equation.solveQuadraticEquationReal();
-        assertEquals((-0.3 - Math.sqrt(0.41)) / (-0.8), solve.getValue(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        String root = Formatter.doubleToString((-0.3 - Math.sqrt(0.41)) / (-0.8));
+        assertTrue(result.contains(root));
     }
 
     @Test
-    public void canFindFirstRootOfQuadraticEquationWithNoImaginaryRoots() {
+    public void canFindRootsOfQuadraticEquationWithNoImaginaryParts() {
+        List<String> result = new ArrayList<String>();
         equation.setABC(-1, -4, 3.3);
-        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
-        assertEquals(null, solve.getKey());
-    }
-
-    @Test
-    public void canFindSecondRootOfQuadraticEquationWithNoImaginaryRoots() {
-        equation.setABC(-1, -4, 3.3);
-        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
-        assertEquals(null, solve.getValue());
-    }
-
-    @Test
-    public void canFindRePartOfFirstRootOfQuadraticEquationWithTwoImaginaryRoots() {
-        equation.setABC(3, -4, 3);
-        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
-        assertEquals(2.0 / 3, solve.getKey().getReal(), 1e-15);
-    }
-
-    @Test
-    public void canFindImPartOfFirstRootOfQuadraticEquationWithTwoImaginaryRoots() {
-        equation.setABC(3, -4, 3);
-        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
-        assertEquals(Math.sqrt(20) / 2, solve.getKey().getImaginary(), 1e-15);
-    }
-
-    @Test
-    public void canFindRePartOfSecondRootOfQuadraticEquationWithTwoImaginaryRoots() {
-        equation.setABC(3, -4, 3);
-        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
-        assertEquals(2.0 / 3, solve.getValue().getReal(), 1e-15);
-    }
-
-    @Test
-    public void canFindImPartOfSecondRootOfQuadraticEquationWithTwoImaginaryRoots() {
-        equation.setABC(3, -4, 3);
-        Pair<Complex, Complex> solve = equation.solveQuadraticEquationImaginary();
-        assertEquals((-1) * Math.sqrt(20) / 2, solve.getValue().getImaginary(), 1e-15);
+        result = equation.solveQuadraticEquation();
+        assertTrue(result.contains("0.70186"));
+        assertTrue(result.contains("-4.70186"));
     }
 
     @Test

@@ -1,11 +1,12 @@
 package ru.unn.agile.QuadraticEquation.model;
 
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuadraticEquation {
+    public static final double BORDER_TOP = 10e12;
+
+    public static final double BORDER_BOTTOM = -10e12;
 
     public double getA() {
         return a;
@@ -38,7 +39,7 @@ public class QuadraticEquation {
     }
 
     public QuadraticEquation(final double a, final double b, final double c) {
-        if (isNumberZero(Math.abs(a)) && isNumberZero(Math.abs(b))) {
+        if (isNumberZero(Math.abs(a))) {
             throw new IllegalArgumentException("QuadraticEquation is degenerated.");
         } else {
             this.a = a;
@@ -84,43 +85,21 @@ public class QuadraticEquation {
         }
     }
 
-    public Pair<Double, Double> solveQuadraticEquationReal() {
-        if (this.isLinear()) {
-            return new Pair<Double, Double>((-1) * c / b, null);
-        }
-        if (this.getDiscriminant() < DELTA) {
-            return new Pair<Double, Double>(null, null);
-        }
-        if (isNumberZero(this.getDiscriminant())) {
-            return new Pair<Double, Double>(-b / 2 / a, null);
-        }
-        return new Pair<Double, Double>(this.realFirst(), this.realSecond());
-    }
-
-    public Pair<Complex, Complex> solveQuadraticEquationImaginary() {
-        if (this.getNumberofImaginaryRoots() == 0) {
-            return new Pair<Complex, Complex>(null, null);
-        }
-        return new Pair<Complex, Complex>(this.cmplxFirst(), this.cmplxSecond());
-    }
-
     public List<String> solveQuadraticEquation() {
         List<String> result = new ArrayList<String>();
         if (this.isLinear()) {
-            Complex first = new Complex((-1) * this.getC() / this.getB(), 0.);
-            result.add(first.toString());
+            double root = (-1) * this.getC() / this.getB();
+            result.add(Formatter.doubleToString(root));
             return result;
         }
         if (isNumberZero(this.getDiscriminant())) {
-            Complex first = new Complex((-1) * this.getB() / 2 / this.getA(), 0.);
-            result.add(first.toString());
+            double root = (-1) * this.getB() / 2 / this.getA();
+            result.add(Formatter.doubleToString(root));
             return result;
         }
         if (this.getDiscriminant() > -DELTA) {
-            Complex first = new Complex(this.realFirst(), 0.);
-            Complex second = new Complex(this.realSecond(), 0.);
-            result.add(first.toString());
-            result.add(second.toString());
+            result.add(Formatter.doubleToString(this.realFirst()));
+            result.add(Formatter.doubleToString(this.realSecond()));
             return result;
         }
 
@@ -128,9 +107,6 @@ public class QuadraticEquation {
         result.add(this.cmplxSecond().toString());
         return result;
     }
-
-    public static final double BORDER_TOP = 10e12;
-    public static final double BORDER_BOTTOM = -10e12;
 
     private boolean isNumberZero(final double value) {
         return (value > -DELTA) && (value < DELTA);
