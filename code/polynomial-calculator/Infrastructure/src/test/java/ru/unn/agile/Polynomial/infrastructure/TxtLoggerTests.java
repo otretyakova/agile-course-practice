@@ -50,7 +50,7 @@ public class TxtLoggerTests {
         txtLogger.addInfo(messages[0]);
         txtLogger.addInfo(messages[1]);
 
-        List<String> listLogger= txtLogger.getLog();
+        List<String> listLogger = txtLogger.getLog();
         for (int i = 0; i < listLogger.size(); i++) {
             assertTrue(listLogger.get(i).matches(".*" + messages[i] + "$"));
         }
