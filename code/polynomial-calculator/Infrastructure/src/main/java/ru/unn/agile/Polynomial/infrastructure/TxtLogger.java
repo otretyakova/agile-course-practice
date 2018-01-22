@@ -22,15 +22,15 @@ public class TxtLogger implements ILogger {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        writer = logWriter;
+        bufWriter = logWriter;
     }
 
     @Override
     public void addInfo(final String s) {
         try {
-            writer.write(dataTime() + " > " + s);
-            writer.newLine();
-            writer.flush();
+            bufWriter.write(dataTime() + " > " + s);
+            bufWriter.newLine();
+            bufWriter.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -56,11 +56,11 @@ public class TxtLogger implements ILogger {
 
     private static String dataTime() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         return sdf.format(cal.getTime());
     }
 
-    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-    private final BufferedWriter writer;
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private final BufferedWriter bufWriter;
     private final String filename;
 }
