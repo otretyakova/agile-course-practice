@@ -17,20 +17,21 @@ import static org.junit.Assert.fail;
 public class TxtLoggerTests {
     @Before
     public void setUp() {
-        txtLogger = new TxtLogger(FILENAME);
+        txtLogger = new TxtLogger(FILE_NAME);
     }
 
     @Test
-    public void canCreateLoggerWithFileName() {
+    public void canCreateLogger() {
         assertNotNull(txtLogger);
     }
 
     @Test
     public void canCreateLogFileOnDisk() {
         try {
-            new BufferedReader(new FileReader(FILENAME));
+            FileReader fileReader = new FileReader(FILE_NAME);
+            new BufferedReader(fileReader);
         } catch (FileNotFoundException excp) {
-            fail("File " + FILENAME + " wasn't found!");
+            fail(FILE_NAME + " was not found");
         }
     }
 
@@ -83,7 +84,7 @@ public class TxtLoggerTests {
         assertTrue(message.matches(dateAndTimeFormat + " > .*"));
     }
 
-    private static final String FILENAME = "./TxtLogger_Tests.log";
+    private static final String FILE_NAME = "./TxtLogger_Tests.log";
     private TxtLogger txtLogger;
 
     private String getActualMessage(final List<String> actualMessages, final int i) {

@@ -25,7 +25,7 @@ public class ViewModel {
 
     public final void setLogger(final ILogger logger) {
         if (logger == null) {
-            throw new IllegalArgumentException("Logger parameter can't be null");
+            throw new IllegalArgumentException("Parameter Logger can not be null");
         }
         this.logger = logger;
     }
@@ -54,7 +54,7 @@ public class ViewModel {
             return;
         }
 
-        for (ValueChangeListener listener : valueChangedListeners) {
+        for (ValueChangeListener listener : changedListeners) {
             if (listener.isChanged()) {
                 StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
                 message.append("Input string = ").append(getInputString());
@@ -132,7 +132,7 @@ public class ViewModel {
     private final StringProperty status = new SimpleStringProperty();
     private final StringProperty logs = new SimpleStringProperty();
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
-    private List<ValueChangeListener> valueChangedListeners;
+    private List<ValueChangeListener> changedListeners;
     private String logTag;
     private ILogger logger;
 
@@ -158,11 +158,11 @@ public class ViewModel {
             add(inputString);
         } };
 
-        valueChangedListeners = new ArrayList<>();
+        changedListeners = new ArrayList<>();
         for (StringProperty value : values) {
             final ValueChangeListener listener = new ValueChangeListener();
             value.addListener(listener);
-            valueChangedListeners.add(listener);
+            changedListeners.add(listener);
         }
     }
 
@@ -203,7 +203,8 @@ public class ViewModel {
             if (oldValue.equals(newValue)) {
                 return;
             }
-            status.set(getInputStatus().toString());
+            String currentStatus = getInputStatus().toString();
+            status.set(currentStatus);
             currentValue = newValue;
         }
 
