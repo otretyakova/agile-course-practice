@@ -216,14 +216,14 @@ public class ViewModel {
         status.set(Status.WAIT.toString());
 
         valueChangedListeners = new ArrayList<>();
-        final List<Property> vv = new ArrayList<Property>() {{
+        final List<Property> allProperty = new ArrayList<Property>() {{
             add(values);
             add(order);
             add(isBiased);
             add(statistic);
         }};
 
-        for (Property property : vv) {
+        for (Property property : allProperty) {
             addListener(property);
         }
     }
