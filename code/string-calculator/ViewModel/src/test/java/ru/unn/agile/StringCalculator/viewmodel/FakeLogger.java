@@ -5,8 +5,8 @@ import java.util.List;
 
 public class FakeLogger implements ILogger {
     @Override
-    public void log(final String s) {
-        log.add(s);
+    public void log(final String logTag, final String s) {
+        log.add(logTag + ": " + s);
     }
 
     @Override

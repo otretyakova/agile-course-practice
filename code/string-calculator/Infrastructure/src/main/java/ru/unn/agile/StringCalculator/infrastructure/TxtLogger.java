@@ -1,15 +1,14 @@
 package ru.unn.agile.StringCalculator.infrastructure;
 
-import ru.unn.agile.StringCalculator.viewmodel.ILogger;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
+
+import ru.unn.agile.StringCalculator.viewmodel.ILogger;
 
 public class TxtLogger implements ILogger {
     public TxtLogger(final String fileName) {
@@ -25,10 +24,10 @@ public class TxtLogger implements ILogger {
     }
 
     @Override
-    public void log(final String s) {
+    public void log(final String logTag, final String s) {
         try {
-            writer.write(now() + " > " + s);
-            writer.newLine();
+            String message = AbstractLogger.prepareLogMessage(logTag, s);
+            writer.write(message);
             writer.flush();
         } catch (Exception excp) {
             System.out.println(excp.getMessage());
@@ -54,13 +53,6 @@ public class TxtLogger implements ILogger {
         return log;
     }
 
-    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
     private final BufferedWriter writer;
     private final String fileName;
-
-    private static String now() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
-        return dateFormat.format(calendar.getTime());
-    }
 }

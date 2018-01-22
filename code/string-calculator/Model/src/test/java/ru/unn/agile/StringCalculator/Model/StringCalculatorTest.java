@@ -1,6 +1,7 @@
 package ru.unn.agile.StringCalculator.Model;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

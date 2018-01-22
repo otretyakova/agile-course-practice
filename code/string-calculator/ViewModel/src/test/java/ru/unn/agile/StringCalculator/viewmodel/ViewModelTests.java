@@ -1,9 +1,11 @@
 package ru.unn.agile.StringCalculator.viewmodel;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -250,6 +252,12 @@ public class ViewModelTests {
     }
 
     @Test
+    public void logTagIsEmptyInTheBeginning() {
+        String logTag = viewModel.getLogTag();
+        assertTrue(logTag.isEmpty());
+    }
+
+    @Test
     public void logsAreEmptyByDefault() {
         assertEquals("", viewModel.getLogs());
     }
@@ -282,6 +290,24 @@ public class ViewModelTests {
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
         String message = viewModel.getLogs();
         assertFalse(message.isEmpty());
+    }
+
+    @Test
+    public void logContainsLogTagAfterFocusChanged() {
+        viewModel.setInputString("2,5");
+        viewModel.setLogTag("0");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getLogTag() + ".*"));
+    }
+
+    @Test
+    public void logContainsLogTagAfterCalculation() {
+        viewModel.setInputString("2,5");
+        viewModel.setLogTag("0");
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getLogTag() + ".*"));
     }
 
     @Test

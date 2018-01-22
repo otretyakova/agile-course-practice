@@ -1,5 +1,8 @@
 package ru.unn.agile.StringCalculator.viewmodel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -7,9 +10,8 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+
 import ru.unn.agile.StringCalculator.Model.StringCalculator;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ViewModel {
     public ViewModel() {
@@ -42,7 +44,8 @@ public class ViewModel {
         StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
         message.append("Input string = ").append(inputString)
                 .append("; Result = ").append(getResult());
-        logger.log(message.toString());
+        String tag = getLogTag();
+        logger.log(tag, message.toString());
         updateLogs();
     }
 
@@ -55,7 +58,8 @@ public class ViewModel {
             if (listener.isChanged()) {
                 StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
                 message.append("Input string = ").append(getInputString());
-                logger.log(message.toString());
+                String tag = getLogTag();
+                logger.log(tag, message.toString());
                 updateLogs();
                 listener.cache();
                 break;
@@ -115,12 +119,21 @@ public class ViewModel {
         return logger.getLog();
     }
 
+    public void setLogTag(final String tag) {
+        this.logTag = tag;
+    }
+
+    public final String getLogTag() {
+        return logTag;
+    }
+
     private final StringProperty inputString = new SimpleStringProperty();
     private final StringProperty result = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
     private final StringProperty logs = new SimpleStringProperty();
     private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
     private List<ValueChangeListener> valueChangedListeners;
+    private String logTag;
     private ILogger logger;
 
     private void initialize() {
@@ -128,6 +141,7 @@ public class ViewModel {
         result.set("");
         status.set(Status.WAITING.toString());
         logs.set("");
+        logTag = "";
 
         BooleanBinding couldCalculate = new BooleanBinding() {
             {

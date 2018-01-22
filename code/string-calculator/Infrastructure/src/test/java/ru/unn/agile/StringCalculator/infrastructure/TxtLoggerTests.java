@@ -1,16 +1,18 @@
 package ru.unn.agile.StringCalculator.infrastructure;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+
 import java.util.List;
-import static junit.framework.TestCase.assertNotNull;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 public class TxtLoggerTests {
     @Before
@@ -35,44 +37,50 @@ public class TxtLoggerTests {
     @Test
     public void canWriteLogMessage() {
         String testMessage = "Test message";
+        String logTag = "Tag";
 
-        txtLogger.log(testMessage);
+        txtLogger.log(logTag, testMessage);
 
         String message = txtLogger.getLog().get(0);
-        assertTrue(message.matches(".*" + testMessage + ".*"));
+        assertTrue(message.matches(".*" + logTag + ": " + testMessage + ".*"));
     }
 
     @Test
-    public void canWriteTwoLogMessage() {
-        String[] messages = {"Test message 1", "Test message 2"};
+    public void logDoesNotContainLogTagIfTagIsEmpty() {
+        String testMessage = "Test message";
+        String logTag = "";
 
-        txtLogger.log(messages[0]);
-        txtLogger.log(messages[1]);
+        txtLogger.log(logTag, testMessage);
 
-        assertEquals(2, txtLogger.getLog().size());
+        String message = txtLogger.getLog().get(0);
+        assertFalse(message.matches(".*" + logTag + ": " + ".*"));
     }
 
     @Test
     public void doesLogContainProperMessages() {
         String[] messages = {"Test message 1", "Test message 2"};
+        String[] logTags = {"Tag1", "Tag2"};
 
-        txtLogger.log(messages[0]);
-        txtLogger.log(messages[1]);
+        txtLogger.log(logTags[0], messages[0]);
+        txtLogger.log(logTags[1], messages[1]);
 
         List<String> actualMessages = txtLogger.getLog();
         for (int i = 0; i < actualMessages.size(); i++) {
-            assertTrue(getActualMessage(actualMessages, i).matches(".*" + messages[i]  + ".*"));
+            assertTrue(getActualMessage(actualMessages, i).matches(".*" + logTags[i]
+                    + ": " + messages[i]  + ".*"));
         }
     }
 
     @Test
     public void doesLogContainDateAndTime() {
         String testMessage = "Test message";
+        String logTag = "Tag";
+        String dateAndTimeFormat = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}";
 
-        txtLogger.log(testMessage);
+        txtLogger.log(logTag, testMessage);
 
         String message = txtLogger.getLog().get(0);
-        assertTrue(message.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*"));
+        assertTrue(message.matches(dateAndTimeFormat + " > .*"));
     }
 
     private static final String FILENAME = "./TxtLogger_Tests.log";
