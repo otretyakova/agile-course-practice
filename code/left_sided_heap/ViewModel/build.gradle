@@ -1,3 +1,3 @@
 dependencies {
-    compile project(':lheap-Model')
+    compile project(':left_sided_heap-Model')
 }

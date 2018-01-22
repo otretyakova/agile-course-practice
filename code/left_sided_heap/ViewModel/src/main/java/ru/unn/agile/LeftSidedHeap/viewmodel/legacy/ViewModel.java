@@ -5,25 +5,25 @@ import ru.unn.agile.LeftSidedHeap.Model.LeftSidedHeap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ViewModel {
 
     public ViewModel() {
-        textRemove = "";
-        textAdd = "";
-        heap = new LeftSidedHeap<Double>();
+        this.logger = new ListLogger();
+        initialize();
+    }
 
-        addCollection = new ArrayList<SimpleEntry<Integer, Double>>();
-        removeCollection = new ArrayList<Integer>();
-        removedCollection = new ArrayList<SimpleEntry<Integer, Double>>();
+    public ViewModel(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+        this.logger = logger;
+        initialize();
+    }
 
-        isButtonAddEnabled = false;
-        isButtonAddEnabled = false;
-        status = Status.WAITING;
-
-        textSizeHeap = formatTextSizeHeap();
-        textMinInHeap = formatTextMinInHeap();
-        textRemoveFromHeap = formatTextRemoveFromHeap();
+    public List<String> getFullLog() {
+        return logger.getFullLog();
     }
 
     public boolean isButtonAddEnabled() {
@@ -38,24 +38,42 @@ public class ViewModel {
         parseInput();
     }
 
+    public void processKeyInAddField() {
+        parseInput();
+        logTextAdd();
+    }
+
+    public void processKeyInRemoveField() {
+        parseInput();
+        logTextRemove();
+    }
+
     public void add() {
+        logger.addInfo(addLogMessage());
+
         if (!parseInput()) {
             return;
         }
 
-        LeftSidedHeap<Double> secondHeap = new LeftSidedHeap<Double>(addCollection);
+        LeftSidedHeap<Double> secondHeap = new LeftSidedHeap<>(addCollection);
 
         heap.merge(secondHeap);
 
         textSizeHeap = formatTextSizeHeap();
         textMinInHeap = formatTextMinInHeap();
         textRemoveFromHeap = formatTextRemoveFromHeap();
+
         isButtonAddEnabled = false;
         textAdd = "";
         status = Status.SUCCESS;
+
+        isTextAddChanged = false;
+        isTextRemoveChanged = false;
     }
 
     public void remove() {
+        logger.addInfo(removeLogMessage());
+
         if (!parseInput()) {
             return;
         }
@@ -71,6 +89,7 @@ public class ViewModel {
         textSizeHeap = formatTextSizeHeap();
         textMinInHeap = formatTextMinInHeap();
         textRemoveFromHeap = formatTextRemoveFromHeap();
+
         isButtonRemoveEnabled = false;
         textRemove = "";
         status = Status.SUCCESS;
@@ -105,6 +124,7 @@ public class ViewModel {
         }
 
         this.textAdd = textAdd;
+        isTextAddChanged = true;
     }
 
     public void setTextRemove(final String textRemove) {
@@ -113,6 +133,75 @@ public class ViewModel {
         }
 
         this.textRemove = textRemove;
+        isTextRemoveChanged = true;
+    }
+
+    public void focusLost() {
+        logTextAdd(); logTextRemove();
+    }
+
+    public final class LogMessages {
+        public static final String ADD_WAS_PRESSED = "Add.";
+        public static final String REMOVE_WAS_PRESSED = "Remove.";
+        public static final String EDITING_HAPPENED = "Updated input.";
+
+        private LogMessages() { }
+    }
+
+    private void initialize() {
+        textRemove = "";
+        textAdd = "";
+        heap = new LeftSidedHeap<>();
+
+        addCollection = new ArrayList<>();
+        removeCollection = new ArrayList<>();
+        removedCollection = new ArrayList<>();
+
+        isButtonAddEnabled = false;
+        isButtonAddEnabled = false;
+        isTextAddChanged = false;
+        isTextRemoveChanged = false;
+        status = Status.WAITING;
+
+        textSizeHeap = formatTextSizeHeap();
+        textMinInHeap = formatTextMinInHeap();
+        textRemoveFromHeap = formatTextRemoveFromHeap();
+    }
+
+    private void logTextAdd() {
+        if (!isTextAddChanged) {
+            return;
+        }
+
+        logger.addInfo(editingTextAddHappenedLogMessage());
+        isTextAddChanged = false;
+    }
+
+    private void logTextRemove() {
+        if (!isTextRemoveChanged) {
+            return;
+        }
+
+        logger.addInfo(editingTextRemoveHappenedLogMessage());
+        isTextRemoveChanged = false;
+    }
+
+    private String addLogMessage() {
+        return String.format("%s Arguments: %s.", LogMessages.ADD_WAS_PRESSED, textAdd);
+    }
+
+    private String removeLogMessage() {
+        return String.format("%s Arguments: %s.", LogMessages.REMOVE_WAS_PRESSED, textRemove);
+    }
+
+    private String editingTextAddHappenedLogMessage() {
+        return String.format("%s \"Add\" field changed to: %s", LogMessages.EDITING_HAPPENED,
+                textAdd);
+    }
+
+    private String editingTextRemoveHappenedLogMessage() {
+        return String.format("%s \"Remove\" field changed to: %s", LogMessages.EDITING_HAPPENED,
+                textRemove);
     }
 
     private boolean correctAdd() {
@@ -148,13 +237,14 @@ public class ViewModel {
     }
 
     private boolean parseInput() {
-        boolean noExceptionFlag = correctAdd();
-        noExceptionFlag = correctRemove() && noExceptionFlag;
+        boolean isCorrectTextAdd = correctAdd();
+        boolean isCorrectTextRemove = correctRemove();
+        boolean isCorrectInput = isCorrectTextAdd && isCorrectTextRemove;
 
-        isButtonAddEnabled = !textAdd.isEmpty() && noExceptionFlag;
-        isButtonRemoveEnabled = !textRemove.isEmpty() && noExceptionFlag;
+        isButtonAddEnabled = !textAdd.isEmpty() && isCorrectInput;
+        isButtonRemoveEnabled = !textRemove.isEmpty() && isCorrectInput;
 
-        if (noExceptionFlag) {
+        if (isCorrectInput) {
             if (isButtonAddEnabled || isButtonRemoveEnabled) {
                 status = Status.READY;
             } else {
@@ -178,7 +268,7 @@ public class ViewModel {
             } else {
                 Integer key = Integer.parseInt(partsElement[0]);
                 Double value = Double.parseDouble(partsElement[1]);
-                addCollection.add(new SimpleEntry<Integer, Double>(key, value));
+                addCollection.add(new SimpleEntry<>(key, value));
             }
         }
     }
@@ -204,7 +294,7 @@ public class ViewModel {
 
     private String formatTextMinInHeap() {
         if (heap.isEmpty()) {
-            return String.format("min: -");
+            return "min: -";
         } else {
             SimpleEntry<Integer, Double> min = heap.getMin();
             return String.format("min: %s", min.toString());
@@ -227,15 +317,21 @@ public class ViewModel {
 
     private String textAdd;
     private String textRemove;
-    private boolean isButtonAddEnabled;
-    private boolean isButtonRemoveEnabled;
     private String status;
     private String textSizeHeap;
     private String textMinInHeap;
     private String textRemoveFromHeap;
+
+    private boolean isButtonAddEnabled;
+    private boolean isButtonRemoveEnabled;
+    private boolean isTextAddChanged;
+    private boolean isTextRemoveChanged;
+
+    private ILogger logger;
 
     private LeftSidedHeap<Double> heap;
     private Collection<SimpleEntry<Integer, Double>> addCollection;
     private Collection<Integer> removeCollection;
     private Collection<SimpleEntry<Integer, Double>> removedCollection;
 }
+

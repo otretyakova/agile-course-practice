@@ -67,7 +67,7 @@ public class LeftSidedHeapTests {
     }
 
     @Test
-    public void cantFindUnexistedElement() {
+    public void cantFindNonExistentElement() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         assertTrue(heap.search(-1) == null);
     }
@@ -86,7 +86,7 @@ public class LeftSidedHeapTests {
     }
 
     @Test
-    public void cantContainUnexistedElements() {
+    public void cantContainNonExistentElements() {
         LeftSidedHeap<Integer> heap = prepareHeap(5);
         ArrayList<SimpleEntry<Integer, Integer>> randArray = new ArrayList<>();
         randArray.add(new SimpleEntry<>(-2, 3));
@@ -104,16 +104,16 @@ public class LeftSidedHeapTests {
     public void cantRemoveElementFromEmptyHeap() {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         exception.expect(IllegalStateException.class);
         removedCollection.addAll(heap.removeAll(0));
     }
 
     @Test
-    public void cantRemoveUnexistedElement() {
+    public void cantRemoveNonExistentElement() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         removedCollection.addAll(heap.removeAll(-1));
         assertTrue(removedCollection.isEmpty() && heap.size() == 10);
     }
@@ -122,9 +122,9 @@ public class LeftSidedHeapTests {
     public void cantRemoveUniqueElementTwice() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         Collection<SimpleEntry<Integer, Integer>> removedCollectionFirst =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         Collection<SimpleEntry<Integer, Integer>> removedCollectionSecond =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         heap.add(new SimpleEntry<>(-1, 4));
         removedCollectionFirst.addAll(heap.removeAll(-1));
         removedCollectionSecond.addAll(heap.removeAll(-1));
@@ -136,11 +136,23 @@ public class LeftSidedHeapTests {
     public void canRemoveUniqueElementTwice() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         heap.add(new SimpleEntry<>(-1, 4));
         heap.add(new SimpleEntry<>(-1, 5));
         removedCollection.addAll(heap.removeAll(-1));
         assertTrue(heap.size() == 10);
+    }
+
+    @Test
+    public void canRemoveNonRootElementWithUpdatingHeap() {
+        LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
+        heap.add(new SimpleEntry<>(0, 0));
+        heap.add(new SimpleEntry<>(1, 0));
+        heap.add(new SimpleEntry<>(2, 0));
+        heap.add(new SimpleEntry<>(3, 0));
+        heap.add(new SimpleEntry<>(4, 0));
+        heap.remove(3);
+        assertTrue(heap.size() == 4);
     }
 
     @Test
@@ -164,7 +176,7 @@ public class LeftSidedHeapTests {
         LeftSidedHeap<Integer> heap = new LeftSidedHeap<>();
         ArrayList<SimpleEntry<Integer, Integer>> addedElements = addElements(heap, 5);
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         removeRandomElements(heap, addedElements, 5);
         exception.expect(IllegalStateException.class);
         removedCollection.addAll(heap.removeAll(0));
@@ -187,7 +199,7 @@ public class LeftSidedHeapTests {
     public void canGetNewMinAfterDeletePreviousMin() {
         LeftSidedHeap<Integer> heap = createHeapWithPositiveKeysSize10andMinKey0Value1();
         Collection<SimpleEntry<Integer, Integer>> removedCollection =
-                new ArrayList<SimpleEntry<Integer, Integer>>();
+                new ArrayList<>();
         heap.add(new SimpleEntry<>(-2, 1));
         heap.add(new SimpleEntry<>(-1, 5));
         removedCollection.addAll(heap.removeAll(-2));
@@ -204,8 +216,7 @@ public class LeftSidedHeapTests {
     @Test
     public void cantMergeHeapWithNull() {
         LeftSidedHeap<Integer> mainHeap = prepareHeap(5);
-        LeftSidedHeap<Integer> nullHeap = null;
-        assertFalse(mainHeap.merge(nullHeap));
+        assertFalse(mainHeap.merge(null));
     }
 
     @Test
@@ -265,8 +276,7 @@ public class LeftSidedHeapTests {
         createHeapWithPositiveKeysSize10andMinKey0Value1(final int offset) {
         ArrayList<SimpleEntry<Integer, Integer>> array =
                 getArrayWithPositiveKeysSize10andMinKey0Value1(offset);
-        LeftSidedHeap<Integer> heap = new LeftSidedHeap<>(array);
-        return heap;
+        return new LeftSidedHeap<>(array);
     }
 
     private LeftSidedHeap<Integer> createHeapWithPositiveKeysSize10andMinKey0Value1() {
@@ -285,8 +295,7 @@ public class LeftSidedHeapTests {
         } else {
             Assert.fail("This function can create not more than 10 elements!");
         }
-        LeftSidedHeap<Integer> heap = new LeftSidedHeap<>(array);
-        return heap;
+        return new LeftSidedHeap<>(array);
     }
 
     private ArrayList<SimpleEntry<Integer, Integer>> addElements(

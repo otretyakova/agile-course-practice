@@ -28,10 +28,10 @@ public class LeftSidedHeap<T> {
 
     public final void add(final SimpleEntry<Integer, T> keyValuePair) {
         if (size() == 0) {
-            root = new Node<T>(keyValuePair, 1, null, null, null);
+            root = new Node<>(keyValuePair, 1, null, null, null);
             size++;
         } else {
-            merge(new LeftSidedHeap<T>(keyValuePair));
+            merge(new LeftSidedHeap<>(keyValuePair));
         }
     }
 
@@ -57,7 +57,7 @@ public class LeftSidedHeap<T> {
         if (size() == 0) {
             throw new IllegalStateException("Attempt to remove elements from empty heap!");
         } else {
-            retVal = new LinkedList<SimpleEntry<Integer, T>>();
+            retVal = new LinkedList<>();
             SimpleEntry<Integer, T> removeVal = remove(key);
             while (removeVal != null) {
                 retVal.add(removeVal);

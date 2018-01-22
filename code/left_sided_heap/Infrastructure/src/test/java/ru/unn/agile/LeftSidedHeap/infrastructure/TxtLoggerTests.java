@@ -2,60 +2,56 @@ package ru.unn.agile.LeftSidedHeap.infrastructure;
 
 import org.junit.Before;
 import org.junit.Test;
-//import static org.junit.Assert.fail;
-/*
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
-*/
 import static junit.framework.TestCase.assertNotNull;
-/*import static org.hamcrest.MatcherAssert.assertThat;
-import static ru.unn.agile.LeftSidedHeap.infrastructure.RegexMatcher.matchesPattern;*/
 
 public class TxtLoggerTests {
-//    private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
-    private TxtLogger txtLogger;
-
     @Before
     public void setUp() {
-        txtLogger = new TxtLogger(); // FILENAME
+        txtLogger = new TxtLogger(LOGGERFILENAME);
     }
 
     @Test
-    public void canCreateLoggerWithFileName() {
+    public void canConstructLoggerWithFileName() {
         assertNotNull(txtLogger);
     }
 
-/*    @Test
-    public void canCreateLogFileOnDisk() {
+    @Test
+    public void canCreateLogFile() {
         try {
-            new BufferedReader(new FileReader(FILENAME));
+            new BufferedReader(new FileReader(LOGGERFILENAME));
         } catch (FileNotFoundException e) {
-            fail("File " + FILENAME + " wasn't found!");
+            fail("File " + LOGGERFILENAME + " wasn't found!");
         }
     }
 
     @Test
     public void canWriteLogMessage() {
-        String testMessage = "Test message";
+        String testMessage = "Log message";
 
-        txtLogger.log(testMessage);
+        txtLogger.addInfo(testMessage);
 
-        String message = txtLogger.getLog().get(0);
-        assertThat(message, matchesPattern(".*" + testMessage + "$"));
+        String message = txtLogger.getFullLog().get(0);
+        assertTrue(message.matches(".*" + testMessage + "$"));
     }
 
     @Test
     public void canWriteSeveralLogMessage() {
-        String[] messages = {"Test message 1", "Test message 2"};
+        String[] messages = {"Log message 1", "Log message 2"};
 
-        txtLogger.log(messages[0]);
-        txtLogger.log(messages[1]);
+        txtLogger.addInfo(messages[0]);
+        txtLogger.addInfo(messages[1]);
 
-        List<String> actualMessages = txtLogger.getLog();
-        for (int i = 0; i < actualMessages.size(); i++) {
-            assertThat(actualMessages.get(i), matchesPattern(".*" + messages[i] + "$"));
+        List<String> actualLog = txtLogger.getFullLog();
+        for (int i = 0; i < actualLog.size(); i++) {
+            assertTrue(actualLog.get(i).matches(".*" + messages[i] + "$"));
         }
     }
 
@@ -63,9 +59,32 @@ public class TxtLoggerTests {
     public void doesLogContainDateAndTime() {
         String testMessage = "Test message";
 
-        txtLogger.log(testMessage);
+        txtLogger.addInfo(testMessage);
 
-        String message = txtLogger.getLog().get(0);
-        assertThat(message, matchesPattern("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*"));
-    }*/
+        String message = txtLogger.getFullLog().get(0);
+        String dateRegex = "^(\\d{4})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
+        String timeRegex = "(0?[0-9]|(1?[0-9]|2[0-3])):([0-5][0-9]):([0-5][0-9])";
+        assertTrue(message.matches(dateRegex + " " + timeRegex + " > .*"));
+    }
+
+    @Test
+    public void notFailConstructTxtLoggerWithBadFileName() {
+        new TxtLogger(FILENAME_ACCESS_DENIED);
+    }
+
+    @Test
+    public void notFailLoggingWithNullPointerWriter() {
+        TxtLogger badLogger = new TxtLogger(FILENAME_ACCESS_DENIED);
+        badLogger.addInfo("");
+    }
+
+    @Test
+    public void notFailGetFullLogWithNullPointerWriter() {
+        TxtLogger badLogger = new TxtLogger(FILENAME_ACCESS_DENIED);
+        badLogger.getFullLog();
+    }
+
+    private static final String FILENAME_ACCESS_DENIED = "";
+    private static final String LOGGERFILENAME = "./TxtLogger_Tests-lab3.log";
+    private TxtLogger txtLogger;
 }
