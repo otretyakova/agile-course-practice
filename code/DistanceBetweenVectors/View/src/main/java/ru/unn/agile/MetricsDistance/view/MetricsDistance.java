@@ -14,8 +14,7 @@ import ru.unn.agile.MetricsDistance.Infrastructure.CurrentDate;
 public class MetricsDistance {
     @FXML
     void initialize() {
-        final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
-        String currentDate = CurrentDate.getCurrentDate(dateFormat);
+        String currentDate = CurrentDate.getCurrentDate(DATE_FORMAT);
         viewModel.setLogger(new TxtLogger("./TxtLogger-lab3-" + currentDate + ".log"));
 
         final ChangeListener<Boolean> focusChangeListener = (observable, oldValue, newValue)
@@ -59,4 +58,6 @@ public class MetricsDistance {
     private ComboBox<Metric> cbMetric;
     @FXML
     private Button btnCalc;
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd-HH-mm-ss";
 }

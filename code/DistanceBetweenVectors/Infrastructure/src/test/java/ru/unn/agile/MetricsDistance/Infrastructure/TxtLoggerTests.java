@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 public class TxtLoggerTests {
     @Before
     public void setUp() {
-        txtLogger = new TxtLogger(FILENAME);
+        txtLogger = new TxtLogger(FILE_NAME);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class TxtLoggerTests {
     @Test
     public void canCreateLogFileOnDisk() {
         try {
-            new BufferedReader(new FileReader(FILENAME));
+            new BufferedReader(new FileReader(FILE_NAME));
         } catch (FileNotFoundException e) {
             fail("File wasn't found!");
         }
@@ -93,6 +93,6 @@ public class TxtLoggerTests {
         assertTrue(message.matches(regexWithDateAndTime));
     }
 
-    private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
+    private static final String FILE_NAME = "./TxtLogger_Tests-lab3.log";
     private TxtLogger txtLogger;
 }

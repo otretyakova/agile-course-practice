@@ -8,11 +8,10 @@ import java.io.BufferedWriter;
 import java.util.List;
 import java.util.ArrayList;
 
-import ru.unn.agile.MetricsDistance.viewmodel.ILogger;
-
-public class TxtLogger implements ILogger {
+public class TxtLogger extends AbstractLogger {
 
     public TxtLogger(final String filename) {
+        super();
         this.filename = filename;
 
         BufferedWriter logWriter = null;
@@ -32,17 +31,12 @@ public class TxtLogger implements ILogger {
     @Override
     public void log(final String s, final String logTag) {
         try {
-            String message = AbstractLogger.prepareMassageForLog(s, logTag);
+            String message = this.prepareMassageForLog(s, logTag);
             writer.write(message);
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @Override
-    public void log(final String s) {
-        this.log(s, "");
     }
 
     @Override
