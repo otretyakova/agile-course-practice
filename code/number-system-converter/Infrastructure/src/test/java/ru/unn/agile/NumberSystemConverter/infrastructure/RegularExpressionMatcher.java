@@ -19,7 +19,6 @@ public class RegularExpressionMatcher extends BaseMatcher {
     }
 
     public static Matcher<? super String> getMatcher(final String regularExpression) {
-        //NOTE: this ugly cast is needed to workaround 'unchecked' Java warning
         @SuppressWarnings("unchecked")
         Matcher<? super String> casted =
             (Matcher<? super String>) new RegularExpressionMatcher(regularExpression);

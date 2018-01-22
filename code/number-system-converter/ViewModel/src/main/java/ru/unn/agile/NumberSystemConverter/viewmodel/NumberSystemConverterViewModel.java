@@ -1,5 +1,8 @@
 package ru.unn.agile.NumberSystemConverter.viewmodel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.Property;
 import javafx.beans.property.StringProperty;
@@ -8,17 +11,14 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemConverter;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NumberSystemConverterViewModel {
 
@@ -68,6 +68,7 @@ public class NumberSystemConverterViewModel {
     public StringProperty logsProperty() {
         return logs;
     }
+
     public final String getLogs() {
         return logs.get();
     }
@@ -83,7 +84,6 @@ public class NumberSystemConverterViewModel {
         return logger.getLog();
     }
 
-    // FXML needs default c-tor for binding
     public NumberSystemConverterViewModel() {
         init();
     }
@@ -94,25 +94,34 @@ public class NumberSystemConverterViewModel {
     }
 
     public void convert() {
-        if (this.isConversionEnabled()) {
-            try {
-                String result = NumberSystemConverter.convert(this.numberInBaseNumberSystem.get(),
-                        this.baseNumberSystem.get(), this.targetNumberSystem.get());
-                this.numberInTargetNumberSystem.set(result);
-            } catch (NumberFormatException numberFormatException) {
-                this.errorMessage.set("Input contains invalid symbols for this number system");
-                this.errorMessageIsShown.set(true);
-            }
-
-            String message = LogMessages.CONVERT_WAS_PRESSED + "Arguments: NumberInBaseSystem = "
-                + numberInBaseNumberSystem.get()
-                + "; BaseNumberSystem = "
-                + baseNumberSystem.get().toString()
-                + "; TargetNumberSystem = "
-                + targetNumberSystem.get().toString();
-            logger.log(message);
-            updateLogs();
+        if (!isConversionEnabled()) {
+            return;
         }
+
+        try {
+            String result = NumberSystemConverter.convert(this.numberInBaseNumberSystem.get(),
+                this.baseNumberSystem.get(), this.targetNumberSystem.get());
+            this.numberInTargetNumberSystem.set(result);
+        } catch (NumberFormatException numberFormatException) {
+            this.errorMessage.set("Input contains invalid symbols for this number system");
+            this.errorMessageIsShown.set(true);
+
+            logger.log("Error: Input contains invalid symbols");
+            updateLogs();
+
+            return;
+        }
+
+        StringBuilder message = new StringBuilder(LogMessages.CONVERT_WAS_PRESSED);
+        message.append("Arguments: NumberInBaseSystem = ")
+               .append(numberInBaseNumberSystem.get())
+               .append("; BaseNumberSystem = ")
+               .append(baseNumberSystem.get().toString())
+               .append("; TargetNumberSystem = ")
+               .append(targetNumberSystem.get().toString());
+
+        logger.log(message.toString());
+        updateLogs();
     }
 
     public void closeErrorDialog() {
@@ -147,21 +156,26 @@ public class NumberSystemConverterViewModel {
             return;
         }
 
-        for (PropertyChangeListener listener : valueChangedListeners) {
-            if (listener.isChanged()) {
-                String message =
-                    LogMessages.EDITING_FINISHED
-                        + "Input arguments are: ["
-                        + numberInBaseNumberSystemProperty().get() + "; "
-                        + baseNumberSystemProperty().get() + "; "
-                        + targetNumberSystemProperty().get() + "]";
-                logger.log(message);
-                updateLogs();
+        PropertyChangeListener listener = valueChangedListeners.stream()
+            .filter(PropertyChangeListener::isChanged).findFirst().orElse(null);
 
-                listener.cache();
-                break;
-            }
+        if (listener == null) {
+            return;
         }
+
+        StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+        message.append("Input arguments are: [")
+               .append(numberInBaseNumberSystemProperty().get())
+               .append("; ")
+               .append(baseNumberSystemProperty().get())
+               .append("; ")
+               .append(targetNumberSystemProperty().get())
+               .append("]");
+
+        logger.log(message.toString());
+        updateLogs();
+
+        listener.cache();
     }
 
     private void init() {
@@ -175,16 +189,7 @@ public class NumberSystemConverterViewModel {
         this.bindConversionAvailability();
 
         valueChangedListeners = new ArrayList<>();
-        final List<Property> properties = new ArrayList<Property>() {{
-            add(numberInBaseNumberSystem);
-            add(numberInTargetNumberSystem);
-            add(baseNumberSystem);
-            add(targetNumberSystem);
-        }};
-
-        for (Property property : properties) {
-            addListener(property);
-        }
+        addListener(numberInBaseNumberSystem);
     }
 
     @SuppressWarnings (value = "unchecked")
@@ -205,9 +210,7 @@ public class NumberSystemConverterViewModel {
 
     private void bindConversionAvailability() {
         BooleanBinding couldConvert = new BooleanBinding() {
-            {
-                super.bind(numberInBaseNumberSystem);
-            }
+            { super.bind(numberInBaseNumberSystem); }
 
             @Override
             protected boolean computeValue() {
@@ -218,8 +221,6 @@ public class NumberSystemConverterViewModel {
     }
 
     private class PropertyChangeListener<T> implements ChangeListener<T> {
-        private String prevValue = "";
-        private String curValue = "";
         @Override
         public void changed(final ObservableValue<? extends T> observable,
                             final T oldValue, final T newValue) {
@@ -228,12 +229,16 @@ public class NumberSystemConverterViewModel {
             }
             curValue = String.valueOf(newValue);
         }
-        public boolean isChanged() {
+
+        private boolean isChanged() {
             return !prevValue.equals(curValue);
         }
-        public void cache() {
+        private void cache() {
             prevValue = curValue;
         }
+
+        private String prevValue = "";
+        private String curValue = "";
     }
 
     private final StringProperty numberInBaseNumberSystem = new SimpleStringProperty();
@@ -241,9 +246,7 @@ public class NumberSystemConverterViewModel {
     private final StringProperty numberInTargetNumberSystem = new SimpleStringProperty();
 
     private final ObjectProperty<ObservableList<NumberSystemBase>> availableNumberSystems =
-            new SimpleObjectProperty<>(
-                    FXCollections.observableArrayList(NumberSystemBase.values())
-            );
+        new SimpleObjectProperty<>(FXCollections.observableArrayList(NumberSystemBase.values()));
 
     private final ObjectProperty<NumberSystemBase> baseNumberSystem =
             new SimpleObjectProperty<>();
@@ -269,5 +272,7 @@ final class LogMessages {
     public static final String TARGET_SYSTEM_WAS_CHANGED = "Target system was changed to ";
     public static final String EDITING_FINISHED = "Updated input. ";
 
-    private LogMessages() { }
+    private LogMessages() {
+
+    }
 }

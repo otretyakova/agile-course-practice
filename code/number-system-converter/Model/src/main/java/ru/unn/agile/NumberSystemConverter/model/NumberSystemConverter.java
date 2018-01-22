@@ -1,6 +1,5 @@
 package ru.unn.agile.NumberSystemConverter.model;
 
-
 import java.math.BigInteger;
 import java.util.Locale;
 

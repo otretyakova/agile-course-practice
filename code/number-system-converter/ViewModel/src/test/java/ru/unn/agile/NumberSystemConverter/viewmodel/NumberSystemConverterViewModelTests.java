@@ -1,17 +1,19 @@
 package ru.unn.agile.NumberSystemConverter.viewmodel;
 
+import java.util.List;
+
+import javafx.collections.ObservableList;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
-
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+
+import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
 
 public class NumberSystemConverterViewModelTests {
     public void setExternalViewModel(final NumberSystemConverterViewModel viewModel) {
@@ -283,16 +285,16 @@ public class NumberSystemConverterViewModelTests {
         assertTrue(this.viewModel.getErrorMessage().length() > 0);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void viewModelConstructorThrowsExceptionWithNullLogger() {
-        try {
-            new NumberSystemConverterViewModel(null);
-            fail("Exception wasn't thrown");
-        } catch (IllegalArgumentException illegalArgumentException) {
-            assertEquals("Logger parameter can not be null", illegalArgumentException.getMessage());
-        } catch (Exception exception) {
-            fail("Invalid exception type");
-        }
+        new NumberSystemConverterViewModel(null);
+    }
+
+    @Test
+    public void canCreateViewModelWithEmptyConstructor() {
+        NumberSystemConverterViewModel viewModelTest = new NumberSystemConverterViewModel();
+
+        assertNotNull(viewModelTest);
     }
 
     @Test
@@ -310,6 +312,40 @@ public class NumberSystemConverterViewModelTests {
 
         String message = viewModel.getLog().get(0);
         assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void getLogsEqualsLogsProperty() {
+        setInputData();
+        this.viewModel.convert();
+
+        String logsProperty = viewModel.logsProperty().get();
+        String logs = viewModel.getLogs();
+
+        assertEquals(logsProperty, logs);
+    }
+
+    @Test
+    public void getAvailableNumberSystemsEqualsAvailableNumberSystemsProperty() {
+        setInputData();
+        this.viewModel.convert();
+
+        ObservableList<NumberSystemBase> fromGet = this.viewModel.getAvailableNumberSystems();
+        ObservableList<NumberSystemBase> fromProperty =
+            this.viewModel.availableNumberSystemsProperty().get();
+
+        assertEquals(fromGet, fromProperty);
+    }
+
+    @Test
+    public void isConversionEnabledEqualsConversionEnabledProperty() {
+        setInputData();
+        this.viewModel.convert();
+
+        Boolean conversionEnabledProperty = viewModel.conversionEnabledProperty().get();
+        Boolean isConversionEnabled = viewModel.isConversionEnabled();
+
+        assertEquals(conversionEnabledProperty, isConversionEnabled);
     }
 
     @Test
@@ -333,12 +369,13 @@ public class NumberSystemConverterViewModelTests {
         viewModel.convert();
 
         String message = viewModel.getLog().get(0);
-        assertTrue(message.matches(".*Arguments"
-                + ": NumberInBaseSystem = " + viewModel.numberInBaseNumberSystemProperty().get()
-                + "; BaseNumberSystem = " + viewModel.baseNumberSystemProperty().get()
-                + "; TargetNumberSystem = " + viewModel.targetNumberSystemProperty().get()
-                + ".*"
-        ));
+        StringBuilder pattern = new StringBuilder(".*Arguments: NumberInBaseSystem = ");
+        pattern.append(viewModel.numberInBaseNumberSystemProperty().get())
+               .append("; BaseNumberSystem = ")
+               .append(viewModel.baseNumberSystemProperty().get())
+               .append("; TargetNumberSystem = ")
+               .append(viewModel.targetNumberSystemProperty().get());
+        assertTrue(message.matches(pattern.toString()));
     }
 
     @Test
@@ -395,17 +432,22 @@ public class NumberSystemConverterViewModelTests {
     }
 
     @Test
-    public void argumentsAreCorrectlyLogged() {
+    public void argumentsAreCorrectlyLoggedAfterFocusChanged() {
         setInputData();
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
         String message = viewModel.getLog().get(0);
-        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
-                + "Input arguments are: \\["
-                + viewModel.numberInBaseNumberSystemProperty().get() + "; "
-                + viewModel.baseNumberSystemProperty().get() + "; "
-                + viewModel.targetNumberSystemProperty().get() + "]"));
+        StringBuilder pattern = new StringBuilder(".*");
+        pattern.append(LogMessages.EDITING_FINISHED)
+               .append("Input arguments are: \\[")
+               .append(viewModel.numberInBaseNumberSystemProperty().get())
+               .append("; ")
+               .append(viewModel.baseNumberSystemProperty().get())
+               .append("; ")
+               .append(viewModel.targetNumberSystemProperty().get())
+               .append("\\]");
+        assertTrue(message.matches(pattern.toString()));
     }
 
     @Test
@@ -416,13 +458,26 @@ public class NumberSystemConverterViewModelTests {
     }
 
     @Test
-    public void doNotLogSameParametersTwiceWithPartialInput() {
+    public void doNotLogSameNumberInBaseNumberSystemTwiceWithPartialInput() {
         viewModel.numberInBaseNumberSystemProperty().set("26");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
         viewModel.numberInBaseNumberSystemProperty().set("26");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
         assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void doNotLogSameArgumentsAfterSeveralFocusChanged() {
+        viewModel.numberInBaseNumberSystemProperty().set("12345");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.convert();
+        viewModel.numberInBaseNumberSystemProperty().set("123456");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
+
+        assertEquals(3, viewModel.getLog().size());
     }
 
     private void setInputData() {

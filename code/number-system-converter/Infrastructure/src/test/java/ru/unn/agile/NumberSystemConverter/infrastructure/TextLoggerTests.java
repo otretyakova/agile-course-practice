@@ -1,16 +1,19 @@
 package ru.unn.agile.NumberSystemConverter.infrastructure;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.fail;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import static junit.framework.TestCase.assertNotNull;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
+
 import static ru.unn.agile.NumberSystemConverter.infrastructure.RegularExpressionMatcher.getMatcher;
 
 public class TextLoggerTests {
@@ -64,8 +67,17 @@ public class TextLoggerTests {
 
         logger.log(message);
 
-        String log = logger.getLog().get(0);
-        assertThat(log, getMatcher("^\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}:\\d{2}: .*"));
+        assertThat(logger.getLog().get(0), getMatcher(DATE_FORMAT));
+    }
+
+    @Test
+    public void doesLogContainTag() {
+        String message = "Message";
+        String tag = "Tag";
+
+        logger.log(message, tag);
+
+        assertThat(logger.getLog().get(0), getMatcher(tag + ".*$"));
     }
 
     @Test
@@ -75,12 +87,12 @@ public class TextLoggerTests {
         logger.log(messages[0]);
         logger.log(messages[1]);
 
-        String dateFormat = "^\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}:\\d{2}: .*";
         for (String actualMessage : logger.getLog()) {
-            assertThat(actualMessage, getMatcher(dateFormat));
+            assertThat(actualMessage, getMatcher(DATE_FORMAT));
         }
     }
 
     private static final String FILE_NAME = "./TextLogger_Tests_lab3.log";
+    private static final String DATE_FORMAT = "^\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}:\\d{2}: .*";
     private TextLogger logger;
 }

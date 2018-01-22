@@ -1,37 +1,34 @@
 package ru.unn.agile.NumberSystemConverter.infrastructure;
 
-import ru.unn.agile.NumberSystemConverter.viewmodel.ILogger;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
-public class TextLogger implements ILogger {
+public class TextLogger extends AbstractLogger {
     public TextLogger(final String fileName) {
+        super();
+
         this.fileName = fileName;
 
-        FileWriter fileWriter = null;
+        BufferedWriter textLoggerWriter = null;
         try {
-            fileWriter = new FileWriter(fileName);
+            textLoggerWriter = new BufferedWriter(new FileWriter(fileName));
         } catch (IOException exception) {
             exception.printStackTrace();
         }
 
-        if (fileWriter != null) {
-            writer = new BufferedWriter(fileWriter);
-        } else {
-            writer = null;
-        }
+        writer = textLoggerWriter;
     }
 
     @Override
-    public void log(final String string) {
+    public void log(final String message, final String tag) {
         try {
-            writer.write(getCurrentTime() + ": " + string);
-            writer.newLine();
+            writer.write(this.prepare(message, tag));
             writer.flush();
         } catch (IOException exception) {
             System.err.println(exception.getMessage());
@@ -40,40 +37,23 @@ public class TextLogger implements ILogger {
 
     @Override
     public List<String> getLog() {
-        FileReader fileReader = null;
+        BufferedReader reader;
+        ArrayList<String> logs = new ArrayList<>();
         try {
-            fileReader = new FileReader(fileName);
-        } catch (FileNotFoundException exception) {
-            System.err.println(exception.getMessage());
-        }
-
-        ArrayList<String> log = new ArrayList<>();
-
-        if (fileReader == null) {
-            return log;
-        }
-
-        BufferedReader reader = new BufferedReader(fileReader);
-        try {
+            reader = new BufferedReader(new FileReader(fileName));
             String line = reader.readLine();
 
             while (line != null) {
-                log.add(line);
+                logs.add(line);
                 line = reader.readLine();
             }
         } catch (IOException exception) {
             System.err.println(exception.getMessage());
         }
 
-        return log;
+        return logs;
     }
 
-    private static String getCurrentTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
-        return dateFormat.format(Calendar.getInstance().getTime());
-    }
-
-    private static final String DATE_FORMAT = "dd.MM.yyyy HH:mm:ss";
     private final BufferedWriter writer;
     private final String fileName;
 }
