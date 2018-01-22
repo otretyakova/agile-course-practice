@@ -25,3 +25,5 @@
 <!-- LINKS -->
 
 [mortgage]: https://ru.wikipedia.org/wiki/Ипотека
+
+[mortgage]: https://ru.wikipedia.org/wiki/Ипотека
