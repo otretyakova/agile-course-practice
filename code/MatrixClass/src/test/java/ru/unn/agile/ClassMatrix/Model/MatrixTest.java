@@ -5,13 +5,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 
 public class MatrixTest {
 
     @Test
-    public void whenMatrixNull() {
+    public void canNotCreateNullMatrix() {
         try {
             Matrix testMatrix = new Matrix(null);
             Assert.fail();
@@ -20,19 +19,18 @@ public class MatrixTest {
     }
 
     @Test
-    public void whenMatrix2x2IsCreatedSuccessful() {
-        int[][] array = {{1, 2},
+    public void canCreateSquareMatrix() {
+        float[][] array = {{1, 2},
                 {3, 5}
         };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertTrue(testMatrix.getNumberOfColumns() == 2);
-        assertTrue(testMatrix.getNumberOfRows() == 2);
+        Matrix testMatrix = new Matrix(array);
+        assertTrue(testMatrix.getNumberOfColumns() == testMatrix.getNumberOfRows());
     }
 
     @Test
-    public void whenMatrixWithWrongRowsAndColumns() {
-        int[][] array = {{1, 2},
+    public void canCreateMatrixAsArray() {
+        float[][] array = {{1, 2},
                 {3, 5, 3},
                 {5}
         };
@@ -45,133 +43,145 @@ public class MatrixTest {
     }
 
     @Test
-    public void whenMatrix2x2WhenSomeIntNumbers() {
-        int[][] array = {{1, 2},
+    public void canFillMatrix2x2() {
+        Matrix testMatrix = new Matrix(2, 2);
+
+        testMatrix.set(0, 0, 2);
+        testMatrix.set(0, 1, 3);
+        testMatrix.set(1, 0, 3);
+        testMatrix.set(1, 1, 5);
+
+        float[][] array = {{2, 3},
                 {3, 5}
         };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertArrayEquals(testMatrix.toArray(), array);
-    }
-
-    @Test
-    public void whenMatrix2x2IsQuadriq() {
-        int[][] array = {{1, 2},
-                {3, 5}
-        };
-
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertTrue(testMatrix.isQuadric());
-    }
-
-
-    @Test
-    public void whenMatrix2x3NotQuadriq() {
-        int[][] array = {{1, 2, 3},
-                {3, 5, 9}
-        };
-
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertTrue(!testMatrix.isQuadric());
-    }
-
-
-    @Test
-    public void whenMatrix3x2NotQuadriq() {
-        int[][] array = {{1, 2},
-                {3, 5},
-                {1, 5}
-        };
-
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertFalse(testMatrix.isQuadric());
-    }
-
-    @Test
-    public void whenInitializationMatrix3x3SomeIntNumbersIsCorrect() {
-        int[][] array = {{1, 2, 3},
-                {3, 5, 4},
-                {1, 5, 4}
-        };
-
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
         assertArrayEquals(array, testMatrix.toArray());
     }
 
     @Test
-    public void whenInitializationMatrix3x2SomeIntNumbersIsCorrect() {
-        int[][] array1 = {{1, 2},
-                {3, 5},
-                {5, 5}
+    public void canFillMatrix2x3() {
+        Matrix testMatrix = new Matrix(2, 3);
+
+        testMatrix.set(0, 0, 2);
+        testMatrix.set(0, 1, 3);
+        testMatrix.set(0, 2, 6);
+        testMatrix.set(1, 0, 3);
+        testMatrix.set(1, 1, 5);
+        testMatrix.set(1, 2, 2);
+
+        float[][] array = {{2, 3, 6},
+                {3, 5, 2}
         };
 
-        int[][] array2 = {{1, 2},
-                {3, 5},
-                {5, 5}
-        };
-
-        Matrix testMatrix = getTestMatrixFromValidArray(array1);
-        assertArrayEquals(testMatrix.toArray(), array2);
+        assertArrayEquals(array, testMatrix.toArray());
     }
 
     @Test
-    public void whenMatrixWith1ElementCalculateDeterminant() {
-        int[][] array = {{777}};
+    public void canCreateSquareMatrix2x2AsArraySuccessful() {
+        float[][] array = {{1.3f, 2.3f},
+                {3f, 5f}
+        };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertEquals(777, testMatrix.calculateDeterminant());
+        Matrix testMatrix = new Matrix(array);
+        assertArrayEquals(array, testMatrix.toArray());
     }
 
     @Test
-    public void whenCalculateDeterminantIntMatrix2x2WithResult18() {
-        int[][] array = {{6, 4},
-                {3, 5}
+    public void isSquareMatrixDeterminedAsSquare() {
+        float[][] array = {{1f, 2f},
+                {3f, 5f}
         };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertEquals(18, testMatrix.calculateDeterminant());
+        Matrix testMatrix = new Matrix(array);
+        assertTrue(testMatrix.isSquareMatrix());
+    }
+
+
+    @Test
+    public void isNotSquareMatrixDeterminedAsNotSquare() {
+        float[][] array = {{1f, 2f, 3f},
+                {3f, 5f, 9f}
+        };
+
+        Matrix testMatrix = new Matrix(array);
+        assertTrue(!testMatrix.isSquareMatrix());
     }
 
     @Test
-    public void whenTrueCalculateDeterminantIntMatrix3x2() {
-        int[][] array = {{6, 4},
-                {3, 5},
-                {6, 5}
+    public void canCreateSquareMatrixAsArray3x3Successful() {
+        float[][] array = {{1f, 2f, 3f},
+                {3f, 5f, 4f},
+                {1f, 5f, 4f}
         };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
+        Matrix testMatrix = new Matrix(array);
+        assertArrayEquals(array, testMatrix.toArray());
+    }
+
+    @Test
+    public void canCreateMatrixAsArraySuccessful() {
+        float[][] arrayForCreateMatrix = {{1f, 2f},
+                {3f, 5f},
+                {5f, 5f}
+        };
+
+        float[][] arrayForComparison = {{1f, 2f},
+                {3f, 5f},
+                {5f, 5f}
+        };
+
+        Matrix testMatrix = new Matrix(arrayForComparison);
+        assertArrayEquals(testMatrix.toArray(), arrayForCreateMatrix);
+    }
+
+    @Test
+    public void canCalculateDeterminantForMatrix1x1() {
+        float[][] array = {{777f}};
+
+        Matrix testMatrix = new Matrix(array);
+        assertEquals(777f, testMatrix.calculateDeterminant(), 1.0e-4);
+    }
+
+    @Test
+    public void canCalculateDeteriminantForSquareMatrix2x2Expects18() {
+        float[][] array = {{6.1f, 4.5f},
+                {3.7f, 5.2f}
+        };
+
+        Matrix testMatrix = new Matrix(array);
+        assertEquals(15.07f, testMatrix.calculateDeterminant(), 1.0e-4);
+    }
+
+    @Test
+    public void canNotCalculateDeterminantOfANonSquareMatrix() {
+        float[][] array = {{6.2f, 4.1f},
+                {3.1f, 5.3f},
+                {6.4f, 5.2f}
+        };
+
+        Matrix testMatrix = new Matrix(array);
         assertTrue(testMatrix.calculateDeterminant() == 0);
     }
 
     @Test
-    public void whenCalculateDeterminantIntMatrix3x3WithResult1() {
-        int[][] array = {{1, 0, 1},
-                {0, 1, 0},
-                {0, 0, 1},
+    public void canCalculateDeteriminantForMatrix3x3Expects1() {
+        float[][] array = {{1f, 0f, 1f},
+                {0f, 1f, 0f},
+                {0f, 0f, 1f},
         };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertEquals(1, testMatrix.calculateDeterminant());
+        Matrix testMatrix = new Matrix(array);
+        assertEquals(1f, testMatrix.calculateDeterminant(), 1.0e-4);
     }
 
     @Test
-    public void whenCalculateDeterminantIntDegenerateMatrix3x3WithResult1() {
-        int[][] array = {{1, 2, 4},
-                {1, 1, 1},
-                {1, 1, 1},
+    public void canCalculateDeteriminantForMatrix3x3Expects0() {
+        float[][] array = {{1f, 2f, 4f},
+                {1f, 1f, 1f},
+                {1f, 1f, 1f},
         };
 
-        Matrix testMatrix = getTestMatrixFromValidArray(array);
-        assertEquals(testMatrix.calculateDeterminant(), 0);
-    }
-
-    private Matrix getTestMatrixFromValidArray(final int[][] array) {
-        Matrix testMatrix = null;
-        try {
-            testMatrix = new Matrix(array);
-        } catch (IllegalStateException ex) {
-            Assert.fail();
-        }
-        return testMatrix;
+        Matrix testMatrix = new Matrix(array);
+        assertEquals(0f, testMatrix.calculateDeterminant(), 1.0e-4);
     }
 }
