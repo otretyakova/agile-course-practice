@@ -15,7 +15,7 @@ public class BooksTableTest {
     @BeforeClass
     public static void setUpBooks() {
         books = new HashSet<Book>();
-        books.add(new Book("Harry Potter And The Chamber of secrets", 8.0, UUID.randomUUID()));
+        books.add(new Book("Harry Potter And the Chamber of secrets", 8.0, UUID.randomUUID()));
         books.add(new Book("Harry Potter and the prisoner of Azkaban", 8.0, UUID.randomUUID()));
         books.add(new Book("Harry Potter and the Philosopher's Stone", 8.0, UUID.randomUUID()));
         books.add(new Book("Harry Potter and the Order of the Phoenix", 8.0, UUID.randomUUID()));
@@ -32,6 +32,21 @@ public class BooksTableTest {
         BooksTable booksTable = new BooksTable();
 
         assertNotNull(booksTable);
+    }
+
+    @Test
+    public void getBooksReturnEmptyArrayWhenCreatedEmptyBooksTable() {
+        BooksTable booksTable = new BooksTable();
+
+        assertEquals(booksTable.getBooks().length, 0);
+    }
+
+    @Test
+    public void canInitializeDefaultEmptyBooksTable() {
+        BooksTable booksTable = new BooksTable();
+        booksTable.defaultInitialization();
+
+        assertEquals(booksTable.getBooks().length, 5);
     }
 
     @Test

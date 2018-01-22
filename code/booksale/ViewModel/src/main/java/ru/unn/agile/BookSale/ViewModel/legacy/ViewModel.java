@@ -5,12 +5,12 @@ import ru.unn.agile.BookSale.Model.legacy.BooksTable;
 import ru.unn.agile.BookSale.Model.legacy.Order;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.UUID;
 
 public class ViewModel {
     public ViewModel() {
-        initializeBooksTable();
+        booksTable = new BooksTable();
+        booksTable.defaultInitialization();
         order = new Order(booksTable);
         updateOrderedBooksList();
         updateButtonActivityState();
@@ -77,17 +77,6 @@ public class ViewModel {
                 isDeleteBookFromOrderButtonEnabled = false;
             }
         }
-    }
-
-    private void initializeBooksTable() {
-        final double price = 8.0;
-        HashSet<Book> books = new HashSet<>();
-        books.add(new Book("Harry Potter and the Philosopher's Stone", price, UUID.randomUUID()));
-        books.add(new Book("Harry Potter And the Chamber of secrets", price, UUID.randomUUID()));
-        books.add(new Book("Harry Potter and the prisoner of Azkaban", price, UUID.randomUUID()));
-        books.add(new Book("Harry Potter and the Goblet of Fire", price, UUID.randomUUID()));
-        books.add(new Book("Harry Potter and the Order of the Phoenix", price, UUID.randomUUID()));
-        booksTable = new BooksTable(books);
     }
 
     private void calculateCost() {

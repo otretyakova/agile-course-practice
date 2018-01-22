@@ -2,14 +2,11 @@ package ru.unn.agile.BookSale.ViewModel.legacy;
 
 import ru.unn.agile.BookSale.Model.legacy.Book;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.After;
-import org.junit.AfterClass;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -17,21 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ViewModelTest {
-    @BeforeClass
-    public static void setUpClass() {
-        namesOfDefaultBooks = new ArrayList<String>();
-        namesOfDefaultBooks.add("Harry Potter and the Philosopher's Stone");
-        namesOfDefaultBooks.add("Harry Potter And the Chamber of secrets");
-        namesOfDefaultBooks.add("Harry Potter and the prisoner of Azkaban");
-        namesOfDefaultBooks.add("Harry Potter and the Goblet of Fire");
-        namesOfDefaultBooks.add("Harry Potter and the Order of the Phoenix");
-    }
-
-    @AfterClass
-    public static void cleanAll() {
-        namesOfDefaultBooks = null;
-    }
-
     @Before
     public void setUp() {
         viewModel = new ViewModel();
@@ -45,22 +27,6 @@ public class ViewModelTest {
     @Test
     public void viewModelCanBeCreated() {
         assertNotNull(viewModel);
-    }
-
-    @Test
-    public void defaultAvailableBooksListIsInitializedCorrectly() {
-        Book[] books = viewModel.getAvailableBooks();
-
-        assertTrue(namesOfDefaultBooks.contains(books[0].getName()));
-        assertTrue(namesOfDefaultBooks.contains(books[1].getName()));
-        assertTrue(namesOfDefaultBooks.contains(books[2].getName()));
-        assertTrue(namesOfDefaultBooks.contains(books[3].getName()));
-        assertTrue(namesOfDefaultBooks.contains(books[4].getName()));
-        assertEquals(books[0].getPrice(), DEFAULT_PRICE, ERROR);
-        assertEquals(books[1].getPrice(), DEFAULT_PRICE, ERROR);
-        assertEquals(books[2].getPrice(), DEFAULT_PRICE, ERROR);
-        assertEquals(books[3].getPrice(), DEFAULT_PRICE, ERROR);
-        assertEquals(books[4].getPrice(), DEFAULT_PRICE, ERROR);
     }
 
     @Test
@@ -188,7 +154,5 @@ public class ViewModelTest {
     }
 
     private ViewModel viewModel;
-    private static ArrayList<String> namesOfDefaultBooks;
-    private static final double DEFAULT_PRICE = 8.0;
     private static final double ERROR = 0.001;
 }
