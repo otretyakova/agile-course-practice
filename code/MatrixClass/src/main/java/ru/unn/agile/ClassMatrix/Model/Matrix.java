@@ -1,6 +1,6 @@
 package ru.unn.agile.ClassMatrix.Model;
 
-public class Matrix<T> {
+public class Matrix {
 
     public Matrix(final float[][] array) {
         if (array == null) {
