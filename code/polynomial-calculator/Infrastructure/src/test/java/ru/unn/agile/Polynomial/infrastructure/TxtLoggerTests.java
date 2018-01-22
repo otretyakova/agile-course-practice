@@ -20,11 +20,6 @@ public class TxtLoggerTests {
     }
 
     @Test
-    public void canCreateLoggerWithFileName() {
-        assertNotNull(txtLogger);
-    }
-
-    @Test
     public void canCreateLogFileOnDisk() {
         try {
             new BufferedReader(new FileReader(FILENAME));
@@ -34,13 +29,18 @@ public class TxtLoggerTests {
     }
 
     @Test
+    public void canCreateLoggerWithFileName() {
+        assertNotNull(txtLogger);
+    }
+
+    @Test
     public void canWriteLogMessage() {
         String testMessage = "Test message";
 
         txtLogger.addInfo(testMessage);
 
-        String message = txtLogger.getLog().get(0);
-        assertTrue(message.matches(".*" + testMessage + "$"));
+        String messageInLog = txtLogger.getLog().get(0);
+        assertTrue(messageInLog.matches(".*" + testMessage + "$"));
     }
 
     @Test
@@ -50,9 +50,9 @@ public class TxtLoggerTests {
         txtLogger.addInfo(messages[0]);
         txtLogger.addInfo(messages[1]);
 
-        List<String> actualMessages = txtLogger.getLog();
-        for (int i = 0; i < actualMessages.size(); i++) {
-            assertTrue(actualMessages.get(i).matches(".*" + messages[i] + "$"));
+        List<String> listLogger= txtLogger.getLog();
+        for (int i = 0; i < listLogger.size(); i++) {
+            assertTrue(listLogger.get(i).matches(".*" + messages[i] + "$"));
         }
     }
 
