@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 
 import static junit.framework.TestCase.assertNotNull;
-import static ru.unn.agile.StatisticalValues.infrastructure.RegexMatcher.matchesPattern;
+import static ru.unn.agile.StatisticalValues.infrastructure.RegularExpMatcher.matchesPattern;
 
 public class StatisticalLoggerTests {
     @Before

@@ -409,7 +409,7 @@ public class ViewModelTests {
 
     @Test
     public void logIsEmptyInTheBeginning() {
-        List<String> log = viewModel.getLogText();
+        List<String> log = viewModel.getLog();
 
         assertTrue(log.isEmpty());
     }
@@ -420,7 +420,7 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(getRefCalculateLog().toString()));
     }
 
@@ -432,7 +432,7 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(getRefCalculateLog().toString()));
     }
 
@@ -442,7 +442,7 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         StringBuilder reference = new StringBuilder(".*");
         reference.append(viewModel.getValues())
                  .append(".*");
@@ -455,16 +455,16 @@ public class ViewModelTests {
 
         viewModel.calculate();
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(".*Mean.*"));
     }
 
     @Test
-    public void canUsegetLogTexts() {
+    public void canUsegetLogs() {
         setInputData();
         viewModel.calculate();
 
-        String message = viewModel.getLogTexts();
+        String message = viewModel.getLogs();
         assertNotNull(message);
     }
 
@@ -475,7 +475,7 @@ public class ViewModelTests {
         viewModel.valuesProperty().set("1.0, 2.0, 3.0, 4.0");
         viewModel.calculate();
 
-        assertEquals(2, viewModel.getLogText().size());
+        assertEquals(2, viewModel.getLog().size());
     }
 
     @Test
@@ -486,7 +486,7 @@ public class ViewModelTests {
         viewModel.calculate();
         viewModel.calculate();
 
-        assertEquals(3, viewModel.getLogText().size());
+        assertEquals(3, viewModel.getLog().size());
     }
 
     @Test
@@ -495,7 +495,7 @@ public class ViewModelTests {
 
         viewModel.onStatisticChanged(Statistic.MEAN, Statistic.STD);
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         StringBuilder reference = new StringBuilder(".*");
         reference.append(LogMessages.OPERATION_WAS_CHANGED)
                  .append("Std.*");
@@ -507,7 +507,7 @@ public class ViewModelTests {
         viewModel.onStatisticChanged(Statistic.MEAN, Statistic.STD);
         viewModel.onStatisticChanged(Statistic.STD, Statistic.MODE);
 
-        assertEquals(2, viewModel.getLogText().size());
+        assertEquals(2, viewModel.getLog().size());
     }
 
     @Test
@@ -517,7 +517,7 @@ public class ViewModelTests {
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         StringBuilder reference = new StringBuilder(".*");
         reference.append(LogMessages.EDITING_FINISHED)
                  .append(correctInputArgument(viewModel.getValues()));
@@ -532,7 +532,7 @@ public class ViewModelTests {
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         StringBuilder reference = new StringBuilder(".*");
         reference.append(LogMessages.EDITING_FINISHED)
                  .append(correctInputWithOrder(viewModel.getValues(), viewModel.getOrder()));
@@ -547,7 +547,7 @@ public class ViewModelTests {
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         StringBuilder reference = new StringBuilder(".*");
         reference.append(LogMessages.EDITING_FINISHED)
                  .append(correctInputWithBias(viewModel.getValues(), viewModel.getBias()));
@@ -564,13 +564,13 @@ public class ViewModelTests {
         viewModel.orderProperty().set("2");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String message = viewModel.getLogText().get(1);
+        String message = viewModel.getLog().get(1);
         StringBuilder reference = new StringBuilder(".*");
         reference.append(LogMessages.EDITING_FINISHED)
                  .append(correctInputWithOrder(viewModel.getValues(), viewModel.getOrder()));
 
         assertTrue(message.matches(reference.toString()));
-        assertEquals(2, viewModel.getLogText().size());
+        assertEquals(2, viewModel.getLog().size());
     }
 
     @Test
@@ -579,7 +579,7 @@ public class ViewModelTests {
 
         viewModel.onStatisticChanged(Statistic.MEAN, Statistic.MEAN);
 
-        assertTrue(viewModel.getLogText().isEmpty());
+        assertTrue(viewModel.getLog().isEmpty());
     }
 
     @Test
@@ -599,7 +599,7 @@ public class ViewModelTests {
 
         viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
 
-        assertTrue(viewModel.getLogText().isEmpty());
+        assertTrue(viewModel.getLog().isEmpty());
     }
 
     @Test
@@ -611,7 +611,7 @@ public class ViewModelTests {
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String message = viewModel.getLogText().get(0);
+        String message = viewModel.getLog().get(0);
         StringBuilder reference = new StringBuilder(".*");
         String inValues = viewModel.getValues();
         boolean inBias = viewModel.getBias();
@@ -621,7 +621,7 @@ public class ViewModelTests {
                  .append(refInput);
 
         assertFalse(message.matches(reference.toString()));
-        assertEquals(1, viewModel.getLogText().size());
+        assertEquals(1, viewModel.getLog().size());
     }
 
     @Test
@@ -634,7 +634,7 @@ public class ViewModelTests {
         viewModel.onBiasChanged(false, true);
         viewModel.onBiasChanged(true, false);
 
-        assertEquals(2, viewModel.getLogText().size());
+        assertEquals(2, viewModel.getLog().size());
     }
 
     @Test
@@ -647,7 +647,7 @@ public class ViewModelTests {
         viewModel.orderProperty().set("2");
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        assertEquals(2, viewModel.getLogText().size());
+        assertEquals(2, viewModel.getLog().size());
     }
 
     private int getNumberOfOccurrences(final String src) {

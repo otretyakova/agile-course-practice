@@ -104,7 +104,7 @@ public class ViewModel {
         return logs;
     }
 
-    public final String getLogTexts() {
+    public final String getLogs() {
         return logs.get();
     }
 
@@ -123,9 +123,9 @@ public class ViewModel {
         }
 
         message.append(getInputsArguments())
-               .append(" Operation: ")
-               .append(getStatistic().toString())
-               .append(".");
+                .append(" Operation: ")
+                .append(getStatistic().toString())
+                .append(".");
         logger.addLogText(message.toString());
         updateLogs();
         printResult(value.print());
@@ -148,7 +148,7 @@ public class ViewModel {
         init();
     }
 
-    public final List<String> getLogText() {
+    public final List<String> getLog() {
         return logger.getLogText();
     }
 
@@ -184,8 +184,8 @@ public class ViewModel {
         }
 
         PropertyChangeListener changed = valueChangedListeners.stream()
-                                       .filter(PropertyChangeListener::isChanged)
-                                       .findFirst().orElse(null);
+                .filter(PropertyChangeListener::isChanged)
+                .findFirst().orElse(null);
         if (changed == null) {
             return;
         }
@@ -280,9 +280,9 @@ public class ViewModel {
 
     private final ObjectProperty<Statistic> statistic = new SimpleObjectProperty<>();
     private final ObjectProperty<ObservableList<Statistic>> availableStatistics =
-        new SimpleObjectProperty<>(
-            FXCollections.observableArrayList(Statistic.values())
-        );
+            new SimpleObjectProperty<>(
+                    FXCollections.observableArrayList(Statistic.values())
+            );
 
     private final StringProperty  order = new SimpleStringProperty();
     private final BooleanProperty orderVisibility = new SimpleBooleanProperty();
@@ -313,7 +313,7 @@ public class ViewModel {
         StringBuilder record = new StringBuilder("");
         for (String log : fullLog) {
             record.append(log)
-                  .append("\n");
+                    .append("\n");
         }
         logs.set(record.toString());
     }
