@@ -3,7 +3,7 @@ package ru.unn.agile.StatisticalValues.viewmodel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakeLogger implements ILogger {
+public class FakeStatisticalLogger implements ILogger {
     @Override
     public void addLogText(final String s) {
         log.add(s);

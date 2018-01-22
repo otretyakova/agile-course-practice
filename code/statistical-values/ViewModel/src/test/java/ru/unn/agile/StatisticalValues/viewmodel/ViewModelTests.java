@@ -13,19 +13,19 @@ import static org.junit.Assert.fail;
 import static org.junit.Assert.assertNotNull;
 
 public class ViewModelTests {
-    public void setExternalViewModel(final ViewModel viewModel) {
+    public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
     @Before
-    public void setUp() {
+    public void setUpStatisticalValuesTests() {
         if (viewModel == null) {
-            viewModel = new ViewModel(new FakeLogger());
+            viewModel = new ViewModel(new FakeStatisticalLogger());
         }
     }
 
     @After
-    public void tearDown() {
+    public void afterTests() {
         viewModel = null;
     }
 
