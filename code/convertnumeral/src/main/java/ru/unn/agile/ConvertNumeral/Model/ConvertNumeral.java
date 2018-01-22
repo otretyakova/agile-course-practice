@@ -1,8 +1,11 @@
 package ru.unn.agile.ConvertNumeral.Model;
 
 import java.security.InvalidParameterException;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class ConvertNumeral {
 
@@ -20,12 +23,11 @@ public class ConvertNumeral {
         String previousRoman = "";
         String currentRoman = "";
         int countOfRepeatedSymbols = 0;
-        int index = 0;
+        Iterator<String> romanIterator = ConformityRomanAndArabic.getRomanIterator();
 
         while (cutRomanNumber.length() > 0) {
             countOfRepeatedSymbols = 0;
-            currentRoman = ROMAN_NUMBERS[index];
-
+            currentRoman = romanIterator.next();
             while (isCurrentRomanEqualFirstOfString(currentRoman, cutRomanNumber)) {
                 countOfRepeatedSymbols++;
                 if (isCurrentValueNotAcceptable(previousRoman,
@@ -33,15 +35,11 @@ public class ConvertNumeral {
                         countOfRepeatedSymbols)) {
                     throw new InvalidParameterException("Incorrectly entered number!");
                 }
-
                 previousRoman = currentRoman;
                 cutRomanNumber = cutRomanNumber.substring(currentRoman.length());
-                returnArabicNumber += ARABIC_NUMBERS[index];
+                returnArabicNumber += ConformityRomanAndArabic.getArabicNumber(currentRoman);
             }
-
-            index++;
-
-            if (index >= ROMAN_NUMBERS.length && cutRomanNumber.length() != 0) {
+            if (!romanIterator.hasNext() && cutRomanNumber.length() != 0) {
                 throw new InvalidParameterException("Incorrectly entered number!");
             }
         }
@@ -64,33 +62,16 @@ public class ConvertNumeral {
             return false;
         }
         if (ROMAN_NUMBERS_CONTAINS_FIVE.contains(previous)) {
-            return (getDigitNumber(previous) == getDigitNumber(current)
-                    && !(ROMAN_NUMBERS_CONTAINS_ONE.contains(current)));
+            return isDigitsOfRomansEqual(previous, current)
+                    && !ROMAN_NUMBERS_CONTAINS_ONE.contains(current);
         }
-        return getDigitNumber(previous) == getDigitNumber(current);
+        return isDigitsOfRomansEqual(previous, current);
     }
 
-    private int getDigitNumber(final String roman) {
-        int digitNumber = 0;
-        for (int j = 0; j < ROMAN_NUMBERS.length; j++) {
-            if (ROMAN_NUMBERS[j].equals(roman)) {
-                digitNumber++;
-                if (j > MAX_INDEX_TEN) {
-                    return digitNumber;
-                }
-                digitNumber++;
-                if (j > MAX_INDEX_HUNDRED && j <= MAX_INDEX_TEN) {
-                    return digitNumber;
-                }
-                digitNumber++;
-                if (j > MAX_INDEX_THOUSAND && j <= MAX_INDEX_HUNDRED) {
-                    return digitNumber;
-                }
-                digitNumber++;
-                return digitNumber;
-            }
-        }
-        return -1;
+    private boolean isDigitsOfRomansEqual(final String firstRoman,
+                                          final String secondRoman) {
+        return NUMBER_OF_DIGIT_OF_ROMAN.get(firstRoman)
+                .equals(NUMBER_OF_DIGIT_OF_ROMAN.get(secondRoman));
     }
 
     private String getRomanNumber(final int arabicNumber) {
@@ -98,30 +79,44 @@ public class ConvertNumeral {
             throw new InvalidParameterException("Incorrectly entered number."
                     + " Exceeding the allowed values!");
         }
-        int index = 0;
         int arabicNumberUse = arabicNumber;
-        String returnRomanNumber = new String();
+        StringBuilder returnRomanNumber = new StringBuilder();
+        Iterator<Integer> arabicIterator = ConformityRomanAndArabic.getArabicIterator();
+        Integer currentArabic;
         while (arabicNumberUse > 0) {
-            while (ARABIC_NUMBERS[index] <= arabicNumberUse) {
-                returnRomanNumber += ROMAN_NUMBERS[index];
-                arabicNumberUse -= ARABIC_NUMBERS[index];
+            currentArabic = arabicIterator.next();
+            while (currentArabic <= arabicNumberUse) {
+                returnRomanNumber.append(ConformityRomanAndArabic.getRomanNumber(currentArabic));
+                arabicNumberUse -= currentArabic;
             }
-            index++;
         }
-        return returnRomanNumber;
+        return returnRomanNumber.toString();
     }
 
-    private static final Integer[] ARABIC_NUMBERS
-            = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-    private static final String[] ROMAN_NUMBERS
-            = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
     private static final List<String> ROMAN_NUMBERS_CONTAINS_FIVE
             = Arrays.asList("V", "L", "D");
     private static final List<String> ROMAN_NUMBERS_CONTAINS_ONE
             = Arrays.asList("M", "C", "X", "I");
+    private static final Map<String, Integer> NUMBER_OF_DIGIT_OF_ROMAN
+            = new HashMap<String, Integer>() {{
+        put("M", DIGIT_FOUR);
+        put("CM", DIGIT_THREE);
+        put("D", DIGIT_THREE);
+        put("CD", DIGIT_THREE);
+        put("C", DIGIT_THREE);
+        put("XC", DIGIT_TWO);
+        put("L", DIGIT_TWO);
+        put("XL", DIGIT_TWO);
+        put("X", DIGIT_TWO);
+        put("IX", DIGIT_ONE);
+        put("V", DIGIT_ONE);
+        put("IV", DIGIT_ONE);
+        put("I", DIGIT_ONE);
+    }};
     private static final Integer MAX_VALUE = 3999;
     private static final Integer MAX_COUNT_OF_REPEATED_SYMBOLS = 3;
-    private static final int MAX_INDEX_THOUSAND = 0;
-    private static final int MAX_INDEX_HUNDRED = 4;
-    private static final int MAX_INDEX_TEN = 8;
+    private static final int DIGIT_FOUR = 4;
+    private static final int DIGIT_THREE = 3;
+    private static final int DIGIT_TWO = 2;
+    private static final int DIGIT_ONE = 1;
 }
