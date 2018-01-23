@@ -50,9 +50,9 @@ public class ViewModel {
         if (oldValue.equals(newValue)) {
             return;
         }
-        StringBuilder message = new StringBuilder(LogMessages.OPERATION_CHANGED.toString());
-        message.append(newValue.toString()).append(".");
-        logger.log(message.toString());
+        String message = String.format("%s%s.",
+                LogMessages.OPERATION_CHANGED.toString(), newValue.toString());
+        logger.log(message);
         updateLogs();
     }
 
@@ -63,13 +63,12 @@ public class ViewModel {
 
         for (PropertyChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
-                StringBuilder message = new StringBuilder(LogMessages.RANGE_CHANGED.toString());
-                message.append("[").append(rangeFrom.get()).append(", ")
-                        .append(rangeTo.get()).append("].");
-                logger.log(message.toString());
+                String message = String.format("%s[%s, %s].",
+                        LogMessages.RANGE_CHANGED.toString(), rangeFrom.get(), rangeTo.get());
+                logger.log(message);
                 updateLogs();
 
-                listener.cache();
+                listener.updateState();
                 break;
             }
         }
@@ -82,13 +81,12 @@ public class ViewModel {
 
         for (PropertyChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
-                StringBuilder message = new StringBuilder(
-                    LogMessages.NUM_PRIMES_CHANGED.toString());
-                message.append(maxCountPrimesProperty().get()).append(".");
-                logger.log(message.toString());
+                String message = String.format("%s%s.", LogMessages.NUM_PRIMES_CHANGED.toString(),
+                        maxCountPrimesProperty().get());
+                logger.log(message);
                 updateLogs();
 
-                listener.cache();
+                listener.updateState();
                 break;
             }
         }
@@ -116,13 +114,11 @@ public class ViewModel {
         setCalculationMessages(left, right, elapsedTimeInSec, numberOfOutputPrimes, primesList);
 
         status.set(Status.SUCCESS.toString());
-
-        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED.toString());
-        message.append("method ").append(method.get().toString())
-                .append(" for range [").append(rangeFrom.get())
-                .append(", ").append(rangeTo.get()).append("] where maximum count of primes was = ")
-                .append(maxCountPrimes.get()).append(".");
-        logger.log(message.toString());
+        String message = String.format(
+                "%smethod %s for range [%s, %s] where maximum count of primes was = %s.",
+                LogMessages.CALCULATE_WAS_PRESSED.toString(), method.get().toString(),
+                rangeFrom.get(), rangeTo.get(), maxCountPrimes.get());
+        logger.log(message);
         updateLogs();
     }
 
@@ -200,26 +196,26 @@ public class ViewModel {
         };
         calculationDisabled.bind(couldCalculate.not());
 
-        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
+        final List<StringProperty> propertyList = new ArrayList<StringProperty>() { {
             add(rangeFrom);
             add(rangeTo);
             add(maxCountPrimes);
         } };
 
-        for (StringProperty field : fields) {
+        for (StringProperty property : propertyList) {
             final PropertyChangeListener listener = new PropertyChangeListener();
-            field.addListener(listener);
+            property.addListener(listener);
             valueChangedListeners.add(listener);
         }
     }
 
     private void updateLogs() {
-        List<String> fullLog = logger.getLog();
-        String record = new String("");
-        for (String log : fullLog) {
-            record += log + "\n";
+        List<String> logList = logger.getLog();
+        String entry = new String("");
+        for (String logMessage : logList) {
+            entry += logMessage + "\n";
         }
-        logs.set(record);
+        logs.set(entry);
     }
 
     private void setCalculationMessages(final Integer left, final Integer right,
@@ -321,7 +317,8 @@ public class ViewModel {
         public boolean isChanged() {
             return !prevValue.equals(curValue);
         }
-        public void cache() {
+
+        public void updateState() {
             prevValue = curValue;
         }
 

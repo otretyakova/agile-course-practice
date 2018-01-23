@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertNotNull;
 import static ru.unn.agile.PrimeNumber.infrastructure.RegexMatcher.matchesPattern;
@@ -24,9 +23,16 @@ public class TxtLoggerTests {
     }
 
     @Test
+    public void cantLoggerBeCreatedWithNullArgument() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Name of file can't be null or empty!");
+        assertNull(new TxtLogger(null));
+    }
+
+    @Test
     public void cantLoggerBeCreatedWithEmptyFileName() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Name of file can't be empty!");
+        exception.expectMessage("Name of file can't be null or empty!");
         assertNull(new TxtLogger(""));
     }
 
@@ -44,7 +50,7 @@ public class TxtLoggerTests {
         txtLogger.log(addedMessage);
 
         String actualMessage = txtLogger.getLog().get(0);
-        assertThat(actualMessage, matchesPattern(".*" + addedMessage + "$"));
+        assertTrue(matchesPattern(".*" + addedMessage + "$").matches(actualMessage));
     }
 
     @Test
@@ -58,7 +64,7 @@ public class TxtLoggerTests {
         List<String> log = txtLogger.getLog();
         for (int i = 0; i < log.size(); i++) {
             String actualMessage = log.get(i);
-            assertThat(actualMessage, matchesPattern(".*" + addedMessages[i] + "$"));
+            assertTrue(matchesPattern(".*" + addedMessages[i] + "$").matches(actualMessage));
         }
     }
 
@@ -70,8 +76,8 @@ public class TxtLoggerTests {
         txtLogger.log(addedMessage);
 
         String actualMessage = txtLogger.getLog().get(0);
-        assertThat(actualMessage,
-                matchesPattern("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.*"));
+        assertTrue(matchesPattern(
+                "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.*").matches(actualMessage));
     }
 
     private static final String LOGFILE_NAME = "./TestingTxtLogger.log";

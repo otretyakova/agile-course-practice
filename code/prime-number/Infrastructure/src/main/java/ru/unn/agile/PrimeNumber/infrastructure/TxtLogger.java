@@ -15,10 +15,10 @@ import java.util.Locale;
 
 public class TxtLogger implements ILogger {
     public TxtLogger(final String nameOfFile) {
-        this.logfileName = nameOfFile;
-        if (nameOfFile.isEmpty()) {
-            throw new IllegalArgumentException("Name of file can't be empty!");
+        if (nameOfFile == null || nameOfFile.isEmpty()) {
+            throw new IllegalArgumentException("Name of file can't be null or empty!");
         }
+        this.logfileName = nameOfFile;
 
         BufferedWriter writer = null;
         try {
