@@ -16,7 +16,7 @@ import static ru.unn.agile.StatisticalValues.infrastructure.RegularExpMatcher.ma
 public class StatisticalLoggerTests {
     @Before
     public void setUp() {
-        statLogger = new StatisticalLogger(FILENAME);
+        statLogger = new StatisticalLogger(FILE_NAME);
     }
 
     @Test
@@ -27,9 +27,9 @@ public class StatisticalLoggerTests {
     @Test
     public void canCreateLogFileOnDisk() {
         try {
-            new BufferedReader(new FileReader(FILENAME));
+            new BufferedReader(new FileReader(FILE_NAME));
         } catch (FileNotFoundException e) {
-            fail("File " + FILENAME + " wasn't found!");
+            fail("File " + FILE_NAME + " wasn't found!");
         }
     }
 
@@ -64,10 +64,12 @@ public class StatisticalLoggerTests {
         statLogger.addLogText(testMessage);
 
         String message = statLogger.getLogText().get(0);
-        String pattern = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*";
-        assertThat(message, matchesPattern(pattern));
+        assertThat(message, matchesPattern(DATE_FORMAT));
     }
 
-    private static final String FILENAME = "./statLogger_Tests-lab3.log";
+    private static final String DATE_FORMAT = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*";
+    private static final String FILE_NAME = "./statLogger_Tests-lab3.log";
     private StatisticalLogger statLogger;
 }
+
+

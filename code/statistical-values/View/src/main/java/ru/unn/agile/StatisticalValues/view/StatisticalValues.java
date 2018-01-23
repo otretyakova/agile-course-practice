@@ -1,26 +1,28 @@
 package ru.unn.agile.StatisticalValues.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import javafx.fxml.FXML;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Button;
+
 import ru.unn.agile.StatisticalValues.viewmodel.Statistic;
 import ru.unn.agile.StatisticalValues.viewmodel.ViewModel;
 import ru.unn.agile.StatisticalValues.infrastructure.StatisticalLogger;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class StatisticalValues {
     @FXML
     void initialize() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH", Locale.ENGLISH);
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         String currentDate = sdf.format(cal.getTime());
         viewModel.setLogger(new StatisticalLogger("./TxtLogger-lab3_" + currentDate + ".log"));
 
@@ -98,4 +100,6 @@ public class StatisticalValues {
     private Label lbStatusValue;
     @FXML
     private Button btCalculate;
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 }

@@ -4,31 +4,34 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import ru.unn.agile.StatisticalValues.viewmodel.ILogger;
 
-public class StatisticalLogger implements ILogger {
+public class StatisticalLogger extends AbstractLogger {
+
     public StatisticalLogger(final String filename) {
-        this.filename = filename;
+        super();
+        this.fileName = filename;
 
-        BufferedWriter statisticalLogWriter = null;
+        BufferedWriter logWriter = null;
+
+        if (filename.isEmpty()) {
+            throw new IllegalArgumentException("Filename can't be empty");
+        }
+
         try {
-            statisticalLogWriter = new BufferedWriter(new FileWriter(filename));
+            logWriter = new BufferedWriter(new FileWriter(filename));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        writerBuffer = statisticalLogWriter;
+        writerBuffer = logWriter;
     }
 
     @Override
-    public void addLogText(final String s) {
+    public void addLogText(final String message, final String logTag) {
         try {
-            writerBuffer.write(now() + " > " + s);
-            writerBuffer.newLine();
+            String mes = this.prepareLogMessage(message, logTag);
+            writerBuffer.write(mes);
             writerBuffer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -40,7 +43,7 @@ public class StatisticalLogger implements ILogger {
         BufferedReader reader;
         ArrayList<String> logResult = new ArrayList<String>();
         try {
-            reader = new BufferedReader(new FileReader(filename));
+            reader = new BufferedReader(new FileReader(fileName));
             String line = reader.readLine();
 
             while (line != null) {
@@ -54,14 +57,8 @@ public class StatisticalLogger implements ILogger {
         return logResult;
     }
 
-    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
     private final BufferedWriter writerBuffer;
-    private final String filename;
-
-    private static String now() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
-        return sdf.format(cal.getTime());
-    }
+    private final String fileName;
 }
+
 
