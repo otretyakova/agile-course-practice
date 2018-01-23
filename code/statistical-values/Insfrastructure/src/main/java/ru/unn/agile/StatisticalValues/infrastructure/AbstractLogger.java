@@ -6,10 +6,10 @@ import ru.unn.agile.StatisticalValues.viewmodel.ILogger;
 
 public abstract class AbstractLogger implements ILogger {
 
-    public void addLogText(final String s) {
-        this.addLogText(s, "");
+    public void addLogText(final String message) {
+        this.addLogText(message, "");
     }
-    public abstract void addLogText(String s, String logTag);
+    public abstract void addLogText(String message, String logTag);
     public abstract List<String> getLogText();
 
     protected String prepareLogMessage(final String message, final String logTag) {

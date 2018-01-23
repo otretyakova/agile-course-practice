@@ -60,5 +60,3 @@ public class StatisticalLogger extends AbstractLogger {
     private final BufferedWriter writerBuffer;
     private final String fileName;
 }
-
-

@@ -71,5 +71,3 @@ public class StatisticalLoggerTests {
     private static final String FILE_NAME = "./statLogger_Tests-lab3.log";
     private StatisticalLogger statLogger;
 }
-
-
