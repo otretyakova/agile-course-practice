@@ -266,6 +266,10 @@ public class ViewModelTests {
         assertEquals(1, viewModel.getLog().size());
     }
 
+    public void setViewModel(ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     private void fillInputFieldsWithCorrectData() {
         viewModel.setFirstPolynomial("7x^(55)-0.1x^(-14)");
         viewModel.setSecondPolynomial("-99x^(-4)+0.411x^(1)");
