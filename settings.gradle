@@ -101,6 +101,8 @@ project(":code/number-system-converter/View").name = "number-system-converter-Vi
 
 
 // Pichugin Gregory
+include "code/accounting-finances"
+project(":code/accounting-finances").name = "accounting-finances"
 
 
 
