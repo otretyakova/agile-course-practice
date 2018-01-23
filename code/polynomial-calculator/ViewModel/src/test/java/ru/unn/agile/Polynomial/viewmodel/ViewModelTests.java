@@ -266,7 +266,7 @@ public class ViewModelTests {
         assertEquals(1, viewModel.getLog().size());
     }
 
-    public void setViewModel(ViewModel viewModel) {
+    public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
