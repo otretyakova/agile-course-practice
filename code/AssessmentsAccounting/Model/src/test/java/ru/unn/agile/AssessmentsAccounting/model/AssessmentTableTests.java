@@ -306,7 +306,7 @@ public class AssessmentTableTests {
         table.addSubject(subject);
         table.addStudent(studentName);
         table.addAssessment(assessment, studentName, subject);
-        table.changeAsessment(0, newAssessment, studentName, subject);
+        table.changeAssessment(0, newAssessment, studentName, subject);
 
         assertEquals(table.getAssessmentsForStudent(subject, studentName).get(0),
                 newAssessment);
@@ -319,7 +319,7 @@ public class AssessmentTableTests {
 
         table.addSubject(subject);
         table.addStudent(studentName);
-        table.changeAsessment(0, Assessment.VeryBad, studentName, subject);
+        table.changeAssessment(0, Assessment.VeryBad, studentName, subject);
     }
 
     @Test
@@ -334,8 +334,8 @@ public class AssessmentTableTests {
         table.addSubject(subject);
         table.addStudent(studentName);
         table.addAssessment(assessment, studentName, subject);
-        table.changeAsessment(0, secondAssessment, studentName, subject);
-        table.changeAsessment(0, thirdAssessment, studentName, subject);
+        table.changeAssessment(0, secondAssessment, studentName, subject);
+        table.changeAssessment(0, thirdAssessment, studentName, subject);
 
         assertEquals(table.getAssessmentsForStudent(subject, studentName).get(0),
                 thirdAssessment);

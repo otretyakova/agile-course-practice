@@ -12,6 +12,8 @@ import ru.unn.agile.AssessmentsAccounting.model.Assessment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.security.InvalidParameterException;
+
 public class ViewModel {
 
     public ViewModel() {
@@ -26,62 +28,103 @@ public class ViewModel {
 
         currentStudent.set("Students");
         currentSubject.set("Subjects");
+
+        status.set("");
     }
 
     public void addStudent() {
-        table.addStudent(newStudent.get());
-        updateStudents();
-        currentStudent.set(newStudent.get());
+        try {
+            table.addStudent(newStudent.get());
+            updateStudents();
+            currentStudent.set(newStudent.get());
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.INVALID_STUDENT_NAME.toString());
+        }
     }
 
     public void addSubject() {
-        table.addSubject(newSubject.get());
-        updateSubjects();
-        currentSubject.set(newSubject.get());
+        try {
+            table.addSubject(newSubject.get());
+            updateSubjects();
+            currentSubject.set(newSubject.get());
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.INVALID_SUBJECT_NAME.toString());
+        }
     }
 
     public void addAssessment() {
-        table.addAssessment(newAssessment.get(), currentStudent.get(), currentSubject.get());
-        updateAssessments();
-        currentAssessment.set(newAssessment.get());
+        try {
+            table.addAssessment(newAssessment.get(), currentStudent.get(), currentSubject.get());
+            updateAssessments();
+            currentAssessment.set(newAssessment.get());
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.IMMPOSIBLE_TO_ADD.toString());
+        }
     }
 
     public void editStudent() {
-        table.renameStudent(currentStudent.get(), newStudent.get());
-        updateStudents();
-        currentStudent.set(newStudent.get());
+        try {
+            if (currentStudent.get().equalsIgnoreCase("Students")) {
+                status.set("Before editing, add a student.");
+            }
+            table.renameStudent(currentStudent.get(), newStudent.get());
+            updateStudents();
+            currentStudent.set(newStudent.get());
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.INVALID_STUDENT_NAME.toString());
+        }
     }
 
     public void editSubject() {
-        table.renameSubject(currentSubject.get(), newSubject.get());
-        updateSubjects();
-        currentSubject.set(newSubject.get());
+        try {
+            if (currentStudent.get().equalsIgnoreCase("Subjects")) {
+                status.set("Before editing, add a subject.");
+            }
+            table.renameSubject(currentSubject.get(), newSubject.get());
+            updateSubjects();
+            currentSubject.set(newSubject.get());
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.INVALID_SUBJECT_NAME.toString());
+        }
     }
 
     public void editAssessment() {
-        table.changeAsessment(currentAssessmentIndex, newAssessment.get(), currentStudent.get(),
-                currentSubject.get());
-        updateAssessments();
-        currentAssessment.set(newAssessment.get());
+        try {
+            try {
+                table.changeAssessment(currentAssessmentIndex, newAssessment.get(),
+                        currentStudent.get(), currentSubject.get());
+            } catch (InvalidParameterException t) {
+                status.set("Before editing, add an assessment.");
+                return;
+            }
+            updateAssessments();
+            currentAssessment.set(newAssessment.get());
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.IMMPOSIBLE_TO_ADD.toString());
+        }
     }
 
     public void updateAssessments() {
+        try {
+            ObservableList<Assessment> aNamesList = assessmentsOfStudent.get();
 
-        if (currentSubject.get().equalsIgnoreCase("Subjects")) {
-            return;
-        }
-        if (currentStudent.get().equalsIgnoreCase("Students")) {
-            return;
-        }
-        ObservableList<Assessment> aNamesList = assessmentsOfStudent.get();
+            aNamesList.clear();
+            for (Assessment mark : table.getAssessmentsForStudent(currentSubject.get(),
+                    currentStudent.get())) {
+                aNamesList.add(mark);
+            }
 
-        aNamesList.clear();
-        for (Assessment mark : table.getAssessmentsForStudent(currentSubject.get(),
-                currentStudent.get())) {
-            aNamesList.add(mark);
+            updateAverageAssessments();
+            status.set("");
+        } catch (InvalidParameterException t) {
+            status.set(Status.NO_ASSESSMENTS.toString());
         }
-
-        updateAverageAssessments();
     }
 
     public final void updateIndexOfAssessment(final int index) {
@@ -190,6 +233,10 @@ public class ViewModel {
                 String.valueOf(table.getAverageAssessmentForSubject(currentSubject.get())));
     }
 
+    public final String getStatus() {
+        return status.get();
+    }
+
     private AssessmentsTable table = new AssessmentsTable();
 
     private final StringProperty newStudent = new SimpleStringProperty();
@@ -214,4 +261,21 @@ public class ViewModel {
 
     private final ObjectProperty<ObservableList<Assessment>> assessments =
             new SimpleObjectProperty<>(FXCollections.observableArrayList(Assessment.values()));
+
+    private final StringProperty status = new SimpleStringProperty();
+}
+
+enum Status {
+    INVALID_STUDENT_NAME("Some student already has this name or name is empty."),
+    INVALID_SUBJECT_NAME("Some subject already has this name or name is empty."),
+    IMMPOSIBLE_TO_ADD("Choose student and subject to add or edit an assessment"),
+    NO_ASSESSMENTS("The student has no assessments for this subject.");
+
+    private final String name;
+    Status(final String name) {
+        this.name = name;
+    }
+    public String toString() {
+        return name;
+    }
 }

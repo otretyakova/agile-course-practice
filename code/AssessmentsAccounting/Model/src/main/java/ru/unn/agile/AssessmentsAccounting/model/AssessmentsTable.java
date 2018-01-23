@@ -102,7 +102,7 @@ public class AssessmentsTable {
         student.removeAssessmentAt(assessmentIndex, uuid);
     }
 
-    public void changeAsessment(final int asessmentIndex,
+    public void changeAssessment(final int asessmentIndex,
                                 final Assessment value,
                                 final String studentName,
                                 final String subject) {

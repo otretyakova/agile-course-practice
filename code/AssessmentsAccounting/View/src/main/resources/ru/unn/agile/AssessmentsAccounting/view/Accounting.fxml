@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import ru.unn.agile.AssessmentsAccounting.viewmodel.*?>
 
-<AnchorPane prefHeight="193.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.AssessmentsAccounting.view.Accounting">
+<AnchorPane prefHeight="218.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.AssessmentsAccounting.view.Accounting">
    <fx:define>
       <ViewModel fx:id="viewModel" />
    </fx:define>
@@ -33,6 +33,9 @@
       <Label fx:id="lbAvMark" layoutX="315.0" layoutY="130.0" prefHeight="17.0" prefWidth="80.0" text="${viewModel.averageAssessment}" />
       <Label fx:id="lbAvMarkCS" layoutX="315.0" layoutY="147.0" prefHeight="17.0" prefWidth="80.0" text="${viewModel.averageAssessmentForCurrentSubject}" />
       <Label fx:id="lbAvMarkS" layoutX="315.0" layoutY="164.0" prefHeight="17.0" prefWidth="80.0" text="${viewModel.averageAssessmentOfStudents}" />
+
+      <Label fx:id="lbStatus" text="${viewModel.status}"  layoutX="67.0" layoutY="187.0" prefHeight="17.0" prefWidth="368.0" />
+      <Label fx:id="lbStatus1" layoutX="14.0" layoutY="187.0" prefHeight="17.0" prefWidth="48.0" text="Status:" />
 
    </children>
 </AnchorPane>

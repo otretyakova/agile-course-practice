@@ -54,10 +54,26 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canNotAddNewStudentWithInvalidName() {
+        viewModel.getNewStudent().set("");
+        viewModel.addStudent();
+        assertEquals(0, viewModel.getStudents().size());
+        assertEquals(viewModel.getStatus(), Status.INVALID_STUDENT_NAME.toString());
+    }
+
+    @Test
     public void canAddNewSubject() {
         viewModel.getNewSubject().set("Software engineering");
         viewModel.addSubject();
         assertEquals(1, viewModel.getSubjects().size());
+    }
+
+    @Test
+    public void canAddNewSubjectWithInvalidName() {
+        viewModel.getNewSubject().set("");
+        viewModel.addSubject();
+        assertEquals(0, viewModel.getSubjects().size());
+        assertEquals(viewModel.getStatus(), Status.INVALID_SUBJECT_NAME.toString());
     }
 
     @Test
@@ -70,6 +86,14 @@ public class ViewModelTests {
         viewModel.getNewAssessment().set(Assessment.VeryBad);
         viewModel.addAssessment();
         assertEquals(1, viewModel.getAssessmentsOfStudent().size());
+    }
+
+    @Test
+    public void canNotAddAssessmentWithoutStudentAndSubject() {
+        viewModel.getNewAssessment().set(Assessment.VeryBad);
+        viewModel.addAssessment();
+        assertEquals(0, viewModel.getAssessmentsOfStudent().size());
+        assertEquals(viewModel.getStatus(), Status.IMMPOSIBLE_TO_ADD.toString());
     }
 
     @Test
@@ -192,6 +216,16 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canNotEditStudentWithInvalidName() {
+        viewModel.getNewStudent().set("Maxim");
+        viewModel.addStudent();
+        viewModel.getNewStudent().set("Maxim");
+        viewModel.editStudent();
+
+        assertEquals(viewModel.getStatus(), Status.INVALID_STUDENT_NAME.toString());
+    }
+
+    @Test
     public void canEditSubject() {
         viewModel.getNewSubject().set("Software engineering");
         viewModel.addSubject();
@@ -200,6 +234,16 @@ public class ViewModelTests {
 
         assertEquals("Programming", viewModel.getCurrentSubject().get());
         assertEquals(1, viewModel.getSubjects().size());
+    }
+
+    @Test
+    public void canNotEditSubjectWithInvalidName() {
+        viewModel.getNewSubject().set("Software engineering");
+        viewModel.addSubject();
+        viewModel.getNewSubject().set("Software engineering");
+        viewModel.editSubject();
+
+        assertEquals(viewModel.getStatus(), Status.INVALID_SUBJECT_NAME.toString());
     }
 
     @Test
