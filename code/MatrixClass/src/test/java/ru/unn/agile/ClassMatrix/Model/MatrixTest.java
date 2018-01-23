@@ -4,14 +4,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertArrayEquals;
 
 public class MatrixTest {
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-
-    private float accuracy = 1.0e-4f;
 
     @Test
     public void canNotCreateMatrixFromNull() {
@@ -93,7 +94,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void canNotCalculateDeterminantOfNotSquareMatrix() {
+    public void isDeterminantOfNotSquareMatrix0() {
         float[][] array = {{6.2f, 4.1f},
                 {3.1f, 5.3f},
                 {6.4f, 5.2f}
@@ -153,7 +154,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void canCalculateDeteriminantOfMatrix3x3Expects0() {
+    public void isDeterminantOfDegenerateMatrix0() {
         float[][] array = {{1f, 2f, 4f},
                 {1f, 1f, 1f},
                 {1f, 1f, 1f},
@@ -162,4 +163,6 @@ public class MatrixTest {
         Matrix testMatrix = new Matrix(array);
         assertEquals(0f, testMatrix.calculateDeterminant(), accuracy);
     }
+
+    private float accuracy = 1.0e-4f;
 }

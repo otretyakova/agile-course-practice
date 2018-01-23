@@ -27,11 +27,6 @@ public class Matrix {
         data = new float[numberOfRows][numberOfColumns];
     }
 
-    private boolean checkIndex(final int indexOfRow, final int indexOfColumn) {
-        return (indexOfRow >= 0) && (indexOfRow < numberOfRows)
-                && (indexOfColumn >= 0) && (indexOfColumn < numberOfColumns);
-    }
-
     public float get(final int indexOfRow, final int indexOfColumn) {
         if (!checkIndex(indexOfRow, indexOfColumn)) {
             throw new IllegalArgumentException("Can't get an element with such index!");
@@ -113,6 +108,11 @@ public class Matrix {
         }
 
         return determinant;
+    }
+
+    private boolean checkIndex(final int indexOfRow, final int indexOfColumn) {
+        return (indexOfRow >= 0) && (indexOfRow < numberOfRows)
+                && (indexOfColumn >= 0) && (indexOfColumn < numberOfColumns);
     }
 
     private float[][] data;
