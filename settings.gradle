@@ -47,6 +47,8 @@ include "code/converter-temperature/ViewModel"
 project(":code/converter-temperature/ViewModel").name = "converter-temperature-ViewModel"
 include "code/converter-temperature/View"
 project(":code/converter-temperature/View").name = "converter-temperature-View"
+include "code/converter-temperature/Infrastructure"
+project(":code/converter-temperature/Infrastructure").name = "converter-temperature-Infrastructure"
 
 // Gorbunova Natalia
 include "code/mortgage-calculator"

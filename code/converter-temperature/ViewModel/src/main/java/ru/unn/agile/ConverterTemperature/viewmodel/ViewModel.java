@@ -20,29 +20,14 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
-
 public class ViewModel {
+    public ViewModel() {
+        init();
+    }
+
     public ViewModel(final ILogger logger) {
         setLogger(logger);
-
-        inputTemperature.set("");
-        inputType.set(NameSystem.CELSIUS);
-        outputType.set(NameSystem.FAHRENHEIT);
-        result.set("");
-        status.set(Status.WAITING.toString());
-
-        BooleanBinding canCalculate = new BooleanBinding() {
-            {
-                super.bind(inputTemperature);
-            }
-            @Override
-            protected boolean computeValue() {
-                return getInputStatus() == Status.READY;
-            }
-        };
-        calculationDisabled.bind(canCalculate.not());
-
-        inputTemperature.addListener(inputTemperatureListener);
+        init();
     }
 
     public StringProperty inputTemperatureProperty() {
@@ -101,6 +86,14 @@ public class ViewModel {
         return calculationDisabled.get();
     }
 
+    public StringProperty logsProperty() {
+        return logs;
+    }
+
+    public final String getLogs() {
+        return logs.get();
+    }
+
     public void onInputTypeChanged(final NameSystem oldValue, final NameSystem newValue) {
         if (oldValue.equals(newValue)) {
             return;
@@ -127,11 +120,12 @@ public class ViewModel {
         }
 
         if (inputTemperatureListener.isChanged()) {
-            StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
-            message.append("New temperature: ").append(inputTemperature.get());
-            logger.log(message.toString());
+            String message = String.format("%sNew temperature: %s",
+                    LogMessages.EDITING_FINISHED,
+                    inputTemperature.get());
+            logger.log(message);
             updateLogs();
-            inputTemperatureListener.cache();
+            inputTemperatureListener.prepareForNewValue();
         }
     }
 
@@ -160,13 +154,16 @@ public class ViewModel {
             }
         } catch (IllegalArgumentException excep) {
             status.set(Status.IMPOSSIBLE.toString());
+            return;
         }
 
-        StringBuilder message = new StringBuilder(LogMessages.CONVERT_WAS_PRESSED);
-        message.append("Input Temperature: ").append(inputTemperature.get())
-               .append("; From: ").append(inputType.get())
-               .append("; To: ").append(outputType.get());
-        logger.log(message.toString());
+        String message = String.format("%sInput temperature: %s; From: %s; To: %s; Result: %s",
+                LogMessages.CONVERT_WAS_PRESSED,
+                inputTemperature.get(),
+                inputType.get(),
+                outputType.get(),
+                result.get());
+        logger.log(message);
         updateLogs();
     }
 
@@ -200,6 +197,28 @@ public class ViewModel {
 
     private final ValueChangeListener inputTemperatureListener = new ValueChangeListener();
 
+    private void init() {
+        inputTemperature.set("");
+        inputType.set(NameSystem.CELSIUS);
+        outputType.set(NameSystem.FAHRENHEIT);
+        result.set("");
+        status.set(Status.WAITING.toString());
+        logs.set("");
+
+        BooleanBinding canCalculate = new BooleanBinding() {
+            {
+                super.bind(inputTemperature);
+            }
+            @Override
+            protected boolean computeValue() {
+                return getInputStatus() == Status.READY;
+            }
+        };
+        calculationDisabled.bind(canCalculate.not());
+
+        inputTemperature.addListener(inputTemperatureListener);
+    }
+
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
         if (inputTemperature.get().isEmpty()) {
@@ -224,12 +243,12 @@ public class ViewModel {
             curValue = newValue;
         }
 
-        public boolean isChanged() {
-            return !prevValue.equals(curValue);
+        public void prepareForNewValue() {
+            prevValue = curValue;
         }
 
-        public void cache() {
-            prevValue = curValue;
+        public boolean isChanged() {
+            return !prevValue.equals(curValue);
         }
 
         private String prevValue = new String("");
@@ -271,11 +290,11 @@ public class ViewModel {
 }
 
 enum Status {
-    WAITING("Please provide input data"),
-    READY("Press 'Convert' or Enter"),
-    BAD_FORMAT("Bad format"),
+    WAITING("Please provide temperature to convert"),
+    READY("Press 'Convert'"),
+    BAD_FORMAT("Bad temperature format"),
     SUCCESS("Success"),
-    IMPOSSIBLE("Your input data is colder than heart of ex-girlfriend");
+    IMPOSSIBLE("This temperature is colder than heart of yours ex-girlfriend");
 
     private final String name;
     Status(final String name) {
