@@ -29,7 +29,7 @@
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0">
                <children>
                   <Separator prefWidth="200.0" visible="false" />
-                  <Button fx:id="btnCalc" defaultButton="true" disable="${viewModel.calculationDisabled}" mnemonicParsing="false" text="Button" />
+                  <Button fx:id="btnCalc" defaultButton="true" disable="${viewModel.calculationDisabled}" mnemonicParsing="false" text="Convert" />
                </children></HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>

@@ -16,14 +16,15 @@ import ru.unn.agile.ConverterTemperature.Model.Conversion;
 import ru.unn.agile.ConverterTemperature.Model.ConverterTemperature;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
 
 public class ViewModel {
-    public ViewModel() {
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+
         inputTemperature.set("");
         inputType.set(NameSystem.CELSIUS);
         outputType.set(NameSystem.FAHRENHEIT);
@@ -41,19 +42,15 @@ public class ViewModel {
         };
         calculationDisabled.bind(canCalculate.not());
 
-        final List<StringProperty> fields = new ArrayList<StringProperty>() {{
-            add(inputTemperature);
-        }};
-
-        for (StringProperty field : fields) {
-            final ValueChangeListener listener = new ValueChangeListener();
-            field.addListener(listener);
-            valueChangedListeners.add(listener);
-        }
+        inputTemperature.addListener(inputTemperatureListener);
     }
 
     public StringProperty inputTemperatureProperty() {
         return inputTemperature;
+    }
+
+    public final String getInputTemperature() {
+        return inputTemperature.get();
     }
 
     public StringProperty resultProperty() {
@@ -104,6 +101,40 @@ public class ViewModel {
         return calculationDisabled.get();
     }
 
+    public void onInputTypeChanged(final NameSystem oldValue, final NameSystem newValue) {
+        if (oldValue.equals(newValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.INPUT_TYPE_WAS_CHANGED);
+        message.append(newValue.toString());
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void onOutputTypeChanged(final NameSystem oldValue, final NameSystem newValue) {
+        if (oldValue.equals(newValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.OUTPUT_TYPE_WAS_CHANGED);
+        message.append(newValue.toString());
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void onFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        if (inputTemperatureListener.isChanged()) {
+            StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+            message.append("New temperature: ").append(inputTemperature.get());
+            logger.log(message.toString());
+            updateLogs();
+            inputTemperatureListener.cache();
+        }
+    }
+
     public void convert() {
         if (calculationDisabled.get()) {
             return;
@@ -130,6 +161,21 @@ public class ViewModel {
         } catch (IllegalArgumentException excep) {
             status.set(Status.IMPOSSIBLE.toString());
         }
+
+        StringBuilder message = new StringBuilder(LogMessages.CONVERT_WAS_PRESSED);
+        message.append("Input Temperature: ").append(inputTemperature.get())
+               .append("; From: ").append(inputType.get())
+               .append("; To: ").append(outputType.get());
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public final void setLogger(final ILogger logger) {
+        this.logger = logger;
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     private final StringProperty inputTemperature = new SimpleStringProperty();
@@ -150,7 +196,9 @@ public class ViewModel {
 
     private final StringProperty status = new SimpleStringProperty();
 
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
+    private final StringProperty logs = new SimpleStringProperty();
+
+    private final ValueChangeListener inputTemperatureListener = new ValueChangeListener();
 
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
@@ -173,7 +221,19 @@ public class ViewModel {
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
             status.set(getInputStatus().toString());
+            curValue = newValue;
         }
+
+        public boolean isChanged() {
+            return !prevValue.equals(curValue);
+        }
+
+        public void cache() {
+            prevValue = curValue;
+        }
+
+        private String prevValue = new String("");
+        private String curValue = new String("");
     }
 
     private static final Map<String, Conversion> MATCHCONVERTER = Collections.unmodifiableMap(
@@ -196,7 +256,18 @@ public class ViewModel {
         }}
     );
 
+    private void updateLogs() {
+        List<String> fullLog = logger.getLog();
+        String record = new String("");
+        for (String log : fullLog) {
+            record += log + "\n";
+        }
+        logs.set(record);
+    }
+
     private double input;
+
+    private ILogger logger;
 }
 
 enum Status {
@@ -213,4 +284,13 @@ enum Status {
     public String toString() {
         return name;
     }
+}
+
+final class LogMessages {
+    public static final String CONVERT_WAS_PRESSED = "Convert. ";
+    public static final String INPUT_TYPE_WAS_CHANGED = "Input type was changed to ";
+    public static final String OUTPUT_TYPE_WAS_CHANGED = "Output type was changed to ";
+    public static final String EDITING_FINISHED = "Updated input temperature.  ";
+
+    private LogMessages() { }
 }

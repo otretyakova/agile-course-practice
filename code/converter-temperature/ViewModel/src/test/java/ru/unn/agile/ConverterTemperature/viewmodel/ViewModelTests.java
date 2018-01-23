@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class ViewModelTests {
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After
@@ -181,6 +183,120 @@ public class ViewModelTests {
 
         assertEquals("100.0", viewModel.resultProperty().get());
         assertEquals(Status.SUCCESS.toString(), viewModel.statusProperty().get());
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterConvertion() {
+        viewModel.inputTemperatureProperty().set("0");
+
+        viewModel.convert();
+        String message = viewModel.getLog().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsInputArgumentsAfterConvertion() {
+        viewModel.inputTemperatureProperty().set("100");
+
+        viewModel.convert();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + viewModel.getInputTemperature() + ".*"));
+    }
+
+    @Test
+    public void logContainsNamesOfFromAndToSystemsAfterConvertion() {
+        viewModel.inputTypeProperty().set(NameSystem.NEWTON);
+        viewModel.outputTypeProperty().set(NameSystem.FAHRENHEIT);
+        viewModel.inputTemperatureProperty().set("100");
+
+        viewModel.convert();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + NameSystem.NEWTON
+                + ".*" + NameSystem.FAHRENHEIT + ".*"));
+    }
+
+    @Test
+    public void logContainsProperMessageAfterInputTypeChange() {
+        viewModel.onInputTypeChanged(NameSystem.CELSIUS, NameSystem.KELVIN);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.INPUT_TYPE_WAS_CHANGED
+                + NameSystem.KELVIN + ".*"));
+    }
+
+    @Test
+    public void logDoesNotContainsMessagesAboutIdenticallyInputTypeChange() {
+        viewModel.onInputTypeChanged(NameSystem.CELSIUS, NameSystem.KELVIN);
+        viewModel.onInputTypeChanged(NameSystem.KELVIN, NameSystem.KELVIN);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterOutputTypeChange() {
+        viewModel.onOutputTypeChanged(NameSystem.FAHRENHEIT, NameSystem.NEWTON);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.OUTPUT_TYPE_WAS_CHANGED
+                + NameSystem.NEWTON + ".*"));
+    }
+
+    @Test
+    public void logDoesNotContainMessagesAboutIdenticallyOutputTypeChange() {
+        viewModel.onOutputTypeChanged(NameSystem.FAHRENHEIT, NameSystem.NEWTON);
+        viewModel.onOutputTypeChanged(NameSystem.NEWTON, NameSystem.NEWTON);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logContainsProperMessageWhenUserRemovesFocusFromTextFieldAfterEditingIt() {
+        viewModel.inputTemperatureProperty().set("100");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED + ".*"
+                + viewModel.getInputTemperature() + ".*"));
+    }
+
+    @Test
+    public void logDoesNotContainInfoAboutSameParametersTwiceWithPartialInput() {
+        viewModel.inputTemperatureProperty().set("100");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.inputTemperatureProperty().set("100");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void calculateIsNotCalledWhenButtonIsDisabled() {
+        viewModel.inputTemperatureProperty().set("very cold");
+
+        viewModel.convert();
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void canPutSeveralLogMessages() {
+        viewModel.inputTemperatureProperty().set("100");
+
+        viewModel.convert();
+        viewModel.convert();
+        viewModel.convert();
+
+        assertEquals(3, viewModel.getLog().size());
     }
 
     private ViewModel viewModel;
