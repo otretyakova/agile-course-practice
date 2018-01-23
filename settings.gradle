@@ -1,6 +1,6 @@
 // Averin Andrey
-
-
+include "code/MatrixClass"
+project(":code/MatrixClass").name = "ClassMatrix"
 
 // Bastrakova Ksenia
 include "code/merge-sort"
@@ -170,6 +170,10 @@ project(":code/string-calculator/Infrastructure").name = "string-calculator-Infr
 // Bevzuk Anton
 include "code/bevzuk-anton"
 project(":code/bevzuk-anton").name = "bevzuk-anton-Model"
+
+// Gorbunova Natalya
+include "code/mortgage-calculator"
+project(":code/mortgage-calculator").name = "mortgage-calculator-Model"
 
 // Korniakov Kirill, lab1
 include "code/korniakov-kirill-lab1"
