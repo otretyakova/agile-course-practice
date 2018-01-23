@@ -1,11 +1,5 @@
 package ru.unn.agile.Polynomial.infrastructure;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,18 +7,25 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+
 public class TxtLoggerTests {
     @Before
     public void setUp() {
-        txtLogger = new TxtLogger(FILENAME);
+        txtLogger = new TxtLogger(FILE_NAME);
     }
 
     @Test
     public void canCreateLogFileOnDisk() {
         try {
-            new BufferedReader(new FileReader(FILENAME));
+            new BufferedReader(new FileReader(FILE_NAME));
         } catch (FileNotFoundException e) {
-            fail("File " + FILENAME + " wasn't found!");
+            fail("File " + FILE_NAME + " wasn't found!");
         }
     }
 
@@ -63,22 +64,22 @@ public class TxtLoggerTests {
         txtLogger.addInfo(testMessage);
 
         String message = txtLogger.getLog().get(0);
-        String dateRegex = "^(\\d{4})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
-        String timeRegex = "(0?[0-9]|(1?[0-9]|2[0-3])):([0-5][0-9]):([0-5][0-9])";
-        assertTrue(message.matches(dateRegex + " " + timeRegex + " > .*"));
+        assertTrue(message.matches(REGEX_DATA + " " + REGEX_TIME + " > .*"));
     }
     @Test
     public void notFailConstructTxtLoggerWithBadFileName() {
-         TxtLogger txtLogger = new TxtLogger(FILENAME_ACCESS_DENIED);
+         TxtLogger txtLogger = new TxtLogger(EMPTY_STRING);
     }
 
     @Test
     public void notFailLoggingWithNullPointerWriter() {
-        TxtLogger badLogger = new TxtLogger(FILENAME_ACCESS_DENIED);
+        TxtLogger badLogger = new TxtLogger(EMPTY_STRING);
         badLogger.addInfo("");
     }
 
-    private static final String FILENAME_ACCESS_DENIED = "";
-    private static final String FILENAME = "./TxtLogger_Tests-lab3.log";
+    private static final String EMPTY_STRING = "";
+    private static final String FILE_NAME = "./TxtLogger_Tests-lab3.log";
+    private static final String REGEX_DATA = "^(\\d{4})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
+    private static final String REGEX_TIME = "(0?[0-9]|(1?[0-9]|2[0-3])):([0-5][0-9]):([0-5][0-9])";
     private TxtLogger txtLogger;
 }

@@ -1,10 +1,8 @@
 package ru.unn.agile.Polynomial.view;
 
-import ru.unn.agile.Polynomial.viewmodel.Operation;
-import ru.unn.agile.Polynomial.viewmodel.Status;
-import ru.unn.agile.Polynomial.viewmodel.ViewModel;
-import ru.unn.agile.Polynomial.infrastructure.TxtLogger;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -14,9 +12,12 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
+
+import ru.unn.agile.Polynomial.viewmodel.Operation;
+import ru.unn.agile.Polynomial.viewmodel.Status;
+import ru.unn.agile.Polynomial.viewmodel.ViewModel;
+import ru.unn.agile.Polynomial.infrastructure.TxtLogger;
+
 
 public final class Calculator {
     private Calculator(final ViewModel viewModel) {

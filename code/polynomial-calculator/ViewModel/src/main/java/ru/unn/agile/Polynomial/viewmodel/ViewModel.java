@@ -1,8 +1,8 @@
 package ru.unn.agile.Polynomial.viewmodel;
 
-import ru.unn.agile.Polynomial.model.Polynomial;
-
 import java.util.List;
+
+import ru.unn.agile.Polynomial.model.Polynomial;
 
 public class ViewModel {
     public ViewModel(final ILogger logger) {

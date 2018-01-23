@@ -1,7 +1,5 @@
 package ru.unn.agile.Polynomial.infrastructure;
 
-import ru.unn.agile.Polynomial.viewmodel.ILogger;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -11,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import ru.unn.agile.Polynomial.viewmodel.ILogger;
 
 public class TxtLogger implements ILogger {
     public TxtLogger(final String filename) {
@@ -26,9 +26,9 @@ public class TxtLogger implements ILogger {
     }
 
     @Override
-    public void addInfo(final String s) {
+    public void addInfo(final String message) {
         try {
-            bufWriter.write(dataTime() + " > " + s);
+            bufWriter.write(getTime() + " > " + message);
             bufWriter.newLine();
             bufWriter.flush();
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class TxtLogger implements ILogger {
         return returnLog;
     }
 
-    private static String dataTime() {
+    private static String getTime() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         return sdf.format(cal.getTime());
