@@ -3,20 +3,31 @@ package ru.unn.agile.LeftSidedHeap.viewmodel.legacy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.unn.agile.LeftSidedHeap.viewmodel.legacy.ViewModel.LogMessages;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
-    private ViewModel viewModel;
+    public void setViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new ListLogger());
     }
 
     @After
     public void tearDown() {
         viewModel = null;
+    }
+
+    @Test
+    public void canConstructWithDefaultLogger() {
+        viewModel = new ViewModel();
     }
 
     @Test
@@ -120,7 +131,7 @@ public class ViewModelTests {
 
     @Test
     public void canReportBadFormatInAdd() {
-        viewModel.setTextAdd("asdasfadsf");
+        viewModel.setTextAdd("some words");
 
         viewModel.processKeyInTextField();
 
@@ -129,7 +140,7 @@ public class ViewModelTests {
 
     @Test
     public void canReportBadFormatInRemove() {
-        viewModel.setTextRemove("asdasfadsf");
+        viewModel.setTextRemove("some words");
 
         viewModel.processKeyInTextField();
 
@@ -138,8 +149,8 @@ public class ViewModelTests {
 
     @Test
     public void canReportBadFormatInAllField() {
-        viewModel.setTextAdd("asdasfadsf");
-        viewModel.setTextRemove("asdasfadsf");
+        viewModel.setTextAdd("some words");
+        viewModel.setTextRemove("some words");
 
         viewModel.processKeyInTextField();
 
@@ -199,7 +210,7 @@ public class ViewModelTests {
 
         assertEquals(true, viewModel.isButtonAddEnabled());
 
-        viewModel.setTextAdd("sadfafasd");
+        viewModel.setTextAdd("some words");
 
         viewModel.processKeyInTextField();
 
@@ -213,7 +224,7 @@ public class ViewModelTests {
 
         assertEquals(true, viewModel.isButtonRemoveEnabled());
 
-        viewModel.setTextRemove("sadfafasd");
+        viewModel.setTextRemove("some words");
 
         viewModel.processKeyInTextField();
 
@@ -227,7 +238,7 @@ public class ViewModelTests {
 
         assertEquals(true, viewModel.isButtonRemoveEnabled());
 
-        viewModel.setTextAdd("sadfafasd");
+        viewModel.setTextAdd("some words");
 
         viewModel.processKeyInTextField();
 
@@ -241,7 +252,7 @@ public class ViewModelTests {
 
         assertEquals(true, viewModel.isButtonRemoveEnabled());
 
-        viewModel.setTextAdd("asdagdbd");
+        viewModel.setTextAdd("some words");
         viewModel.processKeyInTextField();
         viewModel.setTextRemove("");
 
@@ -257,7 +268,7 @@ public class ViewModelTests {
 
         assertEquals(true, viewModel.isButtonAddEnabled());
 
-        viewModel.setTextRemove("safsgbd");
+        viewModel.setTextRemove("some words");
         viewModel.processKeyInTextField();
         viewModel.setTextAdd("");
 
@@ -273,7 +284,7 @@ public class ViewModelTests {
 
         assertEquals(true, viewModel.isButtonAddEnabled());
 
-        viewModel.setTextRemove("sadfafasd");
+        viewModel.setTextRemove("some words");
 
         viewModel.processKeyInTextField();
 
@@ -371,7 +382,7 @@ public class ViewModelTests {
 
     @Test
     public void canSetBadFormatMessageInAdd() {
-        viewModel.setTextAdd("asfsdf");
+        viewModel.setTextAdd("some words");
 
         viewModel.add();
 
@@ -466,7 +477,7 @@ public class ViewModelTests {
 
     @Test
     public void canSetBadFormatMessageInRemove() {
-        viewModel.setTextRemove("asfsdf");
+        viewModel.setTextRemove("some words");
 
         viewModel.remove();
 
@@ -479,4 +490,151 @@ public class ViewModelTests {
         assertEquals(minField, viewModel.getTextMinInHeap());
         assertEquals(removeField, viewModel.getTextRemoveFromHeap());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void viewModelConstructorThrowsExceptionWithNullLogger() {
+        new ViewModel(null);
+    }
+
+    @Test
+    public void logIsEmptyAfterConstruction() {
+        List<String> log = viewModel.getFullLog();
+
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsCorrectMessageAfterAddToHeap() {
+        doAdd();
+
+        String message = viewModel.getFullLog().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.ADD_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsCorrectMessageAfterRemoveFromHeap() {
+        doAdd();
+        doRemove();
+
+        String message = viewModel.getFullLog().get(1);
+
+        assertTrue(message.matches(".*" + LogMessages.REMOVE_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsInputArgumentsAfterAddToHeap() {
+        viewModel.setTextAdd("10_3;2_21;32_19");
+        String pattern = ".*" + "Arguments: " + viewModel.getTextAdd() + ".*";
+        viewModel.add();
+
+        String message = viewModel.getFullLog().get(0);
+        assertTrue(message.matches(pattern));
+    }
+
+    @Test
+    public void logContainsInputArgumentsAfterRemoveFromHeap() {
+        doAdd();
+        viewModel.setTextAdd("10_3;2_21;32_198");
+        String pattern = ".*" + "Arguments: " + viewModel.getTextAdd() + ".*";
+        viewModel.add();
+
+        String message = viewModel.getFullLog().get(1);
+        assertTrue(message.matches(pattern));
+    }
+
+    @Test
+    public void canPutSeveralLogMessages() {
+        doAdd();
+        doAdd();
+        doAdd();
+
+        assertEquals(3, viewModel.getFullLog().size());
+    }
+
+    @Test
+    public void isEditingFinishLogged() {
+        viewModel.setTextAdd("10_3");
+
+        viewModel.focusLost();
+
+        String message = viewModel.getFullLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.EDITING_HAPPENED + ".*"));
+    }
+
+    @Test
+    public void areArgumentsCorrectlyLoggedOnEditingAddFieldFinish() {
+        viewModel.setTextAdd("10_3");
+        viewModel.focusLost();
+
+        String message = viewModel.getFullLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.EDITING_HAPPENED + " "
+                + "\"Add\" field changed to: " + viewModel.getTextAdd()));
+    }
+
+    @Test
+    public void areArgumentsCorrectlyLoggedOnEditingRemoveFieldFinish() {
+        viewModel.setTextRemove("13");
+        viewModel.focusLost();
+
+        String message = viewModel.getFullLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.EDITING_HAPPENED + " "
+                + "\"Remove\" field changed to: " + viewModel.getTextRemove()));
+    }
+
+    @Test
+    public void isLogInputsCalledOnChange() {
+        viewModel.setTextAdd("10_3");
+
+        viewModel.processKeyInAddField();
+
+        String message = viewModel.getFullLog().get(0);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.EDITING_HAPPENED + ".*"));
+    }
+
+    @Test
+    public void doNotLogSameParametersTwice() {
+        viewModel.setTextAdd("10_3;2_21;32_123");
+        viewModel.setTextAdd("10_3;2_21;32_123");
+
+        viewModel.focusLost();
+        viewModel.focusLost();
+
+        assertEquals(1, viewModel.getFullLog().size());
+    }
+
+    @Test
+    public void doNotLogSameParametersTwiceWithPartialInput() {
+        viewModel.setTextAdd("12");
+        viewModel.setTextAdd("12");
+        viewModel.setTextAdd("12");
+
+        viewModel.focusLost();
+        viewModel.focusLost();
+        viewModel.focusLost();
+
+        assertEquals(1, viewModel.getFullLog().size());
+    }
+
+    @Test
+    public void doNotLogSameParametersTwiceWithRemovePartialInput() {
+        viewModel.setTextRemove("a");
+        viewModel.setTextRemove("a");
+
+        viewModel.focusLost();
+        viewModel.focusLost();
+
+        assertEquals(1, viewModel.getFullLog().size());
+    }
+
+    private void doAdd() {
+        viewModel.setTextAdd("10_3;2_21;32_12");
+        viewModel.add();
+    }
+
+    private void doRemove() {
+        viewModel.setTextRemove("10;32");
+        viewModel.remove();
+    }
+    private ViewModel viewModel;
 }

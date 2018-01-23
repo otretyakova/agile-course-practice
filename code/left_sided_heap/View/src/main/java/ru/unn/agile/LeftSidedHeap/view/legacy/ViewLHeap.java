@@ -1,22 +1,26 @@
 package ru.unn.agile.LeftSidedHeap.view.legacy;
 
 import ru.unn.agile.LeftSidedHeap.viewmodel.legacy.ViewModel;
+import ru.unn.agile.LeftSidedHeap.infrastructure.TxtLogger;
 
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.JTextField;
+import javax.swing.JList;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 public final class ViewLHeap {
-
     public static void main(final String[] args) {
         JFrame frame = new JFrame("Left Heap");
 
-        frame.setContentPane(new ViewLHeap(new ViewModel()).mainPanel);
+        String loggerFileName = String.format("ViewLHeap_{%s}.log",
+                java.util.UUID.randomUUID().toString());
+        TxtLogger logger = new TxtLogger("./" + loggerFileName);
+        frame.setContentPane(new ViewLHeap(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.pack();
@@ -31,33 +35,35 @@ public final class ViewLHeap {
         this.viewModel = viewModel;
         backBind();
 
-        buttonAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
+        buttonAdd.addActionListener((actionEvent) -> {
                 bind();
-                ViewLHeap.this.viewModel.add();
+                this.viewModel.add();
                 backBind();
             }
-        });
+        );
 
-        buttonRemove.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
+        buttonRemove.addActionListener((actionEvent) -> {
                 bind();
-                ViewLHeap.this.viewModel.remove();
+                this.viewModel.remove();
                 backBind();
             }
-        });
+        );
 
-        KeyAdapter keyListener = new KeyAdapter() {
+        fieldAdd.addKeyListener(new KeyAdapter() {
             public void keyReleased(final KeyEvent e) {
                 bind();
-                ViewLHeap.this.viewModel.processKeyInTextField();
+                ViewLHeap.this.viewModel.processKeyInAddField();
                 backBind();
             }
-        };
-        fieldAdd.addKeyListener(keyListener);
-        fieldRemove.addKeyListener(keyListener);
+        });
+
+        fieldRemove.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                bind();
+                ViewLHeap.this.viewModel.processKeyInRemoveField();
+                backBind();
+            }
+        });
     }
 
     private void bind() {
@@ -75,6 +81,9 @@ public final class ViewLHeap {
         textMinInHeap.setText(viewModel.getTextMinInHeap());
         textRemoveFromHeap.setText(viewModel.getTextRemoveFromHeap());
         textStatus.setText("Status: " + viewModel.getStatus());
+        List<String> fullLog = viewModel.getFullLog();
+        String[] items = fullLog.toArray(new String[fullLog.size()]);
+        lstFullLog.setListData(items);
     }
 
     private ViewModel viewModel;
@@ -87,5 +96,5 @@ public final class ViewLHeap {
     private JTextField textSizeHeap;
     private JTextField textMinInHeap;
     private JTextField textRemoveFromHeap;
-
+    private JList<String> lstFullLog;
 }

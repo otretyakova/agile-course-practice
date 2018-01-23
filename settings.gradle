@@ -32,12 +32,13 @@ project(":code/prime-number/View").name = "prime-number-View"
 
 // Gerasimov Dmitriy
 include "code/left_sided_heap/Model"
-project(":code/left_sided_heap/Model").name = "lheap-Model"
+project(":code/left_sided_heap/Model").name = "left_sided_heap-Model"
 include "code/left_sided_heap/ViewModel"
 project(":code/left_sided_heap/ViewModel").name = "left_sided_heap-ViewModel"
 include "code/left_sided_heap/View"
 project(":code/left_sided_heap/View").name = "left_sided_heap-View"
-
+include "code/left_sided_heap/Infrastructure"
+project(":code/left_sided_heap/Infrastructure").name = "left_sided_heap-Infrastructure"
 
 // Gladilov Gleb
 include "code/converter-temperature/Model"
