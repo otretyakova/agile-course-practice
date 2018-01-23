@@ -1,13 +1,12 @@
 package ru.unn.agile.ConvertNumeral.Model;
 
-import org.junit.Test;
-
 import java.security.InvalidParameterException;
 
 import static org.junit.Assert.assertEquals;
 
-public class ConvertNumeralTest {
+import org.junit.Test;
 
+public class ConvertNumeralTest {
     @Test
     public void convert1toI() {
         ConvertNumeral converter = new ConvertNumeral();
