@@ -134,8 +134,9 @@ project(":code/Range").name = "Range-Model"
 include "code/ratio-calculator"
 project(":code/ratio-calculator").name = "ratio-calculator"
 
-// Tretiyakiva Olga
-
+// Tretyakova Olga
+include "code/convertnumeral"
+project(":code/convertnumeral").name = "convertnumeral-Model"
 
 
 // Uvarov Denis
