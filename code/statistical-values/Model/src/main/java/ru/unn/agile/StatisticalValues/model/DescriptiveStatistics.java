@@ -84,7 +84,7 @@ public final class DescriptiveStatistics {
             throw new IllegalArgumentException("Moment order should be over zero");
         }
         final DoubleStream sampleStream = Arrays.stream(inputSample);
-        return sampleStream.map(element -> Math.pow(element, order)).average().getAsDouble();
+        return sampleStream.map(element -> Math.pow(element, order)).average().orElse(0.0);
     }
 
     public static double centralMoment(final double[] inputSample,
@@ -125,13 +125,6 @@ public final class DescriptiveStatistics {
         }
     }
 
-    private boolean test() {
-        return this.a == 1;
-    }
-
     private DescriptiveStatistics() {
-        this.a = 1;
     }
-
-    private int a;
 }

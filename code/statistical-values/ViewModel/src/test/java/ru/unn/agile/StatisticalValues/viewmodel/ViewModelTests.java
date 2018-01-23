@@ -4,18 +4,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
 
 public class ViewModelTests {
+    public void setViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
-    public void setUp() {
-        viewModel = new ViewModel();
+    public void setUpStatisticalValuesTests() {
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeStatisticalLogger());
+        }
     }
 
     @After
-    public void tearDown() {
+    public void afterTests() {
         viewModel = null;
     }
 
@@ -24,10 +34,10 @@ public class ViewModelTests {
         assertEquals("0", viewModel.orderProperty().get());
         assertFalse(viewModel.isOrderVisible());
 
-        assertFalse(viewModel.isBiasedProperty().get());
+        assertFalse(viewModel.getBias());
         assertFalse(viewModel.isBiasVisible());
 
-        assertEquals("0.0, 0.0", viewModel.valuesProperty().get());
+        assertEquals("0.0, 0.0", viewModel.getValues());
         assertFalse(viewModel.isValuesVisible());
 
         assertEquals("", viewModel.resultProperty().get());
@@ -387,6 +397,259 @@ public class ViewModelTests {
         assertEquals("4.5", viewModel.resultProperty().get());
     }
 
+    @Test
+    public void viewModelConstructorThrowsExceptionWithNullLogger() {
+        try {
+            new ViewModel(null);
+            fail("Exception wasn't thrown");
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Logger parameter can't be null", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterCalculation() {
+        viewModel.statisticProperty().set(Statistic.MEAN);
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(getRefCalculateLog().toString()));
+    }
+
+    @Test
+    public void logContainsProperMessageAfterSetBiasAndPressCalculation() {
+        viewModel.statisticProperty().set(Statistic.STD);
+        viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 2.5");
+        viewModel.isBiasedProperty().set(true);
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(getRefCalculateLog().toString()));
+    }
+
+    @Test
+    public void logContainsInputArgumentsAfterCalculation() {
+        setInputData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(viewModel.getValues())
+                 .append(".*");
+        assertTrue(message.matches(reference.toString()));
+    }
+
+    @Test
+    public void statisticTypeIsMentionedInTheLog() {
+        setInputData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*Mean.*"));
+    }
+
+    @Test
+    public void canUsegetLogs() {
+        setInputData();
+        viewModel.calculate();
+
+        String message = viewModel.getLogs();
+        assertNotNull(message);
+    }
+
+    @Test
+    public void addSeveralLogMessage() {
+        setInputData();
+        viewModel.calculate();
+        viewModel.valuesProperty().set("1.0, 2.0, 3.0, 4.0");
+        viewModel.calculate();
+
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logContainsEmptyPushCalculate() {
+        setInputData();
+
+        viewModel.calculate();
+        viewModel.calculate();
+        viewModel.calculate();
+
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void canSeeStatisticChangeInLog() {
+        setInputData();
+
+        viewModel.onStatisticChanged(Statistic.MEAN, Statistic.STD);
+
+        String message = viewModel.getLog().get(0);
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(LogMessages.OPERATION_WAS_CHANGED)
+                 .append("Std.*");
+        assertTrue(message.matches(reference.toString()));
+    }
+
+    @Test
+    public void statisticIsLoggedIfChanged() {
+        viewModel.onStatisticChanged(Statistic.MEAN, Statistic.STD);
+        viewModel.onStatisticChanged(Statistic.STD, Statistic.MODE);
+
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLoggedWhenStatisticIsMean() {
+        viewModel.statisticProperty().set(Statistic.MEAN);
+        viewModel.valuesProperty().set("1.0, 2.0, 3.0");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(LogMessages.EDITING_FINISHED)
+                 .append(correctInputArgument(viewModel.getValues()));
+        assertTrue(message.matches(reference.toString()));
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLoggedWhenStatisticIsMoment5() {
+        viewModel.statisticProperty().set(Statistic.MOMENT);
+        viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 2.5");
+        viewModel.orderProperty().set("3");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(LogMessages.EDITING_FINISHED)
+                 .append(correctInputWithOrder(viewModel.getValues(), viewModel.getOrder()));
+        assertTrue(message.matches(reference.toString()));
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLoggedWhenStatisticIsStdWithBias() {
+        viewModel.statisticProperty().set(Statistic.STD);
+        viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 2.5");
+        viewModel.isBiasedProperty().set(true);
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(LogMessages.EDITING_FINISHED)
+                 .append(correctInputWithBias(viewModel.getValues(), viewModel.getBias()));
+        assertTrue(message.matches(reference.toString()));
+    }
+
+    @Test
+    public void logChangeIsCorrectWhenStatisticIsMomentAndChangeOrderTwice() {
+        viewModel.statisticProperty().set(Statistic.MOMENT);
+        viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 2.5");
+        viewModel.orderProperty().set("5");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.orderProperty().set("2");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(1);
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(LogMessages.EDITING_FINISHED)
+                 .append(correctInputWithOrder(viewModel.getValues(), viewModel.getOrder()));
+
+        assertTrue(message.matches(reference.toString()));
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logIsEmptyWhenChangesStatisticIsSimilar() {
+        setInputData();
+
+        viewModel.onStatisticChanged(Statistic.MEAN, Statistic.MEAN);
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void canCreateViewModelWithEmptyConstructor() {
+        ViewModel viewModelTest = null;
+
+        viewModelTest = new ViewModel();
+
+        assertNotNull(viewModelTest);
+    }
+
+    @Test
+    public void logIsEmptyWhenFocusChangesIsFalseAndTrue() {
+        viewModel.statisticProperty().set(Statistic.STD);
+        viewModel.valuesProperty().set("2.0, 1.0, 3.0, 4.0, 2.5");
+        viewModel.isBiasedProperty().set(false);
+
+        viewModel.onFocusChanged(Boolean.FALSE, Boolean.TRUE);
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLoggedWhenOrderIsInvisible() {
+        viewModel.statisticProperty().set(Statistic.STD);
+        viewModel.valuesProperty().set("2.0, 1.0, 5.0, 4.0, 22.5");
+        viewModel.isBiasedProperty().set(false);
+        viewModel.orderProperty().set("2");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        StringBuilder reference = new StringBuilder(".*");
+        String inValues = viewModel.getValues();
+        boolean inBias = viewModel.getBias();
+        String inOrder = viewModel.getOrder();
+        String refInput = correctInputWithAllParams(inValues, inBias, inOrder);
+        reference.append(LogMessages.EDITING_FINISHED)
+                 .append(refInput);
+
+        assertFalse(message.matches(reference.toString()));
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLoggedWhenChangeBias() {
+        viewModel.statisticProperty().set(Statistic.STD);
+        viewModel.valuesProperty().set("2.0, 1.0, 5.0, 4.0, 22.5");
+
+        viewModel.isBiasedProperty().set(false);
+
+        viewModel.onBiasChanged(false, true);
+        viewModel.onBiasChanged(true, false);
+
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void argumentsAreCorrectlyLoggedWhenChangeOrder() {
+        viewModel.statisticProperty().set(Statistic.MOMENT);
+        viewModel.valuesProperty().set("2.0, 1.0, 5.0, 4.0, 22.5");
+        viewModel.orderProperty().set("5");
+
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.orderProperty().set("2");
+        viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(2, viewModel.getLog().size());
+    }
+
     private int getNumberOfOccurrences(final String src) {
         int numberOfOccurrences = 0;
         for (int position = 0; position < src.length(); position++) {
@@ -396,6 +659,42 @@ public class ViewModelTests {
         }
 
         return numberOfOccurrences;
+    }
+
+    private String correctInputArgument(final String values) {
+        return "Input arguments are: \\[" + values + "; " + "\\]";
+    }
+
+    private String correctInputWithBias(final String values, final boolean bias) {
+        String result =  correctInputArgument(values)
+                + " Bias argument is: \\[" + String.valueOf(bias)  + "\\]";
+         return result;
+    }
+
+    private String correctInputWithOrder(final String values, final String order) {
+        String result =  correctInputArgument(values)
+                + " Order argument is: \\[" + order  + "\\]";
+        return result;
+    }
+
+    private String correctInputWithAllParams(final String values, final boolean bias,
+                                         final String order) {
+        String result =  correctInputArgument(values)
+                + " Bias argument is: \\[" + String.valueOf(bias)  + "\\]"
+                + " Order argument is: \\[" + order  + "\\]";
+        return result;
+    }
+
+    private void setInputData() {
+        viewModel.statisticProperty().set(Statistic.MEAN);
+        viewModel.valuesProperty().set("1.0, 2.0, 3.0");
+    }
+
+    private StringBuilder getRefCalculateLog() {
+        StringBuilder reference = new StringBuilder(".*");
+        reference.append(LogMessages.CALCULATE_WAS_PRESSED)
+                .append(".*");
+        return reference;
     }
 
     private ViewModel viewModel;
