@@ -12,12 +12,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
-    public void setViewModel(final ViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
-
     @Before
-    public void setUp() {
+    public void setBefore() {
         viewModel = new ViewModel(new ListLogger());
     }
 
