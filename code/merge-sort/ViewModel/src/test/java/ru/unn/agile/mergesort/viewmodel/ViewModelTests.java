@@ -9,7 +9,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
-@Before
+    @Before
     public void setUp() {
         viewModel = new ViewModel();
     }
@@ -24,6 +24,14 @@ public class ViewModelTests {
         assertEquals("", viewModel.getInput());
         assertEquals("", viewModel.getOutput());
         assertEquals(Status.WAITING.toString(), viewModel.getStatus());
+    }
+
+    @Test
+    public void canGetDefaultProperties() {
+        assertEquals("", viewModel.inputProperty().get());
+        assertEquals("", viewModel.outputProperty().get());
+        assertEquals(Status.WAITING.toString(), viewModel.statusProperty().get());
+        assertTrue(viewModel.sortDisabledProperty().get());
     }
 
     @Test

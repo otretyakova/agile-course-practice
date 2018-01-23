@@ -1,5 +1,9 @@
 package ru.unn.agile.mergesort.viewmodel;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.LinkedList;
+
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.BooleanProperty;
@@ -7,11 +11,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import ru.unn.agile.mergesort.model.MergeSort;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.LinkedList;
+import ru.unn.agile.mergesort.model.MergeSort;
 
 public class ViewModel {
     public ViewModel() {
@@ -55,9 +56,11 @@ public class ViewModel {
     public StringProperty inputProperty() {
         return input;
     }
-    public void setInput(final String inputStr) {
-        inputProperty().set(inputStr);
+
+    public void setInput(final String input) {
+        inputProperty().set(input);
     }
+
     public String getInput() {
         return input.get();
     }
@@ -65,6 +68,7 @@ public class ViewModel {
     public BooleanProperty sortDisabledProperty() {
         return sortDisabled;
     }
+
     public boolean isSortDisabled() {
         return sortDisabled.get();
     }
@@ -72,12 +76,15 @@ public class ViewModel {
     public StringProperty outputProperty() {
         return output;
     }
+
     public String getOutput() {
         return output.get();
     }
+
     public StringProperty statusProperty() {
         return status;
     }
+
     public String getStatus() {
         return status.get();
     }
