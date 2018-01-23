@@ -11,7 +11,6 @@ public class ViewModel {
 
     public void setInputNumber(final String inputNumber) {
         this.inputNumber = inputNumber;
-
         convertButtonEnabled = parseInputNumber();
     }
 

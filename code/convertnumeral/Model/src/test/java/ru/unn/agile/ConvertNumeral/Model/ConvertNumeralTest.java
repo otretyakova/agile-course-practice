@@ -7,7 +7,6 @@ import java.security.InvalidParameterException;
 import static org.junit.Assert.assertEquals;
 
 public class ConvertNumeralTest {
-
     @Test
     public void convert1toI() {
         ConvertNumeral converter = new ConvertNumeral();

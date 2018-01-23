@@ -99,20 +99,20 @@ public class ConvertNumeral {
             = Arrays.asList("M", "C", "X", "I");
     private static final Map<String, DigitOfNumber> NUMBER_OF_DIGIT_OF_ROMAN
             = new HashMap<String, DigitOfNumber>() {{
-            put("M", DigitOfNumber.DIGIT_FOUR);
-            put("CM", DigitOfNumber.DIGIT_THREE);
-            put("D", DigitOfNumber.DIGIT_THREE);
-            put("CD", DigitOfNumber.DIGIT_THREE);
-            put("C", DigitOfNumber.DIGIT_THREE);
-            put("XC", DigitOfNumber.DIGIT_TWO);
-            put("L", DigitOfNumber.DIGIT_TWO);
-            put("XL", DigitOfNumber.DIGIT_TWO);
-            put("X", DigitOfNumber.DIGIT_TWO);
-            put("IX", DigitOfNumber.DIGIT_ONE);
-            put("V", DigitOfNumber.DIGIT_ONE);
-            put("IV", DigitOfNumber.DIGIT_ONE);
-            put("I", DigitOfNumber.DIGIT_ONE);
-        }};
+        put("M", DigitOfNumber.DIGIT_FOUR);
+        put("CM", DigitOfNumber.DIGIT_THREE);
+        put("D", DigitOfNumber.DIGIT_THREE);
+        put("CD", DigitOfNumber.DIGIT_THREE);
+        put("C", DigitOfNumber.DIGIT_THREE);
+        put("XC", DigitOfNumber.DIGIT_TWO);
+        put("L", DigitOfNumber.DIGIT_TWO);
+        put("XL", DigitOfNumber.DIGIT_TWO);
+        put("X", DigitOfNumber.DIGIT_TWO);
+        put("IX", DigitOfNumber.DIGIT_ONE);
+        put("V", DigitOfNumber.DIGIT_ONE);
+        put("IV", DigitOfNumber.DIGIT_ONE);
+        put("I", DigitOfNumber.DIGIT_ONE);
+    }};
     private static final Integer MAX_VALUE = 3999;
     private static final Integer MAX_COUNT_OF_REPEATED_SYMBOLS = 3;
 

@@ -2,7 +2,11 @@ package ru.unn.agile.ConvertNumeral.view.legacy;
 
 import ru.unn.agile.ConvertNumeral.ViewModel.legacy.ViewModel;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
@@ -10,12 +14,12 @@ import java.awt.event.ActionListener;
 
 public final class Converter {
 
-
     public static void main(final String[] args) {
         JFrame frame = new JFrame("Converter");
 
         frame.setContentPane(new Converter(new ViewModel()).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
     }
@@ -53,7 +57,6 @@ public final class Converter {
                 backBind();
             }
         });
-
     }
 
     private void bind() {
@@ -70,6 +73,6 @@ public final class Converter {
     private JTextField txtNumberOutput;
     private JButton btnConvert;
     private JTextArea txtMessage;
-    private final ViewModel viewModel;
     private JPanel mainPanel;
+    private final ViewModel viewModel;
 }
