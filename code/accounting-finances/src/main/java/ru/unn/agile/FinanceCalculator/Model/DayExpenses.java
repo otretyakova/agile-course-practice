@@ -1,37 +1,35 @@
 package ru.unn.agile.FinanceCalculator.Model;
 
-import ru.unn.agile.FinanceCalculator.Model.Expenses.FinanceType;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DayExpenses {
     public DayExpenses() {
-        finances = new HashMap<FinanceType, Currency>();
-        for (FinanceType type : FinanceType.values()) {
-            finances.put(type, new Currency(0, 0));
+        expenses = new HashMap<ExpensesType, Money>();
+        for (ExpensesType type : ExpensesType.values()) {
+            expenses.put(type, new Money("0.00"));
         }
     }
 
-    public DayExpenses(final Currency eatingOut, final Currency products,
-                       final Currency unreasonableWaste, final Currency transport,
-                       final Currency services, final Currency entertainment) {
-        finances = new HashMap<FinanceType, Currency>();
-        finances.put(FinanceType.EatingOut, eatingOut);
-        finances.put(FinanceType.Products, products);
-        finances.put(FinanceType.UnreasonableWaste, unreasonableWaste);
-        finances.put(FinanceType.Transport, transport);
-        finances.put(FinanceType.Services, services);
-        finances.put(FinanceType.Entertainment, entertainment);
+    public DayExpenses(final Money eatingOut, final Money products,
+                       final Money unreasonableWaste, final Money transport,
+                       final Money services, final Money entertainment) {
+        expenses = new HashMap<ExpensesType, Money>();
+        expenses.put(ExpensesType.EatingOut, eatingOut);
+        expenses.put(ExpensesType.Products, products);
+        expenses.put(ExpensesType.UnreasonableWaste, unreasonableWaste);
+        expenses.put(ExpensesType.Transport, transport);
+        expenses.put(ExpensesType.Services, services);
+        expenses.put(ExpensesType.Entertainment, entertainment);
     }
 
-    public void add(final FinanceType type, final Currency amount) throws IllegalArgumentException {
-        Currency newAmount = new Currency(amount.getRuble() + finances.get(type).getRuble(),
-                amount.getKopeck() + finances.get(type).getKopeck());
-        finances.put(type, newAmount);
+    public void add(final ExpensesType type, final Money amount) throws IllegalArgumentException {
+        Money newAmount = expenses.get(type).add(amount);
+        expenses.put(type, newAmount);
     }
 
-    public Currency get(final FinanceType type) {
-        return finances.get(type);
+    public Money get(final ExpensesType type) {
+        return expenses.get(type);
     }
 
     @Override
@@ -40,16 +38,16 @@ public class DayExpenses {
             return true;
         }
         if (o instanceof DayExpenses) {
-            DayExpenses finance = (DayExpenses) o;
-            return finances.equals(finance.finances);
+            DayExpenses expense = (DayExpenses) o;
+            return expenses.equals(expense.expenses);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return finances.hashCode();
+        return expenses.hashCode();
     }
 
-    private Map<FinanceType, Currency> finances;
+    private Map<ExpensesType, Money> expenses;
 }

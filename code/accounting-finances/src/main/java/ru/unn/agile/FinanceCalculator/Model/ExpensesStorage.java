@@ -6,22 +6,22 @@ import java.util.Map;
 
 public class ExpensesStorage {
     public ExpensesStorage() {
-        myDaysFinances = new HashMap<Calendar, DayExpenses>();
+        daysExpenses = new HashMap<Calendar, DayExpenses>();
     }
 
     public DayExpenses get(final Calendar calendarDate) {
         Calendar normalDate = computeKey(calendarDate);
-        DayExpenses finance = myDaysFinances.get(normalDate);
-        if (finance != null) {
-            return finance;
+        DayExpenses expense = daysExpenses.get(normalDate);
+        if (expense != null) {
+            return expense;
         } else {
             return new DayExpenses();
         }
     }
 
-    public void put(final Calendar calendarDate, final DayExpenses finance) {
+    public void put(final Calendar calendarDate, final DayExpenses expense) {
         Calendar normalDate = computeKey(calendarDate);
-        myDaysFinances.put(normalDate, finance);
+        daysExpenses.put(normalDate, expense);
     }
 
     private Calendar computeKey(final Calendar calendarDate) {
@@ -33,5 +33,5 @@ public class ExpensesStorage {
         return keyDate;
     }
 
-    private Map<Calendar, DayExpenses> myDaysFinances;
+    private Map<Calendar, DayExpenses> daysExpenses;
 }
