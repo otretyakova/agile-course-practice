@@ -145,8 +145,12 @@ include "code/ratio-calculator"
 project(":code/ratio-calculator").name = "ratio-calculator"
 
 // Tretyakova Olga
-include "code/convertnumeral"
-project(":code/convertnumeral").name = "convertnumeral-Model"
+include "code/convertnumeral/Model"
+project(":code/convertnumeral/Model").name = "convertnumeral-Model"
+include "code/convertnumeral/ViewModel"
+project(":code/convertnumeral/ViewModel").name = "convertnumeral-ViewModel"
+include "code/convertnumeral/View"
+project(":code/convertnumeral/View").name = "convertnumeral-View"
 
 
 // Uvarov Denis
