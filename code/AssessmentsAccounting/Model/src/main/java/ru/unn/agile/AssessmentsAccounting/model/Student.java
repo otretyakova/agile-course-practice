@@ -18,8 +18,12 @@ public class Student {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        return (o instanceof Student) && (((Student) o).getName()).equals(this.getName());
+    public boolean equals(final Object d) {
+        if (!(d instanceof Student)) {
+            return false;
+        }
+        Student student = (Student) d;
+        return student.hashCode() == this.hashCode();
     }
 
     @Override

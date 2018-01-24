@@ -54,10 +54,15 @@ public class AssessmentsTable {
     }
 
     public void addStudent(final String name) {
-        if (isStringInvalid(name)) {
+        if (students.contains(new Student(name)) || isStringInvalid(name)) {
             throw new InvalidParameterException();
         }
-        students.add(new Student(name));
+
+        try {
+            findStudent(name);
+        } catch (InvalidParameterException t) {
+            students.add(new Student(name));
+        }
     }
 
     public void renameStudent(final String oldName, final String newName) {
@@ -65,9 +70,12 @@ public class AssessmentsTable {
             throw new InvalidParameterException("Invalid renameStudent arguments oldName "
                     + oldName + " newName - " + newName);
         }
-
-        Student student = findStudent(oldName);
-        student.setName(newName);
+        try {
+            findStudent(newName);
+        } catch (InvalidParameterException t) {
+            Student student = findStudent(oldName);
+            student.setName(newName);
+        }
     }
 
     public void removeStudent(final String name) {
@@ -136,12 +144,16 @@ public class AssessmentsTable {
         int assessmentsCount = 0;
         UUID uuid = getSubjectUUID(subject);
         for (Student student : students) {
-            List<Assessment> assessments = student.getAssessments(uuid);
-            if (assessments != null) {
-                for (Assessment assessment : assessments) {
-                    sumOfAssessments += assessment.getMark();
+            try {
+                List<Assessment> assessments = student.getAssessments(uuid);
+                if (assessments != null) {
+                    for (Assessment assessment : assessments) {
+                        sumOfAssessments += assessment.getMark();
+                    }
+                    assessmentsCount += assessments.size();
                 }
-                assessmentsCount += assessments.size();
+            } catch (InvalidParameterException t) {
+                continue;
             }
         }
         if (assessmentsCount == 0) {

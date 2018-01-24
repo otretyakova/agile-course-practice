@@ -127,12 +127,21 @@ public class AssessmentTableTests {
         assertTrue(iterator.next().getName().equals(name));
     }
 
-    @Test
+    @Test(expected = InvalidParameterException.class)
     public void canNotAddExistingStudent() {
         String name = "Max Bespalov";
         table.addStudent(name);
         table.addStudent(name);
-        assertEquals(table.getStudents().size(), 1);
+    }
+
+    @Test
+    public void canNotAddExistingStudentAfterRaname() {
+        String name = "Max Bespalov";
+        table.addStudent(name);
+        String newName = "Max";
+        table.renameStudent(name, newName);
+        table.addStudent(newName);
+        assertEquals(1, table.getStudents().size());
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -392,6 +401,23 @@ public class AssessmentTableTests {
         assertEquals(assessments.size(), 2);
         assertTrue(assessments.contains(firstAssessment));
         assertTrue(assessments.contains(secondAssessment));
+    }
+
+    @Test
+    public void canGetAverageAssessmentForSubjectAfterAddingNewStudent() {
+        String subject = "Programming";
+        String firstStudentName = "Max";
+        String secondStudentName = "Ivan Ivanov";
+        Assessment assessment = Assessment.VeryBad;
+
+        table.addSubject(subject);
+        table.addStudent(firstStudentName);
+        table.addAssessment(assessment, firstStudentName, subject);
+        table.addStudent(secondStudentName);
+
+        double average = 1.0;
+        assertTrue(table.getAverageAssessmentForSubject(subject) == average);
+
     }
 
     @Test

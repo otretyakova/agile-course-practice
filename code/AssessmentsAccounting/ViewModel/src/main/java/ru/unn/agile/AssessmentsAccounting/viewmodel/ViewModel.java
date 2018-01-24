@@ -218,26 +218,41 @@ public class ViewModel {
     }
 
     private void updateAverageAssessment() {
-        averageAssessment.set(
-                String.valueOf(table.getAverageAssessmentForStudent(currentStudent.get())));
+        try {
+            averageAssessment.set(
+                    String.valueOf(table.getAverageAssessmentForStudent(currentStudent.get())));
+        } catch (InvalidParameterException t) {
+            status.set(Status.NO_ASSESSMENTS.toString());
+        }
     }
 
     private void updateAverageAssessmentForCurrentSubject() {
-        averageAssessmentForCurrentSubject.set(
-                String.valueOf(
-                        table.getAverageAssessment(currentStudent.get(), currentSubject.get())));
+        try {
+            averageAssessmentForCurrentSubject.set(
+                    String.valueOf(
+                            table.getAverageAssessment(currentStudent.get(),
+                                    currentSubject.get())));
+        } catch (InvalidParameterException t) {
+            status.set(Status.NO_ASSESSMENTS.toString());
+        }
     }
 
     private void updateAverageAssessmentForStudents() {
-        averageAssessmentOfStudents.set(
-                String.valueOf(table.getAverageAssessmentForSubject(currentSubject.get())));
+        try {
+            averageAssessmentOfStudents.set(
+                    String.valueOf(table.getAverageAssessmentForSubject(currentSubject.get())));
+        } catch (InvalidParameterException t) {
+            status.set(Status.NO_ASSESSMENTS.toString());
+        }
     }
 
     public final String getStatus() {
         return status.get();
     }
-
-    private AssessmentsTable table = new AssessmentsTable();
+    public StringProperty statusProperty() {
+        return status;
+    }
+    private final AssessmentsTable table = new AssessmentsTable();
 
     private final StringProperty newStudent = new SimpleStringProperty();
     private final StringProperty newSubject = new SimpleStringProperty();
