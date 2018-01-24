@@ -50,6 +50,36 @@ public class ViewModel {
         return messageText;
     }
 
+    public enum NumberType {
+        ROMAN("Roman"),
+        ARABIC("Arabic");
+        private final String name;
+
+        NumberType(final String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return name;
+        }
+    }
+
+    public static final class Message {
+        public static final String DEFAULT = "Please enter a Roman or Arabic number!";
+        public static final String ENTER_ROMAN = "You entered a Roman number";
+        public static final String ENTER_ARABIC = "You entered a Arabic number";
+        public static final String INCORRECT_INPUT = "Incorrect input: "
+                + "Arabic numbers should consist only numbers from 0 to 9! \n"
+                + "Roman numbers consist only of symbols: I, V, X, L, C, D, M!";
+
+        public static String error(final Exception e) {
+            return "Error: " + e.getMessage();
+        }
+
+        private Message() {
+        }
+    }
+
     private boolean parseInputNumber() {
         arabicNumber = 0;
         romanNumber = "";
@@ -86,34 +116,4 @@ public class ViewModel {
     private static final int MAX_LENGTH_ARABIC = 4;
     private static final String REGEX_ROMANS = "[IVXLCDM]+";
     private static final String REGEX_ARABIC = "[0-9]+";
-
-    public enum NumberType {
-        ROMAN("Roman"),
-        ARABIC("Arabic");
-        private final String name;
-
-        NumberType(final String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
-
-    public static final class Message {
-        public static final String DEFAULT = "Please enter a Roman or Arabic number!";
-        public static final String ENTER_ROMAN = "You entered a Roman number";
-        public static final String ENTER_ARABIC = "You entered a Arabic number";
-        public static final String INCORRECT_INPUT = "Incorrect input: "
-                + "Arabic numbers should consist only numbers from 0 to 9! \n"
-                + "Roman numbers consist only of symbols: I, V, X, L, C, D, M!";
-
-        public static String error(final Exception e) {
-            return "Error: " + e.getMessage();
-        }
-
-        private Message() {
-        }
-    }
 }
