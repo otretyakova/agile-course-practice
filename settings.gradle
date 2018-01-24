@@ -113,8 +113,12 @@ project(":code/accounting-finances").name = "accounting-finances"
 
 
 // Reshetova Anastasya
-include "code/Quadratic-equation"
-project(":code/Quadratic-equation").name = "Quadratic-equation"
+include "code/quadratic-equation/Model"
+project(":code/quadratic-equation/Model").name = "quadratic-equation-Model"
+include "code/quadratic-equation/View"
+project(":code/quadratic-equation/View").name = "quadratic-equation-View"
+include "code/quadratic-equation/ViewModel"
+project(":code/quadratic-equation/ViewModel").name = "quadratic-equation-ViewModel"
 
 
 // Rozanov Anatoliy
