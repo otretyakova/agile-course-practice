@@ -27,34 +27,68 @@ import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 public class ViewModel {
     public ViewModel() {
-        rangeFrom.set("");
-        rangeTo.set("");
-        maxCountPrimes.set("");
-        currentAnswer.set("");
-        status.set(Status.WAITING.toString());
-        method.set(Methods.SIMPLE);
-        answersList.set(FXCollections.observableArrayList());
-        BooleanBinding couldCalculate = new BooleanBinding() {
-            {
-                super.bind(rangeFrom, rangeTo, maxCountPrimes);
-            }
-            @Override
-            protected boolean computeValue() {
-                return getInputStatus() == Status.READY;
-            }
-        };
-        calculationDisabled.bind(couldCalculate.not());
+        init();
+    }
 
-        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
-            add(rangeFrom);
-            add(rangeTo);
-            add(maxCountPrimes);
-        } };
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
 
-        for (StringProperty field : fields) {
-            final PropertyChangeListener listener = new PropertyChangeListener();
-            field.addListener(listener);
-            valueChangedListeners.add(listener);
+    public final void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
+    }
+
+    public void onMethodChanged(final Methods oldValue, final Methods newValue) {
+        if (oldValue.equals(newValue)) {
+            return;
+        }
+        String message = String.format("%s%s.",
+                LogMessages.OPERATION_CHANGED.toString(), newValue.toString());
+        logger.log(message);
+        updateLogs();
+    }
+
+    public void onRangeFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        for (PropertyChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                String message = String.format("%s[%s, %s].",
+                        LogMessages.RANGE_CHANGED.toString(), rangeFrom.get(), rangeTo.get());
+                logger.log(message);
+                updateLogs();
+
+                listener.updateState();
+                break;
+            }
+        }
+    }
+
+    public void onMaxCountPrimesFocusChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        for (PropertyChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                String message = String.format("%s%s.", LogMessages.NUM_PRIMES_CHANGED.toString(),
+                        maxCountPrimesProperty().get());
+                logger.log(message);
+                updateLogs();
+
+                listener.updateState();
+                break;
+            }
         }
     }
 
@@ -80,12 +114,21 @@ public class ViewModel {
         setCalculationMessages(left, right, elapsedTimeInSec, numberOfOutputPrimes, primesList);
 
         status.set(Status.SUCCESS.toString());
+        String message = String.format(
+                "%smethod %s for range [%s, %s] where maximum count of primes was = %s.",
+                LogMessages.CALCULATE_WAS_PRESSED.toString(), method.get().toString(),
+                rangeFrom.get(), rangeTo.get(), maxCountPrimes.get());
+        logger.log(message);
+        updateLogs();
     }
 
     public void chooseAnswerById(final Integer id) {
         currentAnswer.set(answersList.get(id).getAnswerMessage());
     }
 
+    public String getLogs() {
+        return logs.get();
+    }
     public String getRangeFrom() {
         return rangeFrom.get();
     }
@@ -102,13 +145,13 @@ public class ViewModel {
         return status.get();
     }
 
-    public final boolean isCalculationDisabled() {
-        return calculationDisabled.get();
-    }
     public final ObservableList<Methods> getMethods() {
         return methods.get();
     }
 
+    public StringProperty logsProperty() {
+        return logs;
+    }
     public StringProperty rangeFromProperty() {
         return rangeFrom;
     }
@@ -132,6 +175,47 @@ public class ViewModel {
     }
     public ListProperty<Query> answersListProperty() {
         return answersList;
+    }
+
+    private void init() {
+        rangeFrom.set("");
+        rangeTo.set("");
+        maxCountPrimes.set("");
+        currentAnswer.set("");
+        status.set(Status.WAITING.toString());
+        method.set(Methods.SIMPLE);
+        answersList.set(FXCollections.observableArrayList());
+        BooleanBinding couldCalculate = new BooleanBinding() {
+            {
+                super.bind(rangeFrom, rangeTo, maxCountPrimes);
+            }
+            @Override
+            protected boolean computeValue() {
+                return getInputStatus() == Status.READY;
+            }
+        };
+        calculationDisabled.bind(couldCalculate.not());
+
+        final List<StringProperty> propertyList = new ArrayList<StringProperty>() { {
+            add(rangeFrom);
+            add(rangeTo);
+            add(maxCountPrimes);
+        } };
+
+        for (StringProperty property : propertyList) {
+            final PropertyChangeListener listener = new PropertyChangeListener();
+            property.addListener(listener);
+            valueChangedListeners.add(listener);
+        }
+    }
+
+    private void updateLogs() {
+        List<String> logList = logger.getLog();
+        String entry = new String("");
+        for (String logMessage : logList) {
+            entry += logMessage + "\n";
+        }
+        logs.set(entry);
     }
 
     private void setCalculationMessages(final Integer left, final Integer right,
@@ -209,6 +293,8 @@ public class ViewModel {
 
     private static final String DELIMITER = ", ";
 
+    private ILogger logger;
+    private final StringProperty logs = new SimpleStringProperty("");
     private final StringProperty rangeFrom = new SimpleStringProperty();
     private final StringProperty rangeTo = new SimpleStringProperty();
     private final StringProperty maxCountPrimes = new SimpleStringProperty();
@@ -226,6 +312,17 @@ public class ViewModel {
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
             status.set(getInputStatus().toString());
+            curValue = newValue;
         }
+        public boolean isChanged() {
+            return !prevValue.equals(curValue);
+        }
+
+        public void updateState() {
+            prevValue = curValue;
+        }
+
+        private String prevValue = new String("");
+        private String curValue = new String("");
     }
 }

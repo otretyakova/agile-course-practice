@@ -29,6 +29,8 @@ include "code/prime-number/ViewModel"
 project(":code/prime-number/ViewModel").name = "prime-number-ViewModel"
 include "code/prime-number/View"
 project(":code/prime-number/View").name = "prime-number-View"
+include "code/prime-number/Infrastructure"
+project(":code/prime-number/Infrastructure").name = "prime-number-Infrastructure"
 
 // Gerasimov Dmitriy
 include "code/left_sided_heap/Model"

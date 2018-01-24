@@ -50,6 +50,11 @@
                                                         <TextArea fx:id="txtAnswer" text="${viewModel.currentAnswer}" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                     </children>
                                                 </AnchorPane>
+                                                <AnchorPane minHeight="100.0">
+                                                    <children>
+                                                        <TextArea fx:id="txtLogs" text="${viewModel.logs}" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                    </children>
+                                                </AnchorPane>
                                             </items>
                                         </SplitPane>
                                     </children>

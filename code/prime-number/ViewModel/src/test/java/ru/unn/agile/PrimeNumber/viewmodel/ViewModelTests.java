@@ -1,11 +1,15 @@
 package ru.unn.agile.PrimeNumber.viewmodel;
 
 import javafx.collections.FXCollections;
+import org.junit.Rule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import ru.unn.agile.PrimeNumber.Model.PrimeNumber.Methods;
 
 import static org.junit.Assert.assertEquals;
@@ -13,15 +17,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ViewModelTests {
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After
     public void tearDown() {
         viewModel = null;
+    }
+
+    public void setViewModel(final ViewModel externalViewModel) {
+        viewModel = externalViewModel;
     }
 
     @Test
@@ -326,6 +336,232 @@ public class ViewModelTests {
         ));
         viewModel.chooseAnswerById(0);
         assertEquals("aaa", viewModel.getCurrentAnswer());
+    }
+
+    @Test
+    public void viewModelConstructorThrowsExceptionWithNullLogger() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Logger can't be null");
+        new ViewModel(null);
+    }
+
+    @Test
+    public void canLoggerBeSetAfterObjectIsCreated() {
+        ViewModel viewModel = new ViewModel();
+        viewModel.setLogger(new FakeLogger());
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        List<String> log = viewModel.getLog();
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logContainsProperMessageAfterCalculation() {
+        setCorrectData();
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.CALCULATE_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void logContainsInputRangeAfterCalculation() {
+        setCorrectData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*"
+                + viewModel.rangeFromProperty().get() + ".*"
+                + viewModel.rangeToProperty().get() + ".*"));
+    }
+
+    @Test
+    public void rangeIsProperlyFormattedInLogAfterCalculation() {
+        setCorrectData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*for range \\["
+                + viewModel.rangeFromProperty().get() + ", "
+                + viewModel.rangeToProperty().get() + "\\].*"));
+    }
+
+    @Test
+    public void logContainsMaxCountOfPrimesAfterCalculation() {
+        setCorrectData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*"
+                + viewModel.maxCountPrimesProperty().get() + ".*"));
+    }
+
+    @Test
+    public void maxCountOfPrimesIsProperlyFormattedInLogAfterCalculation() {
+        setCorrectData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*maximum count of primes was = "
+                + viewModel.maxCountPrimesProperty().get() + ".*"));
+    }
+
+    @Test
+    public void methodIsMentionedInTheLogAfterCalculation() {
+        setCorrectData();
+
+        viewModel.calculate();
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*method " + Methods.SIMPLE + ".*"));
+    }
+
+    @Test
+    public void canBeSeveralLogMessagesInLog() {
+        setCorrectData();
+
+        viewModel.calculate();
+        viewModel.onMethodChanged(Methods.SIMPLE, Methods.ERATOSTHENES);
+        viewModel.calculate();
+
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void canSeeMethodChangeInLog() {
+        setCorrectData();
+
+        viewModel.onMethodChanged(Methods.SIMPLE, Methods.ERATOSTHENES);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.OPERATION_CHANGED
+                + Methods.ERATOSTHENES + ".*"));
+    }
+
+
+    @Test
+    public void methodChangeIsNotLoggedIfNotChanged() {
+        viewModel.onMethodChanged(Methods.SIMPLE, Methods.ERATOSTHENES);
+
+        viewModel.onMethodChanged(Methods.ERATOSTHENES, Methods.ERATOSTHENES);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void rangeIsCorrectlyLoggedIfItsFocusChanged() {
+        setCorrectData();
+
+        viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.RANGE_CHANGED
+                + "\\[" + viewModel.rangeFromProperty().get() + ", "
+                + viewModel.rangeToProperty().get() + "\\]."));
+    }
+
+    @Test
+    public void rangeIsNotLoggedIfSelectedFirst() {
+        setCorrectData();
+
+        viewModel.onRangeFocusChanged(Boolean.FALSE, Boolean.TRUE);
+
+        assertEquals(0, viewModel.getLog().size());
+    }
+
+    @Test
+    public void numberOfPrimesIsCorrectlyLoggedIfItsFocusChanged() {
+        setCorrectData();
+
+        viewModel.onMaxCountPrimesFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String message = viewModel.getLog().get(0);
+        assertTrue(message.matches(".*" + LogMessages.NUM_PRIMES_CHANGED
+                + viewModel.maxCountPrimesProperty().get() + "."));
+    }
+
+    @Test
+    public void numberOfPrimesIsNotLoggedIfSelectedFirst() {
+        setCorrectData();
+
+        viewModel.onMaxCountPrimesFocusChanged(Boolean.FALSE, Boolean.TRUE);
+
+        assertEquals(0, viewModel.getLog().size());
+    }
+
+    @Test
+    public void calculateIsNotCalledWhenButtonIsDisabled() {
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doNotLogRangeFocusChangingForSameParamsWhenPartialInput() {
+        viewModel.rangeFromProperty().set("3");
+        viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.rangeFromProperty().set("3");
+        viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logRangeFocusChangingForDifferentParamsWhenPartialInput() {
+        viewModel.rangeFromProperty().set("2");
+        viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.rangeFromProperty().set("3");
+        viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(2, viewModel.getLog().size());
+    }
+
+    @Test
+    public void canLogAllEvents() {
+        setCorrectData();
+
+        viewModel.onRangeFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.onMethodChanged(Methods.SIMPLE, Methods.ERATOSTHENES);
+        viewModel.onMaxCountPrimesFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.calculate();
+
+        assertEquals(4, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isLogTextEmptyInTheBeginning() {
+        assertEquals("", viewModel.getLogs());
+    }
+
+    @Test
+    public void canLogTextContainSeveralLogMessages() {
+        setCorrectData();
+
+        viewModel.calculate();
+        viewModel.onMethodChanged(Methods.SIMPLE, Methods.ERATOSTHENES);
+        viewModel.calculate();
+
+        String logText = viewModel.getLogs();
+        int numberOfEventsHappened = logText.split("\n").length;
+        assertEquals(3, numberOfEventsHappened);
+    }
+
+    @Test
+    public void doesLogTextContainEntriesFromOriginalLog() {
+        setCorrectData();
+
+        viewModel.calculate();
+        viewModel.onMaxCountPrimesFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        String[] splitLogText = viewModel.getLogs().split("\n");
+        assertEquals(viewModel.getLog().get(0), splitLogText[0]);
+        assertEquals(viewModel.getLog().get(1), splitLogText[1]);
     }
 
     private void setCorrectData() {
