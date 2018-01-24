@@ -7,7 +7,6 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
-
 import ru.unn.agile.Triangle.Model.Triangle;
 
 import java.util.ArrayList;
@@ -226,7 +225,6 @@ public class ViewModel {
     private final List<TriangleChangesListener> changesListeners = new ArrayList<>();
     private final StringProperty status = new SimpleStringProperty();
     private boolean isCalculateButtonEnabled;
-    private boolean isInputChanged;
     private ILogger logger;
 
     private class TriangleChangesListener implements ChangeListener<String> {
@@ -244,7 +242,7 @@ public class ViewModel {
             return !prevInput.equals(newInput);
         }
 
-        public void cache() {
+        public void saveNewInputAsPrevious() {
             prevInput = newInput;
         }
 
@@ -283,38 +281,19 @@ public class ViewModel {
         return inputStatus;
     }
 
-    private void logInputParams() {
-        if (!isInputChanged) {
-            return;
-        }
-
-        logger.log(editingFinishedLogMessage());
-        isInputChanged = false;
-    }
-
-    private String editingFinishedLogMessage() {
-        return LogMessages.EDITING_FINISHED
-                + "Input arguments are: "
-                + allInputCoordinates();
-    }
-
     public void onFocusChanged(final Boolean oldValue, final Boolean newValue) {
         if (!oldValue && newValue) {
             return;
         }
         for (TriangleChangesListener listener : changesListeners) {
             if (listener.isChanged()) {
-                StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
-                message.append("Input arguments are: A = (")
-                        .append(coordAx.get()).append(",")
-                        .append(coordAy.get()).append("); B = (")
-                        .append(coordBx.get()).append(",")
-                        .append(coordBy.get()).append("); C = (")
-                        .append(coordCx.get()).append(",")
-                        .append(coordCy.get()).append(").");
-                logger.log(message.toString());
+                String message = LogMessages.EDITING_FINISHED + "Input arguments are: A = ("
+                        + coordAx.get() + "," + coordAy.get() + "); B = ("
+                        + coordBx.get() + "," + coordBy.get() + "); C = ("
+                        + coordCx.get() + "," + coordCy.get() + ").";
+                logger.log(message);
 
-                listener.cache();
+                listener.saveNewInputAsPrevious();
                 break;
             }
         }

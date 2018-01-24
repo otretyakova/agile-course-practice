@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import java.util.function.UnaryOperator;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
@@ -56,10 +55,8 @@ public class TriangleModel {
 
         Pattern p = Pattern.compile(LEGAL_INPUT);
         for (TextField textField : textFields) {
-            TextFormatter<String> formatter = new TextFormatter<>(
-                    (UnaryOperator<TextFormatter.Change>) change -> {
-                        return p.matcher(change.getControlNewText()).matches() ? change : null;
-                    });
+            TextFormatter<String> formatter = new TextFormatter<>(change ->
+                    p.matcher(change.getControlNewText()).matches() ? change : null);
             textField.setTextFormatter(formatter);
         }
         btnCalc.setOnAction(event -> viewModel.calculate());

@@ -3,6 +3,7 @@ package ru.unn.agile.Triangle.Infrastructure;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -11,8 +12,6 @@ import java.io.FileReader;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static ru.unn.agile.Triangle.ViewModel.RegexMatcher.matchesPattern;
 
 public class TxtLoggerTests {
 
@@ -42,7 +41,7 @@ public class TxtLoggerTests {
         logger.log(testMessage);
 
         String message = logger.getLog().get(0);
-        assertThat(message, matchesPattern(".*" + testMessage + "$"));
+        assertTrue(message.matches(".*" + testMessage));
     }
 
     @Test
@@ -54,7 +53,7 @@ public class TxtLoggerTests {
 
         List<String> actualMessages = logger.getLog();
         for (int i = 0; i < actualMessages.size(); i++) {
-            assertThat(actualMessages.get(i), matchesPattern(".*" + messages[i] + "$"));
+            assertTrue(actualMessages.get(i).matches(".*" + messages[i]));
         }
     }
 
@@ -65,7 +64,7 @@ public class TxtLoggerTests {
         logger.log(testMessage);
 
         String message = logger.getLog().get(0);
-        assertThat(message, matchesPattern(PATTERN));
+        assertTrue(message.matches(PATTERN));
     }
 
     private static final String PATTERN = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*";
