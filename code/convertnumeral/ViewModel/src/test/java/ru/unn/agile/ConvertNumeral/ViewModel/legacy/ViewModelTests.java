@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class ViewModelTests {
     public void setViewModel(final ViewModel viewModel) {
@@ -167,16 +166,9 @@ public class ViewModelTests {
         assertFalse(viewModel.isAvailableInsertInput(1, "2"));
     }
 
-    @Test
-    public void canExpectedExceptionWhenLoggerIsNull() {
-        try {
-            new ViewModel(null);
-            fail("Exception wasn't expected");
-        } catch (IllegalArgumentException ex) {
-            assertEquals("Logger can't be null", ex.getMessage());
-        } catch (Exception ex) {
-            fail("Invalid exception type");
-        }
+    @Test(expected = Exception.class)
+    public void canThrowsExceptionWhenLoggerIsNull() {
+        new ViewModel(null);
     }
 
     @Test
@@ -240,7 +232,8 @@ public class ViewModelTests {
                 + ViewModel.NumberType.ARABIC.toString() + ": "
                 + inputString
                 + " to "
-                + ViewModel.NumberType.ROMAN.toString() + ".*"));
+                + ViewModel.NumberType.ROMAN.toString() + ": X"
+                + ".*"));
     }
 
     @Test
@@ -253,11 +246,25 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isNotAddMessageToLogWhenClickConvertAndInputIsInvalid() {
+    public void isAddMessageToLogWhenClickConvertAndInputIsInvalid() {
         viewModel.convert();
         List<String> log = viewModel.getLog();
 
-        assertEquals(0, log.size());
+        assertTrue(log.get(0).matches(".*"
+                + ViewModel.LogMessage.CONVERT_WAS_PRESSED
+                + "failed: "
+                + ViewModel.Message.UNKNOWN_TYPE));
+    }
+
+    @Test
+    public void isAddMessageToLogWhenConvertIncorrectRomanNumber() {
+        viewModel.setInputNumber("IXI");
+        viewModel.convert();
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.get(1).matches(".*"
+                + ViewModel.LogMessage.CONVERT_WAS_PRESSED
+                + "failed: " + ".*"));
     }
 
     private ViewModel viewModel;

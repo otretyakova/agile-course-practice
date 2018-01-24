@@ -38,17 +38,18 @@ public class ViewModel {
 
     public void convert() {
         if (currentInputType == null) {
+            logFailedConvert(Message.UNKNOWN_TYPE);
             return;
         }
         try {
             switch (currentInputType) {
                 case ROMAN:
-                    logClickConvert(NumberType.ARABIC);
                     outputNumber = converter.convert(romanNumber).toString();
+                    logSuccessConvert(NumberType.ARABIC);
                     break;
                 case ARABIC:
-                    logClickConvert(NumberType.ROMAN);
                     outputNumber = converter.convert(arabicNumber);
+                    logSuccessConvert(NumberType.ROMAN);
                     break;
                 default:
                     break;
@@ -56,6 +57,7 @@ public class ViewModel {
         } catch (InvalidParameterException e) {
             outputNumber = "";
             messageText = Message.error(e);
+            logFailedConvert(e.getMessage());
         }
     }
 
@@ -92,6 +94,7 @@ public class ViewModel {
         public static final String INCORRECT_INPUT = "Incorrect input: "
                 + "Arabic numbers should consist only numbers from 0 to 9! \n"
                 + "Roman numbers consist only of symbols: I, V, X, L, C, D, M!";
+        public static final String UNKNOWN_TYPE = "Unknown type of number: only Roman ar Arabic!";
 
         public static String error(final Exception e) {
             return "Error: " + e.getMessage();
@@ -135,13 +138,20 @@ public class ViewModel {
         return false;
     }
 
-    private void logClickConvert(final NumberType targetNumberType) {
-        String logMessage = String.format("%s%s: %s to %s",
+    private void logSuccessConvert(final NumberType targetNumberType) {
+        String logMessage = String.format("%s%s: %s to %s: %s",
                 LogMessage.CONVERT_WAS_PRESSED,
                 currentInputType.toString(),
                 inputNumber,
-                targetNumberType.toString());
+                targetNumberType.toString(),
+                outputNumber);
         logger.log(logMessage);
+    }
+
+    private void logFailedConvert(final String error) {
+        logger.log(String.format("%sfailed: %s",
+                LogMessage.CONVERT_WAS_PRESSED,
+                error));
     }
 
     private ILogger logger;
