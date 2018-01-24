@@ -3,9 +3,12 @@ include "code/MatrixClass"
 project(":code/MatrixClass").name = "ClassMatrix"
 
 // Bastrakova Ksenia
-include "code/merge-sort"
-project(":code/merge-sort").name = "merge-sort"
-
+include "code/merge-sort/Model"
+project(":code/merge-sort/Model").name = "merge-sort-Model"
+include "code/merge-sort/View"
+project(":code/merge-sort/View").name = "merge-sort-View"
+include "code/merge-sort/ViewModel"
+project(":code/merge-sort/ViewModel").name = "merge-sort-ViewModel"
 
 
 // Bespalov Max
@@ -161,7 +164,6 @@ include "code/convertnumeral/ViewModel"
 project(":code/convertnumeral/ViewModel").name = "convertnumeral-ViewModel"
 include "code/convertnumeral/View"
 project(":code/convertnumeral/View").name = "convertnumeral-View"
-
 
 // Uvarov Denis
 include "code/game-of-life"
