@@ -1,21 +1,41 @@
 package ru.unn.agile.NumberSystemConverter.view;
 
-import javafx.fxml.FXML;
+import javafx.beans.value.ChangeListener;
+
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert;
+
+import javafx.fxml.FXML;
+
+import ru.unn.agile.NumberSystemConverter.infrastructure.TextLogger;
 import ru.unn.agile.NumberSystemConverter.model.NumberSystemBase;
 import ru.unn.agile.NumberSystemConverter.viewmodel.NumberSystemConverterViewModel;
+
+import java.time.LocalDate;
 
 
 public class Converter {
     @FXML
     void initialize() {
+        viewModel.setLogger(new TextLogger("./TextLogger_lab3_" + LocalDate.now() + ".log"));
+
+        final ChangeListener<Boolean> focusChangeListener = (observable, oldValue, newValue)
+            -> viewModel.onFocusChanged(oldValue, newValue);
+
+        final ChangeListener<NumberSystemBase> baseChangeListener = (observable, oldValue, newValue)
+            -> viewModel.onBaseNumberSystemChanged(oldValue, newValue);
+
+        final ChangeListener<NumberSystemBase> targetChangeListener =
+            (observable, oldValue, newValue)
+            -> viewModel.onTargetNumberSystemChanged(oldValue, newValue);
+
         this.textAreaBaseNumber.textProperty().bindBidirectional(
                 this.viewModel.numberInBaseNumberSystemProperty()
         );
+        this.textAreaBaseNumber.focusedProperty().addListener(focusChangeListener);
 
         this.textAreaTargetNumber.textProperty().bindBidirectional(
                 this.viewModel.numberInTargetNumberSystemProperty()
@@ -24,10 +44,12 @@ public class Converter {
         this.comboBoxBase.valueProperty().bindBidirectional(
                 this.viewModel.baseNumberSystemProperty()
         );
+        this.comboBoxBase.valueProperty().addListener(baseChangeListener);
 
         this.comboBoxTarget.valueProperty().bindBidirectional(
                 this.viewModel.targetNumberSystemProperty()
         );
+        this.comboBoxTarget.valueProperty().addListener(targetChangeListener);
 
         this.buttonConvert.disableProperty().bind(
                 this.viewModel.conversionEnabledProperty().not()
