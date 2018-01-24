@@ -32,7 +32,7 @@ public class ViewModelTests {
 
     @Test
     public void showMessageWhenInputIsEmpty() {
-        assertEquals("Please enter a Roman or Arabic number!", viewModel.getMessageText());
+        assertEquals(ViewModel.Message.DEFAULT, viewModel.getMessageText());
     }
 
     @Test
@@ -83,11 +83,8 @@ public class ViewModelTests {
     @Test
     public void showErrorMessageWhenEnterInvalidInputNumber() {
         viewModel.setInputNumber("abc");
-        String errorMessage = "Incorrect input: "
-                + "Arabic numbers should consist only numbers from 0 to 9! \n"
-                + "Roman numbers consist only of symbols: I, V, X, L, C, D, M!";
 
-        assertEquals(errorMessage, viewModel.getMessageText());
+        assertEquals(ViewModel.Message.INCORRECT_INPUT, viewModel.getMessageText());
     }
 
     @Test
@@ -113,7 +110,7 @@ public class ViewModelTests {
         viewModel.setInputNumber("abc");
         viewModel.setInputNumber("5");
 
-        assertEquals("You entered a Arabic number", viewModel.getMessageText());
+        assertEquals(ViewModel.Message.ENTER_ARABIC, viewModel.getMessageText());
     }
 
     @Test
@@ -121,7 +118,7 @@ public class ViewModelTests {
         viewModel.setInputNumber("abc");
         viewModel.setInputNumber("XX");
 
-        assertEquals("You entered a Roman number", viewModel.getMessageText());
+        assertEquals(ViewModel.Message.ENTER_ROMAN, viewModel.getMessageText());
     }
 
     @Test
@@ -129,7 +126,38 @@ public class ViewModelTests {
         viewModel.setInputNumber("a");
         viewModel.setInputNumber("");
 
-        assertEquals("Please enter a Roman or Arabic number!", viewModel.getMessageText());
+        assertEquals(ViewModel.Message.DEFAULT, viewModel.getMessageText());
+    }
+
+    @Test
+    public void canEnterNumericSymbolInInput() {
+        assertTrue(viewModel.isAvailableInsertInput(0, "2"));
+    }
+
+    @Test
+    public void canEnterIVXLCDMSymbolInInput() {
+        assertTrue(viewModel.isAvailableInsertInput(0, "X"));
+    }
+
+    @Test
+    public void canEnterSomeSymbolExcludingNumericAndRomansNumericInInput() {
+        assertFalse(viewModel.isAvailableInsertInput(0, "a"));
+    }
+
+    @Test
+    public void canEnterArabicWithCountOfSymbolsMore4InInput() {
+        assertFalse(viewModel.isAvailableInsertInput(4, "2"));
+    }
+
+    @Test
+    public void canInsertArabicWithCountOfSymbolsMore4InInput() {
+        assertFalse(viewModel.isAvailableInsertInput(0, "12345"));
+    }
+
+    @Test
+    public void canEnterNumericSymbolAfterRomansNumericSymbolInInput() {
+        viewModel.setInputNumber("I");
+        assertFalse(viewModel.isAvailableInsertInput(1, "2"));
     }
 
     private ViewModel viewModel;

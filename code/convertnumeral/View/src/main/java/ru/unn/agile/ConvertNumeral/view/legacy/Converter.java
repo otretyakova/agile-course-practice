@@ -9,8 +9,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 public final class Converter {
 
@@ -29,12 +30,22 @@ public final class Converter {
 
         backBind();
 
-        btnConvert.addActionListener(new ActionListener() {
+        btnConvert.addActionListener(
+                ae -> {
+                    bind();
+                    viewModel.convert();
+                    backBind();
+                }
+        );
+
+        txtNumberInput.setDocument(new PlainDocument() {
             @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
-                bind();
-                viewModel.convert();
-                backBind();
+            public void insertString(final int offs,
+                                     final String str,
+                                     final AttributeSet a) throws BadLocationException {
+                if (viewModel.isAvailableInsertInput(offs, str)) {
+                    super.insertString(offs, str, a);
+                }
             }
         });
 

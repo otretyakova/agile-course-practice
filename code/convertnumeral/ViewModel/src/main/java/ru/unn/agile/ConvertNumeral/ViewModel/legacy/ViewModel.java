@@ -9,6 +9,16 @@ public class ViewModel {
         return convertButtonEnabled;
     }
 
+    public boolean isAvailableInsertInput(final int offs, final String str) {
+        int newLengthInput = offs + str.length();
+        if (newLengthInput > MAX_LENGTH_ARABIC && str.matches(REGEX_ARABIC)) {
+            return false;
+        }
+        String newInput = inputNumber + str;
+        return !newInput.isEmpty()
+                && (newInput.matches(REGEX_ROMANS) || newInput.matches(REGEX_ARABIC));
+    }
+
     public void setInputNumber(final String inputNumber) {
         this.inputNumber = inputNumber;
         convertButtonEnabled = parseInputNumber();
@@ -44,13 +54,13 @@ public class ViewModel {
         arabicNumber = 0;
         romanNumber = "";
 
-        if (inputNumber.matches("[0-9]+")) {
+        if (inputNumber.matches(REGEX_ARABIC)) {
             arabicNumber = Integer.parseInt(inputNumber);
             currentInputType = NumberType.ARABIC;
             messageText = Message.ENTER_ARABIC;
             return true;
         }
-        if (inputNumber.matches("[IVXLCDM]+")) {
+        if (inputNumber.matches(REGEX_ROMANS)) {
             romanNumber = inputNumber;
             currentInputType = NumberType.ROMAN;
             messageText = Message.ENTER_ROMAN;
@@ -73,6 +83,9 @@ public class ViewModel {
     private String outputNumber = "";
     private Integer arabicNumber = 0;
     private String romanNumber = "";
+    private static final int MAX_LENGTH_ARABIC = 4;
+    private static final String REGEX_ROMANS = "[IVXLCDM]+";
+    private static final String REGEX_ARABIC = "[0-9]+";
 
     public enum NumberType {
         ROMAN("Roman"),
