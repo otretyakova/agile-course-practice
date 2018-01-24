@@ -12,8 +12,12 @@ project(":code/merge-sort/ViewModel").name = "merge-sort-ViewModel"
 
 
 // Bespalov Max
-include "code/assessments-accounting"
-project(":code/assessments-accounting").name = "assessments-accounting"
+include "code/AssessmentsAccounting/Model"
+project(":code/AssessmentsAccounting/Model").name = "AssessmentsAccounting-Model"
+include "code/AssessmentsAccounting/View"
+project(":code/AssessmentsAccounting/View").name = "AssessmentsAccounting-View"
+include "code/AssessmentsAccounting/ViewModel"
+project(":code/AssessmentsAccounting/ViewModel").name = "AssessmentsAccounting-ViewModel"
 
 // Vershinina Olga
 include "code/DistanceBetweenVectors/Model"
