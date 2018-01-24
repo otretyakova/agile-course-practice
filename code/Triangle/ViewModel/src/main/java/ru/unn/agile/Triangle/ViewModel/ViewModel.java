@@ -375,9 +375,10 @@ public class ViewModel {
     }
 
     private String allInputCoordinates() {
-        return "A = (" + coordAx.get() + ", " + coordAy.get() + "); "
-                + "B = (" + coordBx.get() + ", " + coordBy.get() + "); "
-                + "C = (" + coordCx.get() + ", " + coordCy.get() + ").";
+        return String.format("A = (%s, %s); B = (%s, %s); C = (%s, %s).",
+                coordAx.get(), coordAy.get(),
+                coordBx.get(), coordBy.get(),
+                coordCx.get(), coordCy.get());
     }
 }
 
