@@ -3,6 +3,20 @@ package ru.unn.agile.Triangle.Model;
 import java.awt.geom.Point2D;
 
 public class Triangle {
+
+    public Triangle(final double ax, final double ay, final double bx,
+                    final double by, final double cx, final double cy) {
+        Point2D dotA = new Point2D.Double(ax, ay);
+        Point2D dotB = new Point2D.Double(bx, by);
+        Point2D dotC = new Point2D.Double(cx, cy);
+        if (isDegenerated(dotA, dotB, dotC)) {
+            throw new IllegalArgumentException("Triangle is degenerated.");
+        }
+        this.a = dotA;
+        this.b = dotB;
+        this.c = dotC;
+    }
+
     public Triangle(final Point2D a, final Point2D b, final Point2D c) {
         if (isDegenerated(a, b, c)) {
             throw new IllegalArgumentException("Triangle is degenerated.");
@@ -99,3 +113,4 @@ public class Triangle {
 
     private static final double ACCURACY_OF_CALCULATIONS = 1e-15;
 }
+

@@ -88,9 +88,7 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(0, 1);
-
         double targetLength = 1;
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAB = triangle.getLengthAB();
@@ -102,7 +100,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(0, 1);
         Point2D b = new Point2D.Double(-1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAB = triangle.getLengthAB();
@@ -114,7 +111,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(1, 1);
         Point2D b = new Point2D.Double(-1, 1);
         Point2D c = new Point2D.Double(0, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAB = triangle.getLengthAB();
@@ -126,7 +122,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(1, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthBC = triangle.getLengthBC();
@@ -138,7 +133,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 1);
         Point2D b = new Point2D.Double(-1, 0);
         Point2D c = new Point2D.Double(1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthBC = triangle.getLengthBC();
@@ -150,7 +144,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(-1, 1);
         Point2D c = new Point2D.Double(1, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthBC = triangle.getLengthBC();
@@ -162,7 +155,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 1);
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(0, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAC = triangle.getLengthAC();
@@ -174,7 +166,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(0, 1);
         Point2D c = new Point2D.Double(-1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAC = triangle.getLengthAC();
@@ -186,7 +177,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(1, 1);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(-1, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double lengthAC = triangle.getLengthAC();
@@ -198,7 +188,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(1, 0);
         Point2D b = new Point2D.Double(0, 1);
         Point2D c = new Point2D.Double(0, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double perimeter = triangle.getPerimeter();
@@ -210,7 +199,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(0, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double perimeter = triangle.getPerimeter();
@@ -222,7 +210,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(1, 1);
         Point2D b = new Point2D.Double(-1, -1);
         Point2D c = new Point2D.Double(0, -2);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double perimeter = triangle.getPerimeter();
@@ -234,7 +221,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(0, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double surfaceArea = triangle.getSurfaceArea();
@@ -246,7 +232,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(2, 0);
         Point2D c = new Point2D.Double(1, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double surfaceArea = triangle.getSurfaceArea();
@@ -258,7 +243,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(2, 0);
         Point2D c = new Point2D.Double(0.5, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double surfaceArea = triangle.getSurfaceArea();
@@ -270,7 +254,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(0, 1);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getABCAngle();
@@ -282,7 +265,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(1, 0);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(-1, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getABCAngle();
@@ -294,7 +276,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(1, 0);
         Point2D b = new Point2D.Double(0, 0);
         Point2D c = new Point2D.Double(1, 1);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getABCAngle();
@@ -306,7 +287,6 @@ public class TriangleTest {
         Point2D a = new Point2D.Double(2, 0);
         Point2D b = new Point2D.Double(1, 1);
         Point2D c = new Point2D.Double(1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getBCAAngle();
@@ -318,7 +298,6 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(-1, 1);
         Point2D a = new Point2D.Double(1, 0);
         Point2D c = new Point2D.Double(0, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getBCAAngle();
@@ -330,7 +309,6 @@ public class TriangleTest {
         Point2D b = new Point2D.Double(1, 1);
         Point2D c = new Point2D.Double(0, 0);
         Point2D a = new Point2D.Double(1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getBCAAngle();
@@ -342,7 +320,6 @@ public class TriangleTest {
         Point2D c = new Point2D.Double(1, 1);
         Point2D a = new Point2D.Double(1, 0);
         Point2D b = new Point2D.Double(2, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getCABAngle();
@@ -354,7 +331,6 @@ public class TriangleTest {
         Point2D c = new Point2D.Double(-1, 1);
         Point2D a = new Point2D.Double(0, 0);
         Point2D b = new Point2D.Double(1, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getCABAngle();
@@ -366,10 +342,10 @@ public class TriangleTest {
         Point2D c = new Point2D.Double(1, 1);
         Point2D b = new Point2D.Double(1, 0);
         Point2D a = new Point2D.Double(0, 0);
-
         Triangle triangle = new Triangle(a, b, c);
 
         double angle = triangle.getCABAngle();
         assertEquals(angle, 45 * Math.PI / 180, 1e-15);
     }
 }
+

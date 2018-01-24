@@ -158,12 +158,14 @@ include "code/game-of-life"
 project(":code/game-of-life").name = "Game-of-life-Model"
 
 // Umnikov Eugene
-include "code/Triangle/Model"
-project(":code/Triangle/Model").name = "Triangle-Model"
-include "code/Triangle/View"
-project(":code/Triangle/View").name = "Triangle-View"
-include "code/Triangle/ViewModel"
-project(":code/Triangle/ViewModel").name = "Triangle-ViewModel"
+include "code/Triangle/Model" 
+project(":code/Triangle/Model").name = "Triangle-Model" 
+include "code/Triangle/View" 
+project(":code/Triangle/View").name = "Triangle-View" 
+include "code/Triangle/ViewModel" 
+project(":code/Triangle/ViewModel").name = "Triangle-ViewModel" 
+include "code/Triangle/Infrastructure"
+project(":code/Triangle/Infrastructure").name = "Triangle-Insfrastructure"
 
 // Shestakova Svetlana
 
