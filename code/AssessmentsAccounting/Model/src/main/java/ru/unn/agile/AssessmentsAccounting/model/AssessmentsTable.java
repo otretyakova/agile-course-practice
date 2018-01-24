@@ -54,19 +54,22 @@ public class AssessmentsTable {
     }
 
     public void addStudent(final String name) {
-        if (students.contains(new Student(name)) || isStringInvalid(name)) {
-            throw new InvalidParameterException();
+        if (isStringInvalid(name)) {
+            throw new InvalidParameterException("Invalid addStudent arguments name " + name);
         }
 
         try {
             findStudent(name);
         } catch (InvalidParameterException t) {
             students.add(new Student(name));
+            return;
         }
+
+        throw new InvalidParameterException("Invalid addStudent arguments name " + name);
     }
 
     public void renameStudent(final String oldName, final String newName) {
-        if (isStringInvalid(newName) || students.contains(new Student(newName))) {
+        if (students.contains(new Student(newName))) {
             throw new InvalidParameterException("Invalid renameStudent arguments oldName "
                     + oldName + " newName - " + newName);
         }
@@ -75,7 +78,11 @@ public class AssessmentsTable {
         } catch (InvalidParameterException t) {
             Student student = findStudent(oldName);
             student.setName(newName);
+            return;
         }
+
+        throw new InvalidParameterException("Invalid renameStudent arguments oldName "
+                + oldName + " newName - " + newName);
     }
 
     public void removeStudent(final String name) {

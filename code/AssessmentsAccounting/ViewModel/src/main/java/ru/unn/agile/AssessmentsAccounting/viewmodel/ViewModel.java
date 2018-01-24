@@ -263,11 +263,11 @@ public class ViewModel {
     private final ObjectProperty<Assessment> currentAssessment = new SimpleObjectProperty<>();
     private int currentAssessmentIndex;
 
-    private ObjectProperty<ObservableList<String>> students =
+    private final ObjectProperty<ObservableList<String>> students =
             new SimpleObjectProperty<>(FXCollections.observableArrayList());
-    private ObjectProperty<ObservableList<String>> subjects =
+    private final ObjectProperty<ObservableList<String>> subjects =
             new SimpleObjectProperty<>(FXCollections.observableArrayList());
-    private ObjectProperty<ObservableList<Assessment>> assessmentsOfStudent =
+    private final ObjectProperty<ObservableList<Assessment>> assessmentsOfStudent =
             new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
     private final StringProperty averageAssessment = new SimpleStringProperty();

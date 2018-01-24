@@ -134,14 +134,13 @@ public class AssessmentTableTests {
         table.addStudent(name);
     }
 
-    @Test
+    @Test(expected = InvalidParameterException.class)
     public void canNotAddExistingStudentAfterRaname() {
         String name = "Max Bespalov";
         table.addStudent(name);
         String newName = "Max";
         table.renameStudent(name, newName);
         table.addStudent(newName);
-        assertEquals(1, table.getStudents().size());
     }
 
     @Test(expected = InvalidParameterException.class)

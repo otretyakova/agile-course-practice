@@ -54,6 +54,17 @@ public class ViewModelTests {
     }
 
     @Test
+    public void canNotAddNewStudentWithExistingNameAfterRename() {
+        viewModel.getNewStudent().set("Maxim");
+        viewModel.addStudent();
+        viewModel.getNewStudent().set("Max");
+        viewModel.editStudent();
+        viewModel.getNewStudent().set("Max");
+        viewModel.addStudent();
+        assertEquals(1, viewModel.getStudents().size());
+    }
+
+    @Test
     public void canNotAddNewStudentWithInvalidName() {
         viewModel.getNewStudent().set("");
         viewModel.addStudent();
