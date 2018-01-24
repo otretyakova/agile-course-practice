@@ -1,6 +1,7 @@
 package ru.unn.agile.ConvertNumeral.view.legacy;
 
 import ru.unn.agile.ConvertNumeral.ViewModel.legacy.ViewModel;
+import ru.unn.agile.ConvertNumeral.infrastructure.FileLogger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,7 +19,8 @@ public final class Converter {
     public static void main(final String[] args) {
         JFrame frame = new JFrame("Converter");
 
-        frame.setContentPane(new Converter(new ViewModel()).mainPanel);
+        FileLogger logger = new FileLogger("Converter.log");
+        frame.setContentPane(new Converter(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.pack();
