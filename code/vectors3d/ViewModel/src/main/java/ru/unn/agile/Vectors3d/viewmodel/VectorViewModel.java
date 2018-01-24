@@ -1,16 +1,17 @@
 package ru.unn.agile.Vectors3d.viewmodel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.math.BigDecimal;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import ru.unn.agile.Vectors3d.Model.Vector3d;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import ru.unn.agile.Vectors3d.Model.Vector3d;
 
 public class VectorViewModel {
 
@@ -70,26 +71,25 @@ public class VectorViewModel {
         setZ(z);
     }
 
-    public void normalize() {
-        final int maxNumberOfDecimals = 16;
-
-        Vector3d normalizedVector = getVector().normalize();
-        BigDecimal xValue = BigDecimal.valueOf(normalizedVector.getX())
-                .setScale(maxNumberOfDecimals, BigDecimal.ROUND_HALF_UP);
-        BigDecimal yValue = BigDecimal.valueOf(normalizedVector.getY())
-                .setScale(maxNumberOfDecimals, BigDecimal.ROUND_HALF_UP);
-        BigDecimal zValue = BigDecimal.valueOf(normalizedVector.getZ())
-                .setScale(maxNumberOfDecimals, BigDecimal.ROUND_HALF_UP);
-
-        x.set(xValue.toString());
-        y.set(yValue.toString());
-        z.set(zValue.toString());
-    }
-
-    public Vector3d getVector() {
+    public Vector3d getVector3d() {
         return new Vector3d(Double.parseDouble(x.get()),
                 Double.parseDouble(y.get()),
                 Double.parseDouble(z.get()));
+    }
+
+    public void setVector3d(final Vector3d vector) {
+        String xFormatted = formatCoordinate(vector.getX());
+        String yFormatted = formatCoordinate(vector.getY());
+        String zFormatted = formatCoordinate(vector.getZ());
+
+        x.set(xFormatted);
+        y.set(yFormatted);
+        z.set(zFormatted);
+    }
+
+    public void normalize() {
+        Vector3d normalizedVector = getVector3d().normalize();
+        setVector3d(normalizedVector);
     }
 
     private class ValueChangeListener implements ChangeListener<String> {
@@ -106,6 +106,33 @@ public class VectorViewModel {
             }
         }
     }
+
+    private String formatCoordinate(final double coordinate) {
+        BigDecimal decimalValue = BigDecimal.valueOf(coordinate)
+                .setScale(NUMBER_OF_DIGITS_AFTER_POINT, BigDecimal.ROUND_HALF_UP);
+
+        String roundedValue = decimalValue.toString();
+
+        if (Math.abs(Double.parseDouble(roundedValue)) < ZERO_PRECISION) {
+            return "0";
+        }
+
+        String regexForDoubleWithPoint = "[-+]?[0-9]+.[0-9]+";
+        if (roundedValue.matches(regexForDoubleWithPoint)) {
+            while (roundedValue.endsWith("0")) {
+                roundedValue = roundedValue.substring(0, roundedValue.length() - 1);
+            }
+
+            if (roundedValue.endsWith(".")) {
+                roundedValue = roundedValue.substring(0, roundedValue.length() - 1);
+            }
+        }
+
+        return roundedValue;
+    }
+
+    private static final int NUMBER_OF_DIGITS_AFTER_POINT = 8;
+    private static final double ZERO_PRECISION = 1e-7;
 
     private final StringProperty x = new SimpleStringProperty();
     private final StringProperty y = new SimpleStringProperty();

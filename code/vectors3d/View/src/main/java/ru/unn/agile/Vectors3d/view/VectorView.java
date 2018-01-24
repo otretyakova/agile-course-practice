@@ -22,7 +22,7 @@ public class VectorView {
                 add(zTextField);
             } };
 
-        Pattern pattern = Pattern.compile("[-+]?[0-9]{0,7}(\\.[0-9]{0,16})?([eE][-+]?[0-9]{0,3})?");
+        Pattern pattern = Pattern.compile(INPUT_REGEX);
 
         for (TextField textField : textFields) {
             TextFormatter<String> formatter = new TextFormatter<>(change ->
@@ -41,6 +41,9 @@ public class VectorView {
 
         normalizeButton.disableProperty().bind(this.viewModel.normalizeDisabledProperty());
     }
+
+    private static final String INPUT_REGEX =
+            "[-+]?[0-9]{0,8}(\\.[0-9]{0,8})?([eE][-+]?[0-9]{0,2})?";
 
     @FXML
     private TextField xTextField;

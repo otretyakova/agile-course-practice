@@ -48,19 +48,17 @@ public class Vectors3dViewModel {
     }
 
     public void calculateDotProduct() {
-        Vector3d firstVector = firstVectorViewModel.getVector();
-        Vector3d secondVector = secondVectorViewModel.getVector();
+        Vector3d firstVector = firstVectorViewModel.getVector3d();
+        Vector3d secondVector = secondVectorViewModel.getVector3d();
         Double result = firstVector.dotProduct(secondVector);
         resultNumberViewModel.setResult(result);
     }
 
     public void calculateCrossProduct() {
-        Vector3d firstVector = firstVectorViewModel.getVector();
-        Vector3d secondVector = secondVectorViewModel.getVector();
+        Vector3d firstVector = firstVectorViewModel.getVector3d();
+        Vector3d secondVector = secondVectorViewModel.getVector3d();
         Vector3d result = firstVector.crossProduct(secondVector);
-        resultVectorViewModel.setX(String.valueOf(result.getX()));
-        resultVectorViewModel.setY(String.valueOf(result.getY()));
-        resultVectorViewModel.setZ(String.valueOf(result.getZ()));
+        resultVectorViewModel.setVector3d(result);
     }
 
     private final VectorViewModel firstVectorViewModel = new VectorViewModel();

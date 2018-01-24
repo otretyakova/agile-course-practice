@@ -27,7 +27,7 @@ public class VectorViewModelTests {
         assertEquals("0.0", viewModel.getYProperty().get());
         assertEquals("0.0", viewModel.getZProperty().get());
         assertFalse(viewModel.isNormalizeDisabled());
-        Vector3d vector = viewModel.getVector();
+        Vector3d vector = viewModel.getVector3d();
         assertEquals(0.0, vector.getX(), 0.0);
         assertEquals(0.0, vector.getY(), 0.0);
         assertEquals(0.0, vector.getZ(), 0.0);
@@ -106,6 +106,24 @@ public class VectorViewModelTests {
                 Double.parseDouble(viewModel.getZProperty().get()), PRECISION);
     }
 
+    @Test
+    public void canSetVector3dWithBigDecimalCoordinates() {
+        Vector3d vector = new Vector3d(10e-15, 0.000000001, 15.24234234234);
+        viewModel.setVector3d(vector);
+        assertEquals("0", viewModel.getXProperty().get());
+        assertEquals("0", viewModel.getYProperty().get());
+        assertEquals("15.24234234", viewModel.getZProperty().get());
+    }
+
+    @Test
+    public void canNormalizeWithAlmostZeroCoordinates() {
+        viewModel.setCoordinates("4324e-15", "0.00000000235", "14636.532");
+        viewModel.normalize();
+        assertEquals("0", viewModel.getXProperty().get());
+        assertEquals("0", viewModel.getYProperty().get());
+        assertEquals("1", viewModel.getZProperty().get());
+    }
+
     private VectorViewModel viewModel;
-    private static final double PRECISION = 1e-16;
+    private static final double PRECISION = 1e-7;
 }

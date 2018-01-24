@@ -24,9 +24,9 @@ public class Vectors3dViewModelTests {
     @Test
     public void canGetDefaultValues() {
         Vector3d zeroVector = new Vector3d(0, 0, 0);
-        assertTrue(viewModel.getFirstVectorViewModel().getVector().equalCompletely(zeroVector));
-        assertTrue(viewModel.getSecondVectorViewModel().getVector().equalCompletely(zeroVector));
-        assertTrue(viewModel.getResultVectorViewModel().getVector().equalCompletely(zeroVector));
+        assertTrue(viewModel.getFirstVectorViewModel().getVector3d().equalCompletely(zeroVector));
+        assertTrue(viewModel.getSecondVectorViewModel().getVector3d().equalCompletely(zeroVector));
+        assertTrue(viewModel.getResultVectorViewModel().getVector3d().equalCompletely(zeroVector));
         assertEquals("", viewModel.getResultNumberViewModel().resultProperty().get());
         assertFalse(viewModel.isCalculationDisabled());
     }
@@ -100,7 +100,7 @@ public class Vectors3dViewModelTests {
         secondVector.setCoordinates("0.0", "0.0", "0.0");
 
         viewModel.calculateCrossProduct();
-        assertTrue(viewModel.getResultVectorViewModel().getVector().equalCompletely(
+        assertTrue(viewModel.getResultVectorViewModel().getVector3d().equalCompletely(
                 new Vector3d(0, 0, 0)
         ));
     }
@@ -114,7 +114,7 @@ public class Vectors3dViewModelTests {
         secondVector.setCoordinates("1.0", "2.0", "3.0");
 
         viewModel.calculateCrossProduct();
-        assertTrue(viewModel.getResultVectorViewModel().getVector().equalCompletely(
+        assertTrue(viewModel.getResultVectorViewModel().getVector3d().equalCompletely(
                 new Vector3d(0, 0, 0)
         ));
     }
@@ -128,7 +128,7 @@ public class Vectors3dViewModelTests {
         secondVector.setCoordinates("4.0", "5.0", "6.0");
 
         viewModel.calculateCrossProduct();
-        assertTrue(viewModel.getResultVectorViewModel().getVector().equalCompletely(
+        assertTrue(viewModel.getResultVectorViewModel().getVector3d().equalCompletely(
                 new Vector3d(-3, 6, -3)
         ));
     }

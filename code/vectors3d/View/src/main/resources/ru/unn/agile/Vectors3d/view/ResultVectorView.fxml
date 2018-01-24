@@ -10,11 +10,11 @@
         <spacing>10</spacing>
         <children>
             <Label text="X:" />
-            <Label fx:id="xLabel" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="xLabel" prefWidth="150.0" HBox.hgrow="ALWAYS"/>
             <Label text="Y:" />
-            <Label fx:id="yLabel" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="yLabel" prefWidth="150.0" HBox.hgrow="ALWAYS"/>
             <Label text="Z:" />
-            <Label fx:id="zLabel" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="zLabel" prefWidth="150.0" HBox.hgrow="ALWAYS"/>
         </children>
     </HBox>
 </AnchorPane>
