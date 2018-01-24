@@ -140,12 +140,9 @@ public class ViewModel {
     }
 
     private String calculateLogMessage() {
-        return LogMessages.CALCULATE_WAS_PRESSED + "Arguments: ["
-                + firstPolynomial
-                + " | "
-                + secondPolynomial
-                + "]" + "."
-                + " Operation: " + operation.toString() + ".";
+        return LogMessages.CALCULATE_WAS_PRESSED
+                + String.format("Arguments: [%s | %s]. Operation: %s.",
+                firstPolynomial, secondPolynomial, operation.toString());
     }
 
     private String operationLogMessage() {
@@ -153,15 +150,13 @@ public class ViewModel {
     }
 
     private String editingFirstPolynomialLogMessage() {
-        return LogMessages.EDITING_HAPPENED + "First polynomial: ["
-                + firstPolynomial
-                + "]" + ".";
+        return LogMessages.EDITING_HAPPENED
+                + String.format("First polynomial: [%s].", firstPolynomial);
     }
 
     private String editingSecondPolynomialLogMessage() {
-        return LogMessages.EDITING_HAPPENED + "Second polynomial: ["
-                + secondPolynomial
-                + "]" + ".";
+        return LogMessages.EDITING_HAPPENED
+                + String.format("Second polynomial: [%s].", secondPolynomial);
     }
 
     private boolean isFirstInputChanged;

@@ -281,13 +281,13 @@ public class ViewModelTests {
     }
 
     private String messageFirstPolinomial() {
-        return LogMessages.EDITING_HAPPENED + "First polynomial: ["
-                + viewModel.getFirstPolynomial() + "].";
+        return LogMessages.EDITING_HAPPENED
+                + String.format("First polynomial: [%s].", viewModel.getFirstPolynomial());
     }
 
     private String messageSecondPolinomial() {
-        return LogMessages.EDITING_HAPPENED + "Second polynomial: ["
-                + viewModel.getSecondPolynomial() + "].";
+        return LogMessages.EDITING_HAPPENED
+                + String.format("Second polynomial: [%s].", viewModel.getSecondPolynomial());
     }
 
     private ViewModel viewModel;
