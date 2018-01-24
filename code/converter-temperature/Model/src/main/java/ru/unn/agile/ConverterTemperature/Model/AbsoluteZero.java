@@ -33,10 +33,6 @@ final class AbsoluteZero {
     private AbsoluteZero() { }
 
     static double getAbsoluteZero(final Conversion conversion) {
-        if (!ABSOLUTE_ZEROS.containsKey(conversion)) {
-            throw new IllegalArgumentException("Unknown conversion type");
-        }
-
         return ABSOLUTE_ZEROS.get(conversion);
     }
 }
