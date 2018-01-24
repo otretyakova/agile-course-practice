@@ -166,13 +166,13 @@ public class ViewModelTests {
         assertFalse(viewModel.isAvailableInsertInput(1, "2"));
     }
 
-    @Test(expected = Exception.class)
-    public void canThrowsExceptionWhenLoggerIsNull() {
+    @Test(expected = IllegalArgumentException.class)
+    public void canThrowExceptionWhenLoggerIsNull() {
         new ViewModel(null);
     }
 
     @Test
-    public void isEmptyLogAfterStart() {
+    public void isLogEmptyAfterStart() {
         List<String> log = viewModel.getLog();
 
         assertEquals(0, log.size());
@@ -196,7 +196,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isChangingInputNotLoggedWhenInputIsNotChanged() {
+    public void doesNotLogWhenInputWasNotChanged() {
         viewModel.setInputNumber("CM");
         viewModel.setInputNumber("CM");
         List<String> log = viewModel.getLog();
@@ -205,7 +205,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isLogContainsInputArgumentWhenChangeInput() {
+    public void doesLogContainInputArgumentWhenChangeInput() {
         String inputString = "1";
         viewModel.setInputNumber(inputString);
         List<String> log = viewModel.getLog();
@@ -214,7 +214,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isLogContainsLogMessageWhenChangeInput() {
+    public void doesLogContainLogMessageWhenChangeInput() {
         viewModel.setInputNumber("II");
         List<String> log = viewModel.getLog();
 
@@ -222,7 +222,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isLogContainsArgumentWhenClickConvert() {
+    public void doesLogContainArgumentWhenConvertWasClicked() {
         String inputString = "10";
         viewModel.setInputNumber(inputString);
         viewModel.convert();
@@ -237,7 +237,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isLogContainsLogMessageWhenClickConvert() {
+    public void doesLogContainLogMessageWhenConvertWasClicked() {
         viewModel.setInputNumber("II");
         viewModel.convert();
         List<String> log = viewModel.getLog();
@@ -246,7 +246,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isAddMessageToLogWhenClickConvertAndInputIsInvalid() {
+    public void addMessageWhenConvertWasClickedAndInputIsInvalid() {
         viewModel.convert();
         List<String> log = viewModel.getLog();
 
@@ -257,7 +257,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isAddMessageToLogWhenConvertIncorrectRomanNumber() {
+    public void addMessageToLogWhenConvertingIncorrectRomanNumber() {
         viewModel.setInputNumber("IXI");
         viewModel.convert();
         List<String> log = viewModel.getLog();
