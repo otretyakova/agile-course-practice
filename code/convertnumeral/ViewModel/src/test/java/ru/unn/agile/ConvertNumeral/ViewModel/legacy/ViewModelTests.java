@@ -168,10 +168,10 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canThrowsExceptionWhenLoggerIsNull() {
+    public void canExpectedExceptionWhenLoggerIsNull() {
         try {
             new ViewModel(null);
-            fail("Exception wasn't thrown");
+            fail("Exception wasn't expected");
         } catch (IllegalArgumentException ex) {
             assertEquals("Logger can't be null", ex.getMessage());
         } catch (Exception ex) {

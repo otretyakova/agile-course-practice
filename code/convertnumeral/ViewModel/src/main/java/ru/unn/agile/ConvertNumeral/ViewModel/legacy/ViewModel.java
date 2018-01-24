@@ -29,7 +29,7 @@ public class ViewModel {
 
     public void setInputNumber(final String inputNumber) {
         if (!this.inputNumber.equals(inputNumber)) {
-            logger.log(LogMessage.CHANGE_INPUT + inputNumber);
+            logger.log(String.format("%s%s", LogMessage.CHANGE_INPUT, inputNumber));
         }
 
         this.inputNumber = inputNumber;
@@ -136,11 +136,12 @@ public class ViewModel {
     }
 
     private void logClickConvert(final NumberType targetNumberType) {
-        logger.log(LogMessage.CONVERT_WAS_PRESSED
-                + currentInputType.toString() + ": "
-                + inputNumber
-                + " to "
-                + targetNumberType.toString());
+        String logMessage = String.format("%s%s: %s to %s",
+                LogMessage.CONVERT_WAS_PRESSED,
+                currentInputType.toString(),
+                inputNumber,
+                targetNumberType.toString());
+        logger.log(logMessage);
     }
 
     private ILogger logger;

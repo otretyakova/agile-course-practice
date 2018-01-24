@@ -8,18 +8,22 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import java.util.Date;
+import java.util.List;
 
 public final class Converter {
 
     public static void main(final String[] args) {
         JFrame frame = new JFrame("Converter");
 
-        FileLogger logger = new FileLogger("Converter.log");
+        String logFileName = String.format("./Converter_%te_%<tm_%<tY.log", new Date());
+        FileLogger logger = new FileLogger(logFileName);
         frame.setContentPane(new Converter(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -80,6 +84,10 @@ public final class Converter {
         btnConvert.setEnabled(viewModel.isConvertButtonEnabled());
         txtNumberOutput.setText(viewModel.getOutputNumber());
         txtMessage.setText(viewModel.getMessageText());
+
+        List<String> log = viewModel.getLog();
+        String[] items = log.toArray(new String[log.size()]);
+        listLog.setListData(items);
     }
 
     private JTextField txtNumberInput;
@@ -87,5 +95,6 @@ public final class Converter {
     private JButton btnConvert;
     private JTextArea txtMessage;
     private JPanel mainPanel;
+    private JList<String> listLog;
     private final ViewModel viewModel;
 }
