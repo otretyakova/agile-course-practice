@@ -132,8 +132,12 @@ project(":code/numbers-in-words/Infrastructure").name = "numbers-in-words-Infras
 
 
 // Sadova Daria
-include "code/vectors3d"
-project(":code/vectors3d").name = "vectors3d-Model"
+include "code/vectors3d/Model"
+project(":code/vectors3d/Model").name = "vectors3d-Model"
+include "code/vectors3d/ViewModel"
+project(":code/vectors3d/ViewModel").name = "vectors3d-ViewModel"
+include "code/vectors3d/View"
+project(":code/vectors3d/View").name = "vectors3d-View"
 
 
 // Semerenko Alexander
