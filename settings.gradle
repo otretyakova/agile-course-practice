@@ -168,6 +168,9 @@ include "code/convertnumeral/ViewModel"
 project(":code/convertnumeral/ViewModel").name = "convertnumeral-ViewModel"
 include "code/convertnumeral/View"
 project(":code/convertnumeral/View").name = "convertnumeral-View"
+include "code/convertnumeral/Infrastructure"
+project(":code/convertnumeral/Infrastructure").name = "convertnumeral-Infrastructure"
+
 
 // Uvarov Denis
 include "code/game-of-life"

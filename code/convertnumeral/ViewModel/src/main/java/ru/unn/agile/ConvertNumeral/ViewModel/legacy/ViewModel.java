@@ -3,8 +3,16 @@ package ru.unn.agile.ConvertNumeral.ViewModel.legacy;
 import ru.unn.agile.ConvertNumeral.Model.ConvertNumeral;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 
 public class ViewModel {
+    public ViewModel(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
+    }
+
     public Boolean isConvertButtonEnabled() {
         return convertButtonEnabled;
     }
@@ -20,18 +28,28 @@ public class ViewModel {
     }
 
     public void setInputNumber(final String inputNumber) {
+        if (!this.inputNumber.equals(inputNumber)) {
+            logger.log(String.format("%s%s", LogMessage.CHANGE_INPUT, inputNumber));
+        }
+
         this.inputNumber = inputNumber;
         convertButtonEnabled = parseInputNumber();
     }
 
     public void convert() {
+        if (currentInputType == null) {
+            logFailedConvert(Message.UNKNOWN_TYPE);
+            return;
+        }
         try {
             switch (currentInputType) {
                 case ROMAN:
                     outputNumber = converter.convert(romanNumber).toString();
+                    logSuccessConvert(NumberType.ARABIC);
                     break;
                 case ARABIC:
                     outputNumber = converter.convert(arabicNumber);
+                    logSuccessConvert(NumberType.ROMAN);
                     break;
                 default:
                     break;
@@ -39,6 +57,7 @@ public class ViewModel {
         } catch (InvalidParameterException e) {
             outputNumber = "";
             messageText = Message.error(e);
+            logFailedConvert(e.getMessage());
         }
     }
 
@@ -48,6 +67,10 @@ public class ViewModel {
 
     public String getMessageText() {
         return messageText;
+    }
+
+    public List<String> getLog() {
+        return logger.getLog();
     }
 
     public enum NumberType {
@@ -71,6 +94,7 @@ public class ViewModel {
         public static final String INCORRECT_INPUT = "Incorrect input: "
                 + "Arabic numbers should consist only numbers from 0 to 9! \n"
                 + "Roman numbers consist only of symbols: I, V, X, L, C, D, M!";
+        public static final String UNKNOWN_TYPE = "Unknown type of number: only Roman ar Arabic!";
 
         public static String error(final Exception e) {
             return "Error: " + e.getMessage();
@@ -80,9 +104,18 @@ public class ViewModel {
         }
     }
 
+    public static final class LogMessage {
+        public static final String CHANGE_INPUT = "Change input. New input is ";
+        public static final String CONVERT_WAS_PRESSED = "Convert was pressed. Convert ";
+
+        private LogMessage() {
+        }
+    }
+
     private boolean parseInputNumber() {
         arabicNumber = 0;
         romanNumber = "";
+        currentInputType = null;
 
         if (inputNumber.matches(REGEX_ARABIC)) {
             arabicNumber = Integer.parseInt(inputNumber);
@@ -105,6 +138,23 @@ public class ViewModel {
         return false;
     }
 
+    private void logSuccessConvert(final NumberType targetNumberType) {
+        String logMessage = String.format("%s%s: %s to %s: %s",
+                LogMessage.CONVERT_WAS_PRESSED,
+                currentInputType.toString(),
+                inputNumber,
+                targetNumberType.toString(),
+                outputNumber);
+        logger.log(logMessage);
+    }
+
+    private void logFailedConvert(final String error) {
+        logger.log(String.format("%sfailed: %s",
+                LogMessage.CONVERT_WAS_PRESSED,
+                error));
+    }
+
+    private ILogger logger;
     private ConvertNumeral converter = new ConvertNumeral();
     private Boolean convertButtonEnabled = false;
     private String messageText = Message.DEFAULT;
