@@ -2,7 +2,12 @@ package ru.unn.agile.Range.view.legacy;
 
 import ru.unn.agile.Range.ViewModel.legacy.ViewModel;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -13,7 +18,6 @@ public final class RangeCalculator {
 
         frame.setContentPane(new RangeCalculator(new ViewModel()).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
     }
@@ -59,7 +63,7 @@ public final class RangeCalculator {
             }
         };
         txtInputRange.getDocument().addDocumentListener(documentListener);
-        txtInputRangeOrSet.getDocument().addDocumentListener(documentListener);
+        txtInputArgument.getDocument().addDocumentListener(documentListener);
     }
 
     private void loadListOfOperations() {
@@ -69,19 +73,19 @@ public final class RangeCalculator {
 
     private void bind() {
         viewModel.setInputRange(txtInputRange.getText());
-        viewModel.setInputRangeOrSet(txtInputRangeOrSet.getText());
+        viewModel.setInputArgument(txtInputArgument.getText());
         viewModel.setOperation((ViewModel.Operation) cbOperation.getSelectedItem());
     }
 
     private void backBind() {
         btnCalculate.setEnabled(viewModel.isCalculateButtonEnabled());
-        txtInputRangeOrSet.setEnabled(viewModel.isInputRangeOrSetTextFieldEnabled());
+        txtInputArgument.setEnabled(viewModel.isInputArgumentTextFieldEnabled());
         txtResult.setText(viewModel.getResult());
         txtMessage.setText(viewModel.getMessageText());
     }
 
     private JTextField txtInputRange;
-    private JTextField txtInputRangeOrSet;
+    private JTextField txtInputArgument;
     private JTextField txtResult;
     private JButton btnCalculate;
     private JComboBox<ViewModel.Operation> cbOperation;

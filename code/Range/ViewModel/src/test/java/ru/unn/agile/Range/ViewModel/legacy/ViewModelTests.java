@@ -26,68 +26,78 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isCalculateButtonIsDisabledWhenInputIsEmpty() {
+    public void isCalculateButtonDisabledWhenInputIsEmpty() {
         assertFalse(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
-    public void isInputRangeOrSetTextFieldIsDisabledWhenInputIsEmpty() {
-        assertFalse(viewModel.isInputRangeOrSetTextFieldEnabled());
+    public void isInputArgumentTextFieldDisabledWhenInputRangeIsEmpty() {
+        assertFalse(viewModel.isInputArgumentTextFieldEnabled());
     }
 
     @Test
-    public void isInputRangeOrSetTextFieldIsDisabledWhenOperationGETALLPOINTS() {
+    public void isInputArgumentTextFieldDisabledWhenOperationIsGETALLPOINTS() {
         viewModel.setOperation(ViewModel.Operation.GET_ALL_POINTS);
-        assertFalse(viewModel.isInputRangeOrSetTextFieldEnabled());
+
+        assertFalse(viewModel.isInputArgumentTextFieldEnabled());
     }
 
     @Test
-    public void isInputRangeOrSetTextFieldIsDisabledWhenOperationGETENDPOINTS() {
+    public void isInputArgumentTextFieldDisabledWhenOperationIsGETENDPOINTS() {
         viewModel.setOperation(ViewModel.Operation.GET_END_POINTS);
 
-        assertFalse(viewModel.isInputRangeOrSetTextFieldEnabled());
+        assertFalse(viewModel.isInputArgumentTextFieldEnabled());
     }
 
     @Test
-    public void isInputRangeOrSetTextFieldIsEnabledWhenOperationCONTAINSPOINTS() {
+    public void isInputArgumentTextFieldEnabledWhenOperationIsCONTAINSPOINTS() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_POINTS);
 
-        assertTrue(viewModel.isInputRangeOrSetTextFieldEnabled());
+        assertTrue(viewModel.isInputArgumentTextFieldEnabled());
     }
 
     @Test
-    public void showMessageWhenInputIsEmpty() {
+    public void showMessageWhenInputRangeIsEmpty() {
         assertEquals(ViewModel.Message.DEFAULT_RANGE, viewModel.getMessageText());
     }
 
     @Test
-    public void isCalculateButtonIsEnabledWhenEnterRange() {
+    public void isCalculateButtonEnabledWhenEnterCorrectRange() {
         viewModel.setInputRange("(1,10]");
 
         assertTrue(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
-    public void isCalculateButtonIsEnabledWhenEnterOtherRange() {
+    public void isCalculateButtonEnabledWhenEnterCorrectArgumentRange() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_RANGE);
-        viewModel.setInputRangeOrSet("(1,10]");
+        viewModel.setInputArgument("(1,10]");
 
         assertTrue(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
-    public void isCalculateButtonIsEnabledWhenEnterSetOfNumbers() {
+    public void isCalculateButtonEnabledWhenOperationIsCONTAINSPOINTSAndEnterCorrectSetOfNumbers() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_POINTS);
-        viewModel.setInputRangeOrSet("{1,10}");
+        viewModel.setInputArgument("{1,10}");
 
         assertTrue(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
-    public void isCalculateButtonIsDisabledWhenClearInputRange() {
+    public void isCalculateButtonDisabledWhenOperationIsntCONTAINSPOINTSAndSetOfNumbersIsCorrect() {
+        viewModel.setInputRange("(1,10]");
+        viewModel.setOperation(ViewModel.Operation.CONTAINS_RANGE);
+        viewModel.setInputArgument("{1,10}");
+
+        assertFalse(viewModel.isCalculateButtonEnabled());
+    }
+
+    @Test
+    public void isCalculateButtonDisabledWhenClearInputRange() {
         viewModel.setInputRange("(1,10]");
         viewModel.setInputRange("");
 
@@ -95,17 +105,17 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isCalculateButtonIsDisabledWhenClearRangeOrSet() {
+    public void isCalculateButtonDisabledWhenClearInputArgument() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_RANGE);
-        viewModel.setInputRangeOrSet("(1,10]");
-        viewModel.setInputRangeOrSet("");
+        viewModel.setInputArgument("(1,10]");
+        viewModel.setInputArgument("");
 
         assertFalse(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
-    public void whenCalculateGETALLPOINTS() {
+    public void isResultCorrectWhenCalculateGETALLPOINTS() {
         viewModel.setInputRange("(1,3]");
         viewModel.setOperation(ViewModel.Operation.GET_ALL_POINTS);
         viewModel.calculate();
@@ -114,7 +124,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void whenCalculateGETENDPOINTS() {
+    public void isResultCorrectWhenCalculateGETENDPOINTS() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.GET_END_POINTS);
         viewModel.calculate();
@@ -123,87 +133,87 @@ public class ViewModelTests {
     }
 
     @Test
-    public void whenCalculateAREEQUALRANGESIsTrue() {
+    public void isResultCorrectWhenCalculateAREEQUALRANGESAndRangesAreEqual() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.ARE_EQUAL_RANGES);
-        viewModel.setInputRangeOrSet("(1,10]");
+        viewModel.setInputArgument("(1,10]");
         viewModel.calculate();
 
         assertEquals("These ranges are equal", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateAREEQUALRANGESIsFalse() {
+    public void isResultCorrectWhenCalculateAREEQUALRANGESAndRangesAreNotEqual() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.ARE_EQUAL_RANGES);
-        viewModel.setInputRangeOrSet("(1,11]");
+        viewModel.setInputArgument("(1,11]");
         viewModel.calculate();
 
         assertEquals("These ranges are not equal", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateCONTAINSPOINTSOfTrue() {
+    public void isResultCorrectWhenCalculateCONTAINSPOINTSAndRangeContainsSetOfNumbers() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_POINTS);
-        viewModel.setInputRangeOrSet("{2,4}");
+        viewModel.setInputArgument("{2,4}");
         viewModel.calculate();
 
         assertEquals("The range contains these values", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateCONTAINSPOINTSOfFalse() {
+    public void isResultCorrectWhenCalculateCONTAINSPOINTSAndRangeDoesNotContainSetOfNumbers() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_POINTS);
-        viewModel.setInputRangeOrSet("{2,15}");
+        viewModel.setInputArgument("{2,15}");
         viewModel.calculate();
 
         assertEquals("The range doesn't contain these values", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateCONTAINSRANGEOfTrue() {
+    public void isResultCorrectWhenCalculateCONTAINSRANGEAndRangeContainsArgumentRange() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_RANGE);
-        viewModel.setInputRangeOrSet("[2,5]");
+        viewModel.setInputArgument("[2,5]");
         viewModel.calculate();
 
         assertEquals("The range contains this range", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateCONTAINSRANGEOfFalse() {
+    public void isResultCorrectWhenCalculateCONTAINSRANGEAndRangeDoesNotContainArgumentRange() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_RANGE);
-        viewModel.setInputRangeOrSet("[2,15]");
+        viewModel.setInputArgument("[2,15]");
         viewModel.calculate();
         assertEquals("The range doesn't contain this range", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateOVERLAPSRANGEOfTrue() {
+    public void isResultCorrectWhenCalculateOVERLAPSRANGEAndRangesOverlap() {
 
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.OVERLAPS_RANGE);
-        viewModel.setInputRangeOrSet("(2,5]");
+        viewModel.setInputArgument("(2,5]");
         viewModel.calculate();
 
         assertEquals("These ranges overlap", viewModel.getResult());
     }
 
     @Test
-    public void whenCalculateOVERLAPSRANGEOfFalse() {
+    public void isResultCorrectWhenCalculateOVERLAPSRANGEAndRangesDoNotOverlap() {
         viewModel.setOperation(ViewModel.Operation.OVERLAPS_RANGE);
         viewModel.setInputRange("(1,10]");
-        viewModel.setInputRangeOrSet("(20,50]");
+        viewModel.setInputArgument("(20,50]");
         viewModel.calculate();
 
         assertEquals("These ranges don't overlap", viewModel.getResult());
     }
 
     @Test
-    public void isCalculateButtonIsDisabledWhenEnterInvalidInputRange() {
+    public void isCalculateButtonDisabledWhenEnterInvalidInputRange() {
         viewModel.setInputRange("abc");
 
         assertFalse(viewModel.isCalculateButtonEnabled());
@@ -218,7 +228,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void showErrorMessageWhenEnterInputLiftBoundExceedRight() {
+    public void showErrorMessageWhenInputRangeHasLeftBoundBiggerThenRight() {
         viewModel.setInputRange("(10,1]");
 
         assertEquals("Error: Value of left bound should not exceed value of right bound to the "
@@ -226,47 +236,47 @@ public class ViewModelTests {
     }
 
     @Test
-    public void isCalculateButtonIsDisabledWhenEnterInvalidInputRangeOrSet() {
+    public void isCalculateButtonDisabledWhenEnterInvalidInputArgument() {
         viewModel.setOperation(ViewModel.Operation.OVERLAPS_RANGE);
         viewModel.setInputRange("(1,10]");
-        viewModel.setInputRangeOrSet("abc");
+        viewModel.setInputArgument("abc");
 
         assertFalse(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
-    public void showErrorMessageWhenEnterInvalidInputOtherRange() {
+    public void showErrorMessageWhenEnterInvalidInputArgumentRange() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.OVERLAPS_RANGE);
-        viewModel.setInputRangeOrSet("abc");
+        viewModel.setInputArgument("abc");
 
-        assertEquals(ViewModel.Message.INCORRECT_INPUT_ANOTHER_RANGE, viewModel.getMessageText());
+        assertEquals(ViewModel.Message.INCORRECT_INPUT_ARGUMENT_RANGE, viewModel.getMessageText());
     }
 
     @Test
-    public void showErrorMessageWhenEnterInvalidInputSetOfNumber() {
+    public void showErrorMessageWhenEnterInvalidSetOfNumber() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.CONTAINS_POINTS);
-        viewModel.setInputRangeOrSet("abc");
+        viewModel.setInputArgument("abc");
 
         assertEquals(ViewModel.Message.INCORRECT_INPUT_SET_OF_NUMBERS, viewModel.getMessageText());
     }
 
     @Test
-    public void showMessageWhenEnterValidInputRangeAndOtherRange() {
+    public void showMessageWhenEnterValidInputRangeAndArgumentRange() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.OVERLAPS_RANGE);
-        viewModel.setInputRangeOrSet("(3,6]");
+        viewModel.setInputArgument("(3,6]");
 
-        assertEquals(ViewModel.Message.CORRECT_INPUT_ANOTHER_RANGE, viewModel.getMessageText());
+        assertEquals(ViewModel.Message.CORRECT_INPUT_ARGUMENT_RANGE, viewModel.getMessageText());
     }
 
     @Test
-    public void showMessageWhenEnterValidInputRangeAndRangeOrSetEmpty() {
+    public void showMessageWhenEnterValidInputRangeAndInputArgumentIsEmpty() {
         viewModel.setInputRange("(1,10]");
         viewModel.setOperation(ViewModel.Operation.OVERLAPS_RANGE);
 
-        assertEquals(ViewModel.Message.DEFAULT_ANOTHER_RANGE, viewModel.getMessageText());
+        assertEquals(ViewModel.Message.DEFAULT_ARGUMENT_RANGE, viewModel.getMessageText());
     }
 
     private ViewModel viewModel;

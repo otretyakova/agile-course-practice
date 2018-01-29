@@ -8,8 +8,8 @@ public class ViewModel {
         return calculateButtonEnabled;
     }
 
-    public Boolean isInputRangeOrSetTextFieldEnabled() {
-        return inputRangeOrSetTextFieldEnabled;
+    public Boolean isInputArgumentTextFieldEnabled() {
+        return inputArgumentTextFieldEnabled;
     }
 
     public void setInputRange(final String inputRange) {
@@ -17,8 +17,8 @@ public class ViewModel {
         this.calculateButtonEnabled = canParseAll();
     }
 
-    public void setInputRangeOrSet(final String inputRangeOrSet) {
-        this.inputRangeOrSet = inputRangeOrSet;
+    public void setInputArgument(final String inputArgument) {
+        this.inputArgument = inputArgument;
         this.calculateButtonEnabled = canParseAll();
     }
 
@@ -29,15 +29,16 @@ public class ViewModel {
 
     public Boolean canParseAll() {
         try {
+            inputArgumentTextFieldEnabled = false;
             if (parseInputRange()) {
                 if (operation == Operation.ARE_EQUAL_RANGES || operation == Operation.CONTAINS_RANGE
                         || operation == Operation.OVERLAPS_RANGE) {
-                    inputRangeOrSetTextFieldEnabled = true;
-                    return parseOtherInputRange();
+                    inputArgumentTextFieldEnabled = true;
+                    return parseInputArgumentRange();
                 }
                 if (operation == Operation.CONTAINS_POINTS) {
-                    inputRangeOrSetTextFieldEnabled = true;
-                    return parseInputSetOfNumbers();
+                    inputArgumentTextFieldEnabled = true;
+                    return parseInputArgumentSetOfNumbers();
                 }
                 return true;
             } else {
@@ -59,28 +60,28 @@ public class ViewModel {
                 result = setOfNumbersToString(range.getEndPoints());
                 break;
             case ARE_EQUAL_RANGES:
-                if (range.equals(otherRange)) {
+                if (range.equals(argumentRange)) {
                     result = "These ranges are equal";
                 } else {
                     result = "These ranges are not equal";
                 }
                 break;
             case CONTAINS_POINTS:
-                if (range.containsValues(setOfNumbers)) {
+                if (range.containsValues(argumentSetOfNumbers)) {
                     result = "The range contains these values";
                 } else {
                     result = "The range doesn't contain these values";
                 }
                 break;
             case CONTAINS_RANGE:
-                if (range.containsRange(otherRange)) {
+                if (range.containsRange(argumentRange)) {
                     result = "The range contains this range";
                 } else {
                     result = "The range doesn't contain this range";
                 }
                 break;
             case OVERLAPS_RANGE:
-                if (range.overlapsRange(otherRange)) {
+                if (range.overlapsRange(argumentRange)) {
                     result = "These ranges overlap";
                 } else {
                     result = "These ranges don't overlap";
@@ -108,7 +109,7 @@ public class ViewModel {
             messageText = Message.INCORRECT_INPUT_RANGE;
             return false;
         }
-        range = parseRange(inputRange);
+        range = getRangeFromString(inputRange);
         if (range != null) {
             messageText = Message.CORRECT_INPUT_RANGE;
             return true;
@@ -117,34 +118,34 @@ public class ViewModel {
         }
     }
 
-    private boolean parseOtherInputRange() {
-        if ("".equals(inputRangeOrSet)) {
-            messageText = Message.DEFAULT_ANOTHER_RANGE;
+    private boolean parseInputArgumentRange() {
+        if ("".equals(inputArgument)) {
+            messageText = Message.DEFAULT_ARGUMENT_RANGE;
             return false;
         }
-        if (!inputRangeOrSet.matches(REGEX_RANGES)) {
-            messageText = Message.INCORRECT_INPUT_ANOTHER_RANGE;
+        if (!inputArgument.matches(REGEX_RANGES)) {
+            messageText = Message.INCORRECT_INPUT_ARGUMENT_RANGE;
             return false;
         }
-        otherRange = parseRange(inputRangeOrSet);
-        if (otherRange != null) {
-            messageText = Message.CORRECT_INPUT_ANOTHER_RANGE;
+        argumentRange = getRangeFromString(inputArgument);
+        if (argumentRange != null) {
+            messageText = Message.CORRECT_INPUT_ARGUMENT_RANGE;
             return true;
         } else {
             return false;
         }
     }
 
-    private boolean parseInputSetOfNumbers() {
-        if ("".equals(inputRangeOrSet)) {
-            messageText = Message.DEFAULT_SET_OF_NUMBERS;
+    private boolean parseInputArgumentSetOfNumbers() {
+        if ("".equals(inputArgument)) {
+            messageText = Message.DEFAULT_ARGUMENT_SET_OF_NUMBERS;
             return false;
         }
-        if (!inputRangeOrSet.matches(REGEX_SETS)) {
+        if (!inputArgument.matches(REGEX_SETS)) {
             messageText = Message.INCORRECT_INPUT_SET_OF_NUMBERS;
             return false;
         }
-        setOfNumbers = parseSetOfNumbers(inputRangeOrSet);
+        argumentSetOfNumbers = getSetOfNumbersFromString(inputArgument);
         messageText = Message.CORRECT_INPUT_SET_OF_NUMBERS;
         return true;
     }
@@ -153,7 +154,7 @@ public class ViewModel {
         return bracket == '[' || bracket == ']';
     }
 
-    private Range parseRange(final String strRange) {
+    private Range getRangeFromString(final String strRange) {
         int indexOfLastSymbol = strRange.length() - 1;
         int leftValue = 0;
         int rightValue = 0;
@@ -175,7 +176,7 @@ public class ViewModel {
         }
     }
 
-    private int[] parseSetOfNumbers(final String strSet) {
+    private int[] getSetOfNumbersFromString(final String strSet) {
         int lengthOfSet = strSet.length();
         String[] strValues = strSet.substring(1, lengthOfSet - 1).split(",");
         int[] setOfNumbers = new int[strValues.length];
@@ -216,21 +217,23 @@ public class ViewModel {
 
     public static final class Message {
         public static final String DEFAULT_RANGE = "Please enter a range and select an action.\n";
-        public static final String DEFAULT_ANOTHER_RANGE = "Please enter another range.\n";
-        public static final String DEFAULT_SET_OF_NUMBERS = "Please enter set of numbers.\n";
+        public static final String DEFAULT_ARGUMENT_RANGE = "Please enter range for calculate.\n";
+        public static final String DEFAULT_ARGUMENT_SET_OF_NUMBERS = "Please enter set of numbers"
+                + " for calculate.\n";
         public static final String CORRECT_INPUT_RANGE = "You entered a correct range.\n";
-        public static final String CORRECT_INPUT_ANOTHER_RANGE = "You entered a correct another "
-                + "range.\n";
+        public static final String CORRECT_INPUT_ARGUMENT_RANGE = "You entered a correct "
+                + "range for calculate.\n";
         public static final String CORRECT_INPUT_SET_OF_NUMBERS = "You entered a correct"
-                + " set of numbers.\n";
+                + " set of numbers for calculate.\n";
         public static final String INCORRECT_INPUT_RANGE = "Incorrect input range:\n"
                 + "the range must begin with a character '(' or '[' and end ')' or ']'.\n"
                 + "Inside the parentheses there must be two integers\nseparated by a comma.";
-        public static final String INCORRECT_INPUT_ANOTHER_RANGE = "Incorrect input another "
-                + "range:\nthe range must begin with a character '(' or '[' and end ')' or ']'.\n"
-                + "Inside the parentheses there must be two integers\nseparated by a comma.";
-        public static final String INCORRECT_INPUT_SET_OF_NUMBERS = "Incorrect input set of "
-                + "numbers:\nthe set of numbers must be separated by commas and enclosed in {}.\n";
+        public static final String INCORRECT_INPUT_ARGUMENT_RANGE = "Incorrect input range for "
+                + "calculate:\nthe range must begin with a character '(' or '[' and end ')' or ']'"
+                + ".\nInside the parentheses there must be two integers\nseparated by a comma.";
+        public static final String INCORRECT_INPUT_SET_OF_NUMBERS = "Incorrect input set of"
+                + " numbers for calculate:\nthe set of numbers must be separated by commas"
+                + "and enclosed in {}.\n";
 
         public static String error(final Exception e) {
             return "Error: " + e.getMessage();
@@ -241,15 +244,15 @@ public class ViewModel {
     }
 
     private Boolean calculateButtonEnabled = false;
-    private Boolean inputRangeOrSetTextFieldEnabled = false;
+    private Boolean inputArgumentTextFieldEnabled = false;
     private String inputRange = "";
-    private String inputRangeOrSet = "";
+    private String inputArgument = "";
     private Operation operation = Operation.GET_ALL_POINTS;
     private String result = "";
     private String messageText = Message.DEFAULT_RANGE;
     private Range range;
-    private Range otherRange;
-    private int[] setOfNumbers;
+    private Range argumentRange;
+    private int[] argumentSetOfNumbers;
     private static final String REGEX_RANGES = "[\\[\\(]\\-*\\d+,\\-*\\d+[\\]\\)]";
     private static final String REGEX_SETS = "\\{(\\-*\\d+,)*\\-*\\d+\\}";
 }
