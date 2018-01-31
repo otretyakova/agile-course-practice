@@ -27,7 +27,7 @@ public class ViewModel {
     public final class LogMessages {
         public static final String THE_CALCULATE_WAS_MADE = "The calculate was made. Cost = ";
         public static final String ADD_BOOK_WAS_PRESSED = " was added to the order.";
-        public static final String DELETE_BOOK_WAS_PRESSED = " was deleted to the order.";
+        public static final String DELETE_BOOK_WAS_PRESSED = " was deleted from the order.";
         public static final String SELECT_BOOK = " was selected.";
 
         private LogMessages() {
@@ -130,7 +130,6 @@ public class ViewModel {
     }
 
     private void calculateCost() {
-
         cost = order.getCost();
         logger.log(calculateCostMessage(cost));
     }

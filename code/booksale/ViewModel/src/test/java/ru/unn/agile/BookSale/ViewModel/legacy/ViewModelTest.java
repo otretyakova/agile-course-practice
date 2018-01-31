@@ -166,12 +166,18 @@ public class ViewModelTest {
     }
 
     @Test
-    public void isLogEmptyAfterStart() {
+    public void isLogOneAfterStart() {
         List<String> log = viewModel.getLog();
 
         assertEquals(1, log.size());
     }
-
+    @Test
+    public void doesLogContainMessageAfterStart() {
+        double cost = viewModel.getCost();
+        List<String> log = viewModel.getLog();
+        assertTrue(log.get(0).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE
+                + cost));
+    }
     @Test
     public void canAddLogWhenSelectBook() {
         Book[] books = viewModel.getAvailableBooks();
@@ -192,7 +198,7 @@ public class ViewModelTest {
     }
 
     @Test
-    public void doesNotLogWhenSelectIWasNotChanged() {
+    public void doesNotLogWhenSelectedBookWasNotChanged() {
         Book[] books = viewModel.getAvailableBooks();
         viewModel.onSelectBookFromAvailableList(books[4]);
         viewModel.onSelectBookFromAvailableList(books[4]);
@@ -221,7 +227,7 @@ public class ViewModelTest {
     }
 
     @Test
-    public void doesLogsContainLogMessageWhenAddBook() {
+    public void doesLogContainMessageWhenAddBook() {
         Book[] books = viewModel.getAvailableBooks();
         viewModel.onSelectBookFromAvailableList(books[2]);
         viewModel.addSelectedBookToOrder();
@@ -233,7 +239,7 @@ public class ViewModelTest {
     }
 
     @Test
-    public void doesLogsContainLogMessageWhenDeleteBook() {
+    public void doesLogContainMessageWhenDeleteBook() {
         Book[] books = viewModel.getAvailableBooks();
         viewModel.onSelectBookFromAvailableList(books[1]);
         viewModel.addSelectedBookToOrder();
