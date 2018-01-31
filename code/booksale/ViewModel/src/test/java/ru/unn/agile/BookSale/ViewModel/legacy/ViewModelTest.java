@@ -171,6 +171,7 @@ public class ViewModelTest {
 
         assertEquals(1, log.size());
     }
+
     @Test
     public void doesLogContainMessageAfterStart() {
         double cost = viewModel.getCost();
@@ -178,6 +179,7 @@ public class ViewModelTest {
         assertTrue(log.get(0).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE
                 + cost));
     }
+
     @Test
     public void canAddLogWhenSelectBook() {
         Book[] books = viewModel.getAvailableBooks();
@@ -221,21 +223,27 @@ public class ViewModelTest {
     public void doesLogContainLogMessageWhenSelectBook() {
         Book[] books = viewModel.getAvailableBooks();
         viewModel.onSelectBookFromAvailableList(books[3]);
+        String selectedBookName = viewModel.getSelectedBook().getName();
         List<String> log = viewModel.getLog();
 
-        assertTrue(log.get(1).matches(".*" + ViewModel.LogMessages.SELECT_BOOK));
+        assertTrue(log.get(1).matches(".*" + selectedBookName
+                + ViewModel.LogMessages.SELECT_BOOK));
     }
 
     @Test
     public void doesLogContainMessageWhenAddBook() {
         Book[] books = viewModel.getAvailableBooks();
         viewModel.onSelectBookFromAvailableList(books[2]);
+        String selectedBookName = viewModel.getSelectedBook().getName();
         viewModel.addSelectedBookToOrder();
         List<String> log = viewModel.getLog();
 
-        assertTrue(log.get(1).matches(".*" + ViewModel.LogMessages.SELECT_BOOK));
-        assertTrue(log.get(2).matches(".*" + ViewModel.LogMessages.ADD_BOOK_WAS_PRESSED));
-        assertTrue(log.get(3).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE + ".*"));
+        assertTrue(log.get(1).matches(".*" + selectedBookName
+                + ViewModel.LogMessages.SELECT_BOOK));
+        assertTrue(log.get(2).matches(".*" + selectedBookName
+                + ViewModel.LogMessages.ADD_BOOK_WAS_PRESSED));
+        assertTrue(log.get(3).matches(".*"
+                + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE + ".*"));
     }
 
     @Test
