@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':booksale-ViewModel-legacy')
+    testCompile project(':booksale-ViewModel-legacy').sourceSets.test.output
+}

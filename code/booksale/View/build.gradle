@@ -1,3 +1,4 @@
 dependencies {
     compile project(':booksale-ViewModel-legacy')
+    compile project(':booksale-Infrastructure')
 }

@@ -2,6 +2,7 @@ package ru.unn.agile.BookSale.ViewModel.legacy;
 
 import ru.unn.agile.BookSale.Model.legacy.Book;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -14,9 +15,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ViewModelTest {
+
+    public void setViewModel(final ViewModel viewModels) {
+        this.viewModel = viewModels;
+    }
+
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        FakeLogger logger = new FakeLogger();
+        viewModel = new ViewModel(logger);
     }
 
     @After
@@ -151,6 +158,110 @@ public class ViewModelTest {
         viewModel.deleteSelectedBookFromOrder();
 
         assertEquals(viewModel.getCost(), 0.0, ERROR);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void canThrowExceptionWhenLoggerIsNull() {
+        new ViewModel(null);
+    }
+
+    @Test
+    public void isLogEmptyAfterStart() {
+        List<String> log = viewModel.getLog();
+
+        assertEquals(1, log.size());
+    }
+
+    @Test
+    public void canAddLogWhenSelectBook() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[4]);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(2, log.size());
+    }
+
+    @Test
+    public void canAddLogWhenSelectChange() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[4]);
+        viewModel.onSelectBookFromAvailableList(books[3]);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(3, log.size());
+    }
+
+    @Test
+    public void doesNotLogWhenSelectIWasNotChanged() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[4]);
+        viewModel.onSelectBookFromAvailableList(books[4]);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(2, log.size());
+    }
+
+    @Test
+    public void canAddLogWhenAddBookToOrder() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[4]);
+        viewModel.addSelectedBookToOrder();
+        List<String> log = viewModel.getLog();
+
+        assertEquals(4, log.size());
+    }
+
+    @Test
+    public void doesLogContainLogMessageWhenSelectBook() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[3]);
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.get(1).matches(".*" + ViewModel.LogMessages.SELECT_BOOK));
+    }
+
+    @Test
+    public void doesLogsContainLogMessageWhenAddBook() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[2]);
+        viewModel.addSelectedBookToOrder();
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.get(1).matches(".*" + ViewModel.LogMessages.SELECT_BOOK));
+        assertTrue(log.get(2).matches(".*" + ViewModel.LogMessages.ADD_BOOK_WAS_PRESSED));
+        assertTrue(log.get(3).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE + ".*"));
+    }
+
+    @Test
+    public void doesLogsContainLogMessageWhenDeleteBook() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[1]);
+        viewModel.addSelectedBookToOrder();
+        viewModel.deleteSelectedBookFromOrder();
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.get(4).matches(".*" + ViewModel.LogMessages.DELETE_BOOK_WAS_PRESSED));
+        assertTrue(log.get(5).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE + ".*"));
+    }
+
+    @Test
+    public void doesLogsContainLogMessageWhenAddAndDeleteBookFull() {
+        Book[] books = viewModel.getAvailableBooks();
+        viewModel.onSelectBookFromAvailableList(books[1]);
+        String selectedBookName = viewModel.getSelectedBook().getName();
+        viewModel.addSelectedBookToOrder();
+        double costAfterAdd = viewModel.getCost();
+        viewModel.deleteSelectedBookFromOrder();
+        double costAfterDelete = viewModel.getCost();
+        List<String> log = viewModel.getLog();
+        assertTrue(log.get(2).matches(".*" + selectedBookName
+                + ViewModel.LogMessages.ADD_BOOK_WAS_PRESSED));
+        assertTrue(log.get(3).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE
+                + costAfterAdd));
+        assertTrue(log.get(4).matches(".*" + selectedBookName
+                + ViewModel.LogMessages.DELETE_BOOK_WAS_PRESSED));
+        assertTrue(log.get(5).matches(".*" + ViewModel.LogMessages.THE_CALCULATE_WAS_MADE
+                + costAfterDelete));
     }
 
     private ViewModel viewModel;

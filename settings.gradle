@@ -100,6 +100,9 @@ include "code/booksale/View"
 project(":code/booksale/View").name = "booksale-View-legacy"
 include "code/booksale/ViewModel"
 project(":code/booksale/ViewModel").name = "booksale-ViewModel-legacy"
+include "code/booksale/Infrastructure"
+project(":code/booksale/Infrastructure").name = "booksale-Infrastructure"
+
 
 // Novak Alexander
 include "code/number-system-converter/Model"
